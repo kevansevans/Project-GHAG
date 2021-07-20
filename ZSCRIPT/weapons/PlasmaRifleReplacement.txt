@@ -1,0 +1,80 @@
+Class GHAGPlasmaRifle : PlasmaRifle replaces PlasmaRifle
+{
+	default {
+		Weapon.SlotNumber 6;
+	}
+	States
+	{
+		Select:
+			PSRF A 1 A_Raise();
+			loop;
+		Deselect:
+			PSRF A 1 A_Lower();
+			loop;
+		Ready:
+			PSRF ABCDE 1 A_WeaponReady();
+			loop;
+		Fire:
+			PSRF F 1 A_PsychicPlasma();
+			PSRF GH 1;
+			PSRF H 20 A_ReFire;
+			Goto Ready;
+	}
+	
+	Action void A_PsychicPlasma() {
+		if (player == null)
+		{
+			return;
+		}
+		Weapon weap = player.ReadyWeapon;
+		if (weap != null && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
+		{
+			if (!weap.DepleteAmmo (weap.bAltFire, true, 1))
+				return;
+		}
+		
+		let _locPlasma = PsychicPlasma(SpawnPlayerMissile("PsychicPlasma"));
+		if (_locPlasma) _locPlasma.modifier = Gardevoir(self).GetRageModifier();
+	}
+}
+
+Class PsychicPlasma : PlasmaBall replaces PlasmaBall
+{
+
+	double modifier;
+	property modifier: modifier;
+	
+	default {
+		+SCREENSEEKER;
+		PsychicPlasma.modifier 0;
+	}
+
+
+	States
+	{
+		Spawn:
+			PLSS AB 6 Bright {
+				A_SeekerMissile(5, (modifier * 100), SMF_LOOK, 300 * modifier);
+				A_SetTics(6 * (1 - modifier) < 1 ? 1 : 6 * (1 - modifier));
+				if (tracer) {
+					A_Weave(3, 3, modifier, modifier);
+					if (self.Pos.z <= tracer.Pos.z + 5) {
+						SetZ(self.Pos.z + 4 + (4 * modifier));
+					}
+					if (self.Pos.z >= tracer.Pos.z + tracer.height) {
+						SetZ(self.Pos.z - (4 + (4 * modifier)));
+					}
+				}
+			}
+			Loop;
+	}
+
+}
+
+Class GHAGBFG : CellPack replaces BFG9000
+{
+	Default
+	{
+		Inventory.Amount 40;
+	}
+}

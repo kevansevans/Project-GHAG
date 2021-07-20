@@ -1,0 +1,19 @@
+Chainsaw:
+
+	Line of target attack that increases in range
+	
+Psychic moves cost anger, but any can be done at 0 percent except black hole attack\
+More levels of anger = stronger attack, of course
+	
+Ice Punch, Fire Punch, Thunder Punch
+
+	Applies Doom like effects. Ice punch definitely freezes enemies
+	
+Scanners attack
+
+	If killed with, head explodes. Stuns enemy while dealing damage
+	
+Repulse
+
+	AOE attack that repells all enemies. Larger radius and damage with anger
+	

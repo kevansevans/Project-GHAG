@@ -1,0 +1,153 @@
+Class Gardevoir : PlayerPawn
+{
+	int RageTimer;
+	int RageDelay;
+	int RageConstant;
+	int RageValue;
+	int lividTimer;
+	
+	int PunchMode;
+	property PunchMode: PunchMode;
+	
+	bool hasAltShotgun;
+	
+	property RageValue: RageValue;
+	property RageDelay: RageDelay;
+	property hasAltShotgun: hasAltShotgun;
+	
+	array<Actor> HurtList;
+	array<Int> HurtTracker;
+	
+	override void BeginPlay()
+	{
+		Super.BeginPlay();
+		
+		RageValue = 0;
+		RageDelay = 35 * 3;
+		Ragetimer = 0;
+		RageConstant = 1000;
+		hasAltShotgun = false;
+		
+		PunchMode = 0;
+	}
+	
+	void ResetTrackers() 
+	{
+		HurtList.clear();
+		HurtTracker.clear();
+		HurtTracker.resize(1024);
+	}
+	
+	void CatharsisBonus(Actor thing) 
+	{
+		int angerBonus = Max(int(thing.spawnHealth() / 10), 1);
+		int willBonus = int(thing.spawnHealth() / 100);
+		
+		angerBonus += HurtTracker[HurtList.find(thing)];
+		HurtTracker[HurtList.find(thing)] = 0;
+		HurtList.Delete(HurtList.find(thing));
+		
+		if (angerBonus <= 1000 && RageValue <= 1000) {
+			RageValue += angerBonus;
+			if (RageValue > 1000) RageValue = 1000;
+			//Console.PrintF("Anger Bonus " .. angerBonus);
+		} else {
+			//Console.PrintF("BASTARD BASTARD BASTARD: Anger Bonus " .. angerBonus);
+		}
+		
+		if (willBonus >= 1) {
+			Self.health += willBonus;
+			//Console.PrintF("Will Bonus " .. angerBonus);
+		}
+	}
+	
+	void GetHeckingAngery() 
+	{
+		RageValue += 20;
+		RageTimer = 0;
+		if (RageValue >= RageConstant) RageValue = RageConstant;
+		return;
+	}
+	
+	void GetLivid()
+	{
+		RageValue += 500;
+	}
+	
+	double GetRageValue() {
+		return RageValue;
+	}
+	
+	double GetRageModifier()
+	{
+		return GetRageValue() * 0.001;
+	}
+	
+	double GetTicModifier(int tic, bool allowZero = false) 
+	{
+		double value = tic * (1 - GetRageModifier());
+		if (!allowZero) {
+			if (value < 1) value = 1;
+		}
+		value = round(value);
+		return Max(value, 0);
+	}
+	
+	double GetDamageModifier(double damage)
+	{
+		return damage + (damage * GetRageModifier());
+	}
+	
+	double GetAccuracyModifier(double accuracy)
+	{
+		return min(max(1, accuracy * (1 - GetRageModifier())), 20);
+	}
+	
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0)
+	{
+		if (RageValue <= RageConstant) {
+			RageValue += damage;
+			RageTimer = 0;
+			if (RageValue > RageConstant) RageValue = RageConstant;
+		}
+		
+		HurtList.push(source);
+		HurtTracker[HurtList.find(source)] += damage;
+		
+		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+	}
+	
+	override void Tick()
+	{
+		Super.Tick();
+		
+		RageTimer++;
+		
+		if (RageValue > 0 && RageValue <= RageConstant) {
+			int delay = 35 * GetRageModifier();
+			if (RageTimer > RageDelay) {
+				RageValue--;
+				RageDelay -= 2;
+				if (RageDelay < 35) RageDelay = 35;
+				RageTimer = 0;
+			}
+		} else if (RageValue > RageConstant) {
+			int angercap = RageValue / RageConstant;
+			if (RageTimer > 5) {
+				RageValue -= (2 * angercap);
+				RageTimer = 0;
+			}
+		}
+		
+		//A_Print("" .. RageValue .. ":" .. GetRageModifier());
+	}	
+	
+	default {
+		Health 350;
+        Player.DisplayName "Gardevoir" ;
+		Player.StartItem "GHAGPistol";
+		Player.StartItem "ElementPunch";
+		Player.StartItem "Clip", 50;
+		Player.MaxHealth 350;
+     }
+}

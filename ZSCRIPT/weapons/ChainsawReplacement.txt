@@ -1,0 +1,27 @@
+Class GHAGSawBlade : Chainsaw replaces Chainsaw
+{
+	Default
+	{
+		Weapon.SlotNumber 1;
+	}
+
+	States
+	{
+		Select :
+			SWBL ABCD 1 A_Raise();
+			Loop;
+		Deselect :
+			SWBL ABCD 1 A_Lower();
+			Loop;
+		Ready :
+			SWBL ABCD 1 A_WeaponReady();
+			loop;
+		Fire :
+			SWBL EFG 1;
+			SWBL H 1 A_Saw();
+			SWBL EFG 1;
+			SWBL H 1 A_Saw();
+			TNT1 A 0 A_Refire();
+			goto Ready;
+	}
+}

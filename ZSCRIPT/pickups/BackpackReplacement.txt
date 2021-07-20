@@ -1,0 +1,54 @@
+Class GHAGBackpack : Backpack replaces Backpack
+{
+	override Inventory CreateCopy (Actor other)
+	{
+		uint end = AllActorClasses.Size();
+		for (uint i = 0; i < end; ++i)
+		{
+			let ammotype = (class<Ammo>)(AllActorClasses[i]);
+
+			if (ammotype && GetDefaultByType(ammotype).GetParentAmmo() == ammotype)
+			{
+				let ammoitem = Ammo(other.FindInventory(ammotype));
+				if (!ammoitem) continue;
+				ammoitem.BackpackMaxAmount = ammoitem.MaxAmount * 1.5;
+				
+			}
+		}
+		
+		return Super.CreateCopy (other);
+	}
+	
+	override bool HandlePickup (Inventory item)
+	{
+		if (item is 'BackpackItem')
+		{
+			for (let probe = Owner.Inv; probe != NULL; probe = probe.Inv)
+			{
+				let ammoitem = Ammo(probe);
+
+				if (ammoitem && ammoitem.GetParentAmmo() == ammoitem.GetClass())
+				{
+					ammoItem.MaxAmount = ammoitem.MaxAmount * 1.5;
+					amount *= 0.01;
+					if (ammoitem.Amount < ammoitem.MaxAmount || sv_unlimited_pickup)
+					{
+						int amount = ammoitem.Default.BackpackAmount;
+						if (!bIgnoreSkill)
+						{
+							amount = int(amount * G_SkillPropertyFloat(SKILLP_AmmoFactor));
+						}
+						ammoitem.Amount += amount;
+						if (ammoitem.Amount > ammoitem.MaxAmount && !sv_unlimited_pickup)
+						{
+							ammoitem.Amount = ammoitem.MaxAmount;
+						}
+					}
+				}
+			}
+			item.bPickupGood = true;
+			return true;
+		}
+		return false;
+	}
+}

@@ -1,0 +1,13 @@
+class GHAGBerserk : Berserk replaces Berserk
+{
+	States
+	{
+		Pickup:
+			TNT1 A 0 {
+				A_GiveInventory("PowerStrength");
+				Gardevoir(self).GetLivid();
+			}
+			TNT1 A 0 HealThing(100, 0);
+			Stop;
+	}
+}

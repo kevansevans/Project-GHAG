@@ -1,0 +1,155 @@
+Class GHAGStatus : BaseStatusBar
+{
+
+	double v_width;
+	double v_height;
+	vector2 scale;
+	
+	override void Init() {
+		Super.Init();
+		
+		SetSize(0, 320, 200);
+	}
+	
+	override void Draw(int state, double tic) {
+		
+		Super.Draw(state, tic);
+		
+		BeginHUD();
+		
+		scale = getHUDScale();
+		
+		v_width = Screen.getWidth() / scale.x;
+		v_height = Screen.getHeight() / scale.y;
+		
+		let gardie = Gardevoir(CPlayer.mo);
+		if (!gardie) return;
+		
+		Font fnt = "MM2FONTO";
+		HUDFont mMM2BigFont = HUDFont.Create(fnt);
+		fnt = "MM2SFNTO";
+		HUDFont mMM2SmallFont = HUDFont.Create(fnt, fnt.GetCharWidth("0"), true);
+		
+		float rage = gardie.RageValue * 0.1;
+		string rage_string = String.Format("%.1f", rage);
+		
+		if (rage <= 100) drawStringOnScreen("Anger " .. rage_string .. "%", 10, v_height - 50, mMM2BigFont);
+		
+		if (rage >= 0 && rage < 10) {
+			DrawImage("CALM", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		} else if (rage >= 10 && rage < 20) {
+			DrawImage("ANNOY", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		} else if (rage >= 20 && rage < 30) {
+			DrawImage("BITTER", (10, v_height - 34), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		} else if (rage >= 30 && rage < 40) {
+			DrawImage("HEATED", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		} else if (rage >= 40 && rage < 50) {
+			DrawImage("FUMING", (10, v_height - 34), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		} else if (rage >= 50 && rage < 60) {
+			DrawImage("IRATE", (10, v_height - 34), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		} else if (rage >= 60 && rage < 70) {
+			DrawImage("SAVAGE", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		} else if (rage >= 70 && rage < 80) {
+			DrawImage("SCORN", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		} else if (rage >= 80 && rage < 90) {
+			DrawImage("LIVID", (10, v_height - 34), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		} else if (rage >= 90 && rage <= 100) {
+			DrawImage("MURDER", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		} else if (rage > 100) {
+			DrawImage("HELLHATH", (10, v_height - 40), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+			int count = rage * 0.01;
+			for (int i = 0; i < count; ++i) {
+				int range = min(rage * 0.1, 20);
+				double posX = 10 + random(-10 - range, -10 + range);
+				double posY = (v_height - 40) + random(10 - range, 10 + range);
+				DrawImage("HELLHATH", (posX, posY), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 0.75);
+			}
+		}
+
+		DrawString(mMM2BigFont, gardie.health .. "/350 HP", (10, v_height - 70), 0, FONT.CR_GREEN);
+		DrawString(mMM2SmallFont, GetArmorAmount() .. "% Armor", (11, v_height - 80), 0, FONT.CR_CYAN);
+		
+		array<Ammo> ownedAmmo;
+		int curAmmoIndex;
+		
+		ownedAmmo.clear();
+		
+		for (let inv = gardie.inv; inv; inv = inv.Inv) 
+		{
+			if (inv is "Weapon") {
+				let ammo = Weapon(inv).Ammo1;
+				if (ammo && ownedAmmo.Size() == ownedAmmo.Find(ammo)) {
+					ownedAmmo.push(ammo);
+				}
+				
+				ammo = Weapon(inv).Ammo2;
+				if (ammo && ownedAmmo.Size() == ownedAmmo.Find(ammo)) {
+					ownedAmmo.push(ammo);
+				}
+			}
+		}
+		
+		for (int i = 0; i < ownedAmmo.Size(); ++i) {
+			let a = ownedAmmo[i];
+			if (CPlayer.ReadyWeapon) {
+				if (CPlayer.ReadyWeapon.Ammo1 == ownedAmmo[i]) {
+					curAmmoIndex = i;
+					break;
+				} 
+				else if (CPlayer.ReadyWeapon.Ammo1 == NULL && CPlayer.ReadyWeapon.Ammo2 == ownedAmmo[i]) {
+					curAmmoIndex = i;
+					break;
+				}
+			}
+		}
+		
+		int wep_height = v_height - 90;
+		if (ownedAmmo.Size() > 0) {
+			let curC = ownedAmmo[curAmmoIndex];
+			int fontTranslation;
+			for (int i = 0; i < ownedAmmo.Size(); i++) {
+				let c = ownedAmmo[i];
+				if (i != curAmmoIndex) {
+					fontTranslation = FONT.CR_DARKRED;
+				} else {
+					fontTranslation = Font.CR_UNTRANSLATED;
+				}
+				DrawString(mMM2SmallFont, c.GetTag().." "..c.Amount.."/"..c.MaxAmount, (11, wep_height -= 10), DI_SCREEN_LEFT_TOP, fontTranslation);
+			}
+		}
+		wep_height -= 5;
+		
+		bool locks[6];
+		String image;
+		for (int i = 0; i < 6; i++) locks[i] = CPlayer.mo.CheckKeys(i + 1, false, true);
+		// key 1
+		if (locks[1] && locks[4]) image = "STKEYS6";
+		else if (locks[1]) image = "STKEYS0";
+		else if (locks[4]) image = "STKEYS3";
+		DrawImage(image, (15, wep_height));
+		// key 2
+		if (locks[2] && locks[5]) image = "STKEYS7";
+		else if (locks[2]) image = "STKEYS1";
+		else if (locks[5]) image = "STKEYS4";
+		else image = "";
+		DrawImage(image, (25, wep_height));
+		// key 3
+		if (locks[0] && locks[3]) image = "STKEYS8";
+		else if (locks[0]) image = "STKEYS2";
+		else if (locks[3]) image = "STKEYS5";
+		else image = "";
+		DrawImage(image, (35, wep_height));
+		
+		
+	}
+	
+	void drawStringOnScreen(String _mes, double _posX, double _posY, HUDFont _font) 
+	{
+		DrawString(_font, _mes, (_posX, _posY), DI_SCREEN_LEFT_TOP);
+	}
+	
+	double getWidthFromNormal(double _normal)
+	{
+		return _normal * v_width;
+	}
+}

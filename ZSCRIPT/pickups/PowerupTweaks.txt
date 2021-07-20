@@ -1,0 +1,9 @@
+Class GHAGMegasphere : Megasphere replaces Megasphere
+{
+	states 
+	{
+		Pickup:
+			TNT1 A 0 A_GiveInventory("Soulsphere", 1);
+			goto Super::Pickup;
+	}
+}

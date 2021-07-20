@@ -1,0 +1,64 @@
+Class GHAGActorDeathHandler : EventHandler
+{
+	Gardevoir Gardie;
+	
+	override void WorldThingSpawned(WorldEvent event)
+	{
+		if (Gardevoir(event.thing)) return;
+		else SetActorProperties(event.thing);
+	}
+	
+	void SetActorProperties(Actor thing) 
+	{
+		if (Health(thing)) {
+				
+			let healItem = Health(thing);
+			if (healItem.maxAmount < 350) {
+				healItem.MaxAmount = 350;
+			} else {
+				healItem.MaxAmount = Int(healItem.MaxAmount * 1.75);
+			}
+			if(healItem.Amount >= 100) {
+				healItem.Amount = Int(healItem.Amount * 1.75);
+			}
+			return;
+		}
+	}
+
+	//Killing an enemy will reset the anger delay timer.
+	override void WorldThingDied(WorldEvent event) 
+	{
+		if (!gardie) return;
+		Gardie.CatharsisBonus(event.thing);
+	}
+	
+	override void PlayerSpawned(PlayerEvent player) {
+	
+		Gardie = Gardevoir(players[player.PlayerNumber].mo);
+		Gardie.ResetTrackers();
+		
+		int rnd = random(0, 1);
+		
+		switch (rnd) {
+		
+			case 0 :
+				console.printf("Don't let the dress fool you, I'm a boy, and you'll be calling it a kilt when I'm done with you");
+				break;
+			case 1 :
+				console.printf("Get ready, wake your psyche up! Get ready, dig your anger up!");
+				break;
+		}
+	}
+	
+	override void WorldLinePreActivated (WorldEvent event) 
+	{
+		if (!gardie) return;
+		
+		if (event.ActivatedLine.special == 243) {
+			double ratio = double(level.Killed_Monsters) / double(level.total_monsters);
+			int penalty = int(ratio * 1000);
+			Gardie.RageValue -= 1000 - penalty;
+			if (Gardie.RageValue <= 0) Gardie.RageValue = 0;
+		}
+	}
+}

@@ -1,0 +1,150 @@
+Class GHAGShotgun : Shotgun replaces Shotgun
+{
+	default
+	{
+		Weapon.SlotNumber 3;
+	}
+	
+	States
+	{
+		Select :
+			SHTG A 1 A_Raise();
+			Loop;
+		Deselect :
+			SHTG A 1 A_Lower();
+			Loop;
+		Ready :
+			SHTG A 1 A_WeaponReady(WRF_ALLOWRELOAD);
+			Loop;
+		Fire :
+			SHTG A 3;
+			SHTG B 2 Bright {
+				if (CountInv("Shell") != 0) A_GiveInventory("Shell");
+				A_FireBullets(4, 4, 10, 5, "BulletPuff");
+				A_FireBullets(4, 4, floor(14 * Gardevoir(Self).GetRageModifier()), 5, "GHAGPsychicPuff");
+				A_PlaySound ("weapons/shotgf", CHAN_WEAPON);
+			}
+			SHTG CCDDD 1 Bright;
+			SHTG EFGHIJKL 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
+			SHTG A 7 {
+				A_ReFire();
+			}
+			Goto Ready;
+		Reload :
+			TNT1 A 0 A_JumpIfInventory("Shell", 1, "Reload.FireShell");
+			goto Ready;
+		Reload.FireShell :
+			SHTG E 3 { 
+				A_PlaySound("misc/w_pkup", CHAN_WEAPON);
+				A_SetTics(Gardevoir(self).GetTicModifier(3));
+			}
+			SHTG FG 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
+			SHTG H 3 {
+				A_PsychicShell();
+				A_SetTics(Gardevoir(self).GetTicModifier(3));
+				A_TakeInventory("Shell", 1);
+			}
+			SHTG IJKL 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
+			SHTG A 7 {
+				A_ReFire();
+			}
+			Goto Ready;
+	}
+	
+	Action Void A_PsychicShell() {
+		if (player == null) return;
+		
+		Weapon weap = player.ReadyWeapon;
+		if (weap != null && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
+		{
+			if (!weap.DepleteAmmo (weap.bAltFire, true, 1))
+				return;
+		}
+		
+		let _locShell = PsychicShell(SpawnPlayerMissile("PsychicShell"));
+		if (_locShell) _locShell.modifier = Gardevoir(Self).GetRageModifier();
+	}
+}
+
+Class GHAGPsychicPuff : BulletPuff
+{
+	Default
+	{
+		Translation "96:111=250:254";
+	}
+}
+
+Class GHAGSuperShotgun : ShellBox replaces SuperShotgun
+{
+	
+}
+
+Class PsychicShell : Actor
+{
+
+	double modifier;
+	property modifier: modifier;
+	
+	bool fired;
+	property fired: fired;
+
+	Default {
+		+FLOAT;
+		+SCREENSEEKER;
+		+NOGRAVITY;
+		+Friendly;
+		Speed 25;
+		+ACTIVATEIMPACT;
+		-ACTIVATEPCROSS;
+		Projectile;
+	}
+	
+	States {
+	
+		Spawn :
+			PSHL AAA 2 
+			{
+				if (!tracer || tracer.health <= 0) 
+				{
+					A_SeekerMissile(0, 2, SMF_LOOK, 99999);
+					fired = false;
+				} 
+				else  
+				{
+					A_FaceTarget();
+					A_Chase();
+					A_FaceTarget();
+					float dist = GetDistance(true);
+					if (dist <= 256) 
+					{
+						A_CustomBulletAttack(4, 4, 7, 5, "BulletPuff");
+						A_PlaySound ("weapons/shotgf", CHAN_WEAPON);
+						fired = true;
+						Return ResolveState("Death");
+					} 
+				} 
+				Return ResolveState(null);
+			}
+			Loop;
+		Death :
+			TNT1 A 1 {
+				if (!fired) A_SpawnItem("ShellPickup");
+			}
+			stop;
+	}
+}
+
+Class ShellPickup : ShellBox
+{
+
+	Default {
+		Inventory.Amount 1;
+		//+Gravity;
+	}
+	
+	States {
+		Spawn:
+			PSHL B -1;
+			Stop;
+	}
+}

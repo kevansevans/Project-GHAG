@@ -1,0 +1,64 @@
+Big thank you to Marisa Kirisame for putting up with my questions
+Thanks you to the ZDoom Forum Discord, and those who ere there to answer my questions in the void:
+
+	Gutawer
+	3saster
+	Boondorl
+	Cherno
+	NashMuhandes
+	DyNaM1K
+	phantombeta
+	weasel
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//Tools
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Slade
+Adobe Animate 2020 (Will call it flash in this file from here on)
+My phone
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//Sprites
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Gardevoir hands were based off of my own hands. Took pictures of them and then
+traced over them in Flash. Drawing a three fingered creature based off of a five
+fingered creature is actually pretty hard.
+
+Chainsaw, I just googled a sawblade, lol.
+
+Pistol is currently based off of Team Fortress 2's pistol, using the same traced
+over method as the hands.
+
+Shotgun is based off of a Winchester 1912. This was my late Great Grandfather's
+shotgun, which eventually ended up in my Father's possesion.
+
+Rocket Launcher is just Doom's rocket animated to be spinning.
+
+Plasma Rifle is based off of a watergun I bought at a hardware store.
+
+Gen 2 move sprites, for elemental punches:
+https://www.spriters-resource.com/game_boy_gbc/pokemongoldsilver/sheet/9087/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//Sounds
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+From various pokemon games
+
+https://www.sounds-resource.com/ds_dsi/pokemonblackwhite/sound/24408/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//HUD
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Hud stuff is new to me, especially in ZScript. A lot of what I use is gleamed off
+of Gutawer's found here: https://forum.zdoom.org/viewtopic.php?t=56148
+
+Code from Gutawer
+Fonts from Memento Mori
+
+Anger level images use https://www.dafont.com/amazdoom.font
+"Hell Hath No Fury" in Floydian: https://www.dafont.com/floydian.font
+All rendered in Flash

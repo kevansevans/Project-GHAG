@@ -45,7 +45,7 @@ Class Gardevoir : PlayerPawn
 		int angerBonus = Max(int(thing.spawnHealth() / 10), 1);
 		
 		angerBonus += HurtTracker[HurtList.find(thing)];
-		HurtTracker[HurtList.find(thing)] = 0;
+		HurtTracker.delete(HurtList.find(thing));
 		HurtList.Delete(HurtList.find(thing));
 		
 		if (angerBonus <= 1000 && RageValue <= 1000) {

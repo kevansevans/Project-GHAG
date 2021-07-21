@@ -33,7 +33,7 @@ Class GHAGStatus : BaseStatusBar
 		float rage = gardie.RageValue * 0.1;
 		string rage_string = String.Format("%.1f", rage);
 		
-		if (rage <= 100) drawStringOnScreen("Anger " .. rage_string .. "%", 10, v_height - 50, mMM2BigFont);
+		if (rage <= 100) drawStringOnScreen("Bloodlust " .. rage_string .. "%", 10, v_height - 50, mMM2BigFont);
 		
 		if (rage >= 0 && rage < 10) {
 			DrawImage("CALM", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);

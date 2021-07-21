@@ -7,11 +7,6 @@ Class ElementPunch : Weapon
 		Weapon.kickback 150;
 	}
 	
-	Action void A_JumpToPunch() 
-	{
-		
-	}
-	
 	Action void A_CyclePunchMode()
 	{
 		Gardevoir(self).PunchMode = (Gardevoir(self).PunchMode + 1) % 3;

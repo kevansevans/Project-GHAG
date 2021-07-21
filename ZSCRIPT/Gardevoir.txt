@@ -39,6 +39,9 @@ Class Gardevoir : PlayerPawn
 	
 	void CatharsisBonus(Actor thing) 
 	{
+		if (self.health <= 0) return;
+		if (!thing) return;
+		
 		int angerBonus = Max(int(thing.spawnHealth() / 10), 1);
 		
 		angerBonus += HurtTracker[HurtList.find(thing)];

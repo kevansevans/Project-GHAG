@@ -403,7 +403,7 @@ Class BasePunchPuff : BulletPuff
 				SetXYZ(follow);
 			}
 		} else {
-			ResolveState("Death");
+			//SetStateLabel("Death");
 		}
 		
 		Super.tick();
@@ -444,6 +444,7 @@ Class IcePuff : BasePunchPuff
 			IPFB K 1 Bright;
 			TNT1 A 2 Bright;
 			IPFB K 5 Bright;
+		Death:
 			stop;
 			
 	}

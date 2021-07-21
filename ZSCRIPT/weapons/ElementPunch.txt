@@ -73,8 +73,7 @@ Class ElementPunch : Weapon
 		}
 		else
 		{
-			
-			A_BlastLOS(BF_AFFECTBOSSES | BF_DONTWARN, 255, 256 * Gardevoir(self).GetRageModifier(), 20 * Gardevoir(self).GetRageModifier(), pufftype, damage);
+			A_BlastLOS(BF_AFFECTBOSSES | BF_DONTWARN | 16, 255, 256 * Gardevoir(self).GetRageModifier(), 20 * Gardevoir(self).GetRageModifier(), pufftype, damage);
 			
 			if (lifesteal > 0 && !(t.linetarget.bDontDrain))
 			{
@@ -171,6 +170,12 @@ Class ElementPunch : Weapon
 				continue;
 			}
 			
+			if ((blastflags & 16) && !isVisible(mo, true)) 
+			{
+				//only blast if target can bee seen by calling actor
+				continue;
+			}
+			
 			Actor victim = mo;
 			
 			double ang = AngleTo(victim);
@@ -200,13 +205,9 @@ Class ElementPunch : Weapon
 			{
 				victim.Vel.Z = 1000. / victim.Mass;
 				if (victim.health - _damage <= 0 && blasteffect == "IcePuff") {
-					if (!victim.bICECORPSE) victim.SetStateLabel("GenericFreezeDeath");
-					else {
-						victim.bArmed = false;
-						victim.DamageMobj(self, self, victim.health, 'Melee', DMG_FORCED|DMG_EXPLOSION);
+					if (!victim.bIceCorpse) {
+						victim.DamageMobj(self, self, victim.health, 'Ice');
 					}
-				} else {
-					victim.DamageMobj(self, self, _damage, 'Melee');
 				}
 			}
 			if (victim.bTouchy)

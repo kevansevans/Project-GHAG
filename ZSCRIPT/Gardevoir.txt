@@ -4,16 +4,14 @@ Class Gardevoir : PlayerPawn
 	int RageDelay;
 	int RageConstant;
 	int RageValue;
-	int lividTimer;
+	
+	bool OverTheEdge;
 	
 	int PunchMode;
 	property PunchMode: PunchMode;
 	
-	bool hasAltShotgun;
-	
 	property RageValue: RageValue;
 	property RageDelay: RageDelay;
-	property hasAltShotgun: hasAltShotgun;
 	
 	array<Actor> HurtList;
 	array<Int> HurtTracker;
@@ -26,7 +24,8 @@ Class Gardevoir : PlayerPawn
 		RageDelay = 35 * 3;
 		Ragetimer = 0;
 		RageConstant = 1000;
-		hasAltShotgun = false;
+		
+		OverTheEdge = false;
 		
 		PunchMode = 0;
 	}
@@ -41,23 +40,25 @@ Class Gardevoir : PlayerPawn
 	void CatharsisBonus(Actor thing) 
 	{
 		int angerBonus = Max(int(thing.spawnHealth() / 10), 1);
-		int willBonus = int(thing.spawnHealth() / 100);
 		
 		angerBonus += HurtTracker[HurtList.find(thing)];
 		HurtTracker[HurtList.find(thing)] = 0;
 		HurtList.Delete(HurtList.find(thing));
 		
 		if (angerBonus <= 1000 && RageValue <= 1000) {
-			RageValue += angerBonus;
+			RageValue += Min(angerBonus, 250);
 			if (RageValue > 1000) RageValue = 1000;
-			//Console.PrintF("Anger Bonus " .. angerBonus);
+			Console.PrintF("Anger Bonus " .. Min(angerBonus, 250));
+			int willBonus = AngerBonus - Min(angerBonus, 50);
+			if (willBonus >= 0) {
+				Self.health +=  Min(willBonus, 100);
+				Console.PrintF("Will Bonus " .. Min(willBonus, 30));
+			}
 		} else {
-			//Console.PrintF("BASTARD BASTARD BASTARD: Anger Bonus " .. angerBonus);
-		}
-		
-		if (willBonus >= 1) {
-			Self.health += willBonus;
-			//Console.PrintF("Will Bonus " .. angerBonus);
+			if (!OverTheEdge) {
+				RageValue += angerBonus;
+				OverTheEdge = true;
+			}
 		}
 	}
 	
@@ -122,6 +123,8 @@ Class Gardevoir : PlayerPawn
 		Super.Tick();
 		
 		RageTimer++;
+		
+		if (OverTheEdge && RageValue <= RageConstant) OverTheEdge = false;
 		
 		if (RageValue > 0 && RageValue <= RageConstant) {
 			int delay = 35 * GetRageModifier();

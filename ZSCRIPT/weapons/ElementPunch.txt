@@ -394,9 +394,15 @@ Class BasePunchPuff : BulletPuff
 	override void tick() {
 	
 		if (target) {
-			Vector3 follow = target.pos;
-			follow.z += (target.height / 3) * 2.0;
-			SetXYZ(follow);
+			if (target.bMissile) {
+				ResolveState("Death");
+			} else {
+				Vector3 follow = target.pos;
+				follow.z += (target.height) - (target.height / 3.);
+				SetXYZ(follow);
+			}
+		} else {
+			ResolveState("Death");
 		}
 		
 		Super.tick();

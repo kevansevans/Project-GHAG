@@ -140,16 +140,10 @@ Class GHAGStatus : BaseStatusBar
 		else image = "";
 		DrawImage(image, (35, wep_height));
 		
-		
 	}
 	
 	void drawStringOnScreen(String _mes, double _posX, double _posY, HUDFont _font) 
 	{
 		DrawString(_font, _mes, (_posX, _posY), DI_SCREEN_LEFT_TOP);
-	}
-	
-	double getWidthFromNormal(double _normal)
-	{
-		return _normal * v_width;
 	}
 }

@@ -41,6 +41,7 @@ Class Gardevoir : PlayerPawn
 	{
 		if (self.health <= 0) return;
 		if (!thing) return;
+		if (HurtList.find(thing) == HurtList.size()) return;
 		
 		int angerBonus = Max(int(thing.spawnHealth() / 10), 1);
 		

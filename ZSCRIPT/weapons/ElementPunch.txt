@@ -462,6 +462,12 @@ Class FirePuff : BasePunchPuff
 			FPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
 			FPFB ABC 1 Bright;
 		Inflictor:
+			TNT1 A 0 {
+				if (target && invoker.inflicted) {
+					target.DamageMobj(self, self, target.SpawnHealth() / 16., 'Fire');
+					if (target.health >= 1) target.SetStateLabel("Pain");
+				}
+			}
 			FPFB DEFGHIJKLMNO 1 Bright;
 			TNT1 A 0 {
 				if (target && !invoker.inflicted) {
@@ -474,13 +480,9 @@ Class FirePuff : BasePunchPuff
 					
 					if (target.health >= 1) {
 					
-						target.DamageMobj(self, self, target.SpawnHealth() / 16., 'Fire');
-						if (target.health >= 1) {
-							target.SetStateLabel("Pain");
-							int chance = random(1, 100);
-							if (chance <= 75) {
-								return ResolveState("Inflictor");
-							}
+						int chance = random(1, 100);
+						if (chance <= 75) {
+							return ResolveState("Inflictor");
 						}
 					}
 				}

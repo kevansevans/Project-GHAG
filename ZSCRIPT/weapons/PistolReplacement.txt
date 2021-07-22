@@ -1,3 +1,8 @@
+Class GHAGChaingun : ClipBox replaces Chaingun
+{
+
+}
+
 Class GHAGPistol : Pistol replaces Pistol
 {
 

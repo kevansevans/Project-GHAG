@@ -1,7 +1,0 @@
-//Can't think of a decent replacement for the chaingun that the pistol can't do,
-//so all instances will just be replaces with a box of ammo.
-
-Class GHAGChaingun : ClipBox replaces Chaingun
-{
-
-}

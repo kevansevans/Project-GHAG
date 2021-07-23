@@ -3,6 +3,7 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 	default
 	{
 		Weapon.SlotNumber 3;
+		Tag "Winchester 1912 Shotgun";
 	}
 	
 	States

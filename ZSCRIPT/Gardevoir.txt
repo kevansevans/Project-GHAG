@@ -41,26 +41,24 @@ Class Gardevoir : PlayerPawn
 	{
 		if (self.health <= 0) return;
 		if (!thing) return;
-		if (HurtList.find(thing) == HurtList.size()) return;
 		
 		int angerBonus = Max(int(thing.spawnHealth() / 10), 1);
 		
-		angerBonus += HurtTracker[HurtList.find(thing)];
-		HurtTracker.delete(HurtList.find(thing));
-		HurtList.Delete(HurtList.find(thing));
+		if (HurtList.find(thing) != HurtList.size()) {
+			angerBonus += HurtTracker[HurtList.find(thing)];
+			HurtTracker.delete(HurtList.find(thing));
+			HurtList.Delete(HurtList.find(thing));
+		}
 		
-		if (angerbonus >= 1 && angerBonus <= 1000 && RageValue <= 1000) {
+		if (angerBonus <= 1000 && RageValue <= 1000) {
 			RageValue += Min(angerBonus, 250);
 			RageValue = Min(RageConstant, RageValue);
-			Console.PrintF("Anger Bonus " .. String.Format("%.1f", Min(angerBonus, 250) / 10));
 			int willBonus = int(AngerBonus / 10);
 			if (willBonus > 0) {
-			
 				let healBonus = Health(Spawn("Health"));
 				healBonus.Amount = int(willBonus * 5);
 				healBonus.MaxAmount = 500;
 				healBonus.Touch(Self);
-				Console.PrintF("Will Bonus " .. (willBonus * 5));
 			}
 		} else {
 			if (!OverTheEdge) {
@@ -74,7 +72,6 @@ Class Gardevoir : PlayerPawn
 	{
 		RageValue += 20;
 		RageTimer = 0;
-		if (RageValue >= RageConstant) RageValue = RageConstant;
 		return;
 	}
 	
@@ -161,4 +158,54 @@ Class Gardevoir : PlayerPawn
 		Player.StartItem "Clip", 50;
 		Player.MaxHealth 350;
      }
+}
+
+Class NameClass
+{
+	//Your name here? Hit me up!
+	static const string names[] = {
+		"Joey", "Billy", "Kevy", "Kablooey", "Pill", "Martha", "Rachael", "Weasel", "Nash", "Emma",
+		"April", "Ghost", "Kekz", "Bob", "Jimmy", "Cali", "Kesha", "Gutawer", "Marisa", "Hugo",
+		"Romero", "Carmack", "Adrian", "Tom", "Sandy", "American", "Kid Mystic", "Trouble", "Peace Keeper",
+		"Chocolate Thunder", "Vanilla Thunder", "Strawberry Thunder", "Pomegranate Fury", "Fuck you in particular",
+		"Death from above", "Oh shit, he", "ASSHAT", "ASSCLOWN", "ASSFART", "RED", "BLUE", "GREEN", "YELLOW", "GOLD", "SILVER",
+		"CRYSTAL", "Prof. Oak", "Prof. Elm", "Prof. Birch", "Prof. Rowan", "Prof. Juniper", "Prof. Sycamore", 
+		"Prof. Kukui", "Prof. Magnolia", "RUBY", "SAPPHIRE", "EMERALD", "DIAMOND", "PEARL", "PLATINUM", "BLACK", 
+		"WHITE", "X", "Y", "SWORD", "SHIELD", "Explosive Diplomacy", "Diplomacy", "Zero Diplomacy", "Fuck you, Baltimore!",
+		"Zabivaka, no!", "BASTARD!", "I AM CALM!", "Crocket", "Screaming Eagles!", "The Original", "Stanley",
+		"Pikachu", "Shirely", "Surely", "Flynn", "Dacote", "Problem Solver", "Problem Causer", "9K38 Igla", "Bitterman",
+		"Rocket", "Rocket No. 524", "Rocky", "Rocky Road", "Rocky Horror", "Not a shiny", "Wonder-trade me", "Fiddlyfaddlybiddlybaddlydiddlydoodlyhiddlyhoodly",
+		"Problem Maker", "Problem Deleter", "Kibbles n' bits", "Howler Head", "Dr. Pepper", "Not Safe For Self Propulsion",
+		"Safe For Self Propulsion", "Death Bringer", "Funny Name", "Funny Name Here", "Made you look", "Made you explode",
+		"ZScript was a mistake", "AEUHHH????", "[No]", "[Added]", "[Already In]", "[DIY]", "[Duplicate]", "[Not Needed]",
+		"[Closed]", "[???!?!?!?!????]", "Icon Killer", "This one's for Daisy", "Bottled Up Rage", "Explosive Personality",
+		"Explosive Diarrhea", "Bottled Up Rage", "Can of Whoop Ass", "What", "Sin Killer", "MERCILESS EXTERMINATION"
+		};
+	Static const string navyseal[] = {
+		"the", "fuck", "did", "you", "just", "fucking", "say", "about", "me,", "you", "little", "bitch?"
+	};
+	
+	int getMode;
+	int wordtracker;
+	
+	static string GetName() {
+	
+		return NameClass.names[random(0, NameClass.names.size() - 1)];
+		
+		/*switch (getMode)
+		{
+			case 0:
+				string word = NameClass.names[random(0, NameClass.names.size() - 1)];
+				if (word == "What") {
+					wordtracker = 0;
+					getMode = 1;
+				}
+				return word;
+			case 1:
+				string word = NameClass.navyseal[wordtracker];
+				++wordtracker;
+				if (word == "bitch?") NameClass.getMode = 0;
+				return word;
+		}*/
+	}
 }

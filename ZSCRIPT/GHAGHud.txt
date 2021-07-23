@@ -25,99 +25,82 @@ Class GHAGStatus : BaseStatusBar
 		let gardie = Gardevoir(CPlayer.mo);
 		if (!gardie) return;
 		
-		Font fnt = "MM2FONTO";
-		HUDFont mMM2BigFont = HUDFont.Create(fnt);
-		fnt = "MM2SFNTO";
-		HUDFont mMM2SmallFont = HUDFont.Create(fnt, fnt.GetCharWidth("0"), true);
+		Font fnt = "Pokemon";
+		HUDFont pokefont = HUDFont.Create(fnt);
 		
-		float rage = gardie.RageValue * 0.1;
-		string rage_string = String.Format("%.1f", rage);
+		float xy_scale = 1.5;
 		
-		if (rage <= 100) drawStringOnScreen("Anger " .. rage_string .. "%", 10, v_height - 50, mMM2BigFont);
-		
-		if (rage >= 0 && rage < 10) {
-			DrawImage("CALM", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		} else if (rage >= 10 && rage < 20) {
-			DrawImage("ANNOY", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		} else if (rage >= 20 && rage < 30) {
-			DrawImage("BITTER", (10, v_height - 34), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		} else if (rage >= 30 && rage < 40) {
-			DrawImage("HEATED", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		} else if (rage >= 40 && rage < 50) {
-			DrawImage("FUMING", (10, v_height - 34), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		} else if (rage >= 50 && rage < 60) {
-			DrawImage("IRATE", (10, v_height - 34), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		} else if (rage >= 60 && rage < 70) {
-			DrawImage("SAVAGE", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		} else if (rage >= 70 && rage < 80) {
-			DrawImage("SCORN", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		} else if (rage >= 80 && rage < 90) {
-			DrawImage("LIVID", (10, v_height - 34), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		} else if (rage >= 90 && rage <= 100) {
-			DrawImage("MURDER", (10, v_height - 30), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		} else if (rage > 100) {
-			DrawImage("HELLHATH", (10, v_height - 40), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-			int count = rage * 0.01;
-			for (int i = 0; i < count; ++i) {
-				int range = min(rage * 0.1, 20);
-				double posX = 10 + random(-10 - range, -10 + range);
-				double posY = (v_height - 40) + random(10 - range, 10 + range);
-				DrawImage("HELLHATH", (posX, posY), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 0.75);
+		if (Gardie.health >= 350 / 2.) {
+			DrawBar("hpbar", "hparmbg", Min(Gardie.health, 350), 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+			if (gardie.health > 350) {
+				DrawBar("armbar", "hparmbg", Gardie.health - 350, 500 - 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 			}
+		} else if (gardie.health > 350 / 20.) {
+			DrawBar("hpbarhlf", "hparmbg", Min(Gardie.health, 350), 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		} else {
+			DrawBar("angbar", "hparmbg", Min(Gardie.health, 350), 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 		}
-
-		DrawString(mMM2BigFont, gardie.health .. "/350 HP", (10, v_height - 70), 0, FONT.CR_GREEN);
-		DrawString(mMM2SmallFont, GetArmorAmount() .. "% Armor", (11, v_height - 80), 0, FONT.CR_CYAN);
+		DrawBar("armbar", "hparmbg", GetArmorAmount(), 200, (86, v_height - 82), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		DrawBar("angbar", "hparmbg", Gardie.RageValue, 1000, (86, v_height - 19), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		DrawImage("BATTLHUD", (5, v_height - 110), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 		
-		array<Ammo> ownedAmmo;
-		int curAmmoIndex;
+		DrawString(pokefont, Gardie.player.ReadyWeapon.GetTag(), (30, v_height - 140),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, Font.CR_UNTRANSLATED, 1, -1, 4, (xy_scale, xy_scale));
+		if (Gardie.player.ReadyWeapon.Ammo1) {
+			DrawString(pokefont, 
+						"Ammo: " .. Gardie.player.ReadyWeapon.Ammo1.amount .. "/" .. Gardie.player.ReadyWeapon.Ammo1.maxamount, 
+						(30, v_height - 125), 
+						DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
+						Font.CR_UNTRANSLATED, 1, -1, 4, 
+						(xy_scale, xy_scale));
+		}
+		DrawString(pokefont,
+					Gardie.health .. "/350 HP ",
+					(120, v_height - 106), 
+					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
+					Font.CR_UNTRANSLATED, 1, -1, 4,
+					(1.25, 1.25));
+					
+		DrawString(pokefont,
+					GetArmorAmount() .. " Armor",
+					(120, v_height - 82), 
+					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
+					Font.CR_UNTRANSLATED, 1, -1, 4,
+					(1.25, 1.25));
+					
+		if (Gardie.RageValue > 1000) {
+			DrawString(pokefont,
+					GetAngerString(),
+					(23 + random(-5, 5), v_height - 60 + random(-5, 5)), 
+					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
+					Font.CR_FIRE, 1, -1, 4, 
+					(3.5, 3.5));
+		}
+	
+		DrawString(pokefont,
+					GetAngerString(),
+					(23, v_height - 60), 
+					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
+					Font.CR_FIRE, 1, -1, 4, 
+					(3.5, 3.5));
 		
-		ownedAmmo.clear();
-		
-		for (let inv = gardie.inv; inv; inv = inv.Inv) 
+		int x_tracker = v_width - 1;
+		for (let inv = gardie.inv; inv; inv = inv.inv)
 		{
-			if (inv is "Weapon") {
-				let ammo = Weapon(inv).Ammo1;
-				if (ammo && ownedAmmo.Size() == ownedAmmo.Find(ammo)) {
-					ownedAmmo.push(ammo);
+			string wep = '';
+			if (inv is "weapon") {
+				let gun = Weapon(inv);
+				if (gun == Gardie.player.ReadyWeapon) {
+					wep = "wepactiv";
+				} else {
+					wep = "wepinnac";
+					if (gun.Ammo1) {
+						if (gun.Ammo1.amount == 0) wep = "wepempty";
+					}
 				}
 				
-				ammo = Weapon(inv).Ammo2;
-				if (ammo && ownedAmmo.Size() == ownedAmmo.Find(ammo)) {
-					ownedAmmo.push(ammo);
-				}
+				drawImage(wep, (x_tracker -= (8 * 2.5), v_height - 20), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (2.5, 2.5));
 			}
 		}
-		
-		for (int i = 0; i < ownedAmmo.Size(); ++i) {
-			let a = ownedAmmo[i];
-			if (CPlayer.ReadyWeapon) {
-				if (CPlayer.ReadyWeapon.Ammo1 == ownedAmmo[i]) {
-					curAmmoIndex = i;
-					break;
-				} 
-				else if (CPlayer.ReadyWeapon.Ammo1 == NULL && CPlayer.ReadyWeapon.Ammo2 == ownedAmmo[i]) {
-					curAmmoIndex = i;
-					break;
-				}
-			}
-		}
-		
-		int wep_height = v_height - 90;
-		if (ownedAmmo.Size() > 0) {
-			let curC = ownedAmmo[curAmmoIndex];
-			int fontTranslation;
-			for (int i = 0; i < ownedAmmo.Size(); i++) {
-				let c = ownedAmmo[i];
-				if (i != curAmmoIndex) {
-					fontTranslation = FONT.CR_DARKRED;
-				} else {
-					fontTranslation = Font.CR_UNTRANSLATED;
-				}
-				DrawString(mMM2SmallFont, c.GetTag().." "..c.Amount.."/"..c.MaxAmount, (11, wep_height -= 10), DI_SCREEN_LEFT_TOP, fontTranslation);
-			}
-		}
-		wep_height -= 5;
 		
 		bool locks[6];
 		String image;
@@ -126,24 +109,53 @@ Class GHAGStatus : BaseStatusBar
 		if (locks[1] && locks[4]) image = "STKEYS6";
 		else if (locks[1]) image = "STKEYS0";
 		else if (locks[4]) image = "STKEYS3";
-		DrawImage(image, (15, wep_height));
+		DrawImage(image, (v_width - 20, v_height - 35),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
 		// key 2
 		if (locks[2] && locks[5]) image = "STKEYS7";
 		else if (locks[2]) image = "STKEYS1";
 		else if (locks[5]) image = "STKEYS4";
 		else image = "";
-		DrawImage(image, (25, wep_height));
+		DrawImage(image, (v_width - 35, v_height - 35),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
 		// key 3
 		if (locks[0] && locks[3]) image = "STKEYS8";
 		else if (locks[0]) image = "STKEYS2";
 		else if (locks[3]) image = "STKEYS5";
 		else image = "";
-		DrawImage(image, (35, wep_height));
+		DrawImage(image, (v_width - 50, v_height - 35),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
 		
 	}
 	
-	void drawStringOnScreen(String _mes, double _posX, double _posY, HUDFont _font) 
+	string GetAngerString()
 	{
-		DrawString(_font, _mes, (_posX, _posY), DI_SCREEN_LEFT_TOP);
+		let gardie = Gardevoir(CPlayer.mo);
+		if (!gardie) return "I'm so angry, I simply do not exist!";
+		
+		int anger = Gardie.RageValue / 100;
+		if (anger > 10) return "HELL HATH NO FURY";
+		switch (anger) {
+			case 0:
+				return "Calm";
+			Case 1:
+				return "Annoyed";
+			case 2:
+				return "Bitter";
+			case 3:
+				return "Heated";
+			case 4:
+				return "Fuming";
+			case 5:
+				return "Irate";
+			case 6:
+				return "Savage";
+			case 7:
+				return "Scorn";
+			case 8:
+				return "Livid";
+			case 9:
+			case 10:
+				return "MURDEROUS";
+		}
+		
+		return "So hecking angery, that idk what to call this!";
 	}
 }

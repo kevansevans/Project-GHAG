@@ -3,6 +3,7 @@ Class GHAGSawBlade : Chainsaw replaces Chainsaw
 	Default
 	{
 		Weapon.SlotNumber 1;
+		Tag "Saw Blade";
 	}
 
 	States

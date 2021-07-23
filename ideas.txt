@@ -2,7 +2,7 @@ Chainsaw:
 
 	Line of target attack that increases in range
 	
-Psychic moves cost anger, but any can be done at 0 percent except black hole attack\
+Psychic moves cost anger, some will require 
 More levels of anger = stronger attack, of course
 	
 Ice Punch, Fire Punch, Thunder Punch
@@ -16,4 +16,13 @@ Scanners attack
 Repulse
 
 	AOE attack that repells all enemies. Larger radius and damage with anger
+	
+	
+Rebuild hud to use Gen 2 battle status info
+	Pokemon name would be Gun name.
+	Level would me munitions
+	Health is health
+	EXP bar is anger bar
+
+Use Tag property to allow players to name their guns
 	

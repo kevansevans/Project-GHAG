@@ -5,6 +5,7 @@ Class ElementPunch : Weapon
 	{
 		Weapon.SlotNumber 1;
 		Weapon.kickback 150;
+		Tag "Mega Punch";
 	}
 	
 	Action void A_CyclePunchMode()
@@ -17,13 +18,13 @@ Class ElementPunch : Weapon
 	{
 		switch (Gardevoir(self).PunchMode) {
 			case 0:
-				A_Print("Mega Punch");
+				invoker.SetTag("Mega Punch");
 				break;
 			case 1:
-				A_Print("Ice Punch");
+				invoker.SetTag("Ice Punch");
 				break;
 			case 2: 
-				A_Print("Fire Punch");
+				invoker.SetTag("Fire Punch");
 				break;
 		}
 	}
@@ -379,6 +380,8 @@ Class ElementPunch : Weapon
 
 Class BasePunchPuff : BulletPuff
 {
+	bool inflicted;
+	property inflicted: inflicted;
 	Default {
 		+PUFFONACTORS;
 		+HITTARGET;
@@ -430,6 +433,7 @@ Class IcePuff : BasePunchPuff
 		Melee :
 			IPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
 			IPFB ABCDEFGHIJKLM 1 Bright;
+		Inflictor:
 			IPFB K 1 Bright;
 			IPFB NO 1 Bright;
 			IPFB K 1 Bright;
@@ -447,12 +451,10 @@ Class IcePuff : BasePunchPuff
 
 Class FirePuff : BasePunchPuff
 {
-	bool inflicted;
-	property inflicted: inflicted;
 	Default
 	{
 		DamageType "Fire";
-		FirePuff.inflicted false;
+		BasePunchPuff.inflicted false;
 	}
 	States
 	{
@@ -472,7 +474,7 @@ Class FirePuff : BasePunchPuff
 			TNT1 A 0 {
 				if (target && !invoker.inflicted) {
 					int chance = random(1, 100);
-					if (chance <= 10) {
+					if (chance <= 25) {
 						invoker.inflicted = true;
 						return ResolveState("Inflictor");
 					}

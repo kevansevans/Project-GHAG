@@ -9,6 +9,7 @@ Class GHAGPistol : Pistol replaces Pistol
 	Default
 	{
 		Weapon.SlotNumber 2;
+		Tag "9mm Pistol";
 	}
 
 	states
@@ -49,7 +50,7 @@ Class GHAGPistol : Pistol replaces Pistol
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
 			}
 			GoTo LightDone;
-		AltFire :
+		/*AltFire :
 			PIST D 2 {
 				Gardevoir(self).GetHeckingAngery();
 				
@@ -81,9 +82,9 @@ Class GHAGPistol : Pistol replaces Pistol
 						_locHealth.A_FaceTarget();
 						_locHealth.Vel3DFromAngle(5 * (5 * Gardevoir(self).GetRageModifier()), _locHealth.angle, -30);
 					}
-				}*/
+				}
 			}
 			PIST D 2;
-			goto Ready;
+			goto Ready;*/
 	}
 }

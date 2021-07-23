@@ -2,6 +2,7 @@ Class GHAGPlasmaRifle : PlasmaRifle replaces PlasmaRifle
 {
 	default {
 		Weapon.SlotNumber 6;
+		Tag "Generic Energy Weapon";
 	}
 	States
 	{

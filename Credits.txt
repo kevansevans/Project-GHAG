@@ -43,6 +43,7 @@ Plasma Rifle is based off of a watergun I bought at a hardware store.
 
 Gen 2 move sprites, for elemental punches:
 https://www.spriters-resource.com/game_boy_gbc/pokemongoldsilver/sheet/9087/
+Fists were done in Flash, just added a glow with appropriate color
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //Sounds
@@ -56,12 +57,8 @@ https://www.sounds-resource.com/ds_dsi/pokemonblackwhite/sound/24408/
 //HUD
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Hud stuff is new to me, especially in ZScript. A lot of what I use is gleamed off
-of Gutawer's found here: https://forum.zdoom.org/viewtopic.php?t=56148
+Hud uses sprites ripped from Gen 2 pokemon games, assets were borrowed from here:
+https://www.spriters-resource.com/game_boy_gbc/pokemongoldsilver/sheet/18976/
 
-Code from Gutawer
-Fonts from Memento Mori
-
-Anger level images use https://www.dafont.com/amazdoom.font
-"Hell Hath No Fury" in Floydian: https://www.dafont.com/floydian.font
-All rendered in Flash
+Pokemon font from here:
+https://bmf.php5.cz/index.php?font=pokemon-gen-1

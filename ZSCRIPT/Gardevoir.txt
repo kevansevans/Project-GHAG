@@ -117,8 +117,10 @@ Class Gardevoir : PlayerPawn
 			if (RageValue > RageConstant) RageValue = RageConstant;
 		}
 		
-		HurtList.push(source);
-		HurtTracker[HurtList.find(source)] += damage;
+		if (HurtList.find(source) != HurtList.size()) {
+			HurtList.push(source);
+		}
+		if (HurtList.find(source) != HurtList.size()) HurtTracker[HurtList.find(source)] += damage;
 		
 		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 	}

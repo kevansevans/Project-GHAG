@@ -82,7 +82,7 @@ Class GHAGRocketLauncher : RocketLauncher
 	
 	action void A_SetNewTagName() 
 	{
-		Invoker.setTag(NameClass.GetName());
+		Invoker.setTag(Gardevoir(self).getRNGName());
 	}
 	
 	action void A_PsychicMissile() 

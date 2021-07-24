@@ -16,9 +16,13 @@ Class Gardevoir : PlayerPawn
 	array<Actor> HurtList;
 	array<Int> HurtTracker;
 	
+	NameClass names;
+	property names: names;
+	
 	override void BeginPlay()
 	{
 		Super.BeginPlay();
+		
 		
 		RageValue = 0;
 		RageDelay = 35 * 3;
@@ -28,6 +32,14 @@ Class Gardevoir : PlayerPawn
 		OverTheEdge = false;
 		
 		PunchMode = 0;
+	}
+	
+	string getRNGName() {
+		
+		if (!self.names) {
+			self.names = NameClass(Spawn("NameClass"));
+		}
+		return self.names.GetName();
 	}
 	
 	void ResetTrackers() 
@@ -162,10 +174,27 @@ Class Gardevoir : PlayerPawn
      }
 }
 
-Class NameClass
+Class NameClass : Actor
 {
+
+	int getMode;
+	int wordtracker;
+	
+	property getMode: getMode;
+	property wordtracker: WordTracker;
+	property names: names;
+	
+	default 
+	{
+		
+		NameClass.getMode 0;
+		NameClass.wordTracker 0;
+
+	}
+	
 	//Your name here? Hit me up!
-	static const string names[] = {
+	static const string names[] =
+	{
 		"Joey", "Billy", "Kevy", "Kablooey", "Pill", "Martha", "Rachael", "Weasel", "Nash", "Emma",
 		"April", "Ghost", "Kekz", "Bob", "Jimmy", "Cali", "Kesha", "Gutawer", "Marisa", "Hugo",
 		"Romero", "Carmack", "Adrian", "Tom", "Sandy", "American", "Kid Mystic", "Trouble", "Peace Keeper",
@@ -181,33 +210,36 @@ Class NameClass
 		"Safe For Self Propulsion", "Death Bringer", "Funny Name", "Funny Name Here", "Made you look", "Made you explode",
 		"ZScript was a mistake", "AEUHHH????", "[No]", "[Added]", "[Already In]", "[DIY]", "[Duplicate]", "[Not Needed]",
 		"[Closed]", "[???!?!?!?!????]", "Icon Killer", "This one's for Daisy", "Bottled Up Rage", "Explosive Personality",
-		"Explosive Diarrhea", "Bottled Up Rage", "Can of Whoop Ass", "What", "Sin Killer", "MERCILESS EXTERMINATION"
-		};
-	Static const string navyseal[] = {
+		"Explosive Diarrhea", "Bottled Up Rage", "Can of Whoop Ass", "What", "Sin Killer", "MERCILESS EXTERMINATION",
+		"SPEEEN", "Merry Christmas", "Apple!", "Hey!", "Apple, hey Apple!", "Adios", "Busting makes me feel good!",
+		"Ok I Love You Bye Bye"
+	};
+
+	static const string navyseal[] = {
 		"the", "fuck", "did", "you", "just", "fucking", "say", "about", "me,", "you", "little", "bitch?"
 	};
 	
-	int getMode;
-	int wordtracker;
-	
-	static string GetName() {
-	
-		return NameClass.names[random(0, NameClass.names.size() - 1)];
+	string GetName() {
 		
-		/*switch (getMode)
+		string rng_name;
+		
+		switch (getMode)
 		{
 			case 0:
-				string word = NameClass.names[random(0, NameClass.names.size() - 1)];
-				if (word == "What") {
-					wordtracker = 0;
-					getMode = 1;
+				rng_name = NameClass.names[random(0, NameClass.names.size() - 1)];
+				switch (rng_name) {
+					case "what" :
+						getMode = 1;
+						break;
 				}
-				return word;
+				return rng_name;
 			case 1:
-				string word = NameClass.navyseal[wordtracker];
-				++wordtracker;
-				if (word == "bitch?") NameClass.getMode = 0;
-				return word;
-		}*/
+				rng_name = NameClass.navyseal[wordtracker];
+				wordtracker += 1;
+				if (rng_name == "bitch?") getMode = 0;
+				return rng_name;
+		}
+		
+		return "Something failed";
 	}
 }

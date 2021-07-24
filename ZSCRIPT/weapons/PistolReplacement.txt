@@ -32,7 +32,7 @@ Class GHAGPistol : Pistol replaces Pistol
 			}
 			PIST D 3 Offset(4, 42) {
 				A_FireBullets(Gardevoir(self).GetAccuracyModifier(5.6), Gardevoir(self).GetAccuracyModifier(5.6), 1, 8, "BulletPuff");
-				A_PlaySound("weapons/pistol", CHAN_WEAPON);
+				A_StartSound("weapons/pistol", CHAN_WEAPON);
 				A_SetTics(Gardevoir(self).GetTicModifier(3, true));
 				A_GunFlash();
 			}

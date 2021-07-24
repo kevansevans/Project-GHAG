@@ -23,7 +23,7 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 				if (CountInv("Shell") != 0) A_GiveInventory("Shell");
 				A_FireBullets(4, 4, 10, 5, "BulletPuff");
 				A_FireBullets(4, 4, floor(14 * Gardevoir(Self).GetRageModifier()), 5, "GHAGPsychicPuff");
-				A_PlaySound ("weapons/shotgf", CHAN_WEAPON);
+				A_StartSound("weapons/shotgf", CHAN_WEAPON);
 			}
 			SHTG CCDDD 1 Bright;
 			SHTG EFGHIJKL 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
@@ -36,7 +36,7 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 			goto Ready;
 		Reload.FireShell :
 			SHTG E 3 { 
-				A_PlaySound("misc/w_pkup", CHAN_WEAPON);
+				A_StartSound("misc/w_pkup", CHAN_WEAPON);
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
 			}
 			SHTG FG 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
@@ -115,11 +115,11 @@ Class PsychicShell : Actor
 					A_FaceTarget();
 					A_Chase();
 					A_FaceTarget();
-					float dist = GetDistance(true);
+					float dist = Distance3D(tracer);
 					if (dist <= 256) 
 					{
 						A_CustomBulletAttack(4, 4, 7, 5, "BulletPuff");
-						A_PlaySound ("weapons/shotgf", CHAN_WEAPON);
+						A_StartSound("weapons/shotgf", CHAN_WEAPON);
 						fired = true;
 						Return ResolveState("Death");
 					} 

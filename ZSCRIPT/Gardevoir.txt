@@ -121,7 +121,7 @@ Class Gardevoir : PlayerPawn
 		return min(max(1, accuracy * (1 - GetRageModifier())), 20);
 	}
 	
-	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0)
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		if (RageValue <= RageConstant) {
 			//RageValue += damage;

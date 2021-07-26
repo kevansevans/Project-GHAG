@@ -29,7 +29,9 @@ Class GHAGActorDeathHandler : EventHandler
 	override void WorldThingDied(WorldEvent event) 
 	{
 		if (!gardie) return;
-		Gardie.CatharsisBonus(event.thing);
+		if (Gardevoir(event.thing.target)) {
+			Gardie.CatharsisBonus(event.thing);
+		}
 	}
 	
 	override void PlayerSpawned(PlayerEvent player) {

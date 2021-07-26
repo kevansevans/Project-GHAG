@@ -228,30 +228,64 @@ Class NameClass : Actor
 		"Mister Roger's Middle Finger", "Fandango", "The Rectifier", "Buelah", "Chumlee", "Butterface", "Gone Fission",
 		"Not your dad's colonoscopy", "Bitch Slap", "The Dreaded CONE", "Bloop", "Muzzle Maggot", "Track Trolls",
 		"Breach Creature", "Bore Baby", "Novacaine", "Karma", "Karma Bringer", "Wake Up Call", "Hey! Listen!",
-		"I like shorts!", "Hot explosives in your area!", "Happy Accident"
+		"I like shorts!", "Hot explosives in your area!", "Happy Accident", "Chaos... Control!", "Chaos... Swiss Roll!",
+		"Creeper", "Shoutout to Simpleflips", "Lamb sauce located", "Target Acquired", "Eightball", "Going out with a bang!",
+		"Liam", "Olivia", "Noah", "Oliver", "Ava", "Elijah", "Charlotte", "William", "Sophia", "James", "Jesse", "Amelia",
+		"Benjamin", "Isabella", "Lucas", "Mia", "Henry", "Evelyn", "Alexander", "Harper", "Bojack", "Princess", "Nguyen",
+		"Todd", "Neal McBeal", "Margo Martindale", "Peanut Butter", "Hollyhock", "Judah", "Surprise!", "PK Rocket!",
+		"PSY Rocket!", " The perfect gift"
 	};
 
 	static const string navyseal[] = {
 		"the", "fuck", "did", "you", "just", "fucking", "say", "about", "me,", "you", "little", "bitch?"
 	};
 	
+	static const string awman[] = {
+		"Ah man", "So", "way", "back", "in", "the", "mine,", "got", "our", "pickaxe", "swingin'", "from", "side", "to", "side!"
+	};
+	
+	static const string shorts[] = {
+		"They're comfy", "And easy to wear!"
+	};
+	
 	string GetName() {
 		
-		string rng_name;
+		string rng_name = '[I am error]';
 		
 		switch (getMode)
 		{
 			case 0:
 				rng_name = NameClass.names[random(0, NameClass.names.size() - 1)];
 				if (rng_name == "What") getMode = 1;
-				return rng_name;
+				if (rng_name == "Creeper") getMode = 2;
+				if (rng_name == "I like shorts!") getMode = 3;
+				break;
 			case 1:
 				rng_name = NameClass.navyseal[wordtracker];
 				wordtracker += 1;
-				if (rng_name == "bitch?") getMode = 0;
-				return rng_name;
+				if (rng_name == "bitch?") {
+					getMode = 0;
+					wordTracker = 0;
+				}
+				break;
+			case 2:
+				rng_name = NameClass.awman[wordtracker];
+				wordtracker += 1;
+				if (rng_name == "side!") {
+					getMode = 0;
+					wordTracker = 0;
+				}
+				break;
+			case 3:
+				rng_name = NameClass.awman[wordtracker];
+				wordtracker += 1;
+				if (rng_name == "And easy to wear!") {
+					getMode = 0;
+					wordTracker = 0;
+				}
+				break;
 		}
 		
-		return "Something failed";
+		return rng_name;
 	}
 }

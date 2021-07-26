@@ -382,12 +382,22 @@ Class BasePunchPuff : BulletPuff
 {
 	bool inflicted;
 	property inflicted: inflicted;
+	
 	Default {
+	
+		BasePunchPuff.inflicted false;
 		+PUFFONACTORS;
 		+HITTARGET;
 		-RANDOMIZE;
 		VSpeed 0;
 		Alpha 1;
+		
+	}
+	
+	action void A_Inflict(int odds = 100) 
+	{
+		int rng = random(1, 100);
+		if (rng <= odds) Invoker.inflicted = true;
 	}
 	
 	override void tick() {
@@ -422,10 +432,51 @@ Class MegaPuff : BasePunchPuff
 
 Class IcePuff : BasePunchPuff
 {
+	bool frozen;
+	property frozen: frozen;
+	
+	int formerPain;
+	property formerPain: formerPain;
+
 	Default
 	{
 		DamageType "Ice";
-	}	
+		IcePuff.frozen false;
+		IcePuff.formerPain 0;
+	}
+	
+	override void tick()
+	{
+		if (target) 
+		{
+			if (target.health > 0 && inflicted) {
+				if (!frozen) 
+				{
+					frozen = true;
+					target.tics = 35 * 5;
+					target.A_SetRenderStyle(1, STYLE_AddShaded);
+					target.setShade("c2e0f9");
+					formerPain = target.PainChance;
+					target.PainChance = 0;
+				}
+				if (target.tics == 1) 
+				{
+					inflicted = false;
+					if (target) target.setStateLabel("See");
+					if (target) target.A_SetRenderStyle(1, STYLE_Normal);
+					if (target) target.PainChance = formerPain;
+					
+					//DON'T ACCESS TARGET AFTER THIS
+					self.target = null;
+				}
+			} else if (target.health <= 0 && inflicted) {
+				target.tics = 0;
+				Target.A_FreezeDeathChunks();
+			}
+		}
+		
+		super.tick();
+	}
 	
 	States
 	{
@@ -434,7 +485,7 @@ Class IcePuff : BasePunchPuff
 			IPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
 			IPFB ABCDEFGHIJKLM 1 Bright;
 		Inflictor:
-			IPFB K 1 Bright;
+			IPFB K 1 Bright A_Inflict(25);
 			IPFB NO 1 Bright;
 			IPFB K 1 Bright;
 			TNT1 A 1 Bright;
@@ -443,7 +494,14 @@ Class IcePuff : BasePunchPuff
 			IPFB K 1 Bright;
 			TNT1 A 2 Bright;
 			IPFB K 5 Bright;
+		LoopCheck:
+			TNT1 A 0 {
+				if (!target) return ResolveState("Death");
+				return ResolveState(null);
+			}
+			TNT1 A -1;
 		Death:
+			TNT1 A 0;
 			stop;
 			
 	}

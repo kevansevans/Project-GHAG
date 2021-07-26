@@ -534,6 +534,7 @@ Class FirePuff : BasePunchPuff
 					int chance = random(1, 100);
 					if (chance <= 25) {
 						invoker.inflicted = true;
+						if (target.DamageMultiply >= 1) target.DamageMultiply *= 0.5;
 						return ResolveState("Inflictor");
 					}
 				} else if (target && invoker.inflicted) {

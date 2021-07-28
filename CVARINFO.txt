@@ -1,2 +1,2 @@
-user nosave cheat int ghagrage = 0;
+user noarchive cheat int ghagrage = 0;
 user string ShotgunName = "Winchester 1912 Shotgun";

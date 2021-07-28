@@ -234,7 +234,8 @@ Class NameClass : Actor
 		"Liam", "Olivia", "Noah", "Oliver", "Ava", "Elijah", "Charlotte", "William", "Sophia", "James", "Jesse", "Amelia",
 		"Benjamin", "Isabella", "Lucas", "Mia", "Henry", "Evelyn", "Alexander", "Harper", "Bojack", "Princess", "Nguyen",
 		"Todd", "Neal McBeal", "Margo Martindale", "Peanut Butter", "Hollyhock", "Judah", "Surprise!", "PK Rocket!",
-		"PSY Rocket!", " The perfect gift"
+		"PSY Rocket!", " The perfect gift", "Imp Encounter", "300mb!", "Dud", "Objection!", "Hold it!", "Take that!",
+		"Silence!", "Perfect IV", "Laser!", "Caution!", "Goodnight Everybody!", "Helloooooo Nurse!"
 	};
 
 	static const string navyseal[] = {
@@ -278,7 +279,7 @@ Class NameClass : Actor
 				}
 				break;
 			case 3:
-				rng_name = NameClass.awman[wordtracker];
+				rng_name = NameClass.shorts[wordtracker];
 				wordtracker += 1;
 				if (rng_name == "And easy to wear!") {
 					getMode = 0;

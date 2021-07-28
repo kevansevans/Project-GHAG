@@ -614,11 +614,13 @@ Class ThunderPuff : BasePunchPuff
 	{
 		if (target && inflicted) 
 		{
-			if (target.tics > prevTicCount) 
-			{
-				target.tics *= 2;
+			if (target.tics > 0) {
+				if (target.tics > prevTicCount) 
+				{
+					target.tics *= 2;
+				}
+				prevTicCount = target.tics;
 			}
-			prevTicCount = target.tics;
 		}
 		
 		super.tick();
@@ -631,17 +633,14 @@ Class ThunderPuff : BasePunchPuff
 			TPUF ABBCDDEEEFGGHHHHIIJJKKKKLLLMMMMMMMMMMMMM 1 Bright;
 			TPUF M 1 A_Inflict(25);
 		Inflicted:
+			TNT1 A 1;
 			TNT1 A 1 
 			{
-				if (!inflicted) return resolveState("Death");
-				else if (target)
+				if (inflicted && target)
 				{
-					if (target.health <= 0)
-					{
-						resolveState("Death");
-					}
+					return ResolveState("Inflicted");
 				}
-				return resolveState("Inflicted");
+				return ResolveState(null);
 			}
 		Death:
 			stop;

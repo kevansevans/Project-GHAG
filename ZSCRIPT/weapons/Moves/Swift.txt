@@ -102,7 +102,7 @@ Class SwiftProjectile : Actor
 		Spawn:
 			SWFP ABCDEFGH 2 Bright
 			{
-				A_Weave(1, 1, 1, 1);
+				A_Weave(1, 1, 2, 2);
 				A_SeekerMissile(0, 15, SMF_LOOK | SMF_PRECISE, 256, 256);
 			}
 			Loop;

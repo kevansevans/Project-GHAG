@@ -1,0 +1,45 @@
+Chainsaw:
+
+	Line of target attack that increases in range
+	
+Psychic moves cost anger, some will require 
+More levels of anger = stronger attack, of course
+	
+Ice Punch, Fire Punch, Thunder Punch
+
+	Applies Doom like effects. Ice punch definitely freezes enemies
+	
+Scanners attack
+
+	If killed with, head explodes. Stuns enemy while dealing damage
+	
+Psychhic push
+
+	- Direction dependedt
+	- One medium AOE that repells all directions
+	- Arrow keys being held determins direction enemies get pushed/pulled under line of sight
+	
+	
+Rebuild hud to use Gen 2 battle status info
+	Pokemon name would be Gun name.
+	Level would me munitions
+	Health is health
+	EXP bar is anger bar
+
+Use Tag property to allow players to name their guns
+
+Hud organization
+
+	- Weapons that occupy the same slot should appear vertically
+	- Anger and health bonus nums when killing enemies
+	
+pokeball
+
+	- Thing.GetClassName();
+	- Store in static array
+	- reload to cycle caught enemies
+	- Use actual formula catch...?
+	- spawn, add +friendly tag
+	- Finding secret grants random chance to find ball.
+	
+Guns increase anger, Moves refill health. Should encourage switching between the two.

@@ -9,7 +9,10 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 	States
 	{
 		Select :
-			SHTG A 1 A_Raise();
+			SHTG A 1 {
+				A_Raise();
+				Invoker.setTag(Cvar.FindCvar("ShotgunName").getString());
+			}
 			Loop;
 		Deselect :
 			SHTG A 1 A_Lower();

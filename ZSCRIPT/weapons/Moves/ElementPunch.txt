@@ -633,7 +633,7 @@ Class ThunderPuff : BasePunchPuff
 			TPUF ABBCDDEEEFGGHHHHIIJJKKKKLLLMMMMMMMMMMMMM 1 Bright;
 			TPUF M 1 A_Inflict(25);
 		Inflicted:
-			TNT1 A 1;
+			TNT1 A 1; //Frame needed so engine doesn't hang
 			TNT1 A 1 
 			{
 				if (inflicted && target)

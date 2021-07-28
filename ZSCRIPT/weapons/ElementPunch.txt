@@ -1,5 +1,8 @@
 Class ElementPunch : Weapon
 {
+
+	Array<Actor> Affected;
+	property Affected: Affected;
 	
 	Default
 	{
@@ -10,7 +13,7 @@ Class ElementPunch : Weapon
 	
 	Action void A_CyclePunchMode()
 	{
-		Gardevoir(self).PunchMode = (Gardevoir(self).PunchMode + 1) % 3;
+		Gardevoir(self).PunchMode = (Gardevoir(self).PunchMode + 1) % 4;
 		A_PrintPunchMode();
 	}
 	
@@ -25,6 +28,9 @@ Class ElementPunch : Weapon
 				break;
 			case 2: 
 				invoker.SetTag("Fire Punch");
+				break;
+			case 3: 
+				invoker.SetTag("Thunder Punch");
 				break;
 		}
 	}
@@ -232,6 +238,12 @@ Class ElementPunch : Weapon
 		A_ExplosivePunch(60 + (120 * Gardevoir(self).GetRageModifier()), true, CPF_NOTURN, "FirePuff", 64 + (64 * Gardevoir(self).GetRageModifier()), 0, 0, "", "attack/CONTACT");
 	}
 	
+	Action void A_ThunderPunch() 
+	{
+		Invoker.kickback = 100 + (300 * Gardevoir(self).GetRageModifier());
+		A_ExplosivePunch(60 + (120 * Gardevoir(self).GetRageModifier()), true, CPF_NOTURN, "ThunderPuff", 64 + (64 * Gardevoir(self).GetRageModifier()), 0, 0, "", "attack/CONTACT");
+	}
+	
 	States {
 		Select :
 			MPUN A 1 A_Raise();
@@ -248,6 +260,8 @@ Class ElementPunch : Weapon
 						return ResolveState("Ready.Ice");
 					case 2:
 						return ResolveState("Ready.Fire");
+					case 3:
+						return ResolveState("Ready.Thunder");
 				}
 				return ResolveState(null);
 			}
@@ -259,6 +273,9 @@ Class ElementPunch : Weapon
 			Loop;
 		Ready.Fire :
 			FPUN A 1 A_WeaponReady(WRF_ALLOWRELOAD);
+			Loop;
+		Ready.Thunder :
+			TPUN A 1 A_WeaponReady(WRF_ALLOWRELOAD);
 			Loop;
 		Reload : 
 			#### # 0 A_CyclePunchMode();
@@ -276,6 +293,8 @@ Class ElementPunch : Weapon
 						return ResolveState("Reload.Ice");
 					case 2:
 						return ResolveState("Reload.Fire");
+					case 3:
+						return ResolveState("Reload.Thunder");
 				}
 				return ResolveState(null);
 			}
@@ -287,6 +306,9 @@ Class ElementPunch : Weapon
 			goto Reload.Resume;
 		Reload.Fire:
 			FPUN A 0 A_WeaponReady(WRF_ALLOWRELOAD | WRF_NOBOB);
+			goto Reload.Resume;
+		Reload.Thunder:
+			TPUN A 0 A_WeaponReady(WRF_ALLOWRELOAD | WRF_NOBOB);
 			goto Reload.Resume;
 		Reload.Resume:
 			#### # 2 offset(0, 150) A_WeaponReady(WRF_ALLOWRELOAD | WRF_NOBOB);
@@ -309,6 +331,8 @@ Class ElementPunch : Weapon
 						return ResolveState("Fire.Ice");
 					case 2:
 						return ResolveState("Fire.Fire");
+					case 3:
+						return ResolveState("Fire.Thunder");
 				}
 				return ResolveState(null);
 			}
@@ -375,6 +399,27 @@ Class ElementPunch : Weapon
 			}
 			FPUN A 1 A_Refire();
 			goto Ready;
+		Fire.Thunder:
+			TNT1 A 0 A_StartSound("fists/FIREPNCH", CHAN_BODY);
+			TNT1 A 0 A_Jump(127, "Fire.Thunder.Lefty");
+		Fire.Thunder.Righty:
+			TPUN BC 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
+			TPUN D 4 A_ThunderPunch();
+			TPUN EFG 4 {
+				A_WeaponReady(WRF_NOFIRE | WRF_ALLOWRELOAD);
+				A_SetTics(Gardevoir(self).GetTicModifier(4));
+			}
+			TPUN A 1 A_Refire();
+			goto Ready;
+		Fire.Thunder.Lefty:
+			TPUN HI 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
+			TPUN J 4 A_ThunderPunch();
+			TPUN KLM 4 {
+				A_WeaponReady(WRF_NOFIRE | WRF_ALLOWRELOAD);
+				A_SetTics(Gardevoir(self).GetTicModifier(4));
+			}
+			TPUN A 1 A_Refire();
+			goto Ready;
 	}
 }
 
@@ -410,8 +455,6 @@ Class BasePunchPuff : BulletPuff
 				follow.z += (target.height) - (target.height / 3.);
 				SetXYZ(follow);
 			}
-		} else {
-			//SetStateLabel("Death");
 		}
 		
 		Super.tick();
@@ -552,5 +595,55 @@ Class FirePuff : BasePunchPuff
 		Death :
 			stop;
 		
+	}
+}
+
+Class ThunderPuff : BasePunchPuff
+{
+	int prevTicCount;
+	property prevTicCount: prevTicCount;
+
+	Default
+	{
+		DamageType "Electricty";
+		BasePunchPuff.inflicted false;
+		ThunderPuff.prevTicCount 0;
+	}
+	
+	override void Tick() 
+	{
+		if (target && inflicted) 
+		{
+			if (target.tics > prevTicCount) 
+			{
+				target.tics *= 2;
+			}
+			prevTicCount = target.tics;
+		}
+		
+		super.tick();
+	}
+	
+	States
+	{
+		Spawn:
+		Melee:
+			TPUF ABBCDDEEEFGGHHHHIIJJKKKKLLLMMMMMMMMMMMMM 1 Bright;
+			TPUF M 1 A_Inflict(25);
+		Inflicted:
+			TNT1 A 1 
+			{
+				if (!inflicted) return resolveState("Death");
+				else if (target)
+				{
+					if (target.health <= 0)
+					{
+						resolveState("Death");
+					}
+				}
+				return resolveState("Inflicted");
+			}
+		Death:
+			stop;
 	}
 }

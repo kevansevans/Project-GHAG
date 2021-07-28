@@ -66,21 +66,24 @@ Class Gardevoir : PlayerPawn
 			HurtList[HurtList.find(thing)] = null;
 		}
 		
-		if (angerBonus <= 1000 && RageValue <= 1000) {
-			RageValue += Min(angerBonus, 250);
-			RageValue = Min(RageConstant, RageValue);
-			int willBonus = int(AngerBonus / 10);
-			if (willBonus > 0) {
-				let healBonus = Health(Spawn("Health"));
-				healBonus.Amount = int(willBonus * 5);
-				healBonus.MaxAmount = 500;
-				healBonus.Touch(Self);
+		if (Player.ReadyWeapon is "ElementPunch" ||
+			Player.ReadyWeapon is "Swift") 
+		{ } else {
+			if (angerBonus <= 1000 && RageValue <= 1000) {
+				RageValue += Min(angerBonus, 250);
+				RageValue = Min(RageConstant, RageValue);
+			} else {
+				if (!OverTheEdge) {
+					RageValue += angerBonus;
+					OverTheEdge = true;
+				}
 			}
-		} else {
-			if (!OverTheEdge) {
-				RageValue += angerBonus;
-				OverTheEdge = true;
-			}
+		}
+		
+		int willBonus = int(AngerBonus / 10);
+		if (willBonus > 0) {
+			self.health += int(willBonus * 2);
+			if (self.health > 500) self.health = 500;
 		}
 	}
 	
@@ -128,7 +131,6 @@ Class Gardevoir : PlayerPawn
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		if (RageValue <= RageConstant) {
-			//RageValue += damage;
 			RageTimer = 0;
 			if (RageValue > RageConstant) RageValue = RageConstant;
 		}

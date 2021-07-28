@@ -179,6 +179,7 @@ Class Gardevoir : PlayerPawn
         Player.DisplayName "Gardevoir" ;
 		Player.StartItem "GHAGPistol";
 		Player.StartItem "ElementPunch";
+		Player.StartItem "Swift";
 		Player.StartItem "Clip", 50;
 		Player.MaxHealth 350;
      }

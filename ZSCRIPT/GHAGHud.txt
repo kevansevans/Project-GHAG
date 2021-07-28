@@ -131,6 +131,7 @@ Class GHAGStatus : BaseStatusBar
 		if (!gardie) return "I'm so angry, I simply do not exist!";
 		
 		int anger = Gardie.RageValue / 100;
+		if (anger < 0) return "your turn will come....";
 		if (anger > 10) return "HELL HATH NO FURY";
 		switch (anger) {
 			case 0:

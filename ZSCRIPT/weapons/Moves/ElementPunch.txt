@@ -206,11 +206,6 @@ Class ElementPunch : Weapon
 			else
 			{
 				victim.Vel.Z = 1000. / victim.Mass;
-				if (victim.health - _damage <= 0 && blasteffect == "IcePuff") {
-					if (!victim.bIceCorpse) {
-						victim.DamageMobj(self, self, victim.health, 'Ice');
-					}
-				}
 			}
 			if (victim.bTouchy)
 			{
@@ -492,12 +487,12 @@ Class IcePuff : BasePunchPuff
 	{
 		if (target) 
 		{
-			if (target.health > 0 && inflicted) {
+			if (target.tics > 0 && inflicted) {
 				if (!frozen) 
 				{
 					frozen = true;
 					target.tics = 35 * 5;
-					target.A_SetRenderStyle(1, STYLE_AddShaded);
+					target.A_SetRenderStyle(0.1, STYLE_STENCIL);
 					target.setShade("c2e0f9");
 					formerPain = target.PainChance;
 					target.PainChance = 0;
@@ -511,6 +506,7 @@ Class IcePuff : BasePunchPuff
 					
 					//DON'T ACCESS TARGET AFTER THIS
 					self.target = null;
+					self.destroy();
 				}
 			} else if (target.health <= 0 && inflicted) {
 				target.tics = 0;
@@ -528,7 +524,7 @@ Class IcePuff : BasePunchPuff
 			IPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
 			IPFB ABCDEFGHIJKLM 1 Bright;
 		Inflictor:
-			IPFB K 1 Bright A_Inflict(25);
+			IPFB K 1 Bright A_Inflict(255);
 			IPFB NO 1 Bright;
 			IPFB K 1 Bright;
 			TNT1 A 1 Bright;
@@ -539,8 +535,7 @@ Class IcePuff : BasePunchPuff
 			IPFB K 5 Bright;
 		LoopCheck:
 			TNT1 A 0 {
-				if (!target) return ResolveState("Death");
-				return ResolveState(null);
+				if (!target) Invoker.destroy();
 			}
 			TNT1 A -1;
 		Death:
@@ -605,7 +600,7 @@ Class ThunderPuff : BasePunchPuff
 
 	Default
 	{
-		DamageType "Electricty";
+		DamageType "Electric";
 		BasePunchPuff.inflicted false;
 		ThunderPuff.prevTicCount 0;
 	}

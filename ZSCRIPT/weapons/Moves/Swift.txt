@@ -68,14 +68,15 @@ Class Swift : Weapon
 					--count;
 				}
 			}
-			SWFT FGHIJKL 3 {
-				A_SetTics(Gardevoir(self).GetTicModifier(3));
+			SWFT FGHIJKL 2 {
+				A_SetTics(Gardevoir(self).GetTicModifier(2));
 				if (Gardevoir(self).RageValue <= 0) {
 					Gardevoir(self).RageValue = 0;
 					return resolveState("Ready.NoAmmo");
 				}
 				return resolveState(null);
 			}
+			TNT1 A 0 A_Refire();
 			Goto Ready;
 	}
 }
@@ -107,7 +108,30 @@ Class SwiftProjectile : Actor
 			}
 			Loop;
 		Death:
+			SWFP A 1 {
+				A_SpawnItemEx("SwiftDrop", 0, 0, 0, random(3, 5), random(3, 5), random(3, 5), random(0, 360));
+				A_SpawnItemEx("SwiftDrop", 0, 0, 0, random(3, 5), random(3, 5), random(3, 5), random(0, 360));
+				A_SpawnItemEx("SwiftDrop", 0, 0, 0, random(3, 5), random(3, 5), random(3, 5), random(0, 360));
+			}
 			stop;
 	}
 
+}
+
+Class SwiftDrop : Actor
+{
+	Default
+	{
+		Damage 0;
+		Speed 5;
+		-NoGravity;
+		Scale 0.5;
+	}
+	States 
+	{
+		Spawn:
+			SWFD ABCDABCDABCD 1 Bright;
+		Death:
+			Stop;
+	}
 }

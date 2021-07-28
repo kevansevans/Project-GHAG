@@ -1,0 +1,58 @@
+/*	This actor should not ever be accessible, but is instead solely used for 
+ *	error handling. Should for whatever reason, the game is unable to retrieve
+ *	the correct Pokemon, MissingNo will be summoned.
+ *
+ *	And then intentionally crash GZDoom.
+ */
+Class MissingNo : Actor
+{
+	States
+	{
+		Spawn:
+			MSGN A 175 Bright;
+			TNT1 A 0 {
+				ThrowAbortException("'M");
+			}
+	}
+}
+
+/*	For when people use Brutal Doom or Project Brutality 
+ *
+ *	Seriously, this mod won't work with those.
+ *	Heed my warning.
+ */
+ 
+Class MissingNoHostile : MissingNo
+{
+	default 
+	{
+		Speed 300;
+	}
+	States
+	{
+		Spawn :
+			MSGN A 1 Bright;
+			MSGN A 2099 Bright;
+		See:
+			TNT1 A 0 
+			{
+				if (!target) {
+					target = players[consoleplayer].mo;
+				}
+			}
+			MSGN A 1 Fast 
+			{
+				A_FaceTarget();
+				A_Chase();
+				A_CustomMeleeAttack(9999999);
+			}
+			TNT1 A 0 
+			{
+				if (players[consoleplayer].mo.health <= 0) {
+					ThrowAbortException("your turn will come....");
+				}
+			}
+			loop;
+		
+	}
+}

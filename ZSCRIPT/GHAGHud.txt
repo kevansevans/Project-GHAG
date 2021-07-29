@@ -8,7 +8,9 @@ Class GHAGStatus : BaseStatusBar
 	override void Init() {
 		Super.Init();
 		
-		SetSize(0, 320, 200);
+		scale = getHUDScale();
+		
+		SetSize(0, Screen.getWidth() / (scale.x / 2), Screen.getHeight() / (scale.y / 2));
 	}
 	
 	override void Draw(int state, double tic) {
@@ -19,8 +21,8 @@ Class GHAGStatus : BaseStatusBar
 		
 		scale = getHUDScale();
 		
-		v_width = Screen.getWidth() / scale.x;
-		v_height = Screen.getHeight() / scale.y;
+		v_width = Screen.getWidth() / (scale.x);
+		v_height = Screen.getHeight() / (scale.y);
 		
 		let gardie = Gardevoir(CPlayer.mo);
 		if (!gardie) return;

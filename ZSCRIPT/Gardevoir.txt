@@ -58,7 +58,7 @@ Class Gardevoir : PlayerPawn
 		if (self.health <= 0) return;
 		if (!thing) return;
 		
-		int angerBonus = Max(int(thing.spawnHealth() / 10), 1);
+		int angerBonus = Max(int(thing.spawnHealth() / 5), 1);
 		
 		if (HurtList.find(thing) != HurtList.size()) {
 			angerBonus += HurtTracker[HurtList.find(thing)];
@@ -131,6 +131,9 @@ Class Gardevoir : PlayerPawn
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		if (RageValue <= RageConstant) {
+		
+			RageValue += int(damage / 5);
+		
 			RageTimer = 0;
 			if (RageValue > RageConstant) RageValue = RageConstant;
 		}

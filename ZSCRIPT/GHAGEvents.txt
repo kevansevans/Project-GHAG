@@ -1,4 +1,4 @@
-Class GHAGActorDeathHandler : EventHandler
+Class GHAGEventHandler : EventHandler
 {
 	Gardevoir Gardie;
 	

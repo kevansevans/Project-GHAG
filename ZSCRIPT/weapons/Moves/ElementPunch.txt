@@ -443,9 +443,15 @@ Class BasePunchPuff : BulletPuff
 	override void tick() {
 	
 		if (target) {
-			if (target.bMissile) {
-				ResolveState("Death");
-			} else {
+		
+			if (target.tics <= 0 || target.health <= 0 || target.bMissile)
+			{
+				target.A_SetRenderStyle(1, STYLE_Normal);
+				self.destroy();
+				inflicted = false;
+			}
+			else 
+			{
 				Vector3 follow = target.pos;
 				follow.z += (target.height) - (target.height / 3.);
 				SetXYZ(follow);
@@ -485,6 +491,9 @@ Class IcePuff : BasePunchPuff
 	
 	override void tick()
 	{
+		
+		super.tick();
+		
 		if (target) 
 		{
 			if (target.tics > 0 && inflicted) {
@@ -497,7 +506,7 @@ Class IcePuff : BasePunchPuff
 					formerPain = target.PainChance;
 					target.PainChance = 0;
 				}
-				if (target.tics == 1) 
+				if (target.tics == 1 && frozen) 
 				{
 					inflicted = false;
 					if (target) target.setStateLabel("See");
@@ -513,8 +522,6 @@ Class IcePuff : BasePunchPuff
 				Target.A_FreezeDeathChunks();
 			}
 		}
-		
-		super.tick();
 	}
 	
 	States
@@ -524,7 +531,7 @@ Class IcePuff : BasePunchPuff
 			IPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
 			IPFB ABCDEFGHIJKLM 1 Bright;
 		Inflictor:
-			IPFB K 1 Bright A_Inflict(255);
+			IPFB K 1 Bright A_Inflict(25);
 			IPFB NO 1 Bright;
 			IPFB K 1 Bright;
 			TNT1 A 1 Bright;
@@ -607,6 +614,9 @@ Class ThunderPuff : BasePunchPuff
 	
 	override void Tick() 
 	{
+	
+		super.tick();
+	
 		if (target && inflicted) 
 		{
 			if (target.tics > 0) {
@@ -617,8 +627,6 @@ Class ThunderPuff : BasePunchPuff
 				prevTicCount = target.tics;
 			}
 		}
-		
-		super.tick();
 	}
 	
 	States

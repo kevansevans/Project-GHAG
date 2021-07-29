@@ -2,5 +2,5 @@ GameInfo
 {
 	PlayerClasses = "Gardevoir"
 	StatusBarClass = "GHAGStatus"
-	AddEventHandlers = "GHAGActorDeathHandler"
+	AddEventHandlers = "GHAGEventHandler"
 }

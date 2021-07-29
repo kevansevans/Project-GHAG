@@ -119,6 +119,7 @@ Class PsychicRocket : Rocket
 
 	States {
 		Death:
+			TNT1 A 0 A_SetScale(1 + modifier, 1 + modifier);
 			MISL B 8 Bright {
 				A_Explode(100 * (1 + modifier), 128 * (1 + modifier));
 				A_OverlayScale(0, 1 * (1 + modifier), 1 * (1 + modifier));

@@ -212,6 +212,7 @@ Class ElementPunch : Weapon
 				victim.bArmed = false;
 				victim.DamageMobj(self, self, victim.health, 'Melee', DMG_FORCED|DMG_EXPLOSION);
 			}
+			victim.DamageMobj(self, self, int(_damage * (2. / 3.)), Puff.damageType, DMG_FORCED|DMG_EXPLOSION);
 		}
 	}
 	

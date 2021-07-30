@@ -26,9 +26,10 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 				if (CountInv("Shell") != 0) A_GiveInventory("Shell");
 				A_FireBullets(4, 4, 10, 5, "BulletPuff");
 				A_FireBullets(4, 4, floor(14 * Gardevoir(Self).GetRageModifier()), 5, "GHAGPsychicPuff");
-				A_StartSound("weapons/shotgf", CHAN_WEAPON);
+				A_StartSound("weapons/shotgf", CHAN_AUTO);
 			}
 			SHTG CCDDD 1 Bright;
+			TNT1 A 0 A_StartSound("weapons/shotpm", CHAN_AUTO);
 			SHTG EFGHIJKL 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
 			SHTG A 7 {
 				A_ReFire();

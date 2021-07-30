@@ -25,7 +25,7 @@ Class GHAGPistol : Pistol replaces Pistol
 			Loop;
 		Fire:
 			PIST AB 3 Offset(2, 38) {
-				A_SetTics(Gardevoir(self).GetTicModifier(3));
+				A_SetTics(Gardevoir(self).GetTicModifier(3, true));
 			}
 			PIST C 3 Offset(4, 42){
 				A_SetTics(Gardevoir(self).GetTicModifier(3, true));

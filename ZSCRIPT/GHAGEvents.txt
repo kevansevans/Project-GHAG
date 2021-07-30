@@ -37,7 +37,6 @@ Class GHAGEventHandler : EventHandler
 	override void PlayerSpawned(PlayerEvent player) {
 	
 		Gardie = Gardevoir(players[player.PlayerNumber].mo);
-		Gardie.ResetTrackers();
 		
 		/*int rnd = random(0, 1);
 		

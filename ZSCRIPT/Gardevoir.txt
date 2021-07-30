@@ -16,9 +16,6 @@ Class Gardevoir : PlayerPawn
 	property RageValue: RageValue;
 	property RageDelay: RageDelay;
 	
-	array<Actor> HurtList;
-	array<Int> HurtTracker;
-	
 	NameClass names;
 	property names: names;
 	
@@ -45,14 +42,6 @@ Class Gardevoir : PlayerPawn
 		return self.names.GetName();
 	}
 	
-	void ResetTrackers() 
-	{
-		HurtList.clear();
-		HurtTracker.clear();
-		HurtList.resize(level.Total_Monsters);
-		HurtTracker.resize(level.Total_Monsters);
-	}
-	
 	void CatharsisBonus(Actor thing) 
 	{
 		if (self.health <= 0) return;
@@ -60,10 +49,8 @@ Class Gardevoir : PlayerPawn
 		
 		int angerBonus = Max(int(thing.spawnHealth() / 5), 1);
 		
-		if (HurtList.find(thing) != HurtList.size()) {
-			angerBonus += HurtTracker[HurtList.find(thing)];
-			HurtTracker[HurtList.find(thing)] = -1;
-			HurtList[HurtList.find(thing)] = null;
+		if (ActorTracker.getActorStats(thing)) {
+			
 		}
 		
 		if (Player.ReadyWeapon is "ElementPunch" ||
@@ -138,10 +125,7 @@ Class Gardevoir : PlayerPawn
 			if (RageValue > RageConstant) RageValue = RageConstant;
 		}
 		
-		if (HurtList.find(source) != HurtList.size()) {
-			HurtList.push(source);
-		}
-		if (HurtList.find(source) != HurtList.size()) HurtTracker[HurtList.find(source)] += damage;
+		ActorTracker.trackThing(Source, NONE, damage);
 		
 		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 	}

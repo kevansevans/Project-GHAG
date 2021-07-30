@@ -421,42 +421,32 @@ Class ElementPunch : Weapon
 
 Class BasePunchPuff : BulletPuff
 {
-	bool inflicted;
-	property inflicted: inflicted;
-	
 	Default {
-	
-		BasePunchPuff.inflicted false;
 		+PUFFONACTORS;
 		+HITTARGET;
 		-RANDOMIZE;
 		VSpeed 0;
 		Alpha 1;
-		
 	}
 	
-	action void A_Inflict(int odds = 100) 
+	action void A_Inflict(int odds, StatusType Status) 
 	{
 		int rng = random(1, 100);
-		if (rng <= odds) Invoker.inflicted = true;
+		if (rng <= odds) {
+			if (target) {
+				ActorTracker.TrackThing(target, Status);
+			}
+		}
 	}
 	
 	override void tick() {
 	
 		if (target) {
 		
-			if (target.tics <= 0 || target.health <= 0 || target.bMissile)
-			{
-				target.A_SetRenderStyle(1, STYLE_Normal);
-				self.destroy();
-				inflicted = false;
-			}
-			else 
-			{
-				Vector3 follow = target.pos;
-				follow.z += (target.height) - (target.height / 3.);
-				SetXYZ(follow);
-			}
+			Vector3 follow = target.pos;
+			follow.z += (target.height) - (target.height / 3.);
+			SetXYZ(follow);
+
 		}
 		
 		Super.tick();
@@ -477,52 +467,9 @@ Class MegaPuff : BasePunchPuff
 
 Class IcePuff : BasePunchPuff
 {
-	bool frozen;
-	property frozen: frozen;
-	
-	int formerPain;
-	property formerPain: formerPain;
-
 	Default
 	{
 		DamageType "Ice";
-		IcePuff.frozen false;
-		IcePuff.formerPain 0;
-	}
-	
-	override void tick()
-	{
-		
-		super.tick();
-		
-		if (target) 
-		{
-			if (target.tics > 0 && inflicted) {
-				if (!frozen) 
-				{
-					frozen = true;
-					target.tics = 35 * 5;
-					target.A_SetRenderStyle(0.1, STYLE_STENCIL);
-					target.setShade("c2e0f9");
-					formerPain = target.PainChance;
-					target.PainChance = 0;
-				}
-				if (target.tics == 1 && frozen) 
-				{
-					inflicted = false;
-					if (target) target.setStateLabel("See");
-					if (target) target.A_SetRenderStyle(1, STYLE_Normal);
-					if (target) target.PainChance = formerPain;
-					
-					//DON'T ACCESS TARGET AFTER THIS
-					self.target = null;
-					self.destroy();
-				}
-			} else if (target.health <= 0 && inflicted) {
-				target.tics = 0;
-				Target.A_FreezeDeathChunks();
-			}
-		}
 	}
 	
 	States
@@ -531,8 +478,7 @@ Class IcePuff : BasePunchPuff
 		Melee :
 			IPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
 			IPFB ABCDEFGHIJKLM 1 Bright;
-		Inflictor:
-			IPFB K 1 Bright A_Inflict(25);
+			IPFB K 1 Bright A_Inflict(100, FROZEN);
 			IPFB NO 1 Bright;
 			IPFB K 1 Bright;
 			TNT1 A 1 Bright;
@@ -541,11 +487,6 @@ Class IcePuff : BasePunchPuff
 			IPFB K 1 Bright;
 			TNT1 A 2 Bright;
 			IPFB K 5 Bright;
-		LoopCheck:
-			TNT1 A 0 {
-				if (!target) Invoker.destroy();
-			}
-			TNT1 A -1;
 		Death:
 			TNT1 A 0;
 			stop;
@@ -558,7 +499,6 @@ Class FirePuff : BasePunchPuff
 	Default
 	{
 		DamageType "Fire";
-		BasePunchPuff.inflicted false;
 	}
 	States
 	{
@@ -567,34 +507,7 @@ Class FirePuff : BasePunchPuff
 		Melee:
 			FPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
 			FPFB ABC 1 Bright;
-		Inflictor:
-			TNT1 A 0 {
-				if (target && invoker.inflicted) {
-					target.DamageMobj(self, self, target.SpawnHealth() / 16., 'Fire');
-					if (target.health >= 1) target.SetStateLabel("Pain");
-				}
-			}
-			FPFB DEFGHIJKLMNO 1 Bright;
-			TNT1 A 0 {
-				if (target && !invoker.inflicted) {
-					int chance = random(1, 100);
-					if (chance <= 25) {
-						invoker.inflicted = true;
-						if (target.DamageMultiply >= 1) target.DamageMultiply *= 0.5;
-						return ResolveState("Inflictor");
-					}
-				} else if (target && invoker.inflicted) {
-					
-					if (target.health >= 1) {
-					
-						int chance = random(1, 100);
-						if (chance <= 75) {
-							return ResolveState("Inflictor");
-						}
-					}
-				}
-				return ResolveState("Death");
-			}
+			TNT1 A 0 A_Inflict(25, BURNED);
 		Death :
 			stop;
 		
@@ -603,31 +516,9 @@ Class FirePuff : BasePunchPuff
 
 Class ThunderPuff : BasePunchPuff
 {
-	int prevTicCount;
-	property prevTicCount: prevTicCount;
-
 	Default
 	{
 		DamageType "Electric";
-		BasePunchPuff.inflicted false;
-		ThunderPuff.prevTicCount 0;
-	}
-	
-	override void Tick() 
-	{
-	
-		super.tick();
-	
-		if (target && inflicted) 
-		{
-			if (target.tics > 0) {
-				if (target.tics > prevTicCount) 
-				{
-					target.tics *= 2;
-				}
-				prevTicCount = target.tics;
-			}
-		}
 	}
 	
 	States
@@ -635,17 +526,7 @@ Class ThunderPuff : BasePunchPuff
 		Spawn:
 		Melee:
 			TPUF ABBCDDEEEFGGHHHHIIJJKKKKLLLMMMMMMMMMMMMM 1 Bright;
-			TPUF M 1 A_Inflict(25);
-		Inflicted:
-			TNT1 A 1; //Frame needed so engine doesn't hang
-			TNT1 A 1 
-			{
-				if (inflicted && target)
-				{
-					return ResolveState("Inflicted");
-				}
-				return ResolveState(null);
-			}
+			TPUF M 1 A_Inflict(25, PARALYZED);
 		Death:
 			stop;
 	}

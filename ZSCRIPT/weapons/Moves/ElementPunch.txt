@@ -478,7 +478,7 @@ Class IcePuff : BasePunchPuff
 		Melee :
 			IPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
 			IPFB ABCDEFGHIJKLM 1 Bright;
-			IPFB K 1 Bright A_Inflict(100, FROZEN);
+			IPFB K 1 Bright A_Inflict(25, FROZEN);
 			IPFB NO 1 Bright;
 			IPFB K 1 Bright;
 			TNT1 A 1 Bright;

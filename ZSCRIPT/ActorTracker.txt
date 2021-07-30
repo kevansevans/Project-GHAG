@@ -11,6 +11,8 @@ Class StatusEffect : Object
 	Actor owner;
 	int damage;
 	int FrozenTimer;
+	int prevPainValue;
+	int prevTicValue;
 	bool Burned;
 	bool Paralyzed;
 	bool dead;
@@ -62,6 +64,8 @@ Class ActorTracker : EventHandler
 			tempeffect.burned = false;
 			tempeffect.paralyzed = false;
 			tempeffect.dead = false;
+			tempeffect.prevPainValue = thing.painchance;
+			tempeffect.prevTicValue = 0;
 			
 			tracker.Effects.push(tempeffect);
 			
@@ -73,7 +77,10 @@ Class ActorTracker : EventHandler
 		
 		if (Status & FROZEN) 
 		{
-			if (effect.frozentimer == 0) effect.frozentimer = 35 * 5;
+			if (effect.frozentimer == 0) {
+				effect.frozentimer = 35 * 5;
+				effect.owner.painchance = 0;
+			}
 		}
 		if (Status & BURNED)
 		{
@@ -112,7 +119,8 @@ Class ActorTracker : EventHandler
 				
 				if (effect.frozentimer > 0) thing.bIceCorpse = true;
 				
-				//force dead effect here
+				//force extra dead effect here just to make sure the actor
+				//doesn't show unwanted effects
 				continue;
 			}
 			
@@ -125,6 +133,7 @@ Class ActorTracker : EventHandler
 				if (effect.frozentimer == 0) {
 					thing.setStateLabel("See");
 					thing.A_SetRenderStyle(1, STYLE_Normal);
+					thing.painchance = effect.prevPainValue;
 				}
 			}
 			
@@ -133,7 +142,20 @@ Class ActorTracker : EventHandler
 				if (gametic % (35 * 2) == 0)
 				{
 					thing.damagemobj(players[consoleplayer].mo, players[consoleplayer].mo, int(thing.spawnhealth() / 16), "Fire");
+					thing.SetStateLabel("Pain");
+					
+					int rng = random(1, 100);
+					if (rng <= 25) effect.burned = false;
 				}
+			}
+			
+			if (effect.paralyzed)
+			{
+				if (effect.prevTicValue < thing.tics)
+				{
+					thing.tics *= 2;
+				}
+				effect.prevTicValue = thing.tics;
 			}
 		}
 	}

@@ -60,11 +60,11 @@ Class Swift : Weapon
 			TNT1 A 0 
 			{
 				Gardevoir(self).RageValue -= 5;
-				int count = 10 * Gardevoir(self).getRageModifier();
+				int count = Min(50, 10 * Gardevoir(self).getRageModifier());
 				A_StartSound("attack/SWFTATTK", CHAN_WEAPON);
-				A_FireCustomMissile("SwiftProjectile");
+				A_FireProjectile("SwiftProjectile");
 				while (count >= 1) {
-					A_FireCustomMissile("SwiftProjectileSeeker", random(-10, 10), false, random(-10, 10), random(-10, 10));
+					A_FireProjectile("SwiftProjectileSeeker", random(-10, 10), false, random(-10, 10), random(-10, 10), 0, random(-10, 10));
 					--count;
 				}
 			}

@@ -1,3 +1,27 @@
+class InflictOdds : Thinker
+{
+	int chance;
+	
+	InflictOdds Init()
+	{
+		chance = 25;
+		ChangeStatNum(STAT_STATIC);
+		return self;
+	}
+	
+	Static InflictOdds Get()
+	{
+		ThinkerIterator odds = ThinkerIterator.create("InflictOdds", STAT_STATIC);
+		let p = InflictOdds(odds.next());
+		if (p == null)
+		{
+			p = new("InflictOdds").Init();
+		}
+		return p;
+	}
+	
+}
+
 Class ElementPunch : Weapon
 {
 
@@ -421,12 +445,25 @@ Class ElementPunch : Weapon
 
 Class BasePunchPuff : BulletPuff
 {
+	int chance;
+	property chance: chance;
+
 	Default {
 		+PUFFONACTORS;
 		+HITTARGET;
 		-RANDOMIZE;
 		VSpeed 0;
 		Alpha 1;
+	}
+	
+	override void BeginPlay()
+	{
+		let odds = InflictOdds.get();
+		if (odds) {
+			Self.chance = odds.chance;
+		} else {
+			self.chance = 25;
+		}
 	}
 	
 	action void A_Inflict(int odds, StatusType Status) 
@@ -478,7 +515,7 @@ Class IcePuff : BasePunchPuff
 		Melee :
 			IPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
 			IPFB ABCDEFGHIJKLM 1 Bright;
-			IPFB K 1 Bright A_Inflict(25, FROZEN);
+			IPFB K 1 Bright A_Inflict(chance, FROZEN);
 			IPFB NO 1 Bright;
 			IPFB K 1 Bright;
 			TNT1 A 1 Bright;
@@ -507,7 +544,7 @@ Class FirePuff : BasePunchPuff
 		Melee:
 			FPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
 			FPFB ABC 1 Bright;
-			TNT1 A 0 A_Inflict(25, BURNED);
+			TNT1 A 0 A_Inflict(chance, BURNED);
 		Death :
 			stop;
 		
@@ -526,7 +563,7 @@ Class ThunderPuff : BasePunchPuff
 		Spawn:
 		Melee:
 			TPUF ABBCDDEEEFGGHHHHIIJJKKKKLLLMMMMMMMMMMMMM 1 Bright;
-			TPUF M 1 A_Inflict(25, PARALYZED);
+			TPUF M 1 A_Inflict(chance, PARALYZED);
 		Death:
 			stop;
 	}

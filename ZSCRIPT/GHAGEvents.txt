@@ -47,6 +47,20 @@ Class GHAGEventHandler : EventHandler
 					rage.resetToDefault();
 				}
 			}
+			
+			cvar punchodds = Cvar.findCvar("ghagpunchodds");
+			if (punchodds) {
+				let odds = InflictOdds.get();
+				if (odds) {
+					if (punchodds.getInt() != -1)
+					{
+						odds.chance = punchodds.getInt();
+					} else if (odds.chance == -1) {
+						odds.chance = 25;
+					}
+					punchodds.resetToDefault();
+				}
+			}
 		}
 	}
 	

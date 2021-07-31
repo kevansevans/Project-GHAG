@@ -34,6 +34,22 @@ Class GHAGEventHandler : EventHandler
 		}
 	}
 	
+	override void worldtick()
+	{
+		if (gardie)
+		{
+			//change rage value
+			Cvar rage = Cvar.findCvar("ghagrage");
+			if (rage) {
+				if (rage.getInt() != -1) 
+				{
+					Gardie.RageValue = rage.getInt();
+					rage.resetToDefault();
+				}
+			}
+		}
+	}
+	
 	override void PlayerSpawned(PlayerEvent player) {
 	
 		Gardie = Gardevoir(players[player.PlayerNumber].mo);
@@ -49,6 +65,11 @@ Class GHAGEventHandler : EventHandler
 				console.printf("Get ready, wake your psyche up! Get ready, dig your anger up!");
 				break;
 		}*/
+	}
+	
+	override void ConsoleProcess(ConsoleEvent event)
+	{
+		console.printf("HAHAHAHA");
 	}
 	
 	override void WorldLinePreActivated (WorldEvent event) 

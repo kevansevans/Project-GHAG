@@ -5,9 +5,6 @@ Class Gardevoir : PlayerPawn
 	int RageConstant;
 	int RageValue;
 	
-	int cvarRage;
-	property cvarRage: cvarRage;
-	
 	bool OverTheEdge;
 	
 	int PunchMode;
@@ -133,12 +130,6 @@ Class Gardevoir : PlayerPawn
 	override void Tick()
 	{
 		Super.Tick();
-		
-		int retrievedCvarRage = Cvar.FindCvar('GhagRage').GetInt();
-		if (cvarRage !=  retrievedCvarRage) {
-			RageValue =  retrievedCvarRage;
-			cvarRage =  retrievedCvarRage;
-		}
 		
 		RageTimer++;
 		

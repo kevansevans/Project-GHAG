@@ -50,41 +50,5 @@ Class GHAGPistol : Pistol replaces Pistol
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
 			}
 			GoTo LightDone;
-		/*AltFire :
-			PIST D 2 {
-				Gardevoir(self).GetHeckingAngery();
-				
-				/*FLineTraceData hitscan;
-				LineTrace(Gardevoir(self).angle, 2048, Gardevoir(self).pitch, TRF_ALLACTORS, Gardevoir(self).height - 12, 0, 0, hitscan);
-				if (hitscan.HitType == TRACE_HitActor) {
-					let _locBarrel = ExplosiveBarrel(hitscan.HitActor);
-					if (_locBarrel) {
-						A_SeekerMissile(0, 360, SMF_LOOK, 255);
-						if (tracer) {
-							_locBarrel.setStateLabel("Chase");
-						}
-					}
-					let _locAmmo = Ammo(hitscan.HitActor);
-					if (_locAmmo) {
-						_locAmmo.target = Gardevoir(self);
-						_locAmmo.A_FaceTarget();
-						_locAmmo.Vel3DFromAngle(5 * (5 * Gardevoir(self).GetRageModifier()), _locAmmo.angle, -30);
-					}
-					let _locWeapon = DoomWeapon(hitscan.HitActor);
-					if (_locWeapon) {
-						_locWeapon.target = Gardevoir(self);
-						_locWeapon.A_FaceTarget();
-						_locWeapon.Vel3DFromAngle(5 * (5 * Gardevoir(self).GetRageModifier()), _locWeapon.angle, -30);
-					}
-					let _locHealth = Health(hitscan.HitActor);
-					if (_locHealth) {
-						_locHealth.target = Gardevoir(self);
-						_locHealth.A_FaceTarget();
-						_locHealth.Vel3DFromAngle(5 * (5 * Gardevoir(self).GetRageModifier()), _locHealth.angle, -30);
-					}
-				}
-			}
-			PIST D 2;
-			goto Ready;*/
 	}
 }

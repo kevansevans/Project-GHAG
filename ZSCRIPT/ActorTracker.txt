@@ -91,7 +91,7 @@ Class ActorTracker : EventHandler
 					thing.tics = 9999999; //actor won't thaw if set to -1
 					info.frozen = true;
 					info.owner.painchance = 0;
-					info.effect = Actor.spawn("StatusEffect");
+					info.effect = thing.spawn("StatusEffect");
 					float scale = thing.radius / 28;
 					info.effect.A_SetScale(scale, scale);
 					info.effect.SetStateLabel("Frozen");
@@ -102,7 +102,7 @@ Class ActorTracker : EventHandler
 			{
 				if (!info.burned) {
 					info.burned = true;
-					info.effect = Actor.spawn("StatusEffect");
+					info.effect = thing.spawn("StatusEffect");
 					float scale = thing.radius / 15;
 					info.effect.A_SetScale(scale * -1, scale);
 					info.effect.SetStateLabel("Burned");
@@ -112,7 +112,14 @@ Class ActorTracker : EventHandler
 			}
 			if (Status & PARALYZED)
 			{
-				if (!info.paralyzed) info.paralyzed = true;
+				if (!info.paralyzed) {
+					info.paralyzed = true;
+					info.effect = thing.spawn("StatusEffect");
+					float scale = thing.radius / 34;
+					info.effect.A_SetScale(scale, scale);
+					info.effect.SetStateLabel("Paralyzed");
+					info.effect.target = thing;
+				}
 			}
 		}
 	}
@@ -188,6 +195,17 @@ Class ActorTracker : EventHandler
 					thing.tics *= 2;
 				}
 				info.prevTicValue = thing.tics;
+				
+				if (gametic % (35 * 2) == 0)
+				{
+					int rng = random(1, 100);
+					if (rng <= 25) {
+						info.paralyzed = false;
+						info.effect.destroy();
+					} else {
+						info.effect.SetStateLabel("Paralyzed");
+					}
+				}
 			}
 		}
 	}

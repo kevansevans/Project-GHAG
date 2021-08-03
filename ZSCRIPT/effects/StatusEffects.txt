@@ -30,7 +30,8 @@ Class StatusEffect : Actor
 			SBUR ABCDEFGHIJKLMNOPQRSTU 1 Bright;
 			goto Waiting;
 		Paralyzed:
-		
+			SPAR ABABABABABABABABABABABABABABABAB 1 Bright;
+			goto Waiting;
 		Confused:
 		
 		Waiting:

@@ -341,8 +341,7 @@ Class ElementPunch : Weapon
 		Fire :
 			#### # 2 {
 			
-				Gardevoir(self).RageValue -= 10;
-				if (Gardevoir(self).RageValue < 0) Gardevoir(self).RageValue = 0;
+				Gardevoir(self).subtractAnger(10);
 			
 				switch (Gardevoir(self).PunchMode) {
 					case 0:

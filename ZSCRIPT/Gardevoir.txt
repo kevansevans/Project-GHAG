@@ -10,9 +10,6 @@ Class Gardevoir : PlayerPawn
 	int PunchMode;
 	property PunchMode: PunchMode;
 	
-	property RageValue: RageValue;
-	property RageDelay: RageDelay;
-	
 	NameClass names;
 	property names: names;
 	

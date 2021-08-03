@@ -67,6 +67,9 @@ Class Swift : Weapon
 					A_FireProjectile("SwiftProjectileSeeker", random(-10, 10), false, random(-10, 10), random(-10, 10), 0, random(-10, 10));
 					--count;
 				}
+				
+				Gardevoir(self).subtractAnger(5);
+				
 			}
 			SWFT FGHIJKL 2 {
 				A_SetTics(Gardevoir(self).GetTicModifier(2));

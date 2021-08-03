@@ -14,53 +14,19 @@ Class Swift : Weapon
 	states 
 	{
 		Select :
-			TNT1 A 0 Fast 
-			{
-				if (!A_CheckRageAmmo()) return resolveState("Select.NoAmmo");
-				return resolveState(null);
-			}
 			SWFT A 1 A_Raise();
 			Loop;
-		Select.NoAmmo  :
-			SWFT E 1 A_Raise();
-			Loop;
 		Deselect :
-			TNT1 A 0
-			{
-				if (!A_CheckRageAmmo()) return resolveState("Deselect.NoAmmo");
-				return resolveState(null);
-			}
 			SWFT A 1 A_Lower();
 			Loop;
-		Deselect.NoAmmo  :
-			SWFT E 1 A_Lower();
-			Loop;
 		Ready :
-			TNT1 A 0
-			{
-				if (!A_CheckRageAmmo()) return resolveState("Ready.NoAmmo");
-				return resolveState(null);
-			}
 			SWFT ABCD 3 A_WeaponReady();
 			Loop;
-		Ready.NoAmmo :
-			SWFT E 1 A_WeaponReady();
-			TNT1 A 0
-			{
-				if (!A_CheckRageAmmo()) return resolveState("Ready.NoAmmo");
-				else return resolveState("Ready");
-			}
-			Loop;
 		Fire :
-			TNT1 A 0
-			{
-				if (!A_CheckRageAmmo()) return resolveState("Ready.NoAmmo");
-				return resolveState(null);
-			}
 			TNT1 A 0 
 			{
-				Gardevoir(self).RageValue -= 5;
 				int count = Min(50, 10 * Gardevoir(self).getRageModifier());
+				
 				A_StartSound("attack/SWFTATTK", CHAN_WEAPON);
 				A_FireProjectile("SwiftProjectile");
 				while (count >= 1) {
@@ -71,14 +37,7 @@ Class Swift : Weapon
 				Gardevoir(self).subtractAnger(5);
 				
 			}
-			SWFT FGHIJKL 2 {
-				A_SetTics(Gardevoir(self).GetTicModifier(2));
-				if (Gardevoir(self).RageValue <= 0) {
-					Gardevoir(self).RageValue = 0;
-					return resolveState("Ready.NoAmmo");
-				}
-				return resolveState(null);
-			}
+			SWFT FGHIJKL 2 A_SetTics(Gardevoir(self).GetTicModifier(2));
 			TNT1 A 0 A_Refire();
 			Goto Ready;
 	}
@@ -99,6 +58,13 @@ Class SwiftProjectile : Actor
 		+Randomize;
 		+ScreenSeeker;
 		DeathSound "attack/SWFTDEAT";
+	}
+	
+	override void BeginPlay()
+	{
+		super.BeginPlay();
+		
+		Self.setDamage(max(2, 4 * (10 * Gardevoir(players[consoleplayer].mo).getRageModifier())));
 	}
 	
 	States 

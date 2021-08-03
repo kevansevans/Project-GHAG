@@ -39,6 +39,7 @@ Class GHAGEventHandler : EventHandler
 		if (gardie)
 		{
 			//change rage value
+			//set to any value aside from -1
 			Cvar rage = Cvar.findCvar("ghagrage");
 			if (rage) {
 				if (rage.getInt() != -1) 
@@ -48,6 +49,8 @@ Class GHAGEventHandler : EventHandler
 				}
 			}
 			
+			//change the odds of an element punch inflicting it's status effect
+			//set to -1 to reset it to a default of 25
 			cvar punchodds = Cvar.findCvar("ghagpunchodds");
 			if (punchodds) {
 				let odds = InflictOdds.get();

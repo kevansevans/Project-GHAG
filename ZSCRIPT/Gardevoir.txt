@@ -36,6 +36,15 @@ Class Gardevoir : PlayerPawn
 		return self.names.GetName();
 	}
 	
+	void subtractAnger(Int value)
+	{
+		RageValue -= value;
+		if (!charonmode)
+		{
+			if (RageValue < 0) RageValue = 0;
+		}
+	}
+	
 	void CatharsisBonus(Actor thing) 
 	{
 		if (self.health <= 0) return;
@@ -212,8 +221,10 @@ Class NameClass : Actor
 		"Liam", "Olivia", "Noah", "Oliver", "Ava", "Elijah", "Charlotte", "William", "Sophia", "James", "Jesse", "Amelia",
 		"Benjamin", "Isabella", "Lucas", "Mia", "Henry", "Evelyn", "Alexander", "Harper", "Bojack", "Princess", "Nguyen",
 		"Todd", "Neal McBeal", "Margo Martindale", "Peanut Butter", "Hollyhock", "Judah", "Surprise!", "PK Rocket!",
-		"PSY Rocket!", " The perfect gift", "Imp Encounter", "300mb!", "Dud", "Objection!", "Hold it!", "Take that!",
-		"Silence!", "Perfect IV", "Laser!", "Caution!", "Goodnight Everybody!", "Helloooooo Nurse!"
+		"PSY Rocket!", "The perfect gift", "Imp Encounter", "300mb!", "Dud", "Objection!", "Hold it!", "Take that!",
+		"Silence!", "Perfect IV", "Laser!", "Caution!", "Goodnight Everybody!", "Helloooooo Nurse!", "Love", "Heart",
+		"Brain", "Control", "CAFFEINATE!", "Wake up!", "Smack!", "That's great", "Fuck Hexen", "What is the time?"
+		
 	};
 
 	static const string navyseal[] = {
@@ -225,7 +236,11 @@ Class NameClass : Actor
 	};
 	
 	static const string shorts[] = {
-		"They're comfy", "And easy to wear!"
+		"They're comfy,", "And easy to wear!"
+	};
+	
+	static const string spacemonkey[] = {
+		"It starts", "With an", "Earth", "Quake", "Birds and Snakes", "an Airplane", "and", "BILLY JOEL", "Is not afraid..."
 	};
 	
 	string GetName() {
@@ -239,6 +254,7 @@ Class NameClass : Actor
 				if (rng_name == "What") getMode = 1;
 				if (rng_name == "Creeper") getMode = 2;
 				if (rng_name == "I like shorts!") getMode = 3;
+				if (rng_name == "That's great") getMode = 4;
 				break;
 			case 1:
 				rng_name = NameClass.navyseal[wordtracker];
@@ -260,6 +276,14 @@ Class NameClass : Actor
 				rng_name = NameClass.shorts[wordtracker];
 				wordtracker += 1;
 				if (rng_name == "And easy to wear!") {
+					getMode = 0;
+					wordTracker = 0;
+				}
+				break;
+			case 4:
+				rng_name = NameClass.spacemonkey[wordtracker];
+				wordtracker += 1;
+				if (rng_name == "Is not afraid...") {
 					getMode = 0;
 					wordTracker = 0;
 				}

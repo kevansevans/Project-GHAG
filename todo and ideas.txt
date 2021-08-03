@@ -1,13 +1,51 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// To Do
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+- Status effect actors for freeze, paralyze, and burn
+
+- Confusion
+	- 25 percent chance to temporarily make actor friendly, aka "confused"
+	- 75 percent chance to unconfuse
+	
+- Psybeam
+	- Concentrated beam of attack, costs a lot of rage
+	
+- Moonblast
+	- Large detonation where player is looking
+	- Costs decent chunk of anger to perform
+	
+- Black hole
+	- Requires at least 1000 anger
+	- Drains anger as a charge attack, while doing so, gravity slowly inverts
+	- Slow moving projectile that pulls in all enemies
+	- Anything caught in range is dead
+	
+- Think of something better for the plasma rifle replacement
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Polishing
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+- Proper gun flashs
+- Better sounds
+- Better hand sprites for attacks
+- Make attacks "crunchier"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Brainstorming
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Mega-evo mode
+	- Invincibility replacement?
+	- Akimbo guns
+	- Tome of power everything else
+
 Chainsaw:
 
-	Line of target attack that increases in range
-	
-Psychic moves cost anger, some will require 
-More levels of anger = stronger attack, of course
-	
-Ice Punch, Fire Punch, Thunder Punch
-
-	Applies Doom like effects. Ice punch definitely freezes enemies
+	- Collect up to a max count of 8 blades
+	- Orbits players
+	- Sic blades on enemies, costs anger while doing so
 	
 Scanners attack
 

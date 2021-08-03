@@ -1,0 +1,40 @@
+Class StatusEffect : Actor
+{
+	int y_offset;
+	
+	default
+	{
+		+NoClip;
+	}
+	
+	override void tick() {
+	
+		if (target) {
+		
+			Vector3 follow = target.pos;
+			SetXYZ(follow);
+
+		}
+		
+		Super.tick();
+	}
+
+	states
+	{
+		Spawn:
+			stop;
+		Frozen:
+			SICE A 1 Bright;
+			loop;
+		Burned:
+			SBUR ABCDEFGHIJKLMNOPQRSTU 1 Bright;
+			goto Waiting;
+		Paralyzed:
+		
+		Confused:
+		
+		Waiting:
+			TNT1 A 1;
+			loop;
+	}
+}

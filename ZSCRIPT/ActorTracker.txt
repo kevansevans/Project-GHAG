@@ -6,28 +6,30 @@ Enum StatusType
 	PARALYZED = 4,
 }
 
-Class StatusEffect : Object
+Class ActorInfo : Object
 {
 	Actor owner;
+	Actor Effect;
 	int damage;
-	int FrozenTimer;
 	int prevPainValue;
 	int prevTicValue;
+	bool frozen;
 	bool Burned;
 	bool Paralyzed;
+	bool confused;
 	bool dead;
 }
 
 Class ActorTrackerThinker : Thinker
 {
-	Array<StatusEffect> Effects;
+	Array<ActorInfo> Infolist;
 	Array<Actor> Actors;
 
 	ActorTrackerThinker Init()
 	{
 		ChangeStatNum(STAT_INFO);
 		
-		Effects.clear();
+		Infolist.clear();
 		Actors.clear();
 		
 		return self;
@@ -57,48 +59,71 @@ Class ActorTracker : EventHandler
 		{
 			tracker.Actors.push(thing);
 			
-			let tempeffect = new("StatusEffect");
+			let tempeffect = new("ActorInfo");
 			tempeffect.owner = thing;
 			tempeffect.damage = 0;
-			tempeffect.frozentimer = 0;
+			tempeffect.frozen = false;
 			tempeffect.burned = false;
 			tempeffect.paralyzed = false;
+			tempeffect.confused = false;
 			tempeffect.dead = false;
 			tempeffect.prevPainValue = thing.painchance;
 			tempeffect.prevTicValue = 0;
 			
-			tracker.Effects.push(tempeffect);
+			tracker.Infolist.push(tempeffect);
 			
 			index = tracker.Actors.find(thing);
 		}
-		StatusEffect effect = tracker.Effects[index];
+		ActorInfo info = tracker.Infolist[index];
 		
-		effect.damage += Damage;
+		info.damage += Damage;
 		
-		if (Status & FROZEN) 
+		//One status effect at a time
+		if (info.frozen || info.burned || info.paralyzed || info.confused) 
 		{
-			if (effect.frozentimer == 0) {
-				effect.frozentimer = 35 * 5;
-				effect.owner.painchance = 0;
+			
+		}
+		else
+		{
+			if (Status & FROZEN) 
+			{
+				if (!info.frozen) {
+					thing.tics = 9999999; //actor won't thaw if set to -1
+					info.frozen = true;
+					info.owner.painchance = 0;
+					info.effect = Actor.spawn("StatusEffect");
+					float scale = thing.radius / 28;
+					info.effect.A_SetScale(scale, scale);
+					info.effect.SetStateLabel("Frozen");
+					info.effect.target = thing;
+				}
 			}
-		}
-		if (Status & BURNED)
-		{
-			if (!effect.burned) effect.burned = true;
-		}
-		if (Status & PARALYZED)
-		{
-			if (!effect.paralyzed) effect.paralyzed = true;
+			if (Status & BURNED)
+			{
+				if (!info.burned) {
+					info.burned = true;
+					info.effect = Actor.spawn("StatusEffect");
+					float scale = thing.radius / 15;
+					info.effect.A_SetScale(scale * -1, scale);
+					info.effect.SetStateLabel("Burned");
+					info.effect.target = thing;
+					thing.damagemobj(players[consoleplayer].mo, players[consoleplayer].mo, int(thing.spawnhealth() / 16), "Fire");
+				}
+			}
+			if (Status & PARALYZED)
+			{
+				if (!info.paralyzed) info.paralyzed = true;
+			}
 		}
 	}
 	
-	static StatusEffect getActorStats(Actor thing)
+	static ActorInfo getActorStats(Actor thing)
 	{
 		let tracker = ActorTrackerThinker.get();
 		if (!tracker) return null;
 	
 		if (tracker.Actors.find(thing) == tracker.Actors.Size()) return null;
-		else return tracker.Effects[tracker.Actors.find(thing)];
+		else return tracker.Infolist[tracker.Actors.find(thing)];
 	}
 	
 	override void WorldTick()
@@ -106,56 +131,63 @@ Class ActorTracker : EventHandler
 		let tracker = ActorTrackerThinker.get();
 		if (!tracker) return;
 	
-		for (int i = 0; i < tracker.Effects.size(); ++i)
+		for (int i = 0; i < tracker.Infolist.size(); ++i)
 		{
-			StatusEffect effect = tracker.Effects[i];
+			ActorInfo info = tracker.Infolist[i];
 			
-			if (effect.dead) continue;
+			if (info.dead) continue;
 			
-			Actor thing = effect.owner;
+			Actor thing = info.owner;
 			if (thing.health <= 0 || thing.tics <= -1)
 			{
-				effect.dead = true;
+				info.dead = true;
 				
-				if (effect.frozentimer > 0) thing.bIceCorpse = true;
+				if (info.frozen) thing.bIceCorpse = true;
 				
 				//force extra dead effect here just to make sure the actor
-				//doesn't show unwanted effects
+				//doesn't show unwanted Infolist
 				continue;
 			}
 			
-			if (effect.frozenTimer > 0) 
+			if (info.frozen) 
 			{
-				thing.tics = effect.frozenTimer;
-				thing.A_SetRenderStyle(0.1, STYLE_STENCIL);
-				thing.setShade("c2e0f9");
-				effect.frozenTimer -= 1;
-				if (effect.frozentimer == 0) {
-					thing.setStateLabel("See");
-					thing.A_SetRenderStyle(1, STYLE_Normal);
-					thing.painchance = effect.prevPainValue;
+			
+				if (gametic % (35 * 2) == 0)
+				{
+					int rng = random(1, 100);
+					if (rng <= 25) {
+						info.frozen = false;
+						if (thing.health > 0) thing.setStateLabel("See");
+						info.effect.destroy();
+					} else {
+					
+					}
 				}
 			}
 			
-			if (effect.burned) 
+			if (info.burned) 
 			{
 				if (gametic % (35 * 2) == 0)
 				{
-					thing.damagemobj(players[consoleplayer].mo, players[consoleplayer].mo, int(thing.spawnhealth() / 16), "Fire");
-					thing.SetStateLabel("Pain");
-					
 					int rng = random(1, 100);
-					if (rng <= 25) effect.burned = false;
+					if (rng <= 25) {
+						info.burned = false;
+						info.effect.Destroy();
+					} else {	
+						thing.damagemobj(players[consoleplayer].mo, players[consoleplayer].mo, int(thing.spawnhealth() / 16), "Fire");
+						if (thing.health > 0) thing.SetStateLabel("Pain");
+						info.effect.SetStateLabel("Burned");
+					}
 				}
 			}
 			
-			if (effect.paralyzed)
+			if (info.paralyzed)
 			{
-				if (effect.prevTicValue < thing.tics)
+				if (info.prevTicValue < thing.tics)
 				{
 					thing.tics *= 2;
 				}
-				effect.prevTicValue = thing.tics;
+				info.prevTicValue = thing.tics;
 			}
 		}
 	}

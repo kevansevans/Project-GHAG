@@ -84,11 +84,6 @@ Class GHAGEventHandler : EventHandler
 		}*/
 	}
 	
-	override void ConsoleProcess(ConsoleEvent event)
-	{
-		console.printf("HAHAHAHA");
-	}
-	
 	override void WorldLinePreActivated (WorldEvent event) 
 	{
 		if (!gardie) return;

@@ -39,10 +39,7 @@ Class Gardevoir : PlayerPawn
 	void subtractAnger(Int value)
 	{
 		RageValue -= value;
-		if (!charonmode)
-		{
-			if (RageValue < 0) RageValue = 0;
-		}
+		if (RageValue < 0) RageValue = 0;
 	}
 	
 	void CatharsisBonus(Actor thing) 

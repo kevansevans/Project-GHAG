@@ -69,8 +69,7 @@ Class Gardevoir : PlayerPawn
 		
 		int willBonus = int(AngerBonus / 10);
 		if (willBonus > 0) {
-			self.health += int(willBonus * 2);
-			if (self.health > 500) self.health = 500;
+			self.GiveBody(willBonus, 500);
 		}
 	}
 	

@@ -11,9 +11,15 @@ Class StatusEffect : Actor
 	
 		if (target) {
 		
-			Vector3 follow = target.pos;
-			SetXYZ(follow);
+			if (target.health <= 0) {
+				Self.destroy();
+			} else {
+				Vector3 follow = target.pos;
+				SetXYZ(follow);
+			}
 
+		} else {
+			Self.destroy();
 		}
 		
 		Super.tick();

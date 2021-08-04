@@ -145,6 +145,7 @@ Class ActorTracker : EventHandler
 			if (info.dead) continue;
 			
 			Actor thing = info.owner;
+			if (!thing) return;
 			if (thing.health <= 0 || thing.tics <= -1)
 			{
 				info.dead = true;

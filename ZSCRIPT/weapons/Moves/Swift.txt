@@ -11,6 +11,12 @@ Class Swift : Weapon
 		return true;
 	}
 	
+	override void DoEffect()
+	{
+		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
+		super.DoEffect();
+	}
+	
 	states 
 	{
 		Select :

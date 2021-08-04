@@ -60,6 +60,12 @@ Class GHAGRocketLauncher : RocketLauncher
 		Weapon.SlotNumber 5;
 		Tag "Explodey";
 	}
+	
+	override void DoEffect()
+	{
+		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
+		super.DoEffect();
+	}
 
 	States {
 		Ready:

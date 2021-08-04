@@ -6,6 +6,12 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 		Tag "Winchester 1912 Shotgun";
 	}
 	
+	override void DoEffect()
+	{
+		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
+		super.DoEffect();
+	}
+	
 	States
 	{
 		Select :

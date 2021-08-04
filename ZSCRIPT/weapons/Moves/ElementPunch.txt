@@ -35,6 +35,12 @@ Class ElementPunch : Weapon
 		Tag "Mega Punch";
 	}
 	
+	override void DoEffect()
+	{
+		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
+		super.DoEffect();
+	}
+	
 	Action void A_CyclePunchMode()
 	{
 		Gardevoir(self).PunchMode = (Gardevoir(self).PunchMode + 1) % 4;
@@ -469,7 +475,7 @@ Class BasePunchPuff : BulletPuff
 	{
 		int rng = random(1, 100);
 		if (rng <= odds) {
-			if (target) {
+			if (target && !target.bMissile) {
 				ActorTracker.TrackThing(target, Status);
 			}
 		}

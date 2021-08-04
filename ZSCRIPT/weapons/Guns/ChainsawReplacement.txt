@@ -5,6 +5,12 @@ Class GHAGSawBlade : Chainsaw replaces Chainsaw
 		Weapon.SlotNumber 1;
 		Tag "Saw Blade";
 	}
+	
+	override void DoEffect()
+	{
+		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
+		super.DoEffect();
+	}
 
 	States
 	{

@@ -4,6 +4,13 @@ Class GHAGPlasmaRifle : PlasmaRifle replaces PlasmaRifle
 		Weapon.SlotNumber 6;
 		Tag "Generic Energy Weapon";
 	}
+	
+	override void DoEffect()
+	{
+		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
+		super.DoEffect();
+	}
+	
 	States
 	{
 		Select:

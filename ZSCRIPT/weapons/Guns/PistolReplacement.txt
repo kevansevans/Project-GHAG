@@ -69,9 +69,11 @@ Class GHAGPistol : Pistol replaces Pistol
 		Fire.Overlay:
 			PIST B 3 Bright A_SetTics(Gardevoir(self).GetTicModifier(3));
 		Select.Overlay:
-			PIST A 1 A_Raise();
+			PIST A 1;
+			loop;
 		Deselect.Overlay:
-			PIST A 1 A_Raise();
+			PIST A 1;
+			loop;
 		Ready.Overlay:
 			PIST A 1;
 			loop;

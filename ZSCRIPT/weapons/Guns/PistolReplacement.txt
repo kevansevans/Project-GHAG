@@ -11,44 +11,69 @@ Class GHAGPistol : Pistol replaces Pistol
 		Weapon.SlotNumber 2;
 		Tag "9mm Pistol";
 	}
+	
+	override void DoEffect()
+	{
+		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
+		super.DoEffect();
+	}
 
 	states
 	{
 		Ready:
-			PIST A 1 A_WeaponReady;
+			HAND A 1 {
+				A_WeaponReady();
+				A_Overlay(-1, "Ready.Overlay", true);
+				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+			}
 			Loop;
 		Deselect:
-			PIST A 1 A_Lower;
+			HAND A 1 {
+				A_Lower();
+				A_Overlay(-1, "Deselect.Overlay", false);
+				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+			}
 			Loop;
 		Select:
-			PIST A 1 A_Raise;
+			HAND A 1 {
+				A_Raise();
+				A_Overlay(-1, "Select.Overlay", false);
+				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+			}
 			Loop;
 		Fire:
-			PIST AB 3 Offset(2, 38) {
+			HAND AB 3 {
 				A_SetTics(Gardevoir(self).GetTicModifier(3, true));
 			}
-			PIST C 3 Offset(4, 42){
-				A_SetTics(Gardevoir(self).GetTicModifier(3, true));
+			HAND C 3 {
+				A_SetTics(Gardevoir(self).GetTicModifier(3, false));
 			}
-			PIST D 3 Offset(4, 42) {
+			HAND D 3 {
 				A_FireBullets(Gardevoir(self).GetAccuracyModifier(5.6), Gardevoir(self).GetAccuracyModifier(5.6), 1, 8, "BulletPuff");
 				A_StartSound("weapons/pistol", CHAN_WEAPON);
-				A_SetTics(Gardevoir(self).GetTicModifier(3, true));
+				A_SetTics(Gardevoir(self).GetTicModifier(3));
 				A_GunFlash();
+				A_Overlay(-1, "Fire.Overlay", false);
+				A_OverlayFlags(-1, PSPF_ADDBOB, false);
 			}
-			PIST EF 1 Offset(2, 39) {
-				Gardevoir(self).GetTicModifier(1, true);
-			}
-			PIST G 5
+			HAND EF 1 A_SetTics(Gardevoir(self).GetTicModifier(1, true));
+			HAND G 5
 			{
-				A_SetTics(Gardevoir(self).GetTicModifier(5));
+				A_SetTics(Gardevoir(self).GetTicModifier(5, true));
 				A_ReFire();
 			}
 			Goto Ready;
-		Flash :
-			PISF A 3 Bright {
-				A_SetTics(Gardevoir(self).GetTicModifier(3));
-			}
-			GoTo LightDone;
+		Flash:
+			TNT1 A 0;
+			Goto LightDone;
+		Fire.Overlay:
+			PIST B 3 Bright A_SetTics(Gardevoir(self).GetTicModifier(3));
+		Select.Overlay:
+			PIST A 1 A_Raise();
+		Deselect.Overlay:
+			PIST A 1 A_Raise();
+		Ready.Overlay:
+			PIST A 1;
+			loop;
 	}
 }

@@ -33,13 +33,14 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 				A_WeaponReady(WRF_ALLOWRELOAD);
 				A_Overlay(-1, "Ready.Overlay", false);
 				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayOffset(-1, sin(gametic), cos(gametic), WOF_ADD | WOF_INTERPOLATE);
 			}
 			Loop;
 		Fire :
 			HAND A 3 {
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
 				A_Overlay(-1, "Deselect.Overlay", false);
+				A_OverlayFlags(-1, PSPF_ADDBOB, false);
 			}
 			HAND B 2 Bright {
 				if (CountInv("Shell") != 0) A_GiveInventory("Shell");

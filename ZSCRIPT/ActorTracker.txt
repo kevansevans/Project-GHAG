@@ -51,6 +51,8 @@ Class ActorTracker : EventHandler
 {
 	static void TrackThing(Actor thing, StatusType Status, int Damage = 0) 
 	{
+		if (!thing) return;
+	
 		let tracker = ActorTrackerThinker.get();
 		if (!tracker) return;
 	
@@ -107,7 +109,10 @@ Class ActorTracker : EventHandler
 					info.effect.A_SetScale(scale * -1, scale);
 					info.effect.SetStateLabel("Burned");
 					info.effect.target = thing;
-					thing.damagemobj(players[consoleplayer].mo, players[consoleplayer].mo, int(thing.spawnhealth() / 16), "Fire");
+					if (thing.health > 0) {
+						thing.setStateLabel("Pain");
+						thing.damagemobj(players[consoleplayer].mo, players[consoleplayer].mo, int(thing.spawnhealth() / 16), "Fire");
+					}
 				}
 			}
 			if (Status & PARALYZED)
@@ -119,6 +124,10 @@ Class ActorTracker : EventHandler
 					info.effect.A_SetScale(scale, scale);
 					info.effect.SetStateLabel("Paralyzed");
 					info.effect.target = thing;
+					if (thing.health > 0) {
+						thing.setStateLabel("Pain");
+						thing.tics *= 2;
+					}
 				}
 			}
 		}
@@ -163,7 +172,7 @@ Class ActorTracker : EventHandler
 				if (gametic % (35 * 2) == 0)
 				{
 					int rng = random(1, 100);
-					if (rng <= 25) {
+					if (rng <= 10) {
 						info.frozen = false;
 						if (thing.health > 0) thing.setStateLabel("See");
 						info.effect.destroy();
@@ -178,7 +187,7 @@ Class ActorTracker : EventHandler
 				if (gametic % (35 * 2) == 0)
 				{
 					int rng = random(1, 100);
-					if (rng <= 25) {
+					if (rng <= 10) {
 						info.burned = false;
 						info.effect.Destroy();
 					} else {	
@@ -200,11 +209,15 @@ Class ActorTracker : EventHandler
 				if (gametic % (35 * 2) == 0)
 				{
 					int rng = random(1, 100);
-					if (rng <= 25) {
+					if (rng <= 10) {
 						info.paralyzed = false;
 						info.effect.destroy();
 					} else {
 						info.effect.SetStateLabel("Paralyzed");
+						if (thing.health > 0) {
+							thing.setStateLabel("Pain");
+							thing.tics *= 2;
+						}
 					}
 				}
 			}

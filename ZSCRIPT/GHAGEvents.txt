@@ -64,6 +64,12 @@ Class GHAGEventHandler : EventHandler
 					punchodds.resetToDefault();
 				}
 			}
+			
+			/*cvar charon = Cvar.findCvar("ghagcharon");
+			if (charon) {
+				bool mode = charon.getBool();
+				Gardie.charonmode = mode;
+			}*/
 		}
 	}
 	

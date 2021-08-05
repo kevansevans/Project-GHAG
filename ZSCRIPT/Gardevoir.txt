@@ -6,6 +6,8 @@ Class Gardevoir : PlayerPawn
 	int RageValue;
 	
 	bool OverTheEdge;
+	bool charonmode;
+	//property charonmode: charonmode;
 	
 	int PunchMode;
 	property PunchMode: PunchMode;
@@ -24,6 +26,7 @@ Class Gardevoir : PlayerPawn
 		RageConstant = 1000;
 		
 		OverTheEdge = false;
+		charonmode = false;
 		
 		PunchMode = 0;
 	}
@@ -38,6 +41,8 @@ Class Gardevoir : PlayerPawn
 	
 	void subtractAnger(Int value)
 	{
+		if (OverTheEdge) return;
+		
 		RageValue -= value;
 		if (RageValue < 0) RageValue = 0;
 	}
@@ -62,7 +67,6 @@ Class Gardevoir : PlayerPawn
 			} else {
 				if (!OverTheEdge) {
 					RageValue += angerBonus;
-					OverTheEdge = true;
 				}
 			}
 		}
@@ -71,18 +75,15 @@ Class Gardevoir : PlayerPawn
 		if (willBonus > 0) {
 			self.GiveBody(willBonus, 500);
 		}
-	}
-	
-	void GetHeckingAngery() 
-	{
-		RageValue += 20;
-		RageTimer = 0;
-		return;
+		
+		if (OverTheEdge) {
+			RageDelay += 1;
+		}
 	}
 	
 	void GetLivid()
 	{
-		RageValue += 500;
+		RageValue += 750;
 	}
 	
 	double GetRageValue() {
@@ -135,25 +136,29 @@ Class Gardevoir : PlayerPawn
 		
 		RageTimer++;
 		
-		if (OverTheEdge && RageValue <= RageConstant) OverTheEdge = false;
+		if (RageValue > 1000) OverTheEdge = true;
+		else if (RageValue <= RageConstant) OverTheEdge = false;
 		
-		if (RageValue > 0 && RageValue <= RageConstant) {
-			int delay = 35 * GetRageModifier();
-			if (RageTimer > RageDelay) {
-				RageValue--;
-				RageDelay -= 2;
-				if (RageDelay < 35) RageDelay = 35;
-				RageTimer = 0;
-			}
-		} else if (RageValue > RageConstant) {
-			int angercap = RageValue / RageConstant;
-			if (RageTimer > 5) {
-				RageValue -= (2 * angercap);
-				RageTimer = 0;
-			}
+		int bonusdelay = 0;
+		if (!overTheEdge) 
+		{
+			bonusDelay = int(RageDelay / 35);
+		} 
+		else if (OverTheEdge)
+		{
+			bonusDelay = int(RageDelay / 10);
 		}
 		
-		//A_Print("" .. RageValue .. ":" .. GetRageModifier());
+		if (RageTimer >= (35 + (overTheEdge ? -10 : bonusdelay)) && !charonmode) 
+		{
+			RageValue -= 5;
+			if (RageValue < 0) RageValue = 0;
+			RageTimer = 0;
+			RageDelay -= 1;
+		} 
+		else if (charonmode) {
+			RageValue = -999999;
+		}
 	}	
 	
 	default {

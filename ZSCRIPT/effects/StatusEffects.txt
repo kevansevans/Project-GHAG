@@ -14,8 +14,7 @@ Class StatusEffect : Actor
 			if (target.health <= 0) {
 				Self.destroy();
 			} else {
-				Vector3 follow = target.pos;
-				SetXYZ(follow);
+				SetOrigin(target.pos, false);
 			}
 
 		} else {

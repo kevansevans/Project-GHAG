@@ -347,7 +347,7 @@ Class ElementPunch : Weapon
 		Fire :
 			#### # 2 {
 			
-				Gardevoir(self).subtractAnger(10);
+				Gardevoir(self).subtractAnger(20);
 			
 				switch (Gardevoir(self).PunchMode) {
 					case 0:

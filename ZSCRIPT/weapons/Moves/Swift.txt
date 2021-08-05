@@ -40,7 +40,7 @@ Class Swift : Weapon
 					--count;
 				}
 				
-				Gardevoir(self).subtractAnger(5);
+				Gardevoir(self).subtractAnger(12);
 				
 			}
 			SWFT FGHIJKL 2 A_SetTics(Gardevoir(self).GetTicModifier(2));

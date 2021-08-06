@@ -29,8 +29,13 @@ Class GHAGBackpack : Backpack replaces Backpack
 
 				if (ammoitem && ammoitem.GetParentAmmo() == ammoitem.GetClass())
 				{
-					ammoItem.MaxAmount = ammoitem.MaxAmount * 1.5;
-					amount *= 0.01;
+					int prevAmount = ammoItem.MaxAmount;
+					int newAmount = ammoItem.MaxAmount * 1.5;
+					if (newAmount < prevAmount) {
+						ammoItem.MaxAmount = 0x7FFFFFFF;
+					} else {
+						ammoItem.MaxAmount = ammoitem.MaxAmount * 1.5;
+					}
 					if (ammoitem.Amount < ammoitem.MaxAmount || sv_unlimited_pickup)
 					{
 						int amount = ammoitem.Default.BackpackAmount;

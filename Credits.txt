@@ -45,6 +45,9 @@ Gen 2 move sprites, for elemental punches:
 https://www.spriters-resource.com/game_boy_gbc/pokemongoldsilver/sheet/9087/
 Fists were done in Flash, just added a glow with appropriate color
 
+Will-o-wisp fire sprites from Gen 3, for Rage Essence pickup:
+https://www.spriters-resource.com/fullview/3860/
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //Sounds
 ////////////////////////////////////////////////////////////////////////////////////////////////////

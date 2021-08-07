@@ -1,0 +1,40 @@
+Class RageEssence : CustomInventory
+{
+	default
+	{
+		Inventory.amount 10;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "Absorbed some Essence of Rage"
+		speed 5;
+	}
+	
+	override void Tick()
+	{
+		int rage = Gardevoir(players[consoleplayer].mo).GetRageValue();
+		if (rage >= 1000) self.bSpecial = false;
+		else {
+			self.bSpecial = true;
+			target = players[consoleplayer].mo;
+			if (Distance2D(players[consoleplayer].mo) <= 128) {
+				A_FaceTarget();
+				A_Weave(5, 5, 5, 5);
+				Thrust();
+			}
+		}
+		
+		super.tick();
+	}
+	
+	States {
+		Spawn :
+			WILL ABCD 4 Bright;
+			loop;
+			
+		Pickup :
+			TNT1 A 0
+			{
+				Gardevoir(players[consoleplayer].mo).addAnger(Invoker.amount);
+			}
+			stop;
+	}
+}

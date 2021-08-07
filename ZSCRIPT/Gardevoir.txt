@@ -49,6 +49,14 @@ Class Gardevoir : PlayerPawn
 		if (RageValue < 0) RageValue = 0;
 	}
 	
+	void addAnger(Int value)
+	{
+		if (OverTheEdge) return;
+		
+		RageValue += value;
+		if (RageValue > RageConstant) RageValue = RageConstant;
+	}
+	
 	void CatharsisBonus(Actor thing) 
 	{
 		if (self.health <= 0) return;
@@ -63,14 +71,43 @@ Class Gardevoir : PlayerPawn
 		if (Player.ReadyWeapon is "ElementPunch" ||
 			Player.ReadyWeapon is "Swift") 
 		{ } else {
-			if (angerBonus <= 1000 && RageValue <= 1000) {
-				RageValue += Min(angerBonus, 250);
-				RageValue = Min(RageConstant, RageValue);
-			} else {
-				if (!OverTheEdge) {
-					RageValue += angerBonus;
+			
+			while (true) 
+			{
+				let rageitem = RageEssence(thing.A_DropItem("RageEssence", 1));
+				
+				if (angerbonus >= 1000) 
+				{
+					rageitem.amount = 500;
+					rageitem.A_SetScale(3, 3);
+					angerbonus -= 500;
+				} 
+				else if (angerbonus >= 500)
+				{
+					rageitem.amount = 250;
+					rageitem.A_SetScale(2, 2);
+					angerbonus -= 250;
+				}
+				else if (angerbonus >= 250)
+				{
+					rageitem.amount = 100;
+					rageitem.A_SetScale(1.5, 1.5);
+					angerbonus -= 100;
+				} 
+				else if (angerbonus >= 25)
+				{
+					rageitem.amount = 25;
+					rageitem.A_SetScale(1, 1);
+					angerbonus -= 25;
+				}
+				else if (angerbonus <= 25)
+				{
+					rageitem.amount = angerbonus;
+					rageitem.A_SetScale(0.5, 0.5);
+					break;
 				}
 			}
+			
 		}
 		
 		int willBonus = int(AngerBonus / 10);
@@ -89,7 +126,7 @@ Class Gardevoir : PlayerPawn
 		RageCooldownTics += 5;
 	}
 	
-	double GetRageValue() {
+	int GetRageValue() {
 		return RageValue;
 	}
 	
@@ -163,8 +200,6 @@ Class Gardevoir : PlayerPawn
 		else if (charonmode) {
 			RageValue = -999999;
 		}
-		
-		console.printf('' .. RageCooldownTics + (overTheEdge ? -10 : bonusdelay));
 	}	
 	
 	default {

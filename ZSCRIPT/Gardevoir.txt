@@ -4,6 +4,7 @@ Class Gardevoir : PlayerPawn
 	int RageDelay;
 	int RageConstant;
 	int RageValue;
+	int RageCooldownTics;
 	
 	bool OverTheEdge;
 	bool charonmode;
@@ -24,6 +25,7 @@ Class Gardevoir : PlayerPawn
 		RageDelay = 35 * 3;
 		Ragetimer = 0;
 		RageConstant = 1000;
+		RageCooldownTics = 35;
 		
 		OverTheEdge = false;
 		charonmode = false;
@@ -84,6 +86,7 @@ Class Gardevoir : PlayerPawn
 	void GetLivid()
 	{
 		RageValue += 750;
+		RageCooldownTics += 5;
 	}
 	
 	double GetRageValue() {
@@ -149,7 +152,7 @@ Class Gardevoir : PlayerPawn
 			bonusDelay = int(RageDelay / 10);
 		}
 		
-		if (RageTimer >= (35 + (overTheEdge ? -10 : bonusdelay)) && !charonmode) 
+		if (RageTimer >= (RageCooldownTics + (overTheEdge ? -10 : bonusdelay)) && !charonmode) 
 		{
 			RageValue -= 3;
 			if (RageValue < 0) RageValue = 0;
@@ -160,6 +163,8 @@ Class Gardevoir : PlayerPawn
 		else if (charonmode) {
 			RageValue = -999999;
 		}
+		
+		console.printf('' .. RageCooldownTics + (overTheEdge ? -10 : bonusdelay));
 	}	
 	
 	default {

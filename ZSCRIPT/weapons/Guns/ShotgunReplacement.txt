@@ -48,7 +48,7 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 				A_FireBullets(4, 4, floor(14 * Gardevoir(Self).GetRageModifier()), 5, "GHAGPsychicPuff");
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_SetTics(Gardevoir(self).GetTicModifier(2));
-				A_Overlay(-1, "Deselect.Overlay", false);
+				A_Overlay(-1, "Fire.Overlay", false);
 				A_OverlayFlags(-1, PSPF_ADDBOB, false);
 			}
 			HAND CCDDD 1 Bright
@@ -75,6 +75,9 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 		Ready.Overlay:
 			SHTG A 999;
 			stop;
+		Fire.Overlay:
+			SHTG G 999;
+			loop;
 		Pump.Overlay :
 			SHTG A 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
 			SHTG A 2 A_SetTics(Gardevoir(self).GetTicModifier(2));

@@ -4,7 +4,7 @@ Class RageEssence : CustomInventory
 	{
 		Inventory.amount 10;
 		Inventory.MaxAmount 1;
-		Inventory.PickupMessage "Absorbed some Essence of Rage"
+		Inventory.PickupMessage "Absorbed some Essence of Rage";
 		speed 5;
 	}
 	

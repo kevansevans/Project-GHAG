@@ -63,6 +63,7 @@ Class Gardevoir : PlayerPawn
 		if (!thing) return;
 		
 		int angerBonus = Max(int(thing.spawnHealth() / 5), 1);
+		int willBonus = int(AngerBonus / 10);
 		
 		if (ActorTracker.getActorStats(thing)) {
 			
@@ -119,9 +120,12 @@ Class Gardevoir : PlayerPawn
 			
 		}
 		
-		int willBonus = int(AngerBonus / 10);
 		if (willBonus > 0) {
-			self.GiveBody(willBonus, 500);
+			let healitem = HealEssence(thing.A_DropItem("HealEssence", 1));
+			healitem.amount = willBonus;
+			healitem.A_ChangeVelocity(random(-2, 2), random(-2, 2), random(-2, 2), CVF_REPLACE);
+			healitem.A_SetPitch(random(60, 80));
+			healitem.A_SetAngle(random(1, 360));
 		}
 		
 		if (OverTheEdge) {

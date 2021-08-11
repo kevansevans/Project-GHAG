@@ -1,0 +1,24 @@
+Class HealEssence : CustomInventory
+{
+	default
+	{
+		XScale 0.5;
+		YScale 0.5;
+		Inventory.PickupMessage "Absorbed some Essence of Health";
+	}
+	
+	States
+	{
+		Spawn:
+			SPRT ABCDEF 4 Bright;
+		Spawn.Bloom:
+			SPRT G -1 Bright;
+			stop;
+		Pickup:
+			TNT1 A 0
+			{
+				players[consoleplayer].mo.GiveBody(invoker.amount, 350);
+			}
+			stop;
+	}
+}

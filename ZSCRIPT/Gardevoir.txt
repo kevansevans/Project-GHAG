@@ -75,6 +75,9 @@ Class Gardevoir : PlayerPawn
 			while (true) 
 			{
 				let rageitem = RageEssence(thing.A_DropItem("RageEssence", 1));
+				rageitem.A_ChangeVelocity(random(-2, 2), random(-2, 2), random(-2, 2), CVF_REPLACE);
+				rageitem.A_SetPitch(random(60, 80));
+				rageitem.A_SetAngle(random(1, 360));
 				
 				if (angerbonus >= 1000) 
 				{
@@ -94,13 +97,19 @@ Class Gardevoir : PlayerPawn
 					rageitem.A_SetScale(1.5, 1.5);
 					angerbonus -= 100;
 				} 
-				else if (angerbonus >= 25)
+				else if (angerbonus >= 50)
 				{
-					rageitem.amount = 25;
+					rageitem.amount = 50;
 					rageitem.A_SetScale(1, 1);
-					angerbonus -= 25;
+					angerbonus -= 50;
 				}
-				else if (angerbonus <= 25)
+				else if (angerbonus >= 5)
+				{
+					rageitem.amount = 5;
+					rageitem.A_SetScale(0.5, 0.5);
+					angerbonus -= 5;
+				}
+				else if (angerbonus <= 5)
 				{
 					rageitem.amount = angerbonus;
 					rageitem.A_SetScale(0.5, 0.5);

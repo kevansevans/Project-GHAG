@@ -31,7 +31,7 @@ Class Swift : Weapon
 		Fire :
 			TNT1 A 0 
 			{
-				int count = Min(50, 10 * Gardevoir(self).getRageModifier());
+				int count = Min(50, 3 * Gardevoir(self).getRageModifier());
 				
 				A_StartSound("attack/SWFTATTK", CHAN_WEAPON);
 				A_FireProjectile("SwiftProjectile");
@@ -40,7 +40,7 @@ Class Swift : Weapon
 					--count;
 				}
 				
-				Gardevoir(self).subtractAnger(12);
+				Gardevoir(self).subtractAnger(10);
 				
 			}
 			SWFT FGHIJKL 2 A_SetTics(Gardevoir(self).GetTicModifier(2));
@@ -57,7 +57,6 @@ Class SwiftProjectile : Actor
 		Radius 10;
 		Height 10;
 		Speed 40;
-		Damage 40;
 		Projectile;
 		Scale 0.75;
 		+NoExtremeDeath;
@@ -70,7 +69,7 @@ Class SwiftProjectile : Actor
 	{
 		super.BeginPlay();
 		
-		Self.setDamage(max(2, 4 * (10 * Gardevoir(players[consoleplayer].mo).getRageModifier())));
+		Self.setDamage(max(2, 20 * Gardevoir(players[consoleplayer].mo).getRageModifier()));
 	}
 	
 	States 
@@ -101,7 +100,7 @@ Class SwiftProjectileSeeker : SwiftProjectile
 			SWFP ABCDEFGH 2 Bright
 			{
 				A_Weave(1, 1, 2, 2);
-				A_SeekerMissile(0, 90, SMF_LOOK | SMF_PRECISE, 256, 10);
+				A_SeekerMissile(0, 15, SMF_LOOK | SMF_PRECISE, 256, 10);
 			}
 			Loop;
 	}

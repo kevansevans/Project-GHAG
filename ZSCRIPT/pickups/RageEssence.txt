@@ -27,7 +27,9 @@ Class RageEssence : CustomInventory
 	
 	States {
 		Spawn :
-			WILL ABCD 4 Bright;
+			WILL A 4 NoDelay A_SetTics(random(1, 16));
+		Spawn.Loop :
+			WILL BCDA 4 Bright;
 			loop;
 			
 		Pickup :

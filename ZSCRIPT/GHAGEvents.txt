@@ -102,4 +102,19 @@ Class GHAGEventHandler : EventHandler
 			if (Gardie.RageValue <= 0) Gardie.RageValue = 0;
 		}
 	}
+	
+	override void WorldLoaded(WorldEvent event)
+	{
+		for (int i = 0; i < level.Sectors.Size(); i++)
+		{
+			if (level.sectors[i].isSecret())
+			{
+				let c = level.Sectors[i].centerspot;
+				if (level.IsPointInMap((c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c))))
+				{
+					Actor.Spawn("RageCandyBar", (c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c)));
+				}
+			}
+		}
+	}
 }

@@ -11,6 +11,7 @@ version "4.6"
 #include "ZSCRIPT/pickups/BackpackReplacement.txt"
 #include "ZSCRIPT/pickups/RageEssence.txt"
 #include "ZSCRIPT/pickups/HealEssence.txt"
+#include "ZSCRIPT/pickups/RageCandyBar.txt"
 #include "ZSCRIPT/pickups/powerupTweaks.txt"
 
 //Guns, guns, and more guns.

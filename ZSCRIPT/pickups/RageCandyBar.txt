@@ -1,0 +1,25 @@
+Class RageCandyBar : CustomInventory
+{
+	default
+	{
+		XScale 0.15;
+		YScale 0.15;
+		+Floatbob;
+		Inventory.PickupMessage "Ate a Rage Candy Bar! You feel your capacity for destruction increase!";
+	}
+
+	states
+	{
+		Spawn:
+			RAGE A 1;
+			Loop;
+		Pickup:
+			TNT1 A 0
+			{
+			
+				Gardevoir(players[consoleplayer].mo).IncreaseAngerRange(20);
+			
+			}
+			stop;
+	}
+}

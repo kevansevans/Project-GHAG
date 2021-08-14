@@ -3,7 +3,14 @@ Class GHAGMegasphere : Megasphere replaces Megasphere
 	states 
 	{
 		Pickup:
-			TNT1 A 0 A_GiveInventory("Soulsphere", 1);
-			goto Super::Pickup;
+			TNT1 A 0 {
+				
+				for (int i; i <= 3; ++i) {
+					let sphere = Soulsphere(self.spawn("SoulSPhere"));
+					sphere.MaxAmount = 350;
+					sphere.touch(players[consoleplayer].mo);
+				}
+				A_GiveInventory("BlueArmor");
+			}
 	}
 }

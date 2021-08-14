@@ -4,6 +4,7 @@ Enum StatusType
 	FROZEN = 1,
 	BURNED = 2,
 	PARALYZED = 4,
+	SHINY = 8,
 }
 
 Class ActorInfo : Object
@@ -18,6 +19,7 @@ Class ActorInfo : Object
 	bool Paralyzed;
 	bool confused;
 	bool dead;
+	bool shiny;
 }
 
 Class ActorTrackerThinker : Thinker
@@ -71,6 +73,7 @@ Class ActorTracker : EventHandler
 			tempeffect.dead = false;
 			tempeffect.prevPainValue = thing.painchance;
 			tempeffect.prevTicValue = 0;
+			tempeffect.shiny = Status & SHINY;
 			
 			tracker.Infolist.push(tempeffect);
 			

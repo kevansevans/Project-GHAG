@@ -23,6 +23,125 @@ Class GHAGEventHandler : EventHandler
 			}
 			return;
 		}
+										//Nazis don't get to be shiny
+		if (Actor(thing).bIsMonster && !WolfensteinSS(thing))
+		{
+			int rng = random(1, 4096);
+			if (rng == 2048) 
+			{
+				SetShinyDemon(thing);
+			}
+			else
+			{
+				thing.damagemobj(thing, thing, 999999, 'melee');
+			}
+		}
+	}
+	
+	void SetShinyDemon(Actor thing)
+	{
+		let shinything = Actor(thing);
+		if (!shinything) return;
+		
+		ActorTracker.TrackThing(thing, SHINY);
+		
+		if (Zombieman(shinything)) 
+		{
+			shinything.A_SetTranslation("ShinyZombie");
+			return;
+		}
+		
+		if (ShotgunGuy(shinything))
+		{
+			shinything.A_SetTranslation("ShinyShotgun");
+			return;
+		}
+		
+		if (ChaingunGuy(shinything))
+		{
+			shinything.A_SetTranslation("ShinyChaingun");
+			return;
+		}
+		
+		if (DoomImp(shinything))
+		{
+			shinything.A_SetTranslation("ShinyImp");
+			return;
+		}
+		
+		if (Demon(shinything)) 
+		{
+			shinything.A_SetTranslation("ShinyDemon");
+			return;
+		}
+				
+		if (HellKnight(shinything))
+		{
+			shinything.A_SetTranslation("ShinyKnight");
+			return;
+		}
+		
+		if (BaronOfHell(shinything))
+		{
+			shinything.A_SetTranslation("ShinyBaron");
+			return;
+		}
+		
+		if (Arachnotron(shinything))
+		{
+			shinything.A_SetTranslation("ShinySpidey");
+			return;
+		}
+		
+		if (Revenant(shinything))
+		{
+			shinything.A_SetTranslation("ShinyBoner");
+			return;
+		}
+		
+		if (Cacodemon(shinything))
+		{
+			shinything.A_SetTranslation("ShinyCaco");
+			return;
+		}
+		
+		if (LostSoul(shinything))
+		{
+			shinything.A_SetTranslation("ShinySoul");
+			return;
+		}
+		
+		if (PainElemental(shinything))
+		{
+			shinything.A_SetTranslation("ShinyPain");
+			return;
+		}
+		
+		if (Fatso(shinything))
+		{
+			shinything.A_SetTranslation("ShinyFatty");
+			return;
+		}
+		
+		if (Archvile(shinything))
+		{
+			shinything.A_SetTranslation("ShinyVile");
+			return;
+		}
+		
+		if (Cyberdemon(shinything))
+		{
+			shinything.A_SetTranslation("ShinyCybie");
+			return;
+		}
+		
+		if (SpiderMasterMind(shinything))
+		{
+			shinything.A_SetTranslation("ShinyMomma");
+			return;
+		}
+		
+		
 	}
 
 	//Killing an enemy will reset the anger delay timer.

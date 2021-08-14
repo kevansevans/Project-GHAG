@@ -43,7 +43,7 @@ Class GHAGStatus : BaseStatusBar
 			DrawBar("angbar", "hparmbg", Min(Gardie.health, 350), 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 		}
 		DrawBar("armbar", "hparmbg", GetArmorAmount(), 200, (86, v_height - 82), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		DrawBar("angbar", "hparmbg", Gardie.RageValue, 1000, (86, v_height - 19), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+		DrawBar("angbar", "hparmbg", Gardie.RageValue, Gardie.RageConstant, (86, v_height - 19), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 		DrawImage("BATTLHUD", (5, v_height - 110), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 		
 		DrawString(pokefont, Gardie.player.ReadyWeapon.GetTag(), (30, v_height - 140),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, Font.CR_UNTRANSLATED, 1, -1, 4, (xy_scale, xy_scale));
@@ -132,7 +132,7 @@ Class GHAGStatus : BaseStatusBar
 		let gardie = Gardevoir(CPlayer.mo);
 		if (!gardie) return "I'm so angry, I simply do not exist!";
 		
-		int anger = Gardie.RageValue / 100;
+		int anger = Gardie.RageValue / (Gardie.RageConstant / 10);
 		if (anger < 0) return "your turn will come....";
 		if (anger > 10) return "HELL HATH NO FURY";
 		switch (anger) {

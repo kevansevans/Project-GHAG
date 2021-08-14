@@ -20,7 +20,6 @@ Class Gardevoir : PlayerPawn
 	{
 		Super.BeginPlay();
 		
-		
 		RageValue = 0;
 		RageDelay = 35 * 3;
 		Ragetimer = 0;
@@ -55,6 +54,11 @@ Class Gardevoir : PlayerPawn
 		
 		RageValue += value;
 		if (RageValue > RageConstant) RageValue = RageConstant;
+	}
+	
+	void IncreaseAngerRange(Int value)
+	{
+		RageConstant += value;
 	}
 	
 	void CatharsisBonus(Actor thing) 
@@ -189,17 +193,20 @@ Class Gardevoir : PlayerPawn
 		
 		RageTimer++;
 		
-		if (RageValue > 1000) OverTheEdge = true;
+		if (RageValue > RageConstant) OverTheEdge = true;
 		else if (RageValue <= RageConstant) OverTheEdge = false;
 		
 		int bonusdelay = 0;
 		if (!overTheEdge) 
 		{
 			bonusDelay = int(RageDelay / 35);
+			self.bFrightening = false;
 		} 
 		else if (OverTheEdge)
 		{
 			bonusDelay = int(RageDelay / 10);
+			self.bFrightening = true;
+			
 		}
 		
 		if (RageTimer >= (RageCooldownTics + (overTheEdge ? -10 : bonusdelay)) && !charonmode) 

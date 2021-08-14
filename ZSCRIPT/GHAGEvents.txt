@@ -31,10 +31,6 @@ Class GHAGEventHandler : EventHandler
 			{
 				SetShinyDemon(thing);
 			}
-			else
-			{
-				thing.damagemobj(thing, thing, 999999, 'melee');
-			}
 		}
 	}
 	

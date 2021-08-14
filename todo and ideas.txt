@@ -2,11 +2,15 @@
 // To Do
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-- Status effect actors for freeze, paralyze, and burn
+- Rocket alt
+	- "smash" rocket like a can, grenade/mine
+	- Reload to place, right click to detonate
+	- Snapping finger animation
+	- Guranteed big boom
 
 - Confusion
 	- 25 percent chance to temporarily make actor friendly, aka "confused"
-	- 75 percent chance to unconfuse
+	- 25 percent chance to unconfuse
 	
 - Psybeam
 	- Concentrated beam of attack, costs a lot of rage
@@ -22,6 +26,10 @@
 	- Anything caught in range is dead
 	
 - Think of something better for the plasma rifle replacement
+	- Plasma balls have a chance of exploding enemies
+	- Explosions can inflict a status effect
+		- Costs 1 anger in this mode
+		- Regular mode that just does an explosion
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Polishing
@@ -31,10 +39,14 @@
 - Better sounds
 - Better hand sprites for attacks
 - Make attacks "crunchier"
+- XDeath for all enemies
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Brainstorming
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Pistol
+	- Akimbo
 
 Mega-evo mode
 	- Invincibility replacement?
@@ -49,9 +61,10 @@ Chainsaw:
 	
 Scanners attack
 
-	If killed with, head explodes. Stuns enemy while dealing damage
+	- Drains anger to perform a guranteed AOE kill
+	- More anger = greater range
 	
-Psychhic push
+Psychic push
 
 	- Direction dependedt
 	- One medium AOE that repells all directions

@@ -200,13 +200,10 @@ Class Gardevoir : PlayerPawn
 		if (!overTheEdge) 
 		{
 			bonusDelay = int(RageDelay / 35);
-			self.bFrightening = false;
 		} 
 		else if (OverTheEdge)
 		{
 			bonusDelay = int(RageDelay / 10);
-			self.bFrightening = true;
-			
 		}
 		
 		if (RageTimer >= (RageCooldownTics + (overTheEdge ? -10 : bonusdelay)) && !charonmode) 

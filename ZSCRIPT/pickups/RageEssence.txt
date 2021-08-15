@@ -11,7 +11,7 @@ Class RageEssence : CustomInventory
 	override void Tick()
 	{
 		int rage = Gardevoir(players[consoleplayer].mo).GetRageValue();
-		if (rage >= 1000) self.bSpecial = false;
+		if (rage >= Gardevoir(players[consoleplayer].mo).rageconstant) self.bSpecial = false;
 		else {
 			self.bSpecial = true;
 			target = players[consoleplayer].mo;

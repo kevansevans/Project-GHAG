@@ -21,6 +21,8 @@ Class GHAGStatus : BaseStatusBar
 		
 		scale = getHUDScale();
 		
+		if (scale.x == 0) return;
+		
 		v_width = Screen.getWidth() / (scale.x);
 		v_height = Screen.getHeight() / (scale.y);
 		
@@ -69,7 +71,7 @@ Class GHAGStatus : BaseStatusBar
 					Font.CR_UNTRANSLATED, 1, -1, 4,
 					(1.25, 1.25));
 					
-		if (Gardie.RageValue > 1000) {
+		if (Gardie.OverTheEdge) {
 			DrawString(pokefont,
 					GetAngerString(),
 					(23 + random(-5, 5), v_height - 60 + random(-5, 5)), 

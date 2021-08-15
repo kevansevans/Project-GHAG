@@ -5,7 +5,7 @@ Class RageCandyBar : CustomInventory
 		XScale 0.15;
 		YScale 0.15;
 		+Floatbob;
-		Inventory.PickupMessage "Ate a Rage Candy Bar! You feel your capacity for destruction increase!";
+		Inventory.PickupMessage "Ate a Rage Candy Bar! Max anger raised!";
 	}
 
 	states

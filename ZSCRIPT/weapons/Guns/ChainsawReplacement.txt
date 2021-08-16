@@ -150,9 +150,8 @@ Class SawBladeProjectile : Actor
 					A_SeekerMissile(0, 100, 0, 255);
 				} else {
 					attached = true;
-					pos_x = random(0, 3);
-					pos_y = random(0, 3);
-					pos_z = random(10, 20);
+					pos_x = pos_y = random(0, tracer.radius / 2);
+					pos_z = random(10, tracer.height);
 				}
 				if (attached)
 				{

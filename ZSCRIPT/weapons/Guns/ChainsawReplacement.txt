@@ -1,9 +1,13 @@
-Class GHAGSawBlade : Chainsaw replaces Chainsaw
+Class GHAGSawBlade : Weapon replaces Chainsaw
 {
 	Default
 	{
+		Tag "Torture Blade";
+		Inventory.PickupMessage "Time to give 'rip and tear' a new meaning.";
 		Weapon.SlotNumber 1;
-		Tag "Saw Blade";
+		Weapon.AmmoUse 1;
+		Weapon.AmmoGive 1;
+		Weapon.AmmoType "SawBladeAmmo";
 	}
 	
 	override void DoEffect()
@@ -11,24 +15,211 @@ Class GHAGSawBlade : Chainsaw replaces Chainsaw
 		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
 		super.DoEffect();
 	}
+	
+	override void BeginPlay()
+	{
+		self.bAmmo_Optional = true;
+		
+		super.BeginPlay();
+	}	
+	
+	action void A_FireSawBlade()
+	{
+		if (invoker.Ammo1.amount == 0) return;
+	
+		if (invoker.Ammo1.amount > Gardevoir(players[consoleplayer].mo).blades)
+		{
+			Gardevoir(players[consoleplayer].mo).blades = invoker.Ammo1.amount;
+		}
+	
+		FLineTraceData shot;
+		LineTrace(angle, 2048, pitch, 0, height - 12, 0, 0, shot);
+		if (shot.HitType == TRACE_HitActor)
+		{
+			if (shot.HitActor.bIsMonster && shot.HitActor.health > 0)
+			{
+				if (distance2D(Shot.hitActor) > 65) {
+					let _locBlade = SawBladeProjectile(SpawnPlayerMissile("SawBladeProjectile"));
+					if (_locBlade) {
+						_locBlade.tracer = shot.HitActor;
+						A_TakeInventory("SawBladeAmmo", 1);
+					}
+				} else {
+					A_Saw("weapons/sawful", "weapons/sawhit", 2, 'BulletPuff', SF_NOUSEAMMO);
+				}
+			}
+		}
+	}
 
 	States
 	{
 		Select :
-			SWBL ABCD 1 A_Raise();
+			HAND A 1 {
+				A_Raise();
+				A_ClearOverlays();
+				if (invoker.Ammo1.amount > 0) {
+					for (int i = 1; i < invoker.Ammo1.amount + 1; ++i) 
+					{
+						A_Overlay(-1 * i, "Blade.Overlay", true);
+						A_OverlayFlags(-1 * i, PSPF_ADDBOB, false);
+						A_OverlayOffset(-1 * i, (sin(gametic * random(-5, 5))) + (15 * i), (cos(gametic * random(-5, 5))), WOF_INTERPOLATE);
+					}
+				}
+			}
 			Loop;
 		Deselect :
-			SWBL ABCD 1 A_Lower();
+			HAND A 1 {
+				A_Lower();
+				A_ClearOverlays();
+				if (invoker.Ammo1.amount > 0) {
+					for (int i = 1; i < invoker.Ammo1.amount + 1; ++i) 
+					{
+						A_Overlay(-1 * i, "Blade.Overlay", true);
+						A_OverlayFlags(-1 * i, PSPF_ADDBOB, false);
+						A_OverlayOffset(-1 * i, (sin(gametic * random(-5, 5))) + (15 * i), (cos(gametic * random(-5, 5))), WOF_INTERPOLATE);
+					}
+				}
+			}
 			Loop;
 		Ready :
-			SWBL ABCD 1 A_WeaponReady();
+			HAND A 1 {
+				A_WeaponReady();
+				A_ClearOverlays();
+				if (invoker.Ammo1.amount > 0) {
+					for (int i = 1; i < invoker.Ammo1.amount + 1; ++i) 
+					{
+						A_Overlay(-1 * i, "Blade.Overlay", true);
+						A_OverlayFlags(-1 * i, PSPF_ADDBOB, false);
+						A_OverlayOffset(-1 * i, (sin(gametic * random(-5, 5))) + (15 * i), (cos(gametic * random(-5, 5))), WOF_INTERPOLATE);
+					}
+				}
+			}
 			loop;
 		Fire :
-			SWBL EFG 1;
-			SWBL H 1 A_Saw();
-			SWBL EFG 1;
-			SWBL H 1 A_Saw();
-			TNT1 A 0 A_Refire();
+			TNT1 A 0
+			{
+				A_ClearOverlays();
+				if (invoker.Ammo1.amount > 0) {
+					for (int i = 1; i < invoker.Ammo1.amount + 1; ++i) 
+					{
+						A_Overlay(-1 * i, "Blade.Overlay", true);
+						A_OverlayFlags(-1 * i, PSPF_ADDBOB, false);
+						A_OverlayOffset(-1 * i, (sin(gametic * random(-5, 5))) + (15 * i), (cos(gametic * random(-5, 5))), WOF_INTERPOLATE);
+					}
+				}
+			}
+			HAND J 2 Offset(-2, 0);
+			HAND J 2 Offset(2, 0);
+			TNT1 A 0 A_FireSawBlade();
+			TNT1 A 0 A_ReFire();
 			goto Ready;
+		Blade.Overlay :
+			SAWB ABCD 1;
+			stop;
+	}
+}
+
+Class SawBladeProjectile : Actor
+{
+	bool attached;
+	int lifespan;
+	float pos_x;
+	float pos_y;
+	float pos_z;
+	
+	default
+	{
+		XScale 0.75;
+		YScale 0.75;
+	}
+	
+	override void BeginPlay()
+	{
+		
+		lifespan = 5 + (10 * Gardevoir(players[consoleplayer].mo).GetRageModifier());
+		
+	}
+	
+	states
+	{
+		spawn:
+			SAWB EFGHI 1 
+			{
+				if (!tracer) return ResolveState('Death');
+				if (Distance3D(tracer) > 10 && attached) {
+					A_SeekerMissile(0, 100, 0, 255);
+				} else {
+					attached = true;
+					pos_x = random(0, 3);
+					pos_y = random(0, 3);
+					pos_z = random(10, 20);
+				}
+				if (attached)
+				{
+					if (tracer) {
+						Self.SetOrigin((Tracer.pos.x + pos_x + random(-1, 1), Tracer.pos.y + pos_y + random(-1, 1), Tracer.pos.z + pos_z + random(-1, 1)), true);
+					}
+				}
+				return resolveState(null);
+			}
+			TNT1 A 0 
+			{
+				if (!tracer) return ResolveState('Death');
+				if (attached)
+				{
+					tracer.damagemobj(self, Gardevoir(players[consoleplayer].mo), random() % 10 + 1, 'Melee');
+					--lifespan;
+					if (lifespan == 0 || !tracer) 
+					{
+						return ResolveState('Death');
+					}
+				}
+				return resolveState(null);
+			}
+			loop;
+		Death:
+			TNT1 A 1 SpawnPlayerMissile("SawBladeReturnal", 1);
+			stop;
+	}
+}
+
+Class SawBladeReturnal : Actor
+{
+	default
+	{
+		+NoClip;
+		+Missile;
+		Speed 10;
+	}
+	
+	override void Tick()
+	{
+		target = players[consoleplayer].mo;
+		self.Vel3DFromAngle(30, self.angle, self.pitch);
+		
+		if (Distance2D(target) <= 32) {
+			if (Gardevoir(players[consoleplayer].mo).getBladeCount() < Gardevoir(players[consoleplayer].mo).blades) target.A_GiveInventory("SawBladeAmmo", 1);
+			Self.Destroy();
+		}
+		
+		Super.Tick();
+	}
+	
+	states
+	{
+		Spawn:
+			SAWB EFGHI 1 {
+				A_FaceTarget();
+				A_Weave(2, 2, 2, 2);
+			}
+			Loop;
+	}
+}
+
+Class SawBladeAmmo : Ammo 
+{
+	default
+	{
+		Inventory.MaxAmount 2;
 	}
 }

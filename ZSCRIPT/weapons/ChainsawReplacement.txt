@@ -8,6 +8,7 @@ Class GHAGSawBlade : Weapon replaces Chainsaw
 		Weapon.AmmoUse 1;
 		Weapon.AmmoGive 1;
 		Weapon.AmmoType "SawBladeAmmo";
+		+FlatSprite;
 	}
 	
 	override void DoEffect()
@@ -53,6 +54,9 @@ Class GHAGSawBlade : Weapon replaces Chainsaw
 
 	States
 	{
+		Spawn:
+			SAWB J 1;
+			Loop;
 		Select :
 			HAND A 1 {
 				A_Raise();
@@ -123,6 +127,7 @@ Class SawBladeProjectile : Actor
 {
 	bool attached;
 	int lifespan;
+	int bloodscale;
 	float pos_x;
 	float pos_y;
 	float pos_z;
@@ -136,7 +141,7 @@ Class SawBladeProjectile : Actor
 	override void BeginPlay()
 	{
 		
-		lifespan = 5 + (10 * Gardevoir(players[consoleplayer].mo).GetRageModifier());
+		bloodscale = lifespan = 5 + (10 * Gardevoir(players[consoleplayer].mo).GetRageModifier());
 		
 	}
 	
@@ -150,7 +155,7 @@ Class SawBladeProjectile : Actor
 					A_SeekerMissile(0, 100, 0, 255);
 				} else {
 					attached = true;
-					pos_x = pos_y = random(0, tracer.radius / 2);
+					pos_x = pos_y = random(-(tracer.radius / 2), tracer.radius / 2);
 					pos_z = random(10, tracer.height);
 				}
 				if (attached)
@@ -166,7 +171,16 @@ Class SawBladeProjectile : Actor
 				if (!tracer) return ResolveState('Death');
 				if (attached)
 				{
-					tracer.damagemobj(self, Gardevoir(players[consoleplayer].mo), random() % 10 + 1, 'Melee');
+					int damage = random() % 10 + 1;
+					tracer.damagemobj(self, Gardevoir(players[consoleplayer].mo), damage, 'Melee');
+					for (int i = 0; i < bloodscale; ++ i) 
+					{
+						Vector3 bloodpos = invoker.pos;
+						bloodpos.x += random(-3, 3);
+						bloodpos.y += random(-3, 3);
+						bloodpos.z += random(-3, 3);
+						tracer.spawnblood(bloodpos, invoker.angle, damage);
+					}
 					--lifespan;
 					if (lifespan == 0 || !tracer) 
 					{

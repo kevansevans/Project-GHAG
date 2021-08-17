@@ -90,7 +90,8 @@ Class Gardevoir : PlayerPawn
 		}
 		
 		if (Player.ReadyWeapon is "ElementPunch" ||
-			Player.ReadyWeapon is "Swift") 
+			Player.ReadyWeapon is "Swift"		 ||
+			Player.ReadyWeapon is "MoonBlastGun") 
 		{ } else {
 			
 			while (true) 
@@ -241,6 +242,7 @@ Class Gardevoir : PlayerPawn
 		Player.StartItem "GHAGPistol";
 		Player.StartItem "ElementPunch";
 		Player.StartItem "Swift";
+		Player.StartItem "MoonBlastGun";
 		Player.StartItem "Clip", 50;
 		Player.MaxHealth 350;
      }

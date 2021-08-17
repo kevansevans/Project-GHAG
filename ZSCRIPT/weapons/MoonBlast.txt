@@ -1,0 +1,214 @@
+Class MoonBlastGun : Weapon
+{
+	Default
+	{
+		Weapon.SlotNumber 7;
+		Tag "Moon Blast";
+		+Weapon.NoAlert;
+	}
+	
+	States
+	{
+		Select :
+			HAND A 1 {
+				A_Raise();
+				A_Overlay(-1, "Moon.Overlay", false);
+				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayOffset(-1, sin(gametic), cos(gametic), WOF_ADD | WOF_INTERPOLATE);
+			}
+			Loop;
+		Deselect :
+			HAND A 1 {
+				A_Lower();
+				A_Overlay(-1, "Moon.Overlay", false);
+				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayOffset(-1, sin(gametic), cos(gametic), WOF_ADD | WOF_INTERPOLATE);
+			}
+			Loop;
+		Ready :
+			HAND A 1 {
+				A_WeaponReady();
+				A_Overlay(-1, "Moon.Overlay", false);
+				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayOffset(-1, sin(gametic), cos(gametic), WOF_ADD | WOF_INTERPOLATE);
+			}
+			Loop;
+		Fire :
+			TNT1 A 0 {
+				A_Overlay(-1, "Moon.Overlay", false);
+				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayOffset(-1, sin(gametic), cos(gametic), WOF_ADD | WOF_INTERPOLATE);
+			}
+			HAND A 1 A_JumpIf(A_MoonBlast(), "Fire.Boom");
+			TNT1 A 0 A_Refire();
+			goto Ready;
+		Fire.Boom :
+			TNT1 A 0 {
+				A_Overlay(-1, "Moon.Clear", false);
+				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayOffset(-1, sin(gametic), cos(gametic), WOF_ADD | WOF_INTERPOLATE);
+			}
+			HAND J 12 Offset(0, 5);
+			TNT1 A 0 A_Refire();
+			goto Ready;
+		Moon.Overlay:
+			MOON A 1;
+			Loop;
+		Moon.Clear:
+			TNT1 A 1;
+			Loop;
+	}
+	
+	Action bool A_MoonBlast()
+	{
+		let gardie = Gardevoir(players[consoleplayer].mo);
+		
+		if (gardie.ragevalue < 99) 
+		{
+			gardie.addAnger(1);
+			int rngrange = 20 * gardie.getRageModifier();
+			A_ClearOverlays();
+			A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
+			return false;
+		}
+		else 
+		{
+			A_StartSound("attack/MOONBOOM", CHAN_BODY, 0, 1);
+			A_ClearOverlays();
+			
+			FLineTraceData blast;
+			LineTrace(angle, 2048, pitch, 0, height - 12, 0, 0, blast);
+			Self.Spawn('MoonBlastKaboom', blast.HitLocation);
+			
+			A_QuakeEx(4, 4, 4, 25, 0, 64, "", QF_SCALEDOWN);
+			A_RailAttack(0, 0, false, "FF00FF", "FFFFFF", RGF_SILENT | RGF_NOPIERCING | RGF_FULLBRIGHT, 0, "", 0, 0, 0, 20);
+			A_AlertMonsters();
+			
+			gardie.subtractAnger(100);
+			return true;
+		}
+		return false;
+	}
+}
+
+Class MoonBlastKaboom : Actor
+{
+	default
+	{
+		+NoGravity;
+		Radius 10;
+	}
+	states
+	{
+		Spawn:
+			MNBL A 1 NoDelay Bright
+			{
+				double modifier = Gardevoir(players[consoleplayer].mo).getRageModifier();
+				A_SetScale(1 + modifier, 1 + modifier);
+				A_MoonBlastBlast(BF_DONTWARN | BF_AFFECTBOSSES | BF_NOIMPACTDAMAGE | 16, 512, 512, 40);
+			}
+			MNBL A 1 Bright;
+			MNBL BCDEFGHIJKLMNOPQRS 2 Bright;
+			stop;
+	}
+	
+	Action void A_MoonBlastBlast(int blastflags = 0, double strength = 255, double radius = 255, double speed = 20, class<Actor> blasteffect = "BlastEffect", sound blastsound = "BlastRadius")
+	{
+		A_StartSound (blastsound, CHAN_AUTO);
+
+		if (!(blastflags & BF_DONTWARN))
+		{
+			SoundAlert (self);
+		}
+		ThinkerIterator it = ThinkerIterator.Create("Actor");
+		Actor mo;
+		while ( (mo = Actor(it.Next ())) )
+		{
+			//ignore player
+			if (Gardevoir(mo)) continue;
+			if (mo == self || (mo.bBoss && !(blastflags & BF_AFFECTBOSSES)) || mo.bDormant || mo.bDontBlast)
+			{ // Not a valid monster: originator, boss, dormant, or otherwise protected
+				continue;
+			}
+			if (mo.bIceCorpse || mo.bCanBlast)
+			{
+				// Let these special cases go
+			}
+			else if (mo.bIsMonster && mo.health <= 0)
+			{
+				continue;
+			}
+			else if (!mo.player && !mo.bMissile && (!mo.bIsMonster && !BossBrain(mo)) && !mo.bCanBlast && !mo.bTouchy && !mo.bVulnerable)
+			{	// Must be monster, player, missile, touchy or vulnerable
+				continue;
+			}
+			if (Distance2D(mo) > radius)
+			{ // Out of range
+				continue;
+			}
+			if (mo.CurSector.PortalGroup != CurSector.PortalGroup && !CheckSight(mo))
+			{
+				// in another region and cannot be seen.
+				continue;
+			}
+			if ((blastflags & 16) && !isVisible(mo, true)) 
+			{
+				//only blast if target can bee seen by calling actor
+				continue;
+			}
+			A_MoonBlastActor(mo, strength, speed, blasteffect, !!(blastflags & BF_NOIMPACTDAMAGE));
+		}
+	}
+	Action Void A_MoonBlastActor (Actor victim, double strength, double speed, Class<Actor> blasteffect, bool dontdamage)
+	{
+		if (!victim.SpecialBlastHandling (self, strength))
+		{
+			return;
+		}
+
+		double ang = AngleTo(victim);
+		Vector2 move = AngleToVector(ang, speed);
+		victim.Vel.XY = move;
+
+		// Spawn blast puff
+		ang -= 180.;
+		Vector3 spawnpos = victim.Vec3Offset(
+			(victim.radius + 1) * cos(ang),
+			(victim.radius + 1) * sin(ang),
+			(victim.Height / 2) - victim.Floorclip);
+		Actor mo = blasteffect? Spawn (blasteffect, spawnpos, ALLOW_REPLACE) : null;
+		if (mo)
+		{
+			mo.Vel.XY = victim.Vel.XY;
+		}
+		if (victim.bMissile)
+		{
+			// [RH] Floor and ceiling huggers should not be blasted vertically.
+			if (!victim.bFloorHugger && !victim.bCeilingHugger)
+			{
+				victim.Vel.Z = 8;
+				if (mo != null) mo.Vel.Z = 8;
+			}
+		}
+		else
+		{
+			victim.Vel.Z = 1000. / victim.Mass;
+		}
+		if (victim.player)
+		{
+			// Players handled automatically
+		}
+		else if (!dontdamage)
+		{
+			victim.bBlasted = true;
+		}
+		if (victim.bTouchy)
+		{ // Touchy objects die when blasted
+			victim.bArmed = false; // Disarm
+			victim.DamageMobj(self, self, victim.health, 'Melee', DMG_FORCED|DMG_EXPLOSION);
+		} else {
+			victim.DamageMobj(self, Gardevoir(players[consoleplayer].mo), 256, "Explosive");
+			if (victim.health > 0) victim.SetStateLabel('Pain');
+		}
+	}
+}

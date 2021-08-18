@@ -225,7 +225,7 @@ Class GHAGEventHandler : EventHandler
 			if (level.sectors[i].isSecret())
 			{
 				let c = level.Sectors[i].centerspot;
-				if (level.IsPointInMap((c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c))))
+				if (level.IsPointInLevel((c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c))))
 				{
 					Actor.Spawn("RageCandyBar", (c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c)));
 				}

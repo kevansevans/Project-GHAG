@@ -40,6 +40,8 @@ Class PokeBallGun : Weapon
 
 Class PokeBallCaughtGun : Weapon
 {
+	int demoncycle;
+
 	Default
 	{
 		Weapon.SlotNumber 0;
@@ -47,14 +49,39 @@ Class PokeBallCaughtGun : Weapon
 	states 
 	{
 		Select:
+			HAND A 1 A_Raise();
+			Loop;
 		Deselect:
+			HAND A 1 A_Lower();
+			Loop;
 		Ready:
-			HAND A 1;
+			HAND A 1 A_WeaponReady();
 			Loop;
 		Fire:
-			HAND D 1;
+			HAND D 8 A_ThrowBall();
 			HAND D 1 A_Refire();
 			goto Ready;
+	}
+	
+	Action void A_ThrowBall()
+	{
+		let tracker = TrainerThinker.get();
+		
+		if (tracker.CaughtList.size() == 0) return;
+		
+		let info = CaughtInfo(tracker.CaughtList[invoker.demoncycle]);
+		
+		++invoker.demoncycle;
+		if (invoker.demoncycle == tracker.CaughtList.size()) invoker.demoncycle = 0;
+		
+		if (info.isOut) return;
+		
+		FLineTraceData blast;
+		LineTrace(angle, 2048, pitch, 0, height - 12, 0, 0, blast);
+		
+		let MyDemon = Actor.spawn(info.ActorClass, blast.hitlocation);
+		myDemon.bFriendly = true;
+		info.isOut = true;
 	}
 }
 
@@ -62,12 +89,19 @@ Class PokeBallProj : Actor
 {
 	int shakes;
 	int prevHeight;
+	String CaughtType;
+	Property CaughtType: CaughtType;
 	
 	default
 	{
 		+Missile;
 		+HitTarget;
+		+BounceOnWalls;
+		+BounceOnFloors;
+		+BounceOnCeilings;
+		+BounceAutoOff;
 		Speed 50;
+		PokeBallProj.CaughtType "PokeBallPickup";
 	}
 	
 	states
@@ -106,7 +140,24 @@ Class PokeBallProj : Actor
 			#### A 0;
 			stop;
 		Caught:
-			#### IJKL 4 Bright;
+			#### A 0
+			{
+				Let CaughtBall = PokeBallPickup(Self.Spawn(Invoker.CaughtType, Self.pos));
+				CaughtBall.ClassName = Target.getClassName();
+				CaughtBall.Shiny = false;
+				
+				let tracker = ActorTrackerThinker.get();
+		
+				if (tracker.infolist.find(target) != tracker.infolist.size())
+				{
+					ActorInfo stats = tracker.infolist[tracker.infolist.find(target)];
+					
+					if (stats.shiny) CaughtBall.shiny = true;
+				}
+				
+				target.destroy();
+				self.destroy();
+			}
 		CaughtLoop:
 			#### B 1 Bright;
 			loop;
@@ -206,7 +257,7 @@ Class PokeBallProj : Actor
 	bool ShakeFunction()
 	{
 		return true;
-		
+	
 		let tracker = ActorTrackerThinker.get();
 		
 		if (tracker.infolist.find(target) != tracker.infolist.size())
@@ -229,10 +280,38 @@ Class PokeBallProj : Actor
 		
 		return false;
 	}
+}
+
+Class PokeBallPickup : CustomInventory
+{
+	string ClassName;
+	bool shiny;
+	String CaughtType;
+	Property CaughtType: CaughtType;
 	
-	int getCatchRate(int value)
+	default
 	{
-		return max(255 - (255 * (value / 4000)), 1);
+		Inventory.PickupMessage "Caught a wild demon!";
+		Inventory.amount 1;
+		Inventory.MaxAmount 999;
+		PokeBallPickup.CaughtType "PokeBall";
+	}
+	
+	states
+	{
+		Spawn:
+			PBAL A 0;
+		Spawn.Flashing:
+			#### IJKL 4 Bright;
+			#### MN 8;
+			Loop;
+		Pickup:
+			TNT1 A 0 NoDelay
+			{
+				TrainerThinker.trackdemon(invoker.ClassName, invoker.shiny, invoker.CaughtType);
+			}
+			stop;
+			
 	}
 }
 

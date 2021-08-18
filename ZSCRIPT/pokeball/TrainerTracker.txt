@@ -3,11 +3,12 @@ Class CaughtInfo : Object
 	String ActorClass;
 	String BallType;
 	bool shiny;
+	bool isOut;
 }
 
 Class TrainerThinker : Thinker
 {
-	Array<CaughtInfo> Infolist;
+	Array<CaughtInfo> CaughtList;
 	
 	int ID_A;
 	int ID_B;
@@ -18,9 +19,9 @@ Class TrainerThinker : Thinker
 
 	TrainerThinker Init()
 	{
-		ChangeStatNum(STAT_INFO);
+		ChangeStatNum(STAT_STATIC);
 		
-		Infolist.clear();
+		CaughtList.clear();
 		
 		ID_A = random(0, 9);
 		ID_B = random(0, 9);
@@ -34,12 +35,24 @@ Class TrainerThinker : Thinker
 	
 	static TrainerThinker Get()
 	{
-		ThinkerIterator it = ThinkerIterator.Create("TrainerThinker",STAT_INFO);
+		ThinkerIterator it = ThinkerIterator.Create("TrainerThinker", STAT_STATIC);
 		let p = TrainerThinker(it.Next());
 		if (p == null)
 		{
 			p = new("TrainerThinker").Init();
 		}
 		return p;
+	}
+	
+	Static void TrackDemon(String _classname, Bool _shiny, String _balltype)
+	{
+		CaughtInfo Catch = new("caughtinfo");
+		
+		Catch.ActorClass = _classname;
+		Catch.shiny = _shiny;
+		Catch.balltype = _balltype;
+		
+		let tracker = TrainerThinker.get();
+		tracker.CaughtList.push(Catch);
 	}
 }

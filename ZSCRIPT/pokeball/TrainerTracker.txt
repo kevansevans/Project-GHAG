@@ -1,0 +1,45 @@
+Class CaughtInfo : Object
+{
+	String ActorClass;
+	String BallType;
+	bool shiny;
+}
+
+Class TrainerThinker : Thinker
+{
+	Array<CaughtInfo> Infolist;
+	
+	int ID_A;
+	int ID_B;
+	int ID_C;
+	int ID_D;
+	int ID_E;
+	int ID_F;
+
+	TrainerThinker Init()
+	{
+		ChangeStatNum(STAT_INFO);
+		
+		Infolist.clear();
+		
+		ID_A = random(0, 9);
+		ID_B = random(0, 9);
+		ID_C = random(0, 9);
+		ID_D = random(0, 9);
+		ID_E = random(0, 9);
+		ID_F = random(0, 9);
+		
+		return self;
+	}
+	
+	static TrainerThinker Get()
+	{
+		ThinkerIterator it = ThinkerIterator.Create("TrainerThinker",STAT_INFO);
+		let p = TrainerThinker(it.Next());
+		if (p == null)
+		{
+			p = new("TrainerThinker").Init();
+		}
+		return p;
+	}
+}

@@ -97,7 +97,10 @@ Class GHAGStatus : BaseStatusBar
 					wep = "wepactiv";
 				} else {
 					wep = "wepinnac";
-					if (gun.Ammo1) {
+					if (PokeBallGun(gun))
+					{
+					
+					} else if (gun.Ammo1) {
 						if (gun.Ammo1.amount == 0) wep = "wepempty";
 					}
 				}

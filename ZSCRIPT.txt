@@ -28,5 +28,6 @@ version "4.6"
 //Inate abilities, AKA the canonical abilities a Gardevoir has
 // [None so far]
 
-//Your turn will come...
+#include "ZSCRIPT/pokeball/TrainerTracker.txt"
+#include "ZSCRIPT/pokeball/Pokeball.txt"
 #include "ZSCRIPT/pokeball/MissingNo.txt"

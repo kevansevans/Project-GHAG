@@ -236,6 +236,94 @@ Class Gardevoir : PlayerPawn
 		}
 	}	
 	
+	override bool onGiveSecret(bool printmsg, bool playsound)
+	{
+		let trainer = TrainerThinker.get();
+		
+		bool great = false;
+		bool ultra = false;
+		bool master = false;
+		
+		if (trainer) 
+		{
+			int valid = 0;
+			int step = 0;
+			while (true) 
+			{
+				switch (step)
+				{
+					case 0:
+						if (random(0, 9) == trainer.ID_A)
+						{
+							++valid;
+						}
+						break;
+					case 1:
+						if (random(0, 9) == trainer.ID_B)
+						{
+							++valid;
+						}
+						break;
+					case 2:
+						if (random(0, 9) == trainer.ID_C)
+						{
+							++valid;
+						}
+						break;
+					case 3:
+						if (random(0, 9) == trainer.ID_D)
+						{
+							++valid;
+						}
+						break;
+					case 4:
+						if (random(0, 9) == trainer.ID_E)
+						{
+							++valid;
+						}
+						break;
+					case 5:
+						if (random(0, 9) == trainer.ID_F)
+						{
+							++valid;
+						}
+						break;
+				}
+				++step;
+				if (step == 6) break;
+			}
+			
+			if (valid >= 1) great = true;
+			if (valid >= 3) ultra = true;
+			if (valid == 5) master = true;
+		}
+		
+		if (master) 
+		{
+			let ball = MasterBallAmmo(Actor.spawn("MasterBallAmmo"));
+			ball.amount = 1;
+			ball.touch(self);
+		}
+		if (ultra) 
+		{
+			let ball = UltraBallAmmo(Actor.spawn("UltraBallAmmo"));
+			ball.amount = 5;
+			ball.touch(self);
+		}
+		if (Great)
+		{
+			let ball = GreatBallAmmo(Actor.spawn("GreatBallAmmo"));
+			ball.amount = 5;
+			ball.touch(self);
+		}
+		
+		let ball = PokeBallAmmo(Actor.spawn("PokeBallAmmo"));
+		ball.amount = 10;
+		ball.touch(self);
+		
+		return super.onGiveSecret(printmsg, playsound);
+	}
+	
 	default {
 		Health 350;
         Player.DisplayName "Gardevoir" ;
@@ -243,6 +331,8 @@ Class Gardevoir : PlayerPawn
 		Player.StartItem "ElementPunch";
 		Player.StartItem "Swift";
 		Player.StartItem "MoonBlastGun";
+		Player.StartItem "PokeBallGun";
+		Player.StartItem "PokeBallCaughtGun";
 		Player.StartItem "Clip", 50;
 		Player.MaxHealth 350;
      }

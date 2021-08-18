@@ -207,7 +207,7 @@ Class MoonBlastKaboom : Actor
 			victim.bArmed = false; // Disarm
 			victim.DamageMobj(self, self, victim.health, 'Melee', DMG_FORCED|DMG_EXPLOSION);
 		} else {
-			victim.DamageMobj(self, Gardevoir(players[consoleplayer].mo), 256, "Explosive");
+			victim.DamageMobj(self, Gardevoir(players[consoleplayer].mo), 512, "Explosive");
 			if (victim.health > 0) victim.SetStateLabel('Pain');
 		}
 	}

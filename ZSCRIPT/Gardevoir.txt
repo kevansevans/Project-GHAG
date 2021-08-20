@@ -206,6 +206,9 @@ Class Gardevoir : PlayerPawn
 	
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
+	
+		int _locDamage = damage;
+	
 		if (RageValue <= RageConstant) {
 		
 			RageValue += int(damage / 5);
@@ -214,9 +217,13 @@ Class Gardevoir : PlayerPawn
 			if (RageValue > RageConstant) RageValue = RageConstant;
 		}
 		
-		ActorTracker.trackThing(Source, NONE, damage);
+		if (!Gardevoir(source)) ActorTracker.trackThing(Source, NONE, damage);
+		else
+		{
+			_locDamage *= 0.25;
+		}
 		
-		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+		return Super.DamageMobj(inflictor, source, _locDamage, mod, flags, angle);
 	}
 	
 	override void Tick()
@@ -239,7 +246,6 @@ Class Gardevoir : PlayerPawn
 		}
 		
 		int slowdown = overTheEdge ? 5 : RageCooldownTics + bonusdelay;
-		console.printf(RageValue .. ':' .. slowdown .. ":" .. ragetimer);
 		if (charonmode) {
 			RageValue = -999999;
 		}

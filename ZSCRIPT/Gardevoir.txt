@@ -156,7 +156,8 @@ Class Gardevoir : PlayerPawn
 	
 	void GetLivid()
 	{
-		RageValue += 750;
+		if (!overTheEdge) RageValue += 750;
+		else RageValue += 250;
 		RageCooldownTics += 5;
 	}
 	
@@ -223,7 +224,12 @@ Class Gardevoir : PlayerPawn
 			bonusDelay = int(RageDelay / 10);
 		}
 		
-		if (RageTimer >= (RageCooldownTics + (overTheEdge ? -10 : bonusdelay)) && !charonmode) 
+		int slowdown = overTheEdge ? 5 : RageCooldownTics + bonusdelay;
+		console.printf(RageValue .. ':' .. slowdown .. ":" .. ragetimer);
+		if (charonmode) {
+			RageValue = -999999;
+		}
+		else if (RageTimer >= slowdown) 
 		{
 			RageValue -= 3;
 			if (RageValue < 0) RageValue = 0;
@@ -231,9 +237,6 @@ Class Gardevoir : PlayerPawn
 			if (RageDelay < 0) RageDelay = 0;
 			RageTimer = 0;
 		} 
-		else if (charonmode) {
-			RageValue = -999999;
-		}
 	}	
 	
 	override bool onGiveSecret(bool printmsg, bool playsound)

@@ -34,7 +34,7 @@ Class PokeBallGun : Weapon
 	
 	Action void A_ThrowBall()
 	{
-		let _locBall = SpawnPlayerMissile("PokeballProj", angle);
+		let _locBall = SpawnPlayerMissile("GreatBallProj", angle);
 	}
 }
 
@@ -254,10 +254,8 @@ Class PokeBallProj : Actor
 		return invoker.shakes == 3;
 	}
 	
-	bool ShakeFunction()
+	virtual bool ShakeFunction()
 	{
-		return true;
-	
 		let tracker = ActorTrackerThinker.get();
 		
 		if (tracker.infolist.find(target) != tracker.infolist.size())
@@ -301,12 +299,13 @@ Class PokeBallPickup : CustomInventory
 	{
 		Spawn:
 			PBAL A 0;
+			goto Spawn.Flashing;
 		Spawn.Flashing:
 			#### IJKL 4 Bright;
 			#### MN 8;
 			Loop;
 		Pickup:
-			TNT1 A 0 NoDelay
+			TNT1 A 0
 			{
 				TrainerThinker.trackdemon(invoker.ClassName, invoker.shiny, invoker.CaughtType);
 			}
@@ -317,7 +316,57 @@ Class PokeBallPickup : CustomInventory
 
 Class GreatBallProj : PokeBallProj
 {
+	default
+	{
+		PokeBallProj.CaughtType "GreatBallPickup";
+	}
+	
+	States
+	{
+		Spawn:
+			GBAL A 1;
+			loop;
+	}
+	
+	override bool ShakeFunction()
+	{
+		let tracker = ActorTrackerThinker.get();
+		
+		if (tracker.infolist.find(target) != tracker.infolist.size())
+		{
+			int N = random(0, 200);
+		
+			ActorInfo stats = tracker.infolist[tracker.infolist.find(target)];
+			
+			if ((stats.paralyzed || stats.burned) && N <= 12) return true;
+			if (stats.frozen && N <= 25) return true;
+		}
+		
+		int M  = random(0, 255);
+		
+		int numerator = Target.spawnHealth() * 255 * 4;
+		int denominator = Target.health * 8;
+		int F = numerator / denominator;
+		
+		if (F >= M) return true;
+		
+		return false;
+	}
+}
 
+Class GreatBallPickup : PokeBallPickup
+{
+	default
+	{
+		PokeBallPickup.CaughtType "GreatBall";
+	}
+	
+	states
+	{
+		Spawn:
+			GBAL A 0;
+			goto Spawn.Flashing;
+	}
 }
 
 Class UltraBallProj : PokeBallProj

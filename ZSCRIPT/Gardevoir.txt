@@ -16,6 +16,20 @@ Class Gardevoir : PlayerPawn
 	NameClass names;
 	property names: names;
 	
+	default {
+		Health 350;
+        Player.DisplayName "Gardevoir" ;
+		Player.StartItem "GHAGPistol";
+		Player.StartItem "ElementPunch";
+		Player.StartItem "Swift";
+		Player.StartItem "MoonBlastGun";
+		//Player.StartItem "PokeBallGun";
+		//Player.StartItem "PokeBallCaughtGun";
+		Player.StartItem "Clip", 50;
+		Player.StartItem "GHAGPistolOverlay", 1;
+		Player.MaxHealth 350;
+     }
+	
 	override void BeginPlay()
 	{
 		Super.BeginPlay();
@@ -326,19 +340,6 @@ Class Gardevoir : PlayerPawn
 		
 		return super.onGiveSecret(printmsg, playsound);
 	}
-	
-	default {
-		Health 350;
-        Player.DisplayName "Gardevoir" ;
-		Player.StartItem "GHAGPistol";
-		Player.StartItem "ElementPunch";
-		Player.StartItem "Swift";
-		Player.StartItem "MoonBlastGun";
-		Player.StartItem "PokeBallGun";
-		Player.StartItem "PokeBallCaughtGun";
-		Player.StartItem "Clip", 50;
-		Player.MaxHealth 350;
-     }
 }
 
 Class NameClass : Actor

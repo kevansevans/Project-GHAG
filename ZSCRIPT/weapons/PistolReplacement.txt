@@ -3,6 +3,15 @@ Class GHAGChaingun : ClipBox replaces Chaingun
 
 }
 
+Class GHAGPistolOverlay : Ammo
+{
+	Default
+	{
+		Inventory.MaxAmount 4;
+		Inventory.pickupMessage "Found an extra pistol!";
+	}
+}
+
 Class GHAGPistol : Pistol replaces Pistol
 {
 
@@ -10,6 +19,7 @@ Class GHAGPistol : Pistol replaces Pistol
 	{
 		Weapon.SlotNumber 2;
 		Tag "9mm Pistol";
+		-WEAPON.ALT_AMMO_OPTIONAL;
 	}
 	
 	override void DoEffect()
@@ -23,23 +33,19 @@ Class GHAGPistol : Pistol replaces Pistol
 		Ready:
 			HAND A 1 {
 				A_WeaponReady();
-				A_Overlay(-1, "Ready.Overlay", true);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
-				A_OverlayOffset(-1, sin(gametic * 2) / 13, cos(gametic * 2) / 11, WOF_ADD | WOF_INTERPOLATE);
+				A_OverlayPistols();
 			}
 			Loop;
 		Deselect:
 			HAND A 1 {
 				A_Lower();
-				A_Overlay(-1, "Deselect.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayPistols();
 			}
 			Loop;
 		Select:
 			HAND A 1 {
 				A_Raise();
-				A_Overlay(-1, "Select.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayPistols();
 			}
 			Loop;
 		Fire:
@@ -54,13 +60,38 @@ Class GHAGPistol : Pistol replaces Pistol
 				A_StartSound("weapons/pistol", CHAN_WEAPON);
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
 				A_GunFlash();
-				A_Overlay(-1, "Fire.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayPistols(true);
 			}
 			HAND EF 1 A_SetTics(Gardevoir(self).GetTicModifier(1, true));
 			HAND G 5
 			{
 				A_SetTics(Gardevoir(self).GetTicModifier(5, true));
+				A_ReFire();
+			}
+			Goto Ready;
+		AltFire:
+			HAND AB 3 {
+				A_SetTics(Gardevoir(self).GetTicModifier(3, true));
+			}
+			HAND C 3 {
+				A_SetTics(Gardevoir(self).GetTicModifier(3, false));
+			}
+			HAND D 3 {
+				for (int i = 0; i < CountInv("GHAGPistolOverlay"); ++ i)
+				{
+					A_FireBullets(3.2, 3.2, -1, 8, "BulletPuff");
+					A_StartSound("weapons/pistol", CHAN_WEAPON);
+				}
+				A_TakeInventory("clip", CountInv("GHAGPistolOverlay"));
+				A_SetTics(Gardevoir(self).GetTicModifier(3));
+				A_GunFlash();
+				A_OverlayPistols(true, true);
+			}
+			HAND EF 1 A_SetTics(Gardevoir(self).GetTicModifier(1, true));
+			HAND G 5
+			{
+				A_SetTics(Gardevoir(self).GetTicModifier(5, true));
+				if (invoker.ammo1.amount <= 0) A_SelectWeapon("", SWF_SELECTPRIORITY);
 				A_ReFire();
 			}
 			Goto Ready;
@@ -78,5 +109,42 @@ Class GHAGPistol : Pistol replaces Pistol
 		Ready.Overlay:
 			PIST A 1;
 			loop;
+	}
+	
+	Action void A_OverlayPistols(bool RollForFire = false, bool AltFire = false)
+	{
+		A_ClearOverlays(-5, 5);
+		int rng = random(0, (CountInv("GHAGPistolOverlay") - 1));
+		for (int i = 0; i < CountInv("GHAGPistolOverlay"); ++ i)
+		{
+			int layer = -1 * (i + 1);
+			switch (i) 
+			{
+				case 0:
+					if (i == rng && RollForFire || altFire) A_Overlay(layer, "Fire.Overlay", false);
+					else A_Overlay(layer, "Ready.Overlay", true);
+					A_OverlayFlags(layer, PSPF_ADDBOB, false);
+					A_OverlayOffset(layer, sin(gametic * 2) / 13, cos(gametic * 2) / 11, WOF_ADD | WOF_INTERPOLATE);
+					break;
+				case 1:
+					if (i == rng && RollForFire || altFire) A_Overlay(layer, "Fire.Overlay", false);
+					else A_Overlay(layer, "Ready.Overlay", true);
+					A_OverlayFlags(layer, PSPF_ADDBOB, false);
+					A_OverlayOffset(layer, (sin(gametic * 2) / 4) + 25, (cos(gametic * 2) / 8) - 10, WOF_INTERPOLATE);
+					break;
+				case 2:
+					if (i == rng && RollForFire || altFire) A_Overlay(layer, "Fire.Overlay", false);
+					else A_Overlay(layer, "Ready.Overlay", true);
+					A_OverlayFlags(layer, PSPF_ADDBOB, false);
+					A_OverlayOffset(layer, (sin(gametic * 2) / 9) + 50, (cos(gametic * 2) / 43) - 15, WOF_INTERPOLATE);
+					break;
+				case 3:
+					if (i == rng && RollForFire || altFire) A_Overlay(layer, "Fire.Overlay", false);
+					else A_Overlay(layer, "Ready.Overlay", true);
+					A_OverlayFlags(layer, PSPF_ADDBOB, false);
+					A_OverlayOffset(layer, (sin(gametic * 2) / 2) + 75, (cos(gametic * 2) / 5) - 20, WOF_INTERPOLATE);
+					break;
+			}
+		}
 	}
 }

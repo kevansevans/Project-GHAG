@@ -51,6 +51,13 @@ Class GHAGBackpack : Backpack replaces Backpack
 					}
 				}
 			}
+			
+			int rng = random(1, 100);
+			if (rng <= 25) 
+			{
+				players[consoleplayer].mo.A_Dropitem("GHAGPistolOverlay", 1);
+			}
+			
 			item.bPickupGood = true;
 			return true;
 		}

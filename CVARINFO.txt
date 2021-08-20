@@ -1,4 +1,5 @@
 user noarchive cheat int ghagrage = -1;
 user noarchive cheat int ghagpunchodds = -1;
+server noarchive latch cheat int shinyodds = -1;
 user noarchive cheat bool ghagcharon = false;
 user string ShotgunName = "Winchester 1912 Shotgun";

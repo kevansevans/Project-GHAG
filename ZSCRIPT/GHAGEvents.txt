@@ -2,6 +2,8 @@ Class GHAGEventHandler : EventHandler
 {
 	Gardevoir Gardie;
 	
+	int shinyodds;
+	
 	override void WorldThingSpawned(WorldEvent event)
 	{
 		if (Gardevoir(event.thing)) return;
@@ -26,8 +28,9 @@ Class GHAGEventHandler : EventHandler
 										//Nazis don't get to be shiny
 		if (Actor(thing).bIsMonster && !WolfensteinSS(thing))
 		{
-			int rng = random(1, 4096);
-			if (rng == 2048) 
+			if (shinyodds == 0) shinyodds = 4096;
+			int rng = random(1, shinyodds);
+			if (rng == shinyodds / 2 || shinyodds == 1) 
 			{
 				SetShinyDemon(thing);
 			}
@@ -178,6 +181,15 @@ Class GHAGEventHandler : EventHandler
 						odds.chance = 25;
 					}
 					punchodds.resetToDefault();
+				}
+			}
+			
+			//change the odds of a demon spawning as shiny
+			cvar c_shinyodds = Cvar.findCvar("shinyodds");
+			if (c_shinyodds) {
+				if (c_shinyodds.getInt() != -1) {
+					shinyodds = c_shinyodds.getInt();
+					c_shinyodds.setInt(-1);
 				}
 			}
 			

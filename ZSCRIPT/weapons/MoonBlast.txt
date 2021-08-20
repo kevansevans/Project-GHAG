@@ -96,6 +96,7 @@ Class MoonBlastKaboom : Actor
 	default
 	{
 		+NoGravity;
+		+ForceRadiusDmg;
 		Radius 10;
 	}
 	states

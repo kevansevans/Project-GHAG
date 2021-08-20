@@ -69,7 +69,8 @@ Class PsychicPlasma : PlasmaBall replaces PlasmaBall
 	bool overdrive;
 
 	default {
-		+SCREENSEEKER;
+		+ScreenSeeker;
+		+ForceRadiusDmg;
 	}
 	
 	override void BeginPlay()
@@ -166,7 +167,7 @@ Class PsychicPlasma : PlasmaBall replaces PlasmaBall
 			victim.bArmed = false; // Disarm
 			victim.DamageMobj(self, self, victim.health, 'Melee', DMG_FORCED|DMG_EXPLOSION);
 		} else {
-			victim.DamageMobj(self, Gardevoir(players[consoleplayer].mo), 64 * (255 / Distance3D(victim)), "Plasma");
+			victim.DamageMobj(self, Gardevoir(players[consoleplayer].mo), 32 * (255 / Distance3D(victim)), "Plasma");
 			if (victim.health > 0) victim.SetStateLabel('Pain');
 		}
 	}

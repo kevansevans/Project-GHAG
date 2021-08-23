@@ -29,24 +29,21 @@ Class GHAGBackpack : Backpack replaces Backpack
 
 				if (ammoitem && ammoitem.GetParentAmmo() == ammoitem.GetClass())
 				{
-					int prevAmount = ammoItem.MaxAmount;
-					int newAmount = ammoItem.MaxAmount * 1.5;
-					if (newAmount < prevAmount) {
-						ammoItem.MaxAmount = 0x7FFFFFFF;
-					} else {
+					if (ammoItem.maxAmount <= ammoItem.BackpackMaxAmount * 20) {
 						ammoItem.MaxAmount = ammoitem.MaxAmount * 1.5;
-					}
-					if (ammoitem.Amount < ammoitem.MaxAmount || sv_unlimited_pickup)
-					{
-						int amount = ammoitem.Default.BackpackAmount;
-						if (!bIgnoreSkill)
+						if (ammoItem.MaxAmount >= (ammoItem.BackpackMaxAmount * 20)) ammoItem.MaxAmount = ammoItem.BackpackMaxAmount * 20;
+						if (ammoitem.Amount < ammoitem.MaxAmount || sv_unlimited_pickup)
 						{
-							amount = int(amount * G_SkillPropertyFloat(SKILLP_AmmoFactor));
-						}
-						ammoitem.Amount += amount;
-						if (ammoitem.Amount > ammoitem.MaxAmount && !sv_unlimited_pickup)
-						{
-							ammoitem.Amount = ammoitem.MaxAmount;
+							int amount = ammoitem.Default.BackpackAmount;
+							if (!bIgnoreSkill)
+							{
+								amount = int(amount * G_SkillPropertyFloat(SKILLP_AmmoFactor));
+							}
+							ammoitem.Amount += amount;
+							if (ammoitem.Amount > ammoitem.MaxAmount && !sv_unlimited_pickup)
+							{
+								ammoitem.Amount = ammoitem.MaxAmount;
+							}
 						}
 					}
 				}

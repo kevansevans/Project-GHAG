@@ -66,8 +66,8 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 				A_OverlayShotguns();
 			}
 			HAND B 2 Bright {
-				A_FireBullets(6, 6, 10 * countinv("GHAGShotgunOverlay"), 5, "GHAGPsychicPuff");
-				A_TakeInventory("Shell", countinv("GHAGShotgunOverlay"));
+				A_FireBullets(6, 6, 10 * Max(countinv("GHAGShotgunOverlay"), 3), 5, "GHAGPsychicPuff");
+				A_TakeInventory("Shell", Max(countinv("GHAGShotgunOverlay"), 3));
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_SetTics(Gardevoir(self).GetTicModifier(2));
 				A_OverlayShotguns(true, true);
@@ -114,8 +114,10 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 	Action void A_OverlayShotguns(bool rollForFire = false, bool altFire = false)
 	{
 		int rng = random(0, countinv("GHAGShotgunOverlay") - 1);
-		for (int i = 0; i < countinv("GHAGShotgunOverlay"); ++i)
+		for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
 		{
+			if (i > 2) return;
+		
 			int layer = -1 * (i + 1);
 			if (rollForFire && i == rng && !altFire) A_Overlay(layer, "Fire.Overlay", false);
 			else if (altFire) A_Overlay(layer, "AltFire.Overlay", false);

@@ -77,11 +77,8 @@ Class GHAGPistol : Pistol replaces Pistol
 				A_SetTics(Gardevoir(self).GetTicModifier(3, false));
 			}
 			HAND D 3 {
-				for (int i = 0; i < CountInv("GHAGPistolOverlay"); ++ i)
-				{
-					A_FireBullets(3.2, 3.2, -1, 8, "BulletPuff");
-					A_StartSound("weapons/pistol", CHAN_WEAPON);
-				}
+				A_FireBullets(3.2, 3.2, Max(4, countinv("GHAGPistolOverlay")), 8, "BulletPuff");
+				A_StartSound("weapons/pistol", CHAN_WEAPON);
 				A_TakeInventory("clip", CountInv("GHAGPistolOverlay"));
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
 				A_GunFlash();
@@ -116,6 +113,8 @@ Class GHAGPistol : Pistol replaces Pistol
 		int rng = random(0, (CountInv("GHAGPistolOverlay") - 1));
 		for (int i = 0; i < CountInv("GHAGPistolOverlay"); ++ i)
 		{
+			if (i > 3) return;
+			
 			int layer = -1 * (i + 1);
 			if (i == rng && RollForFire || altFire) A_Overlay(layer, "Fire.Overlay", false);
 			else A_Overlay(layer, "Ready.Overlay", true);

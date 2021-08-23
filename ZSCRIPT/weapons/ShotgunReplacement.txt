@@ -3,6 +3,7 @@ class GHAGShotgunOverlay : Ammo
 	default
 	{
 		Inventory.MaxAmount 3;
+		Inventory.pickupMessage "Seized an extra shotgun!";
 	}
 }
 
@@ -66,7 +67,7 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 			}
 			HAND B 2 Bright {
 				A_FireBullets(6, 6, 10 * countinv("GHAGShotgunOverlay"), 5, "GHAGPsychicPuff");
-				A_TakeInventory("Shell", 3);
+				A_TakeInventory("Shell", countinv("GHAGShotgunOverlay"));
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_SetTics(Gardevoir(self).GetTicModifier(2));
 				A_OverlayShotguns(true, true);
@@ -120,7 +121,7 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 			else if (altFire) A_Overlay(layer, "AltFire.Overlay", false);
 			else A_Overlay(layer, "Ready.Overlay", false);
 			A_OverlayFlags(layer, PSPF_ADDBOB, false);
-			A_OverlayOffset(layer, sin(gametic) + (25 * i), cos(gametic) - (8 * i), WOF_INTERPOLATE);
+			A_OverlayOffset(layer, sin(gametic + (63 * i)) + (25 * i), cos(gametic - (234 * i)) - (8 * i), WOF_INTERPOLATE);
 		}
 	}
 	

@@ -27,6 +27,7 @@ Class Gardevoir : PlayerPawn
 		//Player.StartItem "PokeBallCaughtGun";
 		Player.StartItem "Clip", 50;
 		Player.StartItem "GHAGPistolOverlay", 1;
+		Player.StartItem "GHAGShotgunOverlay", 1;
 		Player.MaxHealth 350;
      }
 	

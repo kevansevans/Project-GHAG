@@ -3,6 +3,7 @@ Class Swift : Weapon
 	Default
 	{
 		Weapon.slotNumber 4;
+		+Weapon.No_Auto_Switch;
 	}
 	
 	Action bool A_CheckRageAmmo() 

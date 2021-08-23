@@ -1,9 +1,17 @@
+class GHAGShotgunOverlay : Ammo
+{
+	default
+	{
+		Inventory.MaxAmount 3;
+	}
+}
+
 Class GHAGShotgun : Shotgun replaces Shotgun
 {
 	default
 	{
 		Weapon.SlotNumber 3;
-		Tag "Winchester 1912 Shotgun";
+		Tag "1912 Shotgun";
 	}
 	
 	override void DoEffect()
@@ -17,30 +25,25 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 		Select :
 			HAND A 1 {
 				A_Raise();
-				A_Overlay(-1, "Select.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayShotguns();
 			}
 			Loop;
 		Deselect :
 			HAND A 1 {
 				A_Lower();
-				A_Overlay(-1, "Deselect.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayShotguns();
 			}
 			Loop;
 		Ready :
 			HAND A 1 {
 				A_WeaponReady(WRF_ALLOWRELOAD);
-				A_Overlay(-1, "Ready.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
-				A_OverlayOffset(-1, sin(gametic), cos(gametic), WOF_ADD | WOF_INTERPOLATE);
+				A_OverlayShotguns();
 			}
 			Loop;
 		Fire :
 			HAND A 3 {
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
-				A_Overlay(-1, "Deselect.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayShotguns();
 			}
 			HAND B 2 Bright {
 				if (CountInv("Shell") != 0) A_GiveInventory("Shell");
@@ -48,26 +51,30 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 				A_FireBullets(4, 4, floor(14 * Gardevoir(Self).GetRageModifier()), 5, "GHAGPsychicPuff");
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_SetTics(Gardevoir(self).GetTicModifier(2));
-				A_Overlay(-1, "Fire.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+				A_OverlayShotguns(true);
 			}
-			HAND CCDDD 1 Bright
-			{
-				A_Overlay(-1, "Deselect.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
-			}
-			HAND E 3 
-			{
-				A_Overlay(-1, "Pump.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
-				A_SetTics(Gardevoir(self).GetTicModifier(3));
-			}
+			HAND CCDDD 1 Bright;
+			HAND E 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
 			HAND FGAAAAA 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			HAND A 7 {
-				A_ReFire();
-				A_Overlay(-1, "Ready.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
+			HAND A 7 A_ReFire();
+			Goto Ready;
+		AltFire:
+			TNT1 A 0 {if (invoker.ammo1.amount <= 0) A_SelectWeapon("", SWF_SELECTPRIORITY);}
+			HAND A 3 {
+				A_SetTics(Gardevoir(self).GetTicModifier(3));
+				A_OverlayShotguns();
 			}
+			HAND B 2 Bright {
+				A_FireBullets(6, 6, 10 * countinv("GHAGShotgunOverlay"), 5, "GHAGPsychicPuff");
+				A_TakeInventory("Shell", 3);
+				A_StartSound("weapons/shotgf", CHAN_AUTO);
+				A_SetTics(Gardevoir(self).GetTicModifier(2));
+				A_OverlayShotguns(true, true);
+			}
+			HAND CCDDD 1 Bright;
+			HAND E 3;
+			HAND FGAAAAA 3;
+			HAND A 7 A_ReFire();
 			Goto Ready;
 			
 		Select.Overlay:
@@ -76,8 +83,7 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 			SHTG A 999;
 			stop;
 		Fire.Overlay:
-			SHTG G 999;
-			loop;
+			SHTG G 5;
 		Pump.Overlay :
 			SHTG A 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
 			SHTG A 2 A_SetTics(Gardevoir(self).GetTicModifier(2));
@@ -90,7 +96,32 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 				A_SetTics(Gardevoir(self).GetTicModifier(5));
 				A_StartSound("weapons/shotpl", CHAN_WEAPON);
 			}
-			SHTG F 5 A_SetTics(Gardevoir(self).GetTicModifier(5));
+			SHTG F 999;
+		AltFire.Overlay:
+			SHTG G 5;
+		AltPump.Overlay :
+			SHTG A 3;
+			SHTG A 2;
+			SHTG A 5;
+			TNT1 A 0 A_StartSound("weapons/shotpm", CHAN_WEAPON);
+			SHTG C 5;
+			SHTG D 4;
+			SHTG E 5 A_StartSound("weapons/shotpl", CHAN_WEAPON);
+			SHTG F 999;
+	}
+	
+	Action void A_OverlayShotguns(bool rollForFire = false, bool altFire = false)
+	{
+		int rng = random(0, countinv("GHAGShotgunOverlay") - 1);
+		for (int i = 0; i < countinv("GHAGShotgunOverlay"); ++i)
+		{
+			int layer = -1 * (i + 1);
+			if (rollForFire && i == rng && !altFire) A_Overlay(layer, "Fire.Overlay", false);
+			else if (altFire) A_Overlay(layer, "AltFire.Overlay", false);
+			else A_Overlay(layer, "Ready.Overlay", false);
+			A_OverlayFlags(layer, PSPF_ADDBOB, false);
+			A_OverlayOffset(layer, sin(gametic) + (25 * i), cos(gametic) - (8 * i), WOF_INTERPOLATE);
+		}
 	}
 	
 	Action Void A_PsychicShell() {

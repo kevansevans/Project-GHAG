@@ -1,24 +1,5 @@
 Class GHAGBackpack : Backpack replaces Backpack
 {
-	override Inventory CreateCopy (Actor other)
-	{
-		uint end = AllActorClasses.Size();
-		for (uint i = 0; i < end; ++i)
-		{
-			let ammotype = (class<Ammo>)(AllActorClasses[i]);
-
-			if (ammotype && GetDefaultByType(ammotype).GetParentAmmo() == ammotype)
-			{
-				let ammoitem = Ammo(other.FindInventory(ammotype));
-				if (!ammoitem) continue;
-				ammoitem.BackpackMaxAmount = ammoitem.MaxAmount * 1.5;
-				
-			}
-		}
-		
-		return Super.CreateCopy (other);
-	}
-	
 	override bool HandlePickup (Inventory item)
 	{
 		if (item is 'BackpackItem')

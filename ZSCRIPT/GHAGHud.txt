@@ -5,6 +5,8 @@ Class GHAGStatus : BaseStatusBar
 	double v_height;
 	vector2 scale;
 	
+	bool lowHealth;
+	
 	override void Init() {
 		Super.Init();
 		
@@ -34,15 +36,22 @@ Class GHAGStatus : BaseStatusBar
 		
 		float xy_scale = 1.5;
 		
-		if (Gardie.health >= 350 / 2.) {
+		if (Gardie.health >= 175) {
 			DrawBar("hpbar", "hparmbg", Min(Gardie.health, 350), 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 			if (gardie.health > 350) {
 				DrawBar("armbar", "hparmbg", Gardie.health - 350, 500 - 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 			}
-		} else if (gardie.health > 350 / 20.) {
+			lowHealth = false;
+		} else if (gardie.health > 70) {
 			DrawBar("hpbarhlf", "hparmbg", Min(Gardie.health, 350), 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+			lowHealth = false;
 		} else {
 			DrawBar("angbar", "hparmbg", Min(Gardie.health, 350), 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+			if (!lowHealth)
+			{
+				S_StartSound("ambient/LOWHEALTH", CHAN_BODY);
+				lowHealth = true;
+			}
 		}
 		DrawBar("armbar", "hparmbg", GetArmorAmount(), 200, (86, v_height - 82), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 		DrawBar("angbar", "hparmbg", Gardie.RageValue, Gardie.RageConstant, (86, v_height - 19), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
@@ -97,10 +106,7 @@ Class GHAGStatus : BaseStatusBar
 					wep = "wepactiv";
 				} else {
 					wep = "wepinnac";
-					if (PokeBallGun(gun))
-					{
-					
-					} else if (gun.Ammo1) {
+					if (gun.Ammo1) {
 						if (gun.Ammo1.amount == 0) wep = "wepempty";
 					}
 				}

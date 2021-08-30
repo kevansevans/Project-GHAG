@@ -2,7 +2,7 @@ class GHAGShotgunOverlay : Ammo
 {
 	default
 	{
-		Inventory.MaxAmount 3;
+		Inventory.MaxAmount 4;
 		Inventory.pickupMessage "Seized an extra shotgun!";
 	}
 }

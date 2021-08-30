@@ -34,7 +34,7 @@ Class GHAGBackpack : Backpack replaces Backpack
 			if (rng <= 25) 
 			{
 				players[consoleplayer].mo.A_Dropitem("GHAGPistolOverlay", 1);
-			} else if (rng >= 95) {
+			} else if (rng >= 90) {
 				players[consoleplayer].mo.A_Dropitem("GHAGShotgunOverlay", 1);
 			}
 			

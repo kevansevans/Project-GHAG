@@ -33,6 +33,7 @@ Class ElementPunch : Weapon
 		Weapon.SlotNumber 1;
 		Weapon.kickback 150;
 		Tag "Mega Punch";
+		+Weapon.No_Auto_Switch;
 	}
 	
 	override void DoEffect()

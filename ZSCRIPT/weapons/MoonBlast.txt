@@ -5,6 +5,7 @@ Class MoonBlastGun : Weapon
 		Weapon.SlotNumber 7;
 		Tag "Moon Blast";
 		+Weapon.NoAlert;
+		+Weapon.No_Auto_Switch;
 	}
 	
 	States

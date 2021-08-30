@@ -18,8 +18,11 @@ Class GHAGPistol : Pistol replaces Pistol
 	Default
 	{
 		Weapon.SlotNumber 2;
+		Weapon.AmmoType2 "Clip";
 		Tag "9mm Pistol";
 	}
+	
+	int lastRNG;
 	
 	override void DoEffect()
 	{
@@ -31,6 +34,7 @@ Class GHAGPistol : Pistol replaces Pistol
 	{
 		Ready:
 			HAND A 1 {
+				Invoker.AmmoUse2 = Min(countinv("GHAGPistolOverlay"), Invoker.ammo2.amount);
 				A_WeaponReady();
 				A_OverlayPistols();
 			}
@@ -69,7 +73,6 @@ Class GHAGPistol : Pistol replaces Pistol
 			}
 			Goto Ready;
 		AltFire:
-			TNT1 A 0 {if (invoker.ammo1.amount <= 0) A_SelectWeapon("", SWF_SELECTPRIORITY);}
 			HAND AB 3 {
 				A_SetTics(Gardevoir(self).GetTicModifier(3, true));
 			}
@@ -79,7 +82,6 @@ Class GHAGPistol : Pistol replaces Pistol
 			HAND D 3 {
 				A_FireBullets(3.2, 3.2, Max(4, countinv("GHAGPistolOverlay")), 8, "BulletPuff");
 				A_StartSound("weapons/pistol", CHAN_WEAPON);
-				A_TakeInventory("clip", CountInv("GHAGPistolOverlay"));
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
 				A_GunFlash();
 				A_OverlayPistols(true, true);
@@ -109,8 +111,17 @@ Class GHAGPistol : Pistol replaces Pistol
 	
 	Action void A_OverlayPistols(bool RollForFire = false, bool AltFire = false)
 	{
-		A_ClearOverlays(-5, 5);
 		int rng = random(0, (CountInv("GHAGPistolOverlay") - 1));
+		if (countInv("GHAGPistolOverlay") > 1 && rng == invoker.lastRNG) 
+		{
+			while (rng == invoker.lastRNG)
+			{
+				rng = random(0, (CountInv("GHAGPistolOverlay") - 1));
+			}
+		}
+		
+		invoker.lastRNG = rng;
+		
 		for (int i = 0; i < CountInv("GHAGPistolOverlay"); ++ i)
 		{
 			if (i > 3) return;
@@ -119,7 +130,8 @@ Class GHAGPistol : Pistol replaces Pistol
 			if (i == rng && RollForFire || altFire) A_Overlay(layer, "Fire.Overlay", false);
 			else A_Overlay(layer, "Ready.Overlay", true);
 			A_OverlayFlags(layer, PSPF_ADDBOB, false);
-			A_OverlayOffset(layer, (sin(gametic + (72 * i))) + (25 * i), (cos(gametic + (72 * i))) - (5 * i), WOF_INTERPOLATE);
+			if ((i + 1) % 2 == 0) A_OverlayFlags(layer, PSPF_FLIP | PSPF_MIRROR, true);
+			A_OverlayOffset(layer, (sin(gametic + (72 * i))) + (45 * (i / 2)), (cos(gametic + (72 * i))) - (10 * (i / 2)), WOF_INTERPOLATE);
 		}
 	}
 }

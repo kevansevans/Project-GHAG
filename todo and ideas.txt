@@ -14,16 +14,13 @@
 	
 - Psybeam
 	- Concentrated beam of attack, costs a lot of rage
-	
-- Moonblast
-	- Large detonation where player is looking
-	- Costs decent chunk of anger to perform
+	- Replace swift?
 	
 - Black hole
 	- Requires at least 1000 anger
 	- Drains anger as a charge attack, while doing so, gravity slowly inverts
 	- Slow moving projectile that pulls in all enemies
-	- Anything caught in range is dead
+	- Anything caught in range is dead. ANYTHING.
 	
 - Think of something better for the plasma rifle replacement
 	- Plasma balls have a chance of exploding enemies
@@ -44,9 +41,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Brainstorming
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Pistol
-	- Akimbo
 
 Mega-evo mode
 	- Invincibility replacement?

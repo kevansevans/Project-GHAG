@@ -26,18 +26,18 @@ Class GHAGEventHandler : EventHandler
 			return;
 		}
 										//Nazis don't get to be shiny
-		if (Actor(thing).bIsMonster && !WolfensteinSS(thing))
+		if (Actor(thing).bIsMonster && !WolfensteinSS(thing) && !thing.bFriendly)
 		{
 			if (shinyodds == 0) shinyodds = 4096;
 			int rng = random(1, shinyodds);
 			if (rng == shinyodds / 2 || shinyodds == 1) 
 			{
-				SetShinyDemon(thing);
+				GHAGEventHandler.SetShinyDemon(thing);
 			}
 		}
 	}
 	
-	void SetShinyDemon(Actor thing)
+	static void SetShinyDemon(Actor thing)
 	{
 		let shinything = Actor(thing);
 		if (!shinything) return;
@@ -227,6 +227,8 @@ Class GHAGEventHandler : EventHandler
 			int penalty = int(ratio * 1000);
 			Gardie.RageValue -= 1000 - penalty;
 			if (Gardie.RageValue <= 0) Gardie.RageValue = 0;
+			
+			TrainerThinker.purgeDemons();
 		}
 	}
 	

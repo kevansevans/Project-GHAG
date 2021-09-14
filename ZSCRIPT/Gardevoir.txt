@@ -38,7 +38,7 @@ Class Gardevoir : PlayerPawn
 		RageValue = 0;
 		RageDelay = 35 * 3;
 		Ragetimer = 0;
-		RageConstant = 1000;
+		RageConstant = 250;
 		RageCooldownTics = 35;
 		
 		OverTheEdge = false;

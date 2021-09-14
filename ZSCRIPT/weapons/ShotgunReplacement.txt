@@ -158,11 +158,11 @@ Class GHAGShotgun : Shotgun replaces Shotgun
 			
 			A_OverlayFlags(layer, PSPF_ADDBOB | PSPF_PIVOTPERCENT, false);
 			if ((i + 1) % 2 == 0) A_OverlayFlags(layer, PSPF_FLIP | PSPF_MIRROR, true);
-			A_OverlayOffset(layer, sin(gametic + (63 * i)) + (55 * (i / 2)), cos(gametic - (234 * i)) - (18 * (i / 2)), WOF_INTERPOLATE);
-			/*if (i >= 2) {
-				A_OverlayRotate(layer, 15);
-				A_OverlayPivot(invoker.layer, 53, 0, WOF_ADD | WOF_KEEPY);
-			}*/
+			A_OverlayOffset(layer, sin(gametic + (63 * i)) + (55 * (i / 2)) + 30, cos(gametic - (234 * i)) - (18 * (i / 2)), WOF_INTERPOLATE);
+			if (i >= 2) {
+				//A_OverlayRotate(layer, 15);
+				//A_OverlayPivot(invoker.layer, 53, 0, WOF_ADD | WOF_KEEPY);
+			}
 		}
 	}
 	

@@ -18,11 +18,11 @@ Class RageCandyBar : CustomInventory
 			{
 				if (Gardevoir(players[consoleplayer].mo).RageConstant < 1000)
 				{
-					Gardevoir(players[consoleplayer].mo).IncreaseAngerRange(50);
+					Gardevoir(players[consoleplayer].mo).IncreaseAngerRange(20);
 				} 
 				else 
 				{
-					Gardevoir(players[consoleplayer].mo).IncreaseAngerRange(25);
+					Gardevoir(players[consoleplayer].mo).IncreaseAngerRange(10);
 				}
 			}
 			stop;

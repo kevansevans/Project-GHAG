@@ -7,12 +7,16 @@ Class GHAGStatus : BaseStatusBar
 	
 	bool lowHealth;
 	
+	string wtfString;
+	
 	override void Init() {
 		Super.Init();
 		
 		scale = getHUDScale();
 		
 		SetSize(0, Screen.getWidth() / (scale.x / 2), Screen.getHeight() / (scale.y / 2));
+		
+		wtfString = wtf();
 	}
 	
 	override void Draw(int state, double tic) {
@@ -79,8 +83,18 @@ Class GHAGStatus : BaseStatusBar
 					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
 					Font.CR_UNTRANSLATED, 1, -1, 4,
 					(1.25, 1.25));
-					
+			
+		if (gametic % 10 == 0) wtfString = wtf();
+			
 		if (Gardie.OverTheEdge) {
+		
+			DrawString(pokefont,
+					wtfString,
+					(140 + random(-5, 5), v_height - 25 + random(-5, 5)), 
+					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
+					Font.CR_UNTRANSLATED, 1, -1, 4,
+					(1.25, 1.25));
+		
 			DrawString(pokefont,
 					GetAngerString(),
 					(23 + random(-5, 5), v_height - 60 + random(-5, 5)), 
@@ -95,6 +109,14 @@ Class GHAGStatus : BaseStatusBar
 					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
 					Font.CR_FIRE, 1, -1, 4, 
 					(3.5, 3.5));
+					
+		string angy_percent = String.Format("%.1f", (Float(Gardie.RageValue) / 10));
+		DrawString(pokefont,
+					Gardie.RageValue > 1000 ? wtfString : angy_percent .. '/' .. Min(Gardie.RageConstant / 10, 1000),
+					(140, v_height - 25), 
+					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
+					Font.CR_UNTRANSLATED, 1, -1, 4,
+					(1.25, 1.25));
 		
 		int x_tracker = v_width - 1;
 		for (let inv = gardie.inv; inv; inv = inv.inv)
@@ -136,6 +158,18 @@ Class GHAGStatus : BaseStatusBar
 		else image = "";
 		DrawImage(image, (v_width - 50, v_height - 35),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
 		
+	}
+	
+	string wtf()
+	{
+		string value = '';
+		for (int i = 0; i < 10; ++i)
+		{
+			int rng = Random(1, 2);
+			if (rng % 2 == 0) value = value .. '!';
+			else value = value .. '?';
+		}
+		return value;
 	}
 	
 	string GetAngerString()

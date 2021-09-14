@@ -11,7 +11,7 @@ Class MissingNo : Actor
 		Spawn:
 			MSGN A 175 Bright;
 			TNT1 A 0 {
-				ThrowAbortException("'M");
+				ThrowAbortException("\n\n'M\n\n\n\nHey, sorry! Had to crash the game! This isn't supposed to happen, like, ever... If I let it continue, it could get worse! So please please please send me a bug report!\n\n");
 			}
 	}
 }

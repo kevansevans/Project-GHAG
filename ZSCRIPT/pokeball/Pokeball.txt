@@ -112,6 +112,7 @@ Class PokeBallCaughtGun : Weapon
 		LineTrace(angle, 2048, pitch, 0, height - 12, 0, 0, blast);
 		
 		let MyDemon = Actor.spawn(info.ActorClass, blast.hitlocation);
+		if (!MyDemon) let MyDemon = Actor.spawn("MissingNo", blast.hitlocation);
 		myDemon.bFriendly = true;
 		info.isOut = true;
 		info.SentDemon = MyDemon;

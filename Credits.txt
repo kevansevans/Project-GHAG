@@ -20,6 +20,8 @@ Thanks you to the ZDoom Forum Discord, and those who ere there to answer my ques
 Slade
 Adobe Animate 2020 (Will call it flash in this file from here on)
 My phone
+Gimp
+Lots of googling
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //Sprites
@@ -29,7 +31,7 @@ Gardevoir hands were based off of my own hands. Took pictures of them and then
 traced over them in Flash. Drawing a three fingered creature based off of a five
 fingered creature is actually pretty hard.
 
-Chainsaw, I just googled a sawblade, lol.
+Sawblade, I just googled a sawblade, lol.
 
 Pistol is currently based off of Team Fortress 2's pistol, using the same traced
 over method as the hands. Would like something different.

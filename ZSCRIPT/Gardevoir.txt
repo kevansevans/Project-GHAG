@@ -324,26 +324,18 @@ Class Gardevoir : PlayerPawn
 		
 		if (master) 
 		{
-			let ball = MasterBallAmmo(Actor.spawn("MasterBallAmmo"));
-			ball.amount = 1;
-			ball.touch(self);
+			self.A_Dropitem("MasterBallAmmo", 1);
 		}
 		if (ultra) 
 		{
-			let ball = UltraBallAmmo(Actor.spawn("UltraBallAmmo"));
-			ball.amount = 5;
-			ball.touch(self);
+			self.A_Dropitem("UltraBallAmmo", 5);
 		}
 		if (Great)
 		{
-			let ball = GreatBallAmmo(Actor.spawn("GreatBallAmmo"));
-			ball.amount = 5;
-			ball.touch(self);
+			self.A_Dropitem("GreatBallAmmo", 10);
 		}
 		
-		let ball = PokeBallAmmo(Actor.spawn("PokeBallAmmo"));
-		ball.amount = 10;
-		ball.touch(self);
+		players[consoleplayer].mo.A_Dropitem("PokeBallAmmo", 10);
 		
 		return super.onGiveSecret(printmsg, playsound);
 	}

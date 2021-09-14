@@ -41,6 +41,7 @@ Class PokeBallGun : Weapon
 Class PokeBallCaughtGun : Weapon
 {
 	int demoncycle;
+	bool hasEmptyParty;
 
 	Default
 	{
@@ -55,12 +56,48 @@ Class PokeBallCaughtGun : Weapon
 			HAND A 1 A_Lower();
 			Loop;
 		Ready:
+			TNT1 A 0 A_GetDemonInfo();
+		ReadyLoop:
 			HAND A 1 A_WeaponReady();
 			Loop;
 		Fire:
 			HAND D 8 A_ThrowBall();
 			HAND D 1 A_Refire();
 			goto Ready;
+	}
+	
+	Action Void A_GetDemonInfo()
+	{
+		let tracker = TrainerThinker.get();
+		
+		if (tracker.CaughtList.size() == 0) {
+			invoker.SetTag("No useable demons!");
+			invoker.hasEmptyParty = true;
+			invoker.demonCycle = -1;
+			return;
+		} else {
+			
+			invoker.demoncycle = 0;
+			
+			for (int i = 0; i < tracker.CaughtList.size(); ++i)
+			{
+			
+				CaughtInfo c_info = tracker.caughtList[i];
+				
+				if (c_info.isOut) continue;
+				else {
+					invoker.demonCycle = i;
+					invoker.hasEmptyParty = false;
+					invoker.SetTag(c_info.ActorClass);
+					return;
+				}
+			}
+			
+			invoker.SetTag("No useable demons!");
+			invoker.hasEmptyParty = true;
+			invoker.demonCycle = -1;
+			return;
+		}
 	}
 	
 	Action void A_ThrowBall()
@@ -71,17 +108,17 @@ Class PokeBallCaughtGun : Weapon
 		
 		let info = CaughtInfo(tracker.CaughtList[invoker.demoncycle]);
 		
-		++invoker.demoncycle;
-		if (invoker.demoncycle == tracker.CaughtList.size()) invoker.demoncycle = 0;
-		
-		if (info.isOut) return;
-		
 		FLineTraceData blast;
 		LineTrace(angle, 2048, pitch, 0, height - 12, 0, 0, blast);
 		
 		let MyDemon = Actor.spawn(info.ActorClass, blast.hitlocation);
 		myDemon.bFriendly = true;
 		info.isOut = true;
+		info.SentDemon = MyDemon;
+		info.SentDemon.A_SetTranslation("none");
+		if (info.shiny) {
+			GHAGEventHandler.SetShinyDemon(MyDemon);
+		}
 	}
 }
 
@@ -114,9 +151,15 @@ Class PokeBallProj : Actor
 			Stop;
 		TryToCatch:
 			#### A 0 {
-				invoker.bNoGravity = true;
-				A_NoBlocking();
-				A_FreezeTarget();
+				if (target) {
+					if (!target.bFriendly) {
+						invoker.bNoGravity = true;
+						A_NoBlocking();
+						A_FreezeTarget();
+						return resolveState(null);
+					}
+				}
+				return resolveState("BreakBall");
 			}
 			#### CD 4;
 		WaitLoop:
@@ -127,10 +170,17 @@ Class PokeBallProj : Actor
 			#### B 35;
 		ShakeShakeShake :
 			#### B 8;
-			#### BEBFB 4;
 			#### B 0 A_JumpIf(A_RollForCatch(), "FailCatch");
-			#### B 0 A_JumpIf(A_CheckIfCaught(), "Caught");
-			loop;
+			#### B 0 A_StartSound("pokeball/Shake", CHAN_BODY);
+			#### B 0 A_JumpIf(invoker.shakes % 2 == 0, "ShakeLeft");
+		ShakeRight:
+			#### BFB 4;
+			#### B 4 A_JumpIf(A_CheckIfCaught(), "Caught");
+			goto ShakeShakeShake;
+		ShakeLeft:
+			#### BEB 4;
+			#### B 4 A_JumpIf(A_CheckIfCaught(), "Caught");
+			goto ShakeShakeShake;
 		FailCatch:
 			#### GH 4;
 		FailReleaseLoop :
@@ -142,20 +192,22 @@ Class PokeBallProj : Actor
 		Caught:
 			#### A 0
 			{
+				A_StartSound("pokeball/Latch", CHAN_BODY);
 				Let CaughtBall = PokeBallPickup(Self.Spawn(Invoker.CaughtType, Self.pos));
-				CaughtBall.ClassName = Target.getClassName();
-				CaughtBall.Shiny = false;
+				if (!target || !CaughtBall) return;
 				
+				CaughtBall.ClassName = Target.getClassName();
+				CaughtBall.quickStore = Target;
+				CaughtBall.Shiny = false;
 				let tracker = ActorTrackerThinker.get();
 		
 				if (tracker.infolist.find(target) != tracker.infolist.size())
 				{
 					ActorInfo stats = tracker.infolist[tracker.infolist.find(target)];
-					
 					if (stats.shiny) CaughtBall.shiny = true;
 				}
-				
-				target.destroy();
+				target.tics = 99999999;
+				target.bKilled = true;
 				self.destroy();
 			}
 		CaughtLoop:
@@ -282,6 +334,7 @@ Class PokeBallProj : Actor
 
 Class PokeBallPickup : CustomInventory
 {
+	Actor quickStore;
 	string ClassName;
 	bool shiny;
 	String CaughtType;
@@ -307,6 +360,8 @@ Class PokeBallPickup : CustomInventory
 		Pickup:
 			TNT1 A 0
 			{
+				invoker.quickStore.health = 0;
+				invoker.quickStore.A_BossDeath();
 				TrainerThinker.trackdemon(invoker.ClassName, invoker.shiny, invoker.CaughtType);
 			}
 			stop;
@@ -330,6 +385,9 @@ Class GreatBallProj : PokeBallProj
 	
 	override bool ShakeFunction()
 	{
+	
+		return true;
+	
 		let tracker = ActorTrackerThinker.get();
 		
 		if (tracker.infolist.find(target) != tracker.infolist.size())

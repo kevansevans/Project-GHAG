@@ -4,6 +4,7 @@ Class CaughtInfo : Object
 	String BallType;
 	bool shiny;
 	bool isOut;
+	Actor SentDemon;
 }
 
 Class TrainerThinker : Thinker
@@ -54,5 +55,30 @@ Class TrainerThinker : Thinker
 		
 		let tracker = TrainerThinker.get();
 		tracker.CaughtList.push(Catch);
+		
+		console.printf('' .. _shiny);
+	}
+	
+	Static void PurgeDemons()
+	{
+		let tracker = TrainerThinker.get();
+		
+		for (int i = 0; i < tracker.CaughtList.Size(); ++i)
+		{
+			CaughtInfo info = tracker.CaughtList[i];
+			
+			if (info.isOut)
+			{
+				if (info.SentDemon.health > 0)
+				{
+					info.isOut = false;
+					info.SentDemon.destroy();
+				} else {
+					tracker.CaughtList.delete(i);
+				}
+			}
+		}
+		
+		tracker.CaughtList.ShrinkToFit();
 	}
 }

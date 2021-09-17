@@ -340,6 +340,16 @@ Class Gardevoir : PlayerPawn
 		
 		return super.onGiveSecret(printmsg, playsound);
 	}
+	
+	override void CheatGive(String _name, int _amount)
+	{
+		if (_name == 'all')
+		{
+			if (RageConstant < 1000) RageConstant = 1000;
+			else RageConstant += 100;
+			super.CheatGive(_name, _amount);
+		}
+	}
 }
 
 Class NameClass : Actor

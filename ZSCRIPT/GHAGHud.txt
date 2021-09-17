@@ -112,7 +112,7 @@ Class GHAGStatus : BaseStatusBar
 					
 		string angy_percent = String.Format("%.1f", (Float(Gardie.RageValue) / 10));
 		DrawString(pokefont,
-					Gardie.RageValue > 1000 ? wtfString : angy_percent .. '/' .. Min(Gardie.RageConstant / 10, 1000),
+					Gardie.RageValue > Gardie.RageConstant ? wtfString : angy_percent .. '/' .. Gardie.RageConstant / 10,
 					(140, v_height - 25), 
 					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
 					Font.CR_UNTRANSLATED, 1, -1, 4,

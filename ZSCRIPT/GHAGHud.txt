@@ -177,9 +177,11 @@ Class GHAGStatus : BaseStatusBar
 		let gardie = Gardevoir(CPlayer.mo);
 		if (!gardie) return "I'm so angry, I simply do not exist!";
 		
-		int anger = Gardie.RageValue / (Gardie.RageConstant >= 1000 ? Gardie.RageConstant : 1000 / 10);
-		if (anger < 0) return "your turn will come....";
-		if (anger > 10) return "HELL HATH NO FURY";
+		if (Gardie.RageValue < 0) return "your turn will come....";
+		if (Gardie.overTheEdge) return "HELL HATH NO FURY";
+		
+		int anger = Min(Gardie.RageValue, 1000) / 100;
+		console.printf('' .. anger);
 		switch (anger) {
 			case 0:
 				return "Calm";

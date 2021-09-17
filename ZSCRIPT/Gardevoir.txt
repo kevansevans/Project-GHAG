@@ -263,7 +263,7 @@ Class Gardevoir : PlayerPawn
 	
 	override bool onGiveSecret(bool printmsg, bool playsound)
 	{
-		let trainer = TrainerThinker.get();
+		/*let trainer = TrainerThinker.get();
 		
 		bool great = false;
 		bool ultra = false;
@@ -336,7 +336,7 @@ Class Gardevoir : PlayerPawn
 			self.A_Dropitem("GreatBallAmmo", 10);
 		}
 		
-		players[consoleplayer].mo.A_Dropitem("PokeBallAmmo", 10);
+		players[consoleplayer].mo.A_Dropitem("PokeBallAmmo", 10);*/
 		
 		return super.onGiveSecret(printmsg, playsound);
 	}

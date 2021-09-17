@@ -36,6 +36,8 @@ Sawblade, I just googled a sawblade, lol.
 Pistol is currently based off of Team Fortress 2's pistol, using the same traced
 over method as the hands. Would like something different.
 
+Pistol pickup is (previously) unreleased original pistol sprite for the Doom Beta by John Romero.
+
 Shotgun is based off of a Winchester 1912. This was my late Great Grandfather's
 shotgun, which eventually ended up in my Father's possesion.
 

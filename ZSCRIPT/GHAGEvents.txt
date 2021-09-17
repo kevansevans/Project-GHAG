@@ -34,6 +34,14 @@ Class GHAGEventHandler : EventHandler
 			{
 				GHAGEventHandler.SetShinyDemon(thing);
 			}
+			return;
+		}
+		
+		if (Shotgun(thing))
+		{
+			thing.spawn("ShellBox", thing.pos);
+			thing.destroy();
+			return;
 		}
 	}
 	
@@ -241,7 +249,7 @@ Class GHAGEventHandler : EventHandler
 				let c = level.Sectors[i].centerspot;
 				if (level.IsPointInLevel((c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c))))
 				{
-					Actor.Spawn("RageCandyBar", (c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c)));
+					Actor.Spawn("SecretBonus", (c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c)));
 				}
 			}
 		}

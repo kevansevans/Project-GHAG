@@ -34,7 +34,7 @@ Class GHAGPistol : Pistol replaces Pistol
 	{
 		Ready:
 			HAND A 1 {
-				Invoker.AmmoUse2 = Min(countinv("GHAGPistolOverlay"), Invoker.ammo2.amount);
+				Invoker.AmmoUse2 = countinv("GHAGPistolOverlay");
 				A_WeaponReady();
 				A_OverlayPistols();
 			}
@@ -80,7 +80,7 @@ Class GHAGPistol : Pistol replaces Pistol
 				A_SetTics(Gardevoir(self).GetTicModifier(3, false));
 			}
 			HAND D 3 {
-				A_FireBullets(3.2, 3.2, Max(4, countinv("GHAGPistolOverlay")), 8, "BulletPuff");
+				A_FireBullets(3.2, 3.2, Min(4, countinv("GHAGPistolOverlay")), 8, "BulletPuff");
 				A_StartSound("weapons/pistol", CHAN_WEAPON);
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
 				A_GunFlash();

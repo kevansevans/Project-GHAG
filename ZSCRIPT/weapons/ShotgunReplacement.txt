@@ -7,13 +7,20 @@ class GHAGShotgunOverlay : Ammo
 	}
 }
 
-Class GHAGShotgun : Shotgun replaces Shotgun
+Class GHAGShotgun : Weapon
 {
 	default
 	{
 		Weapon.SlotNumber 3;
+		Weapon.AmmoType1 "Shell";
 		Weapon.AmmoType2 "Shell";
 		Tag "1912 Shotgun";
+	}
+	
+	override void BeginPlay()
+	{
+		self.AmmoUse1 = 1;
+		self.AmmoUse2 = countinv("GHAGShotgunOverlay");
 	}
 	
 	override void DoEffect()

@@ -7,6 +7,57 @@ class GHAGShotgunOverlay : Ammo
 	}
 }
 
+Class ShellReplacement : CustomInventory replaces Shell
+{
+	default {
+		Inventory.PickupMessage "$GOTSHELLS";
+	}
+	States
+	{
+		Spawn:
+			SHEL A -1;
+			Stop;
+		Pickup:
+			TNT1 A 0
+			{
+				let gardie = Gardevoir(Players[consoleplayer].mo);
+				if (gardie.countinv("GHAGShotgun") == 0)
+				{
+					gardie.giveInventory("GHAGShotgun", 1);
+					gardie.giveInventory("GHAGShotgunOverlay", 1);
+				}
+				gardie.giveInventory("Shell", 4);
+			}
+			stop;
+	}
+}
+
+Class ShellBoxReplacement : CustomInventory
+{
+	default
+	{
+		Inventory.PickupMessage "$GOTSHELLBOX";
+	}
+	States
+	{
+		Spawn:
+			SBOX A -1;
+			Stop;
+		Pickup:
+			TNT1 A 0
+			{
+				let gardie = Gardevoir(Players[consoleplayer].mo);
+				if (gardie.countinv("GHAGShotgun") == 0)
+				{
+					gardie.giveInventory("GHAGShotgun", 1);
+					gardie.giveInventory("GHAGShotgunOverlay", 1);
+				}
+				gardie.giveInventory("Shell", 20);
+			}
+			stop;
+	}
+}
+
 Class GHAGShotgun : Weapon
 {
 	default

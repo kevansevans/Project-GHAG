@@ -10,8 +10,13 @@ Class GHAGRocketLauncherReplace : CustomInventory replaces RocketLauncher
 			ROCK A -1;
 			Stop;
 		Pickup:
-			TNT1 A 0 A_GiveInventory("GHAGRocketLauncher");
-			TNT1 A 0 A_GiveInventory("RocketAmmo", 2);
+			TNT1 A 0 {
+				let gardie = Gardevoir(players[consoleplayer].mo);
+				if (gardie.countinv("GHAGRocketLauncher") == 0) {
+					A_GiveInventory("GHAGRocketLauncher", 1);
+				}
+				A_GiveInventory("RocketAmmo", 2);
+			}
 			stop;
 	}
 }
@@ -28,8 +33,13 @@ Class GHAGRocketAmmo : CustomInventory replaces RocketAmmo
 			ROCK A -1;
 			Stop;
 		Pickup:
-			TNT1 A 0 A_GiveInventory("GHAGRocketLauncher");
-			TNT1 A 0 A_GiveInventory("RocketAmmo", 1);
+			TNT1 A 0 {
+				let gardie = Gardevoir(players[consoleplayer].mo);
+				if (gardie.countinv("GHAGRocketLauncher") == 0) {
+					A_GiveInventory("GHAGRocketLauncher", 1);
+				}
+				A_GiveInventory("RocketAmmo", 1);
+			}
 			stop;
 	}
 }
@@ -46,8 +56,13 @@ Class GHAGRocketBox : CustomInventory replaces RocketBox
 			BROK A -1;
 			Stop;
 		Pickup:
-			TNT1 A 0 A_GiveInventory("GHAGRocketLauncher");
-			TNT1 A 0 A_GiveInventory("RocketAmmo", 5);
+			TNT1 A 0 {
+				let gardie = Gardevoir(players[consoleplayer].mo);
+				if (gardie.countinv("GHAGRocketLauncher") == 0) {
+					A_GiveInventory("GHAGRocketLauncher", 1);
+				}
+				A_GiveInventory("RocketAmmo", 5);
+			}
 			stop;
 	}
 }
@@ -147,5 +162,13 @@ Class PsychicRocket : Rocket
 			MISL C 6 Bright;
 			MISL D 4 Bright;
 			Stop;
+	}
+}
+
+Class GrenadeRocket : Rocket
+{
+	default
+	{
+		//+Gravity;
 	}
 }

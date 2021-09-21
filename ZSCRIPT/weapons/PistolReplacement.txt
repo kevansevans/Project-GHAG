@@ -18,6 +18,7 @@ Class GHAGPistol : Pistol replaces Pistol
 	Default
 	{
 		Weapon.SlotNumber 2;
+		Weapon.AmmoType1 "Clip";
 		Weapon.AmmoType2 "Clip";
 		Tag "9mm Pistol";
 	}

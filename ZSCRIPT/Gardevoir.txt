@@ -6,6 +6,8 @@ Class Gardevoir : PlayerPawn
 	int RageValue;
 	int RageCooldownTics;
 	
+	int reviveAmount;
+	
 	bool OverTheEdge;
 	bool charonmode;
 	//property charonmode: charonmode;
@@ -19,16 +21,14 @@ Class Gardevoir : PlayerPawn
 	default {
 		Health 350;
         Player.DisplayName "Gardevoir" ;
+		
 		Player.StartItem "GHAGPistol";
-		Player.StartItem "GHAGShotgun";
+		Player.StartItem "GHAGPistolOverlay";
+		Player.StartItem "Clip", 50;
+		
 		Player.StartItem "ElementPunch";
 		Player.StartItem "Swift";
 		Player.StartItem "MoonBlastGun";
-		//Player.StartItem "PokeBallGun";
-		//Player.StartItem "PokeBallCaughtGun";
-		Player.StartItem "Clip", 50;
-		Player.StartItem "GHAGPistolOverlay", 1;
-		Player.StartItem "GHAGShotgunOverlay", 1;
 		Player.MaxHealth 350;
      }
 	

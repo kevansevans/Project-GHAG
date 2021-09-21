@@ -223,20 +223,6 @@ Class GHAGShotgun : Weapon
 			}
 		}
 	}
-	
-	Action Void A_PsychicShell() {
-		if (player == null) return;
-		
-		Weapon weap = player.ReadyWeapon;
-		if (weap != null && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
-		{
-			if (!weap.DepleteAmmo (weap.bAltFire, true, 1))
-				return;
-		}
-		
-		let _locShell = PsychicShell(SpawnPlayerMissile("PsychicShell"));
-		if (_locShell) _locShell.modifier = Gardevoir(Self).GetRageModifier();
-	}
 }
 
 Class GHAGPsychicPuff : BulletPuff
@@ -250,74 +236,4 @@ Class GHAGPsychicPuff : BulletPuff
 Class GHAGSuperShotgun : ShellBox replaces SuperShotgun
 {
 	
-}
-
-Class PsychicShell : Actor
-{
-
-	double modifier;
-	property modifier: modifier;
-	
-	bool fired;
-	property fired: fired;
-
-	Default {
-		+FLOAT;
-		+SCREENSEEKER;
-		+NOGRAVITY;
-		+Friendly;
-		Speed 25;
-		+ACTIVATEIMPACT;
-		-ACTIVATEPCROSS;
-		Projectile;
-	}
-	
-	States {
-	
-		Spawn :
-			PSHL AAA 2 
-			{
-				if (!tracer || tracer.health <= 0) 
-				{
-					A_SeekerMissile(0, 2, SMF_LOOK, 99999);
-					fired = false;
-				} 
-				else  
-				{
-					A_FaceTarget();
-					A_Chase();
-					A_FaceTarget();
-					float dist = Distance3D(tracer);
-					if (dist <= 256) 
-					{
-						A_CustomBulletAttack(4, 4, 7, 5, "BulletPuff");
-						A_StartSound("weapons/shotgf", CHAN_WEAPON);
-						fired = true;
-						Return ResolveState("Death");
-					} 
-				} 
-				Return ResolveState(null);
-			}
-			Loop;
-		Death :
-			TNT1 A 1 {
-				if (!fired) A_SpawnItem("ShellPickup");
-			}
-			stop;
-	}
-}
-
-Class ShellPickup : ShellBox
-{
-
-	Default {
-		Inventory.Amount 1;
-		//+Gravity;
-	}
-	
-	States {
-		Spawn:
-			PSHL B -1;
-			Stop;
-	}
 }

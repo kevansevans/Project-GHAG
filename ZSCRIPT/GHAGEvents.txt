@@ -39,7 +39,7 @@ Class GHAGEventHandler : EventHandler
 		
 		if (Shotgun(thing))
 		{
-			thing.spawn("ShellBox", thing.pos);
+			thing.spawn("ShellBoxReplacement", thing.pos);
 			thing.destroy();
 			return;
 		}

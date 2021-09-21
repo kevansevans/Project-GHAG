@@ -88,9 +88,10 @@ Class Gardevoir : PlayerPawn
 		if (RageValue > RageConstant) RageValue = RageConstant;
 	}
 	
+	int rollCounterAnger;
 	void IncreaseAngerRange(Int value)
 	{
-		RageConstant += value;
+		rollCounterAnger += value;
 	}
 	
 	void CatharsisBonus(Actor thing) 
@@ -225,6 +226,14 @@ Class Gardevoir : PlayerPawn
 			_locDamage *= 0.25;
 		}
 		
+		let player = Gardevoir(players[consoleplayer].mo);
+		if (self.health - _locDamage <= 0 && player.countinv("ReviveHalf") >= 1)
+		{
+			reviveAmount = 175;
+			player.takeInventory("ReviveHalf", 1);
+			_locDamage = 0;
+		}
+		
 		return Super.DamageMobj(inflictor, source, _locDamage, mod, flags, angle);
 	}
 	
@@ -258,7 +267,18 @@ Class Gardevoir : PlayerPawn
 			RageDelay -= 1;
 			if (RageDelay < 0) RageDelay = 0;
 			RageTimer = 0;
-		} 
+		}
+		
+		if (rollCounterAnger > 0 && gametic % 2 == 0) {
+			RageConstant += 1;
+			rollCounterAnger -= 1;
+		}
+		
+		if (reviveAmount > 0 && gametic % 3 == 0)
+		{
+			self.giveBody(Min(175 - self.health, 5));
+			reviveAmount -= 1;
+		}
 	}	
 	
 	override bool onGiveSecret(bool printmsg, bool playsound)

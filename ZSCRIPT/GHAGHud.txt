@@ -111,8 +111,9 @@ Class GHAGStatus : BaseStatusBar
 					(3.5, 3.5));
 					
 		string angy_percent = String.Format("%.1f", (Float(Gardie.RageValue) / 10));
+		string angry_cap = String.format("%.1f", (Float(Gardie.RageConstant) / 10));
 		DrawString(pokefont,
-					Gardie.RageValue > Gardie.RageConstant ? wtfString : angy_percent .. '/' .. Gardie.RageConstant / 10,
+					Gardie.RageValue > Gardie.RageConstant ? wtfString : angy_percent .. '/' .. angry_cap,
 					(140, v_height - 25), 
 					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
 					Font.CR_UNTRANSLATED, 1, -1, 4,
@@ -133,7 +134,7 @@ Class GHAGStatus : BaseStatusBar
 					}
 				}
 				
-				drawImage(wep, (x_tracker -= (8 * 2.5), v_height - 20), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (2.5, 2.5));
+				drawImage(wep, (x_tracker -= 20, v_height - 20), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (2.5, 2.5));
 			}
 		}
 		

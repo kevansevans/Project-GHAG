@@ -72,6 +72,8 @@ Class GHAGShotgun : Weapon
 	{
 		self.AmmoUse1 = 1;
 		self.AmmoUse2 = countinv("GHAGShotgunOverlay");
+		
+		super.beginPlay();
 	}
 	
 	override void DoEffect()

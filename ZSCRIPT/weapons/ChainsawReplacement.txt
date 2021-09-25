@@ -149,6 +149,7 @@ Class SawBladeProjectile : Actor
 				if (!tracer) return ResolveState('Death');
 				if (attached)
 				{
+					A_StartSound("weapons/chainhit", CHAN_AUTO);
 					int damage = random() % 10 + 1;
 					tracer.damagemobj(self, Gardevoir(players[consoleplayer].mo), damage, 'Melee');
 					for (int i = 0; i < bloodscale; ++ i) 

@@ -70,7 +70,7 @@ Class SwiftProjectile : Actor
 	{
 		super.BeginPlay();
 		
-		Self.setDamage(max(2, 30 * Gardevoir(players[consoleplayer].mo).getRageModifier()));
+		Self.setDamage(max(8, 30 * Gardevoir(players[consoleplayer].mo).getRageModifier()));
 	}
 	
 	States 

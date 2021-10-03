@@ -407,7 +407,7 @@ Class BasePunchPuff : BulletPuff
 	{
 		let odds = InflictOdds.get();
 		if (odds) {
-			Self.chance = odds.chance;
+			Self.chance = odds.chance + (25 * Gardevoir(players[consoleplayer].mo).getRageModifier());
 		} else {
 			self.chance = 25;
 		}

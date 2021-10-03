@@ -232,6 +232,7 @@ Class Gardevoir : PlayerPawn
 			reviveAmount = 175;
 			player.takeInventory("ReviveHalf", 1);
 			_locDamage = 0;
+			//GHAGStatus.hudMessageBox(Cvar.findCvar("name").getString() .. " got in a pinch and had to use a revive!", 10);
 		}
 		
 		return Super.DamageMobj(inflictor, source, _locDamage, mod, flags, angle);
@@ -367,6 +368,8 @@ Class Gardevoir : PlayerPawn
 		{
 			if (RageConstant < 1000) RageConstant = 1000;
 			else RageConstant += 100;
+			
+			super.cheatGive("GHAGBackpack", 40);
 			
 			super.CheatGive("all", _amount);
 		}

@@ -100,14 +100,14 @@ Class ElementPunch : Weapon
 		Actor puff;
 		[puff, actualdamage] = LineAttack (angle, range, pitch, damage, 'Melee', pufftype, puffFlags, t);
 
+		A_BlastLOS(BF_AFFECTBOSSES | BF_DONTWARN | 16, 255, 256 * Gardevoir(self).GetRageModifier(), 20 * Gardevoir(self).GetRageModifier(), pufftype, damage);
+
 		if (!t.linetarget)
 		{
 			if (MissSound) A_StartSound(MissSound, CHAN_WEAPON);
 		}
 		else
 		{
-			A_BlastLOS(BF_AFFECTBOSSES | BF_DONTWARN | 16, 255, 256 * Gardevoir(self).GetRageModifier(), 20 * Gardevoir(self).GetRageModifier(), pufftype, damage);
-			
 			if (lifesteal > 0 && !(t.linetarget.bDontDrain))
 			{
 				if (flags & CPF_STEALARMOR)

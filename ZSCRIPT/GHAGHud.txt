@@ -9,6 +9,9 @@ Class GHAGStatus : BaseStatusBar
 	
 	string wtfString;
 	
+	Font fnt;
+	HUDFont pokefont;
+	
 	override void Init() {
 		Super.Init();
 		
@@ -17,6 +20,10 @@ Class GHAGStatus : BaseStatusBar
 		SetSize(0, Screen.getWidth() / (scale.x / 2), Screen.getHeight() / (scale.y / 2));
 		
 		wtfString = wtf();
+		
+		fnt = "Pokemon";
+		pokefont = HUDFont.Create(fnt);
+	}
 	}
 	
 	override void Draw(int state, double tic) {
@@ -34,9 +41,6 @@ Class GHAGStatus : BaseStatusBar
 		
 		let gardie = Gardevoir(CPlayer.mo);
 		if (!gardie) return;
-		
-		Font fnt = "Pokemon";
-		HUDFont pokefont = HUDFont.Create(fnt);
 		
 		float xy_scale = 1.5;
 		

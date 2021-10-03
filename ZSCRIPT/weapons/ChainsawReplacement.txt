@@ -37,17 +37,17 @@ Class GHAGSawBlade : Weapon replaces Chainsaw
 		LineTrace(angle, 2048, pitch, 0, height - 12, 0, 0, shot);
 		if (shot.HitType == TRACE_HitActor)
 		{
-			if (shot.HitActor.bIsMonster && shot.HitActor.health > 0)
-			{
-				if (distance2D(Shot.hitActor) > 64) {
+			if (distance2D(Shot.hitActor) > 64) {
+				if (shot.HitActor.bIsMonster && shot.HitActor.health > 0)
+				{
 					let _locBlade = SawBladeProjectile(SpawnPlayerMissile("SawBladeProjectile"));
 					if (_locBlade) {
 						_locBlade.tracer = shot.HitActor;
 						A_TakeInventory("SawBladeAmmo", 1);
 					}
-				} else {
-					A_Saw("weapons/sawful", "weapons/sawhit", 2, 'BulletPuff', SF_NOUSEAMMO, 64);
 				}
+			} else {
+				A_Saw("weapons/sawful", "weapons/sawhit", 2 * Gardevoir(players[consoleplayer].mo).blades, 'BulletPuff', SF_NOUSEAMMO, 64);
 			}
 		}
 	}

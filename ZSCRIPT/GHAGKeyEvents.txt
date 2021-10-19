@@ -1,0 +1,63 @@
+class GHAGKeyEvents : EventHandler
+{   
+	override bool InputProcess (InputEvent e)
+	{
+		if (e.Type == InputEvent.Type_KeyDown)
+			SendNetworkEvent("KinesisActivate", e.KeyScan); 
+		if (e.Type == InputEvent.Type_KeyUp)
+			SendNetworkEvent("KinesisDeactivate", e.KeyScan); 
+		return false;
+   }
+
+   override void NetworkProcess(ConsoleEvent e)
+   {               
+		if (e.Name == "KinesisActivate")  
+		{
+			let gardie = Gardevoir(players[consoleplayer].mo);
+		
+			int key1, key2;
+			[key1, key2] = Bindings.GetKeysForCommand("kinesis");
+			if ((key1 && key1 == e.Args[0]) || (key2 && key2 == e.Args[0]))
+			{
+				FLineTraceData shot;
+				gardie.LineTrace(gardie.angle, 2048, gardie.pitch, TRF_ALLACTORS, gardie.height - 12, 0, 0, shot);
+				if (shot.HitType == TRACE_HitActor)
+				{
+					if (shot.HitActor.bIsMonster && shot.HitActor.health > 0)
+					{
+						ActorTracker.TrackThing(shot.HitActor, KINESIS);
+						
+					}
+					else if (inventory(shot.HitActor))
+					{
+						shot.HitActor.target = gardie;
+						ActorTracker.TrackThing(shot.HitActor, KINESIS);
+					}
+				}
+			}
+		}
+		
+		if (e.Name == "KinesisDeactivate")  
+		{
+			int key1, key2;
+			[key1, key2] = Bindings.GetKeysForCommand("kinesis");
+			if ((key1 && key1 == e.Args[0]) || (key2 && key2 == e.Args[0]))
+			{
+				let tracker = ActorTrackerThinker.get();
+				if (!tracker) return;
+			
+				for (int i = 0; i < tracker.Infolist.size(); ++i)
+				{
+					ActorInfo info = tracker.Infolist[i];
+					if (info.kinesis) {
+						info.kinesis = false;
+						info.owner.painChance = info.prevPainValue;
+					}
+				}
+			}
+		}
+	}
+}
+
+Class KinesisToken : Inventory
+{}

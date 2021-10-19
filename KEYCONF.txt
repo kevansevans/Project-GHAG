@@ -1,0 +1,4 @@
+addKeySection "Gardevoir Powers" "ProjectGHAG"
+addMenuKey "Context Sensitive Telekinesis" kinesis
+defaultbind "kinesis" f
+alias kinesis ""

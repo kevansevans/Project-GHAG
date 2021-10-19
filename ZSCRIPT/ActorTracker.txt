@@ -5,6 +5,7 @@ Enum StatusType
 	BURNED = 2,
 	PARALYZED = 4,
 	SHINY = 8,
+	KINESIS = 16,
 }
 
 Class ActorInfo : Object
@@ -14,12 +15,14 @@ Class ActorInfo : Object
 	int damage;
 	int prevPainValue;
 	int prevTicValue;
+	int timestamp;
 	bool frozen;
 	bool Burned;
 	bool Paralyzed;
 	bool confused;
 	bool dead;
 	bool shiny;
+	bool kinesis;
 }
 
 Class ActorTrackerThinker : Thinker
@@ -59,6 +62,7 @@ Class ActorTracker : EventHandler
 		if (!tracker) return;
 	
 		int index = tracker.Actors.find(thing);
+		
 		if (index == tracker.Actors.size()) 
 		{
 			tracker.Actors.push(thing);
@@ -74,6 +78,7 @@ Class ActorTracker : EventHandler
 			tempeffect.prevPainValue = thing.painchance;
 			tempeffect.prevTicValue = 0;
 			tempeffect.shiny = Status & SHINY;
+			tempeffect.kinesis = Status & KINESIS;
 			
 			tracker.Infolist.push(tempeffect);
 			
@@ -82,6 +87,8 @@ Class ActorTracker : EventHandler
 		ActorInfo info = tracker.Infolist[index];
 		
 		info.damage += Damage;
+		info.kinesis = Status & KINESIS;
+		info.timestamp = gametic;
 		
 		//One status effect at a time
 		if (info.frozen || info.burned || info.paralyzed || info.confused) 
@@ -167,6 +174,33 @@ Class ActorTracker : EventHandler
 				//force extra dead effect here just to make sure the actor
 				//doesn't show unwanted Infolist
 				continue;
+			}
+			
+			if (info.kinesis)
+			{
+				let gardie = Gardevoir(players[consoleplayer].mo);
+			
+				if (info.owner.bIsMonster) {
+				
+					if (gametic - info.timestamp >= 5 && gametic % 5 == 0)
+					{
+
+						thing.painChance = 255;
+						thing.damageMobj(gardie, gardie, 1 + (50 * gardie.getRageModifier()), "Melee");
+				
+						if (thing.health <= 0) info.kinesis = false;
+					}
+				}
+				else
+				{
+					//info.owner.bNoClip = true;
+					info.owner.A_FaceTarget();
+					info.owner.Thrust();
+					if (info.owner.Distance2D(Gardie) <= 32)
+					{
+						info.owner.touch(gardie);
+					}
+				}
 			}
 			
 			if (info.frozen) 

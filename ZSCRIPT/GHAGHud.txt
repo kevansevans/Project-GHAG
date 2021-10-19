@@ -24,6 +24,20 @@ Class GHAGStatus : BaseStatusBar
 		fnt = "Pokemon";
 		pokefont = HUDFont.Create(fnt);
 	}
+	
+	String activeMessage;
+	int messageTimer;
+	
+	void hudMessageBox(String _msg = "", int _seconds = -1)
+	{
+		if (_msg != '') activemessage == _msg;
+		if (_seconds != -1) messageTimer = _seconds;
+		
+		if (messageTimer > 0)
+		{
+			DrawImage("Dialog", (290, v_height - 75),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
+			DrawString(pokefont, activeMessage, (300, v_height - 65), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, Font.CR_BLACK, 1, 140, 4, (1.25, 1.25)); 
+		}
 	}
 	
 	override void Draw(int state, double tic) {
@@ -171,11 +185,7 @@ Class GHAGStatus : BaseStatusBar
 			}
 		}
 		
-		if (gardie.reviveAmount > 0)
-		{
-			DrawImage("Dialog", (290, v_height - 75),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
-			DrawString(pokefont, Cvar.findCvar("name").getString() .. " got in a pinch and had to use a revive!", (300, v_height - 65), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, Font.CR_BLACK, 1, 140, 4, (1.25, 1.25)); 
-		}
+		hudMessageBox();
 		
 	}
 	

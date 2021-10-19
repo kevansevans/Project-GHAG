@@ -236,20 +236,39 @@ Class GHAGEventHandler : EventHandler
 			Gardie.RageValue -= 1000 - penalty;
 			if (Gardie.RageValue <= 0) Gardie.RageValue = 0;
 			
-			TrainerThinker.purgeDemons();
+			//TrainerThinker.purgeDemons();
 		}
 	}
 	
 	override void WorldLoaded(WorldEvent event)
 	{
+		int numSecrets = 0;
+		for (int i = 0; i < level.Sectors.Size(); i++)
+		{
+			if (level.sectors[i].isSecret())
+			{
+				++numSecrets;
+			}
+		}
+		int pokeball = random(1, numSecrets);
+		numSecrets = 0;
 		for (int i = 0; i < level.Sectors.Size(); i++)
 		{
 			if (level.sectors[i].isSecret())
 			{
 				let c = level.Sectors[i].centerspot;
+				++numSecrets;
 				if (level.IsPointInLevel((c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c))))
 				{
-					Actor.Spawn("SecretBonus", (c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c)));
+					console.printf(numSecrets .. ':' .. pokeball);
+					if (numSecrets == pokeball)
+					{
+						Actor.Spawn("pokeballsecretrandomizer", (c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c)));
+					} 
+					else 
+					{
+						Actor.Spawn("SecretBonus", (c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c)));
+					}
 				}
 			}
 		}

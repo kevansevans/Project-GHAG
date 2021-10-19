@@ -11,12 +11,7 @@ Class TrainerThinker : Thinker
 {
 	Array<CaughtInfo> CaughtList;
 	
-	int ID_A;
-	int ID_B;
-	int ID_C;
-	int ID_D;
-	int ID_E;
-	int ID_F;
+	int TrainerID;
 
 	TrainerThinker Init()
 	{
@@ -24,12 +19,7 @@ Class TrainerThinker : Thinker
 		
 		CaughtList.clear();
 		
-		ID_A = random(0, 9);
-		ID_B = random(0, 9);
-		ID_C = random(0, 9);
-		ID_D = random(0, 9);
-		ID_E = random(0, 9);
-		ID_F = random(0, 9);
+		TrainerID = random(1, 100000);
 		
 		return self;
 	}

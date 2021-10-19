@@ -1,3 +1,93 @@
+Class PokeballSecretRandomizer : Actor
+{
+	override void BeginPlay()
+	{
+		int g_ball = 0;
+		int u_ball = 0;
+		int level = level.LevelNum;
+		int weight = 30 - level;
+		for (int i = 0; i < 10; ++i) 
+		{
+			int rng = random(1, 30);
+			if (rng >= weight && weight <= 10 && u_ball < 5)
+			{
+				A_SpawnItemEx("UltraBallAmmo", sin(i * 10) * 10, sin(i * 10) * 10, 0, random(3, 5), random(3, 5), random(3, 5), random(1, 360));
+				++u_ball;
+				continue;
+			} else if (rng >= (weight - 10) && weight <= 20 && g_ball < 5) {
+				A_SpawnItemEx("GreatBallAmmo", sin(i * 10) * 10, sin(i * 10) * 10, 0, random(3, 5), random(3, 5), random(3, 5), random(1, 360));
+				++g_ball;
+				continue;
+			} else {
+				A_SpawnItemEx("PokeBallAmmo", sin(i * 10) * 10, sin(i * 10) * 10, 0, random(3, 5), random(3, 5), random(3, 5), random(1, 360));
+			}
+		}
+		
+		TrainerThinker trainer = TrainerThinker.get();
+		
+		int lottoID = random(0, 100000);
+		if (lottoID == trainer.TrainerID)
+		{
+			A_SpawnItemEx("MasterBallAmmo");
+		}
+		
+		self.destroy();
+	}
+}
+
+class PokeBallAmmo : Ammo
+{
+	default
+	{
+		Inventory.MaxAmount 255;
+		Inventory.PickupMessage "Found a Pokeball!";
+		+Floatbob;
+	}
+	
+	states
+	{
+		Spawn :
+			PBAL B 1;
+			Loop;
+	}
+}
+
+class GreatBallAmmo : PokeBallAmmo
+{
+	default
+	{
+		Inventory.PickupMessage "Found a GreatBall! Quite nice!";
+	}
+	states
+	{
+		Spawn :
+			GBAL B 1;
+			Loop;
+	}
+}
+
+class UltraBallAmmo : PokeBallAmmo
+{
+	default
+	{
+		Inventory.PickupMessage "Found an UltraBall! Awesome!";
+	}
+	states
+	{
+		Spawn :
+			UBAL B 1;
+			Loop;
+	}
+}
+
+class MasterBallAmmo : PokeBallAmmo
+{
+	default
+	{
+		Inventory.PickupMessage "The lottery smiles in your favor, a one in a 100,000 odds! Found a MasterBall!";
+	}
+}
+
 Class PokeBallGun : Weapon
 {
 
@@ -34,7 +124,7 @@ Class PokeBallGun : Weapon
 	
 	Action void A_ThrowBall()
 	{
-		let _locBall = SpawnPlayerMissile("GreatBallProj", angle);
+		let _locBall = SpawnPlayerMissile("UltraBallProj", angle);
 	}
 }
 
@@ -430,43 +520,63 @@ Class GreatBallPickup : PokeBallPickup
 
 Class UltraBallProj : PokeBallProj
 {
+	default
+	{
+		PokeBallProj.CaughtType "UltraBallPickup";
+	}
+	
+	States
+	{
+		Spawn:
+			UBAL A 1;
+			loop;
+	}
+	
+	override bool ShakeFunction()
+	{
+	
+		return true;
+	
+		let tracker = ActorTrackerThinker.get();
+		
+		if (tracker.infolist.find(target) != tracker.infolist.size())
+		{
+			int N = random(0, 200);
+		
+			ActorInfo stats = tracker.infolist[tracker.infolist.find(target)];
+			
+			if ((stats.paralyzed || stats.burned) && N <= 12) return true;
+			if (stats.frozen && N <= 25) return true;
+		}
+		
+		int M  = random(0, 255);
+		
+		int numerator = Target.spawnHealth() * 255 * 4;
+		int denominator = Target.health * 8;
+		int F = numerator / denominator;
+		
+		if (F >= M) return true;
+		
+		return false;
+	}
+}
 
+Class UltraBallPickup : PokeBallPickup
+{
+	default
+	{
+		PokeBallPickup.CaughtType "UltraBall";
+	}
+	
+	states
+	{
+		Spawn:
+			UBAL A 0;
+			goto Spawn.Flashing;
+	}
 }
 
 Class MasterBallProj : PokeBallProj
 {
 
-}
-
-class PokeBallAmmo : Ammo
-{
-	default
-	{
-		Inventory.MaxAmount 255;
-		Inventory.PickupMessage "Found a Pokeball!";
-	}
-}
-
-class GreatBallAmmo : PokeBallAmmo
-{
-	default
-	{
-		Inventory.PickupMessage "Found a GreatBall! Quite nice!";
-	}
-}
-
-class UltraBallAmmo : PokeBallAmmo
-{
-	default
-	{
-		Inventory.PickupMessage "Found an UltraBall! Awesome!";
-	}
-}
-
-class MasterBallAmmo : PokeBallAmmo
-{
-	default
-	{
-		Inventory.PickupMessage "The lottery smiles in your favor! Found a MasterBall!";
-	}
 }

@@ -1,3 +1,378 @@
+Class GHAGShotgun : Weapon
+{
+	default
+	{
+		Weapon.SlotNumber 3;
+		Weapon.AmmoType1 "Shell";
+		Weapon.AmmoType2 "Shell";
+		+Weapon.Ammo_Optional;
+		+WEAPON.ALT_AMMO_OPTIONAL;
+		Tag "1912 Shotgun";
+	}
+	
+	bool batMode;
+	
+	override void BeginPlay()
+	{
+		self.AmmoUse1 = 1;
+		self.AmmoUse2 = countinv("GHAGShotgunOverlay");
+		self.batMode = False;
+		
+		super.beginPlay();
+	}
+	
+	override void DoEffect()
+	{
+		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
+		super.DoEffect();
+	}
+	
+	int layer;
+	int meleeframes;
+	
+	States
+	{
+		Select :
+			TNT1 A 0
+			{
+				if (invoker.ammo1.amount == 0 || invoker.ammo2.amount == 0) invoker.batmode = true;
+				else invoker.batmode = false;
+				
+				console.printf('' .. invoker.batmode);
+				
+				if (!invoker.batmode) return resolveState("Select.Norm");
+				else if (invoker.batmode) return resolveState("Select.Batgun");
+				return resolveState(null);
+			}
+			Loop;
+		Select.Norm :
+			HAND A 1 {
+				A_Raise();
+				A_OverlayShotguns();
+			}
+			Loop;
+		Select.Batgun :
+			GSHT I 1 {
+				A_Raise();
+				A_OverlayShotguns();
+			}
+			Loop;
+		Deselect :
+			TNT1 A 0
+			{
+				if (!invoker.batmode) return resolveState("Deselect.Norm");
+				else if (invoker.batmode) return resolveState("Deselect.Batgun");
+				return resolveState(null);
+			}
+			Loop;
+		Deselect.Norm :
+			HAND A 1 {
+				A_Lower();
+				A_OverlayShotguns();
+			}
+			Loop;
+		Deselect.Batgun :
+			GSHT I 1 {
+				A_Lower();
+				A_OverlayShotguns();
+			}
+			Loop;
+		Ready :
+			TNT1 A 0
+			{
+				if (!invoker.batmode) return resolveState("Ready.Standard");
+				else if (invoker.batmode) return resolveState("Ready.Baseball");
+				return resolveState(null);
+			}
+			Loop;
+		Ready.Standard :
+			HAND A 1 {
+				Invoker.AmmoUse2 = countinv("GHAGShotgunOverlay");
+				A_WeaponReady(WRF_ALLOWRELOAD);
+				A_OverlayShotguns();
+			}
+			goto Ready;
+		Ready.Baseball :
+			GSHT I 1 {
+				A_WeaponReady(WRF_ALLOWRELOAD);
+				A_OverlayShotguns();
+			}
+			goto Ready;
+		Fire :
+			TNT1 A 0
+			{
+				if (!invoker.batmode) return resolveState("Fire.Gun");
+				else if (invoker.batmode) return resolveState("Fire.Swing");
+				return resolveState(null);
+			}
+		Fire.Gun :
+			HAND A 3 {
+				A_SetTics(Gardevoir(self).GetTicModifier(3));
+				A_OverlayShotguns();
+			}
+			HAND B 2 Bright {
+				if (CountInv("Shell") != 0) A_GiveInventory("Shell");
+				A_FireBullets(4, 4, 10, 5, "BulletPuff");
+				A_FireBullets(4, 4, floor(14 * Gardevoir(Self).GetRageModifier()), 5, "GHAGPsychicPuff");
+				A_StartSound("weapons/shotgf", CHAN_AUTO);
+				A_SetTics(Gardevoir(self).GetTicModifier(2));
+				A_OverlayShotguns(true);
+			}
+			HAND CCDDD 1 Bright;
+			HAND E 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
+			HAND FGAAAAA 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
+			HAND A 7 {
+				if (invoker.ammo1.amount == 0) {
+						return resolveState("Reload");
+				}
+				A_ReFire();
+				return resolveState(null);
+			}
+			Goto Ready;
+		Fire.Swing :
+			TNT1 A 0 A_OverlayPivot(0, 0.75, 0.75);
+			GSHT IIII 1 {
+				A_OverlayRotate(0, 25, WOF_ADD);
+			}
+			TNT1 A 0 {
+				FTranslatedLineTarget t;
+				double ang = angle + Random2() * (5.625 / 256);
+				double pitch = AimLineAttack(ang, 64, null, 0., ALF_CHECK3D);
+				LineAttack(ang, 64, pitch, 128, 'Melee', "BulletPuff", LAF_ISMELEEATTACK, t);
+				A_StartSound("skeleton/swing");
+				if (t.linetarget)
+				{
+					Actor target = t.linetarget;
+					float rage = Gardevoir(players[consoleplayer].mo).getRageModifier();
+					A_StartSound("fists/LPUNCH");
+					ShottyThwackBlastActor(target, 64 + (64 * rage), 16 + (16 * rage), "", true);
+					if (target.health > 0) target.setStateLabel("Pain");
+				}
+			}
+			GSHT IIII 4 
+			{
+				A_OverlayRotate(0, -25, WOF_ADD);
+				A_SetTics(Gardevoir(self).GetTicModifier(4));
+			}
+			goto Ready;
+		AltFire:
+			TNT1 A 0
+			{
+				if (invoker.batmode == true)
+				{
+					return resolveState("AltFire.Batmode");
+				}
+				if (invoker.ammo2.amount == 0) return resolveState("ready");
+				invoker.AmmoUse2 = Min(countinv("GHAGShotgunOverlay"), 3);
+				return resolveState(null);
+			}
+			HAND A 3 {
+				A_SetTics(Gardevoir(self).GetTicModifier(3));
+				A_OverlayShotguns();
+			}
+			HAND B 2 Bright {
+				A_FireBullets(6, 6, 10 * Min(countinv("GHAGShotgunOverlay"), 3), 5, "GHAGPsychicPuff");
+				A_TakeInventory("Shell", Min(countinv("GHAGShotgunOverlay"), 3));
+				A_StartSound("weapons/shotgf", CHAN_AUTO);
+				A_SetTics(Gardevoir(self).GetTicModifier(2));
+				A_OverlayShotguns(true, true);
+			}
+			HAND CCDDD 1 Bright;
+			HAND E 3;
+			HAND FGAAAAA 3;
+			HAND A 7 {
+				if (invoker.ammo1.amount == 0) {
+						return resolveState("Reload");
+				}
+				A_ReFire();
+				return resolveState(null);
+			}
+			Goto Ready;
+		AltFire.Batmode : 
+			TNT1 A 0
+			{
+				if (invoker.ammo2.amount == 0) return resolveState("ready");
+				return resolveState(null);
+			}
+			GSHT I 3 A_OverlayShotguns();
+			GSHT I 2 Bright {
+				invoker.AmmoUse2 = 1;
+				if (CountInv("Shell") != 0) A_GiveInventory("Shell");
+				A_FireBullets(4, 4, 10, 5, "BulletPuff");
+				A_FireBullets(4, 4, floor(14 * Gardevoir(Self).GetRageModifier()), 5, "GHAGPsychicPuff");
+				A_StartSound("weapons/shotgf", CHAN_AUTO);
+				A_OverlayShotguns(true);
+			}
+			GSHT IIIII 1 Bright;
+			GSHT I 24;
+			GSHT I 7 A_ReFire();
+			Goto Ready;
+		Reload:
+			TNT1 A 7
+			{
+				A_OverlayShotgunBatGrab();
+				invoker.batmode = !invoker.batmode;
+			}
+			goto Ready;
+		Grab.Overlay.Enable :
+			GSHT H 4;
+			GSHT I 3;
+			stop;
+		Grab.Overlay.Disable :
+			GSHT I 3;
+			GSHT H 4;
+			stop;
+		Select.Overlay:
+		Deselect.Overlay:
+		Ready.Overlay:
+			GSHT A 999;
+			stop;
+		Fire.Overlay:
+			GSHT G 5 
+			{
+				for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
+				{
+					int layer = -1 * (i + 1);
+					A_OverlayPivot(layer, 53, 0, WOF_ADD | WOF_KEEPY);
+				}
+			}
+		Pump.Overlay :
+			GSHT A 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
+			GSHT A 2 A_SetTics(Gardevoir(self).GetTicModifier(2));
+			GSHT A 5 A_SetTics(Gardevoir(self).GetTicModifier(5));
+			TNT1 A 0 A_StartSound("weapons/shotpm", CHAN_WEAPON);
+			GSHT C 5 A_SetTics(Gardevoir(self).GetTicModifier(5));
+			GSHT D 4 A_SetTics(Gardevoir(self).GetTicModifier(4));
+			GSHT E 5 
+			{
+				A_SetTics(Gardevoir(self).GetTicModifier(5));
+				A_StartSound("weapons/shotpl", CHAN_WEAPON);
+			}
+			GSHT A 999;
+			stop;
+		AltFire.Overlay:
+			GSHT G 5 
+			{
+				for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
+				{
+					int layer = -1 * (i + 1);
+					A_OverlayPivot(layer, 2, 0, WOF_ADD | WOF_KEEPY);
+				}
+			}
+		AltPump.Overlay :
+			GSHT A 3;
+			GSHT A 2;
+			GSHT A 5;
+			TNT1 A 0 A_StartSound("weapons/shotpm", CHAN_WEAPON);
+			GSHT C 5;
+			GSHT D 4;
+			GSHT E 5 A_StartSound("weapons/shotpl", CHAN_WEAPON);
+	}
+	
+	Action void A_OverlayShotgunBatGrab()
+	{
+		if (!invoker.batmode) A_Overlay(-1, "Grab.Overlay.Enable", false);
+		if (invoker.batmode) A_Overlay(-1, "Grab.Overlay.Disable", false);
+		A_OverlayFlags(-1, PSPF_PIVOTPERCENT, true);
+		A_OverlayPivot(-1, 0.5, 0.5);
+		int degree = int(2 * invoker.batmode ? -1 : 1);
+		A_OverlayRotate(-1, degree, WOF_ADD | WOF_INTERPOLATE);
+		if (!invoker.batmode) invoker.meleeframes++;
+		else invoker.meleeframes--;
+	}
+	
+	Action void A_OverlayShotguns(bool rollForFire = false, bool altFire = false)
+	{
+		int rng;
+		if (invoker.batmode && rollForFire) {
+			rng = random(1, countinv("GHAGShotgunOverlay") - 1);
+		} else {
+			rng = random(0, countinv("GHAGShotgunOverlay") - 1);
+		}
+		for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
+		{
+			if (invoker.batmode && i == 0) {
+				continue;
+			}
+			
+			int layer = invoker.layer = -1 * (i + 1);
+			
+			if (rollForFire && i == rng && !altFire) {
+				A_Overlay(layer, "Fire.Overlay", false);
+			}
+			else if (altFire) A_Overlay(layer, "AltFire.Overlay", false);
+			else A_Overlay(layer, "Ready.Overlay", false);
+			
+			A_OverlayFlags(layer, PSPF_ADDBOB | PSPF_PIVOTPERCENT, false);
+			if ((i + 1) % 2 == 0) A_OverlayFlags(layer, PSPF_FLIP | PSPF_MIRROR, true);
+			A_OverlayOffset(layer, sin(gametic + (63 * i)) + (55 * (i / 2)) + 30, cos(gametic - (234 * i)) - (18 * (i / 2)), WOF_INTERPOLATE);
+		}
+	}
+	
+	Action void ShottyThwackBlastActor (Actor victim, double strength, double speed, Class<Actor> blasteffect, bool dontdamage)
+	{
+		if (!victim.SpecialBlastHandling (self, strength))
+		{
+			return;
+		}
+
+		double ang = AngleTo(victim);
+		Vector2 move = AngleToVector(ang, speed);
+		victim.Vel.XY = move;
+
+		// Spawn blast puff
+		ang -= 180.;
+		Vector3 spawnpos = victim.Vec3Offset(
+			(victim.radius + 1) * cos(ang),
+			(victim.radius + 1) * sin(ang),
+			(victim.Height / 2) - victim.Floorclip);
+		Actor mo = blasteffect? Spawn (blasteffect, spawnpos, ALLOW_REPLACE) : null;
+		if (mo)
+		{
+			mo.Vel.XY = victim.Vel.XY;
+		}
+		if (victim.bMissile)
+		{
+			// [RH] Floor and ceiling huggers should not be blasted vertically.
+			if (!victim.bFloorHugger && !victim.bCeilingHugger)
+			{
+				victim.Vel.Z = 8;
+				if (mo != null) mo.Vel.Z = 8;
+			}
+		}
+		else
+		{
+			victim.Vel.Z = 1000. / victim.Mass;
+		}
+		if (victim.player)
+		{
+			// Players handled automatically
+		}
+		else if (!dontdamage)
+		{
+			victim.bBlasted = true;
+		}
+		if (victim.bTouchy)
+		{ // Touchy objects die when blasted
+			victim.bArmed = false; // Disarm
+			victim.DamageMobj(self, self, victim.health, 'Melee', DMG_FORCED|DMG_EXPLOSION);
+		}
+	}
+}
+
+Class GHAGPsychicPuff : BulletPuff
+{
+	Default
+	{
+		Translation "96:111=250:254";
+	}
+}
+
+Class GHAGSuperShotgun : ShellBox replaces SuperShotgun
+{
+	
+}
+
 class GHAGShotgunOverlay : Ammo
 {
 	default
@@ -56,186 +431,4 @@ Class ShellBoxReplacement : CustomInventory
 			}
 			stop;
 	}
-}
-
-Class GHAGShotgun : Weapon
-{
-	default
-	{
-		Weapon.SlotNumber 3;
-		Weapon.AmmoType1 "Shell";
-		Weapon.AmmoType2 "Shell";
-		Tag "1912 Shotgun";
-	}
-	
-	override void BeginPlay()
-	{
-		self.AmmoUse1 = 1;
-		self.AmmoUse2 = countinv("GHAGShotgunOverlay");
-		
-		super.beginPlay();
-	}
-	
-	override void DoEffect()
-	{
-		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
-		super.DoEffect();
-	}
-	
-	int layer;
-	
-	States
-	{
-		Select :
-			HAND A 1 {
-				A_Raise();
-				A_OverlayShotguns();
-			}
-			Loop;
-		Deselect :
-			HAND A 1 {
-				A_Lower();
-				A_OverlayShotguns();
-			}
-			Loop;
-		Ready :
-			HAND A 1 {
-				Invoker.AmmoUse2 = countinv("GHAGShotgunOverlay");
-				A_WeaponReady(WRF_ALLOWRELOAD);
-				A_OverlayShotguns();
-			}
-			Loop;
-		Fire :
-			HAND A 3 {
-				A_SetTics(Gardevoir(self).GetTicModifier(3));
-				A_OverlayShotguns();
-			}
-			HAND B 2 Bright {
-				if (CountInv("Shell") != 0) A_GiveInventory("Shell");
-				A_FireBullets(4, 4, 10, 5, "BulletPuff");
-				A_FireBullets(4, 4, floor(14 * Gardevoir(Self).GetRageModifier()), 5, "GHAGPsychicPuff");
-				A_StartSound("weapons/shotgf", CHAN_AUTO);
-				A_SetTics(Gardevoir(self).GetTicModifier(2));
-				A_OverlayShotguns(true);
-			}
-			HAND CCDDD 1 Bright;
-			HAND E 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			HAND FGAAAAA 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			HAND A 7 A_ReFire();
-			Goto Ready;
-		AltFire:
-			HAND A 3 {
-				A_SetTics(Gardevoir(self).GetTicModifier(3));
-				A_OverlayShotguns();
-			}
-			HAND B 2 Bright {
-				A_FireBullets(6, 6, 10 * Max(countinv("GHAGShotgunOverlay"), 3), 5, "GHAGPsychicPuff");
-				A_TakeInventory("Shell", Max(countinv("GHAGShotgunOverlay"), 3));
-				A_StartSound("weapons/shotgf", CHAN_AUTO);
-				A_SetTics(Gardevoir(self).GetTicModifier(2));
-				A_OverlayShotguns(true, true);
-			}
-			HAND CCDDD 1 Bright;
-			HAND E 3;
-			HAND FGAAAAA 3;
-			HAND A 7 A_ReFire();
-			Goto Ready;
-			
-		Select.Overlay:
-		Deselect.Overlay:
-		Ready.Overlay:
-			SHTG A 999;
-			stop;
-		Fire.Overlay:
-			SHTG G 5 
-			{
-				for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
-				{
-					int layer = -1 * (i + 1);
-					A_OverlayPivot(layer, 53, 0, WOF_ADD | WOF_KEEPY);
-				}
-			}
-		Pump.Overlay :
-			/*TNT1 A 0
-			{
-				for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
-				{
-					int layer = -1 * (i + 1);
-					A_OverlayPivot(layer);
-				}
-			}*/
-			GSHT A 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			GSHT A 2 A_SetTics(Gardevoir(self).GetTicModifier(2));
-			GSHT A 5 A_SetTics(Gardevoir(self).GetTicModifier(5));
-			TNT1 A 0 A_StartSound("weapons/shotpm", CHAN_WEAPON);
-			GSHT C 5 A_SetTics(Gardevoir(self).GetTicModifier(5));
-			GSHT D 4 A_SetTics(Gardevoir(self).GetTicModifier(4));
-			GSHT E 5 
-			{
-				A_SetTics(Gardevoir(self).GetTicModifier(5));
-				A_StartSound("weapons/shotpl", CHAN_WEAPON);
-			}
-			GSHT F 999;
-		AltFire.Overlay:
-			GSHT G 5 
-			{
-				for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
-				{
-					int layer = -1 * (i + 1);
-					A_OverlayPivot(layer, 2, 0, WOF_ADD | WOF_KEEPY);
-				}
-			}
-		AltPump.Overlay :
-			/*TNT1 A 0
-			{
-				for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
-				{
-					int layer = -1 * (i + 1);
-					A_OverlayFlags(layer, PSPF_PIVOTPERCENT, true);
-					A_OverlayPivot(layer, 0.2, 0);
-				}
-			}*/
-			GSHT A 3;
-			GSHT A 2;
-			GSHT A 5;
-			TNT1 A 0 A_StartSound("weapons/shotpm", CHAN_WEAPON);
-			GSHT C 5;
-			GSHT D 4;
-			GSHT E 5 A_StartSound("weapons/shotpl", CHAN_WEAPON);
-			GSHT F 999;
-	}
-	
-	Action void A_OverlayShotguns(bool rollForFire = false, bool altFire = false, bool melee = false)
-	{
-		int rng = random(0, countinv("GHAGShotgunOverlay") - 1);
-		for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
-		{
-			int layer = invoker.layer = -1 * (i + 1);
-			
-			if (rollForFire && i == rng && !altFire) A_Overlay(layer, "Fire.Overlay", false);
-			else if (altFire) A_Overlay(layer, "AltFire.Overlay", false);
-			else A_Overlay(layer, "Ready.Overlay", false);
-			
-			A_OverlayFlags(layer, PSPF_ADDBOB | PSPF_PIVOTPERCENT, false);
-			if ((i + 1) % 2 == 0) A_OverlayFlags(layer, PSPF_FLIP | PSPF_MIRROR, true);
-			A_OverlayOffset(layer, sin(gametic + (63 * i)) + (55 * (i / 2)) + 30, cos(gametic - (234 * i)) - (18 * (i / 2)), WOF_INTERPOLATE);
-			if (i >= 2) {
-				//A_OverlayRotate(layer, 15);
-				//A_OverlayPivot(invoker.layer, 53, 0, WOF_ADD | WOF_KEEPY);
-			}
-		}
-	}
-}
-
-Class GHAGPsychicPuff : BulletPuff
-{
-	Default
-	{
-		Translation "96:111=250:254";
-	}
-}
-
-Class GHAGSuperShotgun : ShellBox replaces SuperShotgun
-{
-	
 }

@@ -3,6 +3,7 @@ version "4.6"
 //Backend stuff and whatnot
 #include "ZSCRIPT/Gardevoir.txt"
 #include "ZSCRIPT/GHAGEvents.txt"
+#include "ZSCRIPT/GHAGKeyEvents.txt"
 #include "ZSCRIPT/ActorTracker.txt"
 #include "ZSCRIPT/GHAGHud.txt"
 

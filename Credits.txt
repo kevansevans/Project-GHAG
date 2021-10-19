@@ -1,5 +1,5 @@
 Big thank you to Marisa Kirisame for putting up with my questions
-Thanks you to the ZDoom Forum Discord, and those who ere there to answer my questions in the void:
+Thanks you to the ZDoom Forum Discord, and those who were there to answer my questions in the void:
 
 	Gutawer
 	3saster
@@ -36,7 +36,7 @@ Sawblade, I just googled a sawblade, lol.
 Pistol is currently based off of Team Fortress 2's pistol, using the same traced
 over method as the hands. Would like something different.
 
-Pistol pickup is (previously) unreleased original pistol sprite for the Doom Beta by John Romero.
+Pistol pickup is (formerly) unreleased original pistol sprite for the Doom Beta by John Romero.
 
 Shotgun is based off of a Winchester 1912. This was my late Great Grandfather's
 shotgun, which eventually ended up in my Father's possesion.
@@ -64,6 +64,8 @@ From various pokemon games
 
 https://www.sounds-resource.com/ds_dsi/pokemonblackwhite/sound/24408/
 https://www.sounds-resource.com/game_boy_gbc/pokemongoldsilvercrystal/sound/17239/
+
+Chainsaw attack sound from Doom 3, the one where it's tearing into an enemy
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //HUD

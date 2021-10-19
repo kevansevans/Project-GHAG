@@ -3,5 +3,6 @@ GameInfo
 	PlayerClasses = "Gardevoir"
 	StatusBarClass = "GHAGStatus"
 	AddEventHandlers = "GHAGEventHandler"
+	AddEventHandlers = "GHAGKeyEvents"
 	AddEventHandlers = "ActorTracker"
 }

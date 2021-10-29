@@ -38,8 +38,6 @@ Class GHAGShotgun : Weapon
 				if (invoker.ammo1.amount == 0 || invoker.ammo2.amount == 0) invoker.batmode = true;
 				else invoker.batmode = false;
 				
-				console.printf('' .. invoker.batmode);
-				
 				if (!invoker.batmode) return resolveState("Select.Norm");
 				else if (invoker.batmode) return resolveState("Select.Batgun");
 				return resolveState(null);
@@ -191,7 +189,7 @@ Class GHAGShotgun : Weapon
 		AltFire.Batmode : 
 			TNT1 A 0
 			{
-				if (invoker.ammo2.amount == 0) return resolveState("ready");
+				if (invoker.ammo2.amount == 0 || CountInv("GHAGShotgunOverlay") <= 1) return resolveState("Fire.Swing");
 				return resolveState(null);
 			}
 			GSHT I 3 A_OverlayShotguns();

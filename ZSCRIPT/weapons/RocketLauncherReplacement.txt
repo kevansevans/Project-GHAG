@@ -90,7 +90,12 @@ Class GHAGRocketLauncher : RocketLauncher
 				A_OverlayOffset(2, sin(gametic * 2) / 13, cos(gametic * 2) / 11, WOF_ADD | WOF_INTERPOLATE);
 			}
 		Ready.Speen:
-			HAND I 3 A_WeaponReady();
+			HAND I 3 {
+				A_WeaponReady();
+				A_OverlayFlags(2, PSPF_ADDBOB, false);
+				A_OverlayPivot(2);
+				A_OverlayRotate(2, 25, WOF_ADD);
+			}
 			Loop;
 		Deselect:
 			HAND I 1 A_Lower();
@@ -99,7 +104,6 @@ Class GHAGRocketLauncher : RocketLauncher
 			HAND I 1 A_Raise();
 			TNT1 A 0 {
 				A_Overlay(2, "Speeen");
-				A_OverlayFlags(2, PSPF_ADDBOB, false);
 			}
 			Loop;
 		Fire:
@@ -112,7 +116,7 @@ Class GHAGRocketLauncher : RocketLauncher
 			TNT1 A 0 A_ReFire();
 			goto Ready;
 		Speeen:
-			SPEN ABCDEFGHIJKLMNO 3;
+			SPEN A 3;
 			Loop;
 		Clear:
 			stop;

@@ -142,7 +142,7 @@ Class GHAGRocketLauncher : RocketLauncher
 		
 		let _locRocket = PsychicRocket(SpawnPlayerMissile("PsychicRocket"));
 		if (_locRocket) {
-			_locRocket.Vel3DFromAngle(20 + (100 * Gardevoir(self).GetRageModifier()), Gardevoir(self).angle, Gardevoir(self).pitch); 
+			_locRocket.Vel3DFromAngle(20 + (44 * Gardevoir(self).GetRageModifier()), Gardevoir(self).angle, Gardevoir(self).pitch); 
 			_locRocket.modifier = Gardevoir(self).GetRageModifier();
 		}
 	}

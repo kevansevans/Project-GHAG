@@ -181,7 +181,7 @@ Class GHAGStatus : BaseStatusBar
 		if (rev_half >= 1)
 		{
 			for (rev_half; rev_half > 0; --rev_half) {
-				drawImage("HREVA0", (v_width - 18 - (rev_half * 4), v_height - 60), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (0.15, 0.15));
+				drawImage("HREVA0", (v_width - 14 - (rev_half * 6), v_height - 55), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (0.15, 0.15));
 			}
 		}
 		

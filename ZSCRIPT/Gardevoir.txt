@@ -110,13 +110,27 @@ Class Gardevoir : PlayerPawn
 			Player.ReadyWeapon is "Swift"		 ||
 			Player.ReadyWeapon is "MoonBlastGun") 
 		{ } else {
+		
+			if (WolfensteinSS(thing)) angerbonus = 3000;
 			
 			while (true) 
 			{
 				let rageitem = RageEssence(thing.A_DropItem("RageEssence", 1));
-				rageitem.A_ChangeVelocity(random(-2, 2), random(-2, 2), random(-2, 2), CVF_REPLACE);
 				rageitem.A_SetPitch(random(60, 80));
 				rageitem.A_SetAngle(random(1, 360));
+				
+				if (WolfensteinSS(thing)) 
+				{
+					rageitem.amount = 100;
+					rageitem.A_SetScale(1, 1);
+					angerbonus -= 100;
+					rageitem.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
+					rageitem.A_SetPitch(random(80, 120));
+					if (angerbonus <= 0) break;
+					else continue;
+				}
+				
+				rageitem.A_ChangeVelocity(random(-2, 2), random(-2, 2), random(-2, 2), CVF_REPLACE);
 				
 				if (angerbonus >= 1000) 
 				{

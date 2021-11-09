@@ -175,6 +175,7 @@ Class Gardevoir : PlayerPawn
 		if (willBonus > 0) {
 			let healitem = HealEssence(thing.A_DropItem("HealEssence", 1));
 			healitem.amount = willBonus;
+			if (WolfensteinSS(thing)) healitem.amount = 350;
 			healitem.A_ChangeVelocity(random(-2, 2), random(-2, 2), random(-2, 2), CVF_REPLACE);
 			healitem.A_SetPitch(random(60, 80));
 			healitem.A_SetAngle(random(1, 360));
@@ -304,6 +305,7 @@ Class Gardevoir : PlayerPawn
 			else RageConstant += 100;
 			
 			super.CheatGive("GHAGBackpack", 40);
+			super.CheatGive("GHAGBackpack", 40);
 			super.CheatGive("ReviveHalf", 10);
 			super.CheatGive("all", _amount);
 			return;
@@ -371,7 +373,8 @@ Class NameClass : Actor
 		"Todd", "Neal McBeal", "Margo Martindale", "Peanut Butter", "Hollyhock", "Judah", "Surprise!", "PK Rocket!",
 		"PSY Rocket!", "The perfect gift", "Imp Encounter", "300mb!", "Dud", "Objection!", "Hold it!", "Take that!",
 		"Silence!", "Perfect IV", "Laser!", "Caution!", "Goodnight Everybody!", "Helloooooo Nurse!", "Love", "Heart",
-		"Brain", "Control", "CAFFEINATE!", "Wake up!", "Smack!", "That's great", "Fuck Hexen", "What is the time?"
+		"Brain", "Control", "CAFFEINATE!", "Wake up!", "Smack!", "That's great", "Fuck Hexen", "What is the time?",
+		"Archvile repellant"
 		
 	};
 

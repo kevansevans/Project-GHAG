@@ -79,14 +79,18 @@ Class GHAGStatus : BaseStatusBar
 		DrawBar("angbar", "hparmbg", Gardie.RageValue, Gardie.RageConstant, (86, v_height - 19), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 		DrawImage("BATTLHUD", (5, v_height - 110), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 		
-		DrawString(pokefont, Gardie.player.ReadyWeapon.GetTag(), (30, v_height - 140),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, Font.CR_UNTRANSLATED, 1, -1, 4, (xy_scale, xy_scale));
-		if (Gardie.player.ReadyWeapon.Ammo1) {
-			DrawString(pokefont, 
-						"Ammo: " .. Gardie.player.ReadyWeapon.Ammo1.amount .. "/" .. Gardie.player.ReadyWeapon.Ammo1.maxamount, 
-						(30, v_height - 125), 
-						DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
-						Font.CR_UNTRANSLATED, 1, -1, 4, 
-						(xy_scale, xy_scale));
+		if (Gardie.player.ReadyWeapon) {
+		
+			DrawString(pokefont, Gardie.player.ReadyWeapon.GetTag(), (30, v_height - 140),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, Font.CR_UNTRANSLATED, 1, -1, 4, (xy_scale, xy_scale));
+			if (Gardie.player.ReadyWeapon.Ammo1) {
+				DrawString(pokefont, 
+							"Ammo: " .. Gardie.player.ReadyWeapon.Ammo1.amount .. "/" .. Gardie.player.ReadyWeapon.Ammo1.maxamount, 
+							(30, v_height - 125), 
+							DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
+							Font.CR_UNTRANSLATED, 1, -1, 4, 
+							(xy_scale, xy_scale));
+			}
+			
 		}
 		DrawString(pokefont,
 					Gardie.health .. "/350 HP ",
@@ -101,6 +105,7 @@ Class GHAGStatus : BaseStatusBar
 					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
 					Font.CR_UNTRANSLATED, 1, -1, 4,
 					(1.25, 1.25));
+					
 			
 		if (gametic % 10 == 0) wtfString = wtf();
 			

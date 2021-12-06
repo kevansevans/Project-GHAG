@@ -22,7 +22,7 @@ class InflictOdds : Thinker
 	
 }
 
-Class ElementPunch : Weapon
+Class IcePunch : Weapon
 {
 
 	Array<Actor> Affected;
@@ -40,12 +40,6 @@ Class ElementPunch : Weapon
 	{
 		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
 		super.DoEffect();
-	}
-	
-	Action void A_CyclePunchMode()
-	{
-		Gardevoir(self).PunchMode = (Gardevoir(self).PunchMode + 1) % 4;
-		A_PrintPunchMode();
 	}
 	
 	Action void A_PrintPunchMode()
@@ -247,46 +241,10 @@ Class ElementPunch : Weapon
 		}
 	}
 	
-	Action void A_MegaPunch() 
-	{
-		Invoker.kickback = 150 + (500 * Gardevoir(self).GetRageModifier());
-		A_ExplosivePunch(80 + (160 * Gardevoir(self).GetRageModifier()), true, CPF_NOTURN, "MegaPuff", 64 + (64 * Gardevoir(self).GetRageModifier()), 0, 0, "", "attack/CONTACT");
-	}
-	
 	Action void A_IcePunch() 
 	{
 		Invoker.kickback = 100 + (300 * Gardevoir(self).GetRageModifier());
 		A_ExplosivePunch(60 + (120 * Gardevoir(self).GetRageModifier()), true, CPF_NOTURN, "IcePuff", 64 + (64 * Gardevoir(self).GetRageModifier()), 0, 0, "", "attack/CONTACT");
-	}
-	
-	Action void A_FirePunch() 
-	{
-		Invoker.kickback = 100 + (300 * Gardevoir(self).GetRageModifier());
-		A_ExplosivePunch(60 + (120 * Gardevoir(self).GetRageModifier()), true, CPF_NOTURN, "FirePuff", 64 + (64 * Gardevoir(self).GetRageModifier()), 0, 0, "", "attack/CONTACT");
-	}
-	
-	Action void A_ThunderPunch() 
-	{
-		Invoker.kickback = 100 + (300 * Gardevoir(self).GetRageModifier());
-		A_ExplosivePunch(60 + (120 * Gardevoir(self).GetRageModifier()), true, CPF_NOTURN, "ThunderPuff", 64 + (64 * Gardevoir(self).GetRageModifier()), 0, 0, "", "attack/CONTACT");
-	}
-	
-	Action Void A_GardevoirPunch()
-	{
-		switch (Gardevoir(self).PunchMode) {
-			case 0:
-				A_MegaPunch();
-				break;
-			case 1:
-				A_IcePunch();
-				break;
-			case 2:
-				A_FirePunch();
-				break;
-			case 3:
-				A_ThunderPunch();
-				break;
-		}
 	}
 	
 	States {
@@ -297,72 +255,8 @@ Class ElementPunch : Weapon
 			MPUN A 1 A_Lower();
 			Loop;
 		Ready :
-			TNT1 A 0 {
-				switch (Gardevoir(self).PunchMode) {
-					case 0:
-						return ResolveState("Ready.Mega");
-					case 1:
-						return ResolveState("Ready.Ice");
-					case 2:
-						return ResolveState("Ready.Fire");
-					case 3:
-						return ResolveState("Ready.Thunder");
-				}
-				return ResolveState(null);
-			}
-		Ready.Mega :
-			MPUN A 1 A_WeaponReady(WRF_ALLOWRELOAD);
-			Loop;
-		Ready.Ice :
 			IPUN A 1 A_WeaponReady(WRF_ALLOWRELOAD);
 			Loop;
-		Ready.Fire :
-			FPUN A 1 A_WeaponReady(WRF_ALLOWRELOAD);
-			Loop;
-		Ready.Thunder :
-			TPUN A 1 A_WeaponReady(WRF_ALLOWRELOAD);
-			Loop;
-		Reload : 
-			#### # 0 A_CyclePunchMode();
-			#### # 2 offset(0, 0);
-			#### # 2 offset(0, 30);
-			#### # 2 offset(0, 60);
-			#### # 2 offset(0, 90);
-			#### # 2 offset(0, 120);
-			#### # 2 offset(0, 150);
-			TNT1 A 0 {
-				switch (Gardevoir(self).PunchMode) {
-					case 0:
-						return ResolveState("Reload.Mega");
-					case 1:
-						return ResolveState("Reload.Ice");
-					case 2:
-						return ResolveState("Reload.Fire");
-					case 3:
-						return ResolveState("Reload.Thunder");
-				}
-				return ResolveState(null);
-			}
-		Reload.Mega :
-			MPUN A 0 A_WeaponReady(WRF_ALLOWRELOAD);
-			goto Reload.Resume;
-		Reload.Ice:
-			IPUN A 0 A_WeaponReady(WRF_ALLOWRELOAD | WRF_NOBOB);
-			goto Reload.Resume;
-		Reload.Fire:
-			FPUN A 0 A_WeaponReady(WRF_ALLOWRELOAD | WRF_NOBOB);
-			goto Reload.Resume;
-		Reload.Thunder:
-			TPUN A 0 A_WeaponReady(WRF_ALLOWRELOAD | WRF_NOBOB);
-			goto Reload.Resume;
-		Reload.Resume:
-			#### # 2 offset(0, 150) A_WeaponReady(WRF_ALLOWRELOAD | WRF_NOBOB);
-			#### # 2 offset(0, 120) A_WeaponReady(WRF_ALLOWRELOAD | WRF_NOBOB);
-			#### # 2 offset(0, 90) A_WeaponReady(WRF_ALLOWRELOAD | WRF_NOBOB);
-			#### # 2 offset(0, 60) A_WeaponReady(WRF_ALLOWRELOAD | WRF_NOBOB);
-			#### # 2 offset(0, 30) A_WeaponReady(WRF_ALLOWRELOAD | WRF_NOBOB);
-			#### # 2 offset(0, 0) A_WeaponReady(WRF_ALLOWRELOAD | WRF_NOBOB);
-			goto Ready;
 		Fire :
 			#### # 2 {
 				Gardevoir(self).subtractAnger(20);
@@ -371,7 +265,7 @@ Class ElementPunch : Weapon
 			#### A 0 A_JumpIf(random(1, 100) <= 50, "Fire.Lefty");
 		Fire.Righty:
 			#### BC 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			#### D 4 A_GardevoirPunch();
+			#### D 4 A_IcePunch();
 			#### EFG 4 {
 				A_WeaponReady(WRF_NOFIRE | WRF_ALLOWRELOAD);
 				A_SetTics(Gardevoir(self).GetTicModifier(4));
@@ -380,7 +274,7 @@ Class ElementPunch : Weapon
 			goto Ready;
 		Fire.Lefty:
 			#### HI 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			#### J 4 A_GardevoirPunch();
+			#### J 4 A_IcePunch();
 			#### KLM 4 {
 				A_WeaponReady(WRF_NOFIRE | WRF_ALLOWRELOAD);
 				A_SetTics(Gardevoir(self).GetTicModifier(4));
@@ -442,18 +336,6 @@ Class BasePunchPuff : BulletPuff
 	}
 }
 
-Class MegaPuff : BasePunchPuff
-{
-	States
-	{
-		Spawn:
-		Melee:
-			MPUF BABABA 4 Bright;
-		Death:
-			stop;
-	}
-}
-
 Class IcePuff : BasePunchPuff
 {
 	Default
@@ -480,43 +362,5 @@ Class IcePuff : BasePunchPuff
 			TNT1 A 0;
 			stop;
 			
-	}
-}
-
-Class FirePuff : BasePunchPuff
-{
-	Default
-	{
-		DamageType "Fire";
-	}
-	States
-	{
-		
-		Spawn:
-		Melee:
-			FPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
-			FPFB ABC 1 Bright;
-			TNT1 A 0 A_Inflict(chance, BURNED);
-		Death :
-			stop;
-		
-	}
-}
-
-Class ThunderPuff : BasePunchPuff
-{
-	Default
-	{
-		DamageType "Electric";
-	}
-	
-	States
-	{
-		Spawn:
-		Melee:
-			THPF ABBCDDEEEFGGHHHHIIJJKKKKLLLMMMMMMMMMMMMM 1 Bright;
-			THPF M 1 A_Inflict(chance, PARALYZED);
-		Death:
-			stop;
 	}
 }

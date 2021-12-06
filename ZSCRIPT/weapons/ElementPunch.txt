@@ -514,8 +514,8 @@ Class ThunderPuff : BasePunchPuff
 	{
 		Spawn:
 		Melee:
-			TPUF ABBCDDEEEFGGHHHHIIJJKKKKLLLMMMMMMMMMMMMM 1 Bright;
-			TPUF M 1 A_Inflict(chance, PARALYZED);
+			THPF ABBCDDEEEFGGHHHHIIJJKKKKLLLMMMMMMMMMMMMM 1 Bright;
+			THPF M 1 A_Inflict(chance, PARALYZED);
 		Death:
 			stop;
 	}

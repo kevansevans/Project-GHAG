@@ -8,6 +8,45 @@ Class GHAGEventHandler : EventHandler
 	{
 		if (Gardevoir(event.thing)) return;
 		else SetActorProperties(event.thing);
+		
+		if (Weapon(event.thing))
+		{
+			console.printf('' .. Weapon(event.thing));
+			
+			let gun = Weapon(event.thing);
+			if (!gun) return;
+			
+			//Ignore any spawning GHAG weapons
+			if (GHAGPistol(gun) || GHAGShotgun(gun) || GHAGSawblade(gun) || GHAGRocketLauncher(gun) || GHAGPlasmaRifle(gun))
+			{
+				return;
+			}
+			
+			if (gun.AmmoType1)
+			{
+				string ammoType = getWeaponClass(gun.AmmoType1.getClassName());
+				if (ammoType != "NullAmmoType")
+				{
+					let munition = Ammo(gun.spawn(ammoType, gun.pos));
+					if (munition) 
+					{
+						munition.amount = gun.AmmoGive1;
+					}
+					gun.destroy();
+				}
+			}
+		}
+	}
+	
+	string getWeaponClass(String _type)
+	{
+		
+		if (_type == "Shell" || _type == "ShotgunAmmo") return "ShellBoxReplacement";
+		if (_type == "Clip") return "ClipBox";
+		if (_type == "RocketAmmo") return "GHAGRocketLauncherReplace";
+		if (_type == "Cell") return "GHAGCellPack";
+	
+		return "NullAmmoType";
 	}
 	
 	void SetActorProperties(Actor thing) 
@@ -34,13 +73,6 @@ Class GHAGEventHandler : EventHandler
 			{
 				GHAGEventHandler.SetShinyDemon(thing);
 			}
-			return;
-		}
-		
-		if (Shotgun(thing))
-		{
-			thing.spawn("ShellBoxReplacement", thing.pos);
-			thing.destroy();
 			return;
 		}
 	}
@@ -260,15 +292,15 @@ Class GHAGEventHandler : EventHandler
 				++numSecrets;
 				if (level.IsPointInLevel((c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c))))
 				{
-					console.printf(numSecrets .. ':' .. pokeball);
-					if (numSecrets == pokeball)
-					{
-						Actor.Spawn("pokeballsecretrandomizer", (c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c)));
-					} 
-					else 
-					{
+					//console.printf(numSecrets .. ':' .. pokeball);
+					//if (numSecrets == pokeball)
+					//{
+						//Actor.Spawn("pokeballsecretrandomizer", (c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c)));
+					//} 
+					//else 
+					//{
 						Actor.Spawn("SecretBonus", (c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c)));
-					}
+					//}
 				}
 			}
 		}

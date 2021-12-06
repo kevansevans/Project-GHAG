@@ -366,11 +366,6 @@ Class GHAGPsychicPuff : BulletPuff
 	}
 }
 
-Class GHAGSuperShotgun : ShellBox replaces SuperShotgun
-{
-	
-}
-
 class GHAGShotgunOverlay : Ammo
 {
 	default
@@ -405,7 +400,7 @@ Class ShellReplacement : CustomInventory replaces Shell
 	}
 }
 
-Class ShellBoxReplacement : CustomInventory
+Class ShellBoxReplacement : CustomInventory replaces Shellbox
 {
 	default
 	{

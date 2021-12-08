@@ -278,10 +278,35 @@ Class PsychicPlasma : PlasmaBall replaces PlasmaBall
 	}
 }
 
-Class GHAGCellPack : CustomInventory replaces Cell
+Class GHAGCell : CustomInventory replaces Cell
 {
 	default {
 		Inventory.PickupMessage "$GOTCELL";
+		Inventory.Amount 20;
+	}
+	States
+	{
+		Spawn:
+			CELL A -1;
+			Stop;
+		Pickup:
+			TNT1 A 0
+			{
+				let gardie = Gardevoir(Players[consoleplayer].mo);
+				if (gardie.countinv("GHAGPlasmaRifle") == 0)
+				{
+					gardie.giveInventory("GHAGPlasmaRifle", 1);
+				}
+				gardie.giveInventory("Cell", Invoker.amount);
+			}
+			stop;
+	}
+}
+
+Class GHAGCellPack : CustomInventory replaces CellPack
+{
+	default {
+		Inventory.PickupMessage "$GOTCELLBOX";
 		Inventory.Amount 20;
 	}
 	States
@@ -297,7 +322,7 @@ Class GHAGCellPack : CustomInventory replaces Cell
 				{
 					gardie.giveInventory("GHAGPlasmaRifle", 1);
 				}
-				gardie.giveInventory("Shell", Invoker.amount);
+				gardie.giveInventory("Cell", Invoker.amount);
 			}
 			stop;
 	}

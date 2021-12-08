@@ -295,7 +295,37 @@ Class Gardevoir : PlayerPawn
 			self.giveBody(Min(175 - self.health, 5));
 			reviveAmount -= 1;
 		}
+		
+		//This script assumes that the map maker has some sort of script
+		//that manually gives player items
+		if (self.countinv("Pistol") >= 1)
+		{
+			self.clearInventory();
+			
+			self.giveInventory("GHAGPistol", 1);
+			self.giveInventory("GHAGPistolOverlay", 1);
+			self.giveInventory("IcePunch", 1);
+			self.giveInventory("Swift", 1);
+			self.giveInventory("MoonBlastGun", 1);
+		}
 	}
+	
+	/*override void GiveInventoryType(class<Inventory> _itemToReceive)
+	{
+		if (_itemToReceive == "Pistol") 
+		{
+			super.GiveInventoryType("GHAGPistol");
+			return;
+		}
+		
+		if (_itemToReceive == "Fist") 
+		{
+			Super.giveInventoryType("ElementPunch");
+			return;
+		}
+		
+		Super.GiveInventoryType(_itemToReceive);
+	}*/
 	
 	override void CheatGive(String _name, int _amount)
 	{
@@ -318,6 +348,7 @@ Class Gardevoir : PlayerPawn
 		}
 		
 		super.CheatGive(_name, _amount);
+		
 	}
 }
 

@@ -40,8 +40,7 @@ Class GHAGEventHandler : EventHandler
 	
 	string getWeaponClass(String _type)
 	{
-		
-		if (_type == "Shell" || _type == "ShotgunAmmo") return "ShellBoxReplacement";
+		if (_type == "Shell") return "ShellBoxReplacement";
 		if (_type == "Clip") return "ClipBox";
 		if (_type == "RocketAmmo") return "GHAGRocketLauncherReplace";
 		if (_type == "Cell") return "GHAGCellPack";

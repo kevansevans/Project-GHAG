@@ -44,7 +44,7 @@ Class Swift : Weapon
 				Gardevoir(self).subtractAnger(10);
 				
 			}
-			SWFT FGHIJKL 2 A_SetTics(Gardevoir(self).GetTicModifier(2));
+			SWFT FGHIJKL 4 A_SetTics(Gardevoir(self).GetTicModifier(4));
 			TNT1 A 0 A_Refire();
 			Goto Ready;
 	}
@@ -70,7 +70,7 @@ Class SwiftProjectile : Actor
 	{
 		super.BeginPlay();
 		
-		Self.setDamage(max(8, 30 * Gardevoir(players[consoleplayer].mo).getRageModifier()));
+		Self.setDamage(max(10, 40 * Gardevoir(players[consoleplayer].mo).getRageModifier()));
 	}
 	
 	States 

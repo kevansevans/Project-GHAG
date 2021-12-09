@@ -4,6 +4,8 @@ Class GHAGEventHandler : EventHandler
 	
 	int shinyodds;
 	
+	bool mapHasMinimalSecrets;
+	
 	override void WorldThingSpawned(WorldEvent event)
 	{
 		if (Gardevoir(event.thing)) return;
@@ -11,8 +13,6 @@ Class GHAGEventHandler : EventHandler
 		
 		if (Weapon(event.thing))
 		{
-			console.printf('' .. Weapon(event.thing));
-			
 			let gun = Weapon(event.thing);
 			if (!gun) return;
 			
@@ -260,20 +260,12 @@ Class GHAGEventHandler : EventHandler
 	override void WorldLinePreActivated (WorldEvent event) 
 	{
 		if (!gardie) return;
-		
-		if (event.ActivatedLine.special == 243) {
-			double ratio = double(level.Killed_Monsters) / double(level.total_monsters);
-			int penalty = int(ratio * 1000);
-			Gardie.RageValue -= 1000 - penalty;
-			if (Gardie.RageValue <= 0) Gardie.RageValue = 0;
-			
-			//TrainerThinker.purgeDemons();
-		}
 	}
 	
 	override void WorldLoaded(WorldEvent event)
 	{
 		int numSecrets = 0;
+		mapHasMinimalSecrets = true;
 		for (int i = 0; i < level.Sectors.Size(); i++)
 		{
 			if (level.sectors[i].isSecret())
@@ -303,5 +295,7 @@ Class GHAGEventHandler : EventHandler
 				}
 			}
 		}
+		
+		if (numSecrets <= 2) mapHasMinimalSecrets = false;
 	}
 }

@@ -13,42 +13,28 @@ Class MoonBlastGun : Weapon
 		Select :
 			HAND A 1 {
 				A_Raise();
-				A_Overlay(-1, "Moon.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
-				A_OverlayOffset(-1, sin(gametic), cos(gametic), WOF_ADD | WOF_INTERPOLATE);
+				A_DrawMoonOverlay();
 			}
 			Loop;
 		Deselect :
 			HAND A 1 {
 				A_Lower();
-				A_Overlay(-1, "Moon.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
-				A_OverlayOffset(-1, sin(gametic), cos(gametic), WOF_ADD | WOF_INTERPOLATE);
+				A_DrawMoonOverlay();
 			}
 			Loop;
 		Ready :
 			HAND A 1 {
 				A_WeaponReady();
-				A_Overlay(-1, "Moon.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
-				A_OverlayOffset(-1, sin(gametic), cos(gametic), WOF_ADD | WOF_INTERPOLATE);
+				A_DrawMoonOverlay();
 			}
 			Loop;
 		Fire :
-			TNT1 A 0 {
-				A_Overlay(-1, "Moon.Overlay", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
-				A_OverlayOffset(-1, sin(gametic), cos(gametic), WOF_ADD | WOF_INTERPOLATE);
-			}
+			TNT1 A 0 A_DrawMoonOverlay();
 			HAND A 1 A_JumpIf(A_MoonBlast(), "Fire.Boom");
 			TNT1 A 0 A_Refire();
 			goto Ready;
 		Fire.Boom :
-			TNT1 A 0 {
-				A_Overlay(-1, "Moon.Clear", false);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
-				A_OverlayOffset(-1, sin(gametic), cos(gametic), WOF_ADD | WOF_INTERPOLATE);
-			}
+			TNT1 A 0 A_DrawMoonOverlay();
 			HAND J 12 Offset(0, 5);
 			goto Ready;
 		Moon.Overlay:
@@ -59,11 +45,18 @@ Class MoonBlastGun : Weapon
 			Loop;
 	}
 	
+	Action void A_DrawMoonOverlay()
+	{
+		A_Overlay(-1, "Moon.Overlay", true);
+		A_OverlayFlags(-1, PSPF_ADDBOB, false);
+		A_OverlayOffset(-1, sin(gametic) * 0.05, cos(gametic) * 0.05, WOF_ADD | WOF_INTERPOLATE);
+	}
+	
 	Action bool A_MoonBlast()
 	{
 		let gardie = Gardevoir(players[consoleplayer].mo);
 		
-		if (gardie.ragevalue < 99) 
+		if (gardie.ragevalue <= 99) 
 		{
 			gardie.addAnger(1);
 			int rngrange = 20 * gardie.getRageModifier();

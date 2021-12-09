@@ -1,4 +1,13 @@
-Class GHAGPlasmaRifle : Weapon
+Class GHAGPlasmaOverlay : Ammo
+{
+	Default
+	{
+		Inventory.MaxAmount 4;
+		Inventory.pickupMessage "Found an extra plasma rifle!";
+	}
+}
+
+Class GHAGPlasmaRifle : PlasmaRifle replaces PlasmaRifle
 {
 	default {
 		Weapon.SlotNumber 6;
@@ -18,17 +27,6 @@ Class GHAGPlasmaRifle : Weapon
 	override void Tick()
 	{
 		Super.tick();
-		
-		int size = PlasmaTracker.Size();
-		if (size != 0)
-		{
-			Gardevoir player = Gardevoir(players[consoleplayer].mo);
-			for (int a = 0; a < size; ++a)
-			{
-				PsychicPlasma ball = PsychicPlasma(PlasmaTracker[a]);
-				Ball.warp(player, 35, 15, 35);
-			}
-		}
 	}	
 	
 	States
@@ -36,25 +34,19 @@ Class GHAGPlasmaRifle : Weapon
 		Select:
 			HAND A 1 {	
 				A_Raise();
-				A_Overlay(-1, "Plasma.Overlay", true);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
-				A_OverlayOffset(-1, sin(gametic * 2) / 13, cos(gametic * 2) / 11, WOF_ADD | WOF_INTERPOLATE);
+				A_PlasmaOverlay();
 			}
 			loop;
 		Deselect:
 			HAND A 1 {
 				A_Lower();
-				A_Overlay(-1, "Plasma.Overlay", true);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
-				A_OverlayOffset(-1, sin(gametic * 2) / 13, cos(gametic * 2) / 11, WOF_ADD | WOF_INTERPOLATE);
+				A_PlasmaOverlay();
 			}
 			loop;
 		Ready:
 			HAND A 1 {
 				A_WeaponReady();
-				A_Overlay(-1, "Plasma.Overlay", true);
-				A_OverlayFlags(-1, PSPF_ADDBOB, false);
-				A_OverlayOffset(-1, sin(gametic * 2) / 13, cos(gametic * 2) / 11, WOF_ADD | WOF_INTERPOLATE);
+				A_PlasmaOverlay();
 			}
 			loop;
 		Fire:
@@ -63,116 +55,122 @@ Class GHAGPlasmaRifle : Weapon
 			HAND DE 1 A_Refire();
 			Goto Ready;
 		AltFire:
-			HAND A 4 {
-				int rage = Gardevoir(players[consoleplayer].mo).ragevalue;
-				if (rage <= 0) A_PsychicPlasma();
-				else A_OverChargePlasma();
-			}
-			HAND BC 1;
-			HAND DE 1 A_Refire();
-			TNT1 A 0 A_LaunchPlasma();
-			Goto Ready;
+			TNT1 A 0 A_DetonatePlasma();
+			HAND ABCDE 1;
+			goto Ready;
 		Plasma.Overlay :
 			PLSM ABCDE 1;
 			Loop;
 	}
 	
+	Action void A_PlasmaOverlay()
+	{
+		for (int i = 0; i < CountInv("GHAGPlasmaOverlay"); ++ i)
+		{
+			int layer = -1 * (i + 1);
+			A_Overlay(layer, "Plasma.Overlay", false);
+			A_OverlayFlags(layer, PSPF_ADDBOB, false);
+			if ((i + 1) % 2 == 0) A_OverlayFlags(layer, PSPF_FLIP | PSPF_MIRROR, true);
+			A_OverlayOffset(layer, (sin(gametic + (72 * i))) + (45 * (i / 2)) + 30, (cos(gametic + (72 * i))) - (55 * (i / 2)) + (i < 2 ? 5 : 0), WOF_INTERPOLATE);
+		}
+	}
+	
 	Action void A_PsychicPlasma() {
-		if (player == null)
-		{
-			return;
-		}
 		
-		Weapon weap = player.ReadyWeapon;
-		if (weap != null && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
+		for (int i = 0; i < CountInv("GHAGPlasmaOverlay"); ++i)
 		{
-			if (!weap.DepleteAmmo (weap.bAltFire, true, 1))
+			if (player == null)
+			{
 				return;
-		}
-		
-		Gardevoir gar = Gardevoir(players[consoleplayer].mo);
-		let _locPlasma = PsychicPlasma(SpawnPlayerMissile("PsychicPlasma", gar.angle, 15, 5, 5));
-	}
-	
-	Action Void A_OverChargePlasma()
-	{
-		if (player == null)
-		{
-			return;
-		}
-		Weapon weap = player.ReadyWeapon;
-		if (weap != null && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
-		{
-			if (!weap.DepleteAmmo(weap.bAltFire, true, 1))
-				return;
-		}
-		
-		let _locPlasma = PsychicPlasma(SpawnPlayerMissile("PsychicPlasma"));
-		
-		if (_locPlasma)
-		{
-			Gardevoir(players[consoleplayer].mo).subtractAnger(10);
-			_locPlasma.bNoClip = true;
-			_locPlasma.overdrive = true;
-			_locPlasma.A_SetScale(1.5, 1.5);
-			_locPlasma.A_SetTranslation('PlasmaOverdrive');
-			Invoker.PlasmaTracker.push(_locPlasma);
+			}
+			Weapon weap = player.ReadyWeapon;
+			if (weap != null && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
+			{
+				if (!weap.DepleteAmmo (weap.bAltFire, true, 1))
+					return;
+			}
+			int gun = i + 1;
+			int x = 15;
+			if (gun == 2) x = -15;
+			else if (gun == 3) x = 20;
+			else if (gun == 4) x = -20;
+			let _locPlasma = PsychicPlasma(A_FireAimedProjectile("PsychicPlasma", true, x, gun > 2 ? 12 : 5));
+			if (_locPlasma) {
+				invoker.PlasmaTracker.push(_locPlasma);
+			}
 		}
 	}
 	
-	Action Void A_LaunchPlasma()
+	Action void A_DetonatePlasma()
 	{
-		
-	
-		for (Int a = 0; a < invoker.PlasmaTracker.size(); ++a)
+		for (int a = 0; a < invoker.PlasmaTracker.Size(); ++a)
 		{
-			invoker.PlasmaTracker[a].bNoClip = false;
+			let ball = PsychicPlasma(invoker.PlasmaTracker[a]);
+			if (!ball) continue;
+			else {
+				if (!ball.isDead) ball.setStateLabel("Death.Overdrive");
+			}
 		}
-		
-		Invoker.plasmaTracker.clear();
+		invoker.PlasmaTracker.Clear();
+	}
+	
+	action Actor A_FireAimedProjectile(class<Actor> missiletype, bool useammo = true, double spawnofs_xy = 0, double spawnheight = 0, int flags = 0)
+	{
+		let misl = A_FireProjectile(missiletype, 0, true, spawnofs_xy, spawnheight, flags, 0);
+		if (misl)
+		{
+			FLineTraceData data;
+			Vector3 end;
+			bool hit = LineTrace(angle, PLAYERMISSILERANGE, pitch, TRF_SOLIDACTORS|TRF_THRUHITSCAN, player.viewz-pos.z, data: data);
+			if (hit && data.hitType != TRACE_CrossingPortal)
+				end = (pos.xy, player.viewz) + (AngleToVector(angle,cos(pitch)), -sin(pitch)) * data.distance;
+			else
+				end = (pos.xy, player.viewz) + (AngleToVector(angle,cos(pitch)), -sin(pitch)) * PLAYERMISSILERANGE;
+        
+			Vector3 spawnPos = (pos.xy, misl.pos.z);
+			if (spawnofs_xy)
+				spawnPos.xy = pos.xy + AngleToVector(angle-90)*spawnofs_xy;
+        
+			Vector3 diff = end - spawnPos;
+			double l = diff.Length();
+			if (l > 0)
+			{
+				diff /= l;
+				misl.angle = atan2(diff.y, diff.x);
+				misl.pitch = -asin(diff.z);
+				misl.vel = diff * misl.vel.Length();
+			}
+		}
+    
+    return misl;
 	}
 }
 
 Class PsychicPlasma : PlasmaBall replaces PlasmaBall
 {
-	bool overdrive;
+	bool isDead;
 
 	default {
-		+ScreenSeeker;
 		+ForceRadiusDmg;
 	}
 
 	States
 	{
-		Spawn:
-			PLSS AB 6 Bright {
-			
-				double modifier = Gardevoir(players[consoleplayer].mo).getRageModifier();
-			
-				if (invoker.overdrive) A_SeekerMissile(15, 45, SMF_LOOK, 255, 64);
-				A_SetTics(6 * (1 - modifier) < 1 ? 1 : 6 * (1 - modifier));
-				if (tracer) {
-					A_Weave(3, 3, modifier, modifier);
-					if (self.Pos.z <= tracer.Pos.z + 5) {
-						SetZ(self.Pos.z + 4 + (4 * modifier));
-					}
-					if (self.Pos.z >= tracer.Pos.z + tracer.height) {
-						SetZ(self.Pos.z - (4 + (4 * modifier)));
-					}
-				}
-				
-			}
-			Loop;
 		Death:
-			TNT1 A 0 A_JumpIf(overdrive, 'Death.OverDrive');
+			TNT1 A 0 {
+				invoker.isDead = true;
+			}
 			Goto Super::Death;
 		Death.Overdrive:
-			PLSE A 4 Bright {
+			PLSE A 2 Bright {
+				A_StartSound("weapons/elecboom", CHAN_BODY, 0, 1.5);
+				A_SetTranslation('PlasmaOverdrive');
 				double modifier = Gardevoir(players[consoleplayer].mo).getRageModifier();
 				A_PlasmaBlast(BF_DONTWARN | BF_AFFECTBOSSES | BF_NOIMPACTDAMAGE, 255 * modifier, 255 * modifier, 20 * modifier);
 				A_SetScale(2.5, 2.5);
 			}
-			PLSE BCDE 4 Bright;
+			PLSE BC 2 Bright A_StartSound("Weapon/GenericExplode", CHAN_WEAPON);
+			PLSE DE 2 Bright;
 			stop;
 	}
 	
@@ -296,6 +294,7 @@ Class GHAGCell : CustomInventory replaces Cell
 				if (gardie.countinv("GHAGPlasmaRifle") == 0)
 				{
 					gardie.giveInventory("GHAGPlasmaRifle", 1);
+					gardie.giveInventory("GHAGPlasmaOverlay", 1);
 				}
 				gardie.giveInventory("Cell", Invoker.amount);
 			}
@@ -321,6 +320,7 @@ Class GHAGCellPack : CustomInventory replaces CellPack
 				if (gardie.countinv("GHAGPlasmaRifle") == 0)
 				{
 					gardie.giveInventory("GHAGPlasmaRifle", 1);
+					gardie.giveInventory("GHAGPlasmaOverlay", 1);
 				}
 				gardie.giveInventory("Cell", Invoker.amount);
 			}

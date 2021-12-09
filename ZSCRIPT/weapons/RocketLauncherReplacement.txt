@@ -67,7 +67,6 @@ Class GHAGRocketBox : CustomInventory replaces RocketBox
 	}
 }
 
-
 Class GHAGRocketLauncher : RocketLauncher
 {
 	default {

@@ -32,7 +32,7 @@ Class IcePunch : Weapon
 	{
 		Weapon.SlotNumber 1;
 		Weapon.kickback 150;
-		Tag "Mega Punch";
+		Tag "Ice Punch";
 		+Weapon.No_Auto_Switch;
 	}
 	
@@ -40,24 +40,6 @@ Class IcePunch : Weapon
 	{
 		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
 		super.DoEffect();
-	}
-	
-	Action void A_PrintPunchMode()
-	{
-		switch (Gardevoir(self).PunchMode) {
-			case 0:
-				invoker.SetTag("Mega Punch");
-				break;
-			case 1:
-				invoker.SetTag("Ice Punch");
-				break;
-			case 2: 
-				invoker.SetTag("Fire Punch");
-				break;
-			case 3: 
-				invoker.SetTag("Thunder Punch");
-				break;
-		}
 	}
 	
 	//Can't figure out how to override A_ExplosivePunch, so this will have to do for now

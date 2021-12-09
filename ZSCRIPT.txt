@@ -30,6 +30,6 @@ version "4.6"
 // [None so far]
 
 //Pokeball code. DON'T ENABLE ME! I'm not ready!
-#include "ZSCRIPT/pokeball/TrainerTracker.txt"
-#include "ZSCRIPT/pokeball/Pokeball.txt"
-#include "ZSCRIPT/pokeball/MissingNo.txt"
+//#include "ZSCRIPT/pokeball/TrainerTracker.txt"
+//#include "ZSCRIPT/pokeball/Pokeball.txt"
+//#include "ZSCRIPT/pokeball/MissingNo.txt"

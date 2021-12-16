@@ -405,7 +405,7 @@ Class NameClass : Actor
 		"PSY Rocket!", "The perfect gift", "Imp Encounter", "300mb!", "Dud", "Objection!", "Hold it!", "Take that!",
 		"Silence!", "Perfect IV", "Laser!", "Caution!", "Goodnight Everybody!", "Helloooooo Nurse!", "Love", "Heart",
 		"Brain", "Control", "CAFFEINATE!", "Wake up!", "Smack!", "That's great", "Fuck Hexen", "What is the time?",
-		"Archvile repellant"
+		"Archvile repellant", "Raw kit lawn chair", "Hydrate", "Posture check"
 		
 	};
 

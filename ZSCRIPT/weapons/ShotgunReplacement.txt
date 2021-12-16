@@ -379,6 +379,7 @@ Class ShellReplacement : CustomInventory replaces Shell
 {
 	default {
 		Inventory.PickupMessage "$GOTSHELLS";
+		inventory.pickupsound "misc/w_pkup";
 	}
 	States
 	{
@@ -393,6 +394,7 @@ Class ShellReplacement : CustomInventory replaces Shell
 				{
 					gardie.giveInventory("GHAGShotgun", 1);
 					gardie.giveInventory("GHAGShotgunOverlay", 1);
+					gardie.A_SelectWeapon("GHAGShotgun");
 				}
 				gardie.giveInventory("Shell", 4);
 			}
@@ -405,6 +407,7 @@ Class ShellBoxReplacement : CustomInventory replaces Shellbox
 	default
 	{
 		Inventory.PickupMessage "$GOTSHELLBOX";
+		inventory.pickupsound "misc/w_pkup";
 	}
 	States
 	{

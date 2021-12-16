@@ -7,6 +7,64 @@ Class GHAGPistolOverlay : Ammo
 	}
 }
 
+class GHAGMag : CustomInventory replaces Clip
+{
+	default {
+		Inventory.PickupMessage "Picked up a magazine.";
+		Inventory.Amount 10;
+		inventory.pickupsound "misc/w_pkup";
+	}
+	States
+	{
+		Spawn :
+			CLIP A -1;
+			Stop;
+		Pickup:
+			TNT1 A 0
+			{
+				let gardie = Gardevoir(Players[consoleplayer].mo);
+				if (gardie.countinv("GHAGPistol") == 0)
+				{
+					gardie.giveInventory("GHAGPistol", 1);
+					gardie.giveInventory("GHAGPistolOverlay", 1);
+					gardie.A_SelectWeapon("GHAGPistol");
+				}
+				gardie.giveInventory("Cell", Invoker.amount);
+			}
+			stop;
+		
+	}
+}
+
+class GHAGBulletBox : CustomInventory replaces ClipBox
+{
+	default {
+		Inventory.PickupMessage "$GOTCLIPBOX";
+		Inventory.Amount 50;
+		inventory.pickupsound "misc/w_pkup";
+	}
+	States
+	{
+		Spawn :
+			AMMO A -1;
+			Stop;
+		Pickup:
+			TNT1 A 0
+			{
+				let gardie = Gardevoir(Players[consoleplayer].mo);
+				if (gardie.countinv("GHAGPistol") == 0)
+				{
+					gardie.giveInventory("GHAGPistol", 1);
+					gardie.giveInventory("GHAGPistolOverlay", 1);
+					gardie.A_SelectWeapon("GHAGPistol");
+				}
+				gardie.giveInventory("Cell", Invoker.amount);
+			}
+			stop;
+		
+	}
+}
+
 Class GHAGPistol : Pistol replaces Pistol
 {
 

@@ -7,7 +7,7 @@ Class GHAGPlasmaOverlay : Ammo
 	}
 }
 
-Class GHAGPlasmaRifle : PlasmaRifle replaces PlasmaRifle
+Class GHAGPlasmaRifle : PlasmaRifle
 {
 	default {
 		Weapon.SlotNumber 6;
@@ -76,7 +76,6 @@ Class GHAGPlasmaRifle : PlasmaRifle replaces PlasmaRifle
 	}
 	
 	Action void A_PsychicPlasma() {
-		
 		for (int i = 0; i < CountInv("GHAGPlasmaOverlay"); ++i)
 		{
 			if (player == null)
@@ -84,17 +83,12 @@ Class GHAGPlasmaRifle : PlasmaRifle replaces PlasmaRifle
 				return;
 			}
 			Weapon weap = player.ReadyWeapon;
-			if (weap != null && invoker == weap && stateinfo != null && stateinfo.mStateType == STATE_Psprite)
-			{
-				if (!weap.DepleteAmmo (weap.bAltFire, true, 1))
-					return;
-			}
 			int gun = i + 1;
 			int x = 15;
 			if (gun == 2) x = -15;
 			else if (gun == 3) x = 20;
 			else if (gun == 4) x = -20;
-			let _locPlasma = PsychicPlasma(A_FireAimedProjectile("PsychicPlasma", true, x, gun > 2 ? 12 : 5));
+			let _locPlasma = PsychicPlasma(A_FireAimedProjectile("PsychicPlasma", i == 0 ? true : false, x, gun > 2 ? 12 : 5));
 			if (_locPlasma) {
 				invoker.PlasmaTracker.push(_locPlasma);
 			}
@@ -116,7 +110,7 @@ Class GHAGPlasmaRifle : PlasmaRifle replaces PlasmaRifle
 	
 	action Actor A_FireAimedProjectile(class<Actor> missiletype, bool useammo = true, double spawnofs_xy = 0, double spawnheight = 0, int flags = 0)
 	{
-		let misl = A_FireProjectile(missiletype, 0, true, spawnofs_xy, spawnheight, flags, 0);
+		let misl = A_FireProjectile(missiletype, 0, useammo, spawnofs_xy, spawnheight, flags, 0);
 		if (misl)
 		{
 			FLineTraceData data;
@@ -281,6 +275,7 @@ Class GHAGCell : CustomInventory replaces Cell
 	default {
 		Inventory.PickupMessage "$GOTCELL";
 		Inventory.Amount 20;
+		inventory.pickupsound "misc/w_pkup";
 	}
 	States
 	{
@@ -295,6 +290,7 @@ Class GHAGCell : CustomInventory replaces Cell
 				{
 					gardie.giveInventory("GHAGPlasmaRifle", 1);
 					gardie.giveInventory("GHAGPlasmaOverlay", 1);
+					gardie.A_SelectWeapon("GHAGPlasmaRifle");
 				}
 				gardie.giveInventory("Cell", Invoker.amount);
 			}
@@ -307,6 +303,7 @@ Class GHAGCellPack : CustomInventory replaces CellPack
 	default {
 		Inventory.PickupMessage "$GOTCELLBOX";
 		Inventory.Amount 20;
+		inventory.pickupsound "misc/w_pkup";
 	}
 	States
 	{

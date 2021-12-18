@@ -231,17 +231,17 @@ Class IcePunch : Weapon
 	
 	States {
 		Select :
-			MPUN A 1 A_Raise();
+			IPUN A 1 A_Raise();
 			Loop;
 		Deselect :
-			MPUN A 1 A_Lower();
+			IPUN A 1 A_Lower();
 			Loop;
 		Ready :
 			IPUN A 1 A_WeaponReady(WRF_ALLOWRELOAD);
 			Loop;
 		Fire :
 			#### # 2 {
-				Gardevoir(self).subtractAnger(20);
+				Gardevoir(self).subtractAnger(10);
 			}
 			#### A 0 A_StartSound("fists/MEGAPNCH", CHAN_AUTO);
 			#### A 0 A_JumpIf(random(1, 100) <= 50, "Fire.Lefty");

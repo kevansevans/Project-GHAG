@@ -29,7 +29,7 @@ class GHAGMag : CustomInventory replaces Clip
 					gardie.giveInventory("GHAGPistolOverlay", 1);
 					gardie.A_SelectWeapon("GHAGPistol");
 				}
-				gardie.giveInventory("Cell", Invoker.amount);
+				gardie.giveInventory("Clip", Invoker.amount);
 			}
 			stop;
 		
@@ -58,7 +58,7 @@ class GHAGBulletBox : CustomInventory replaces ClipBox
 					gardie.giveInventory("GHAGPistolOverlay", 1);
 					gardie.A_SelectWeapon("GHAGPistol");
 				}
-				gardie.giveInventory("Cell", Invoker.amount);
+				gardie.giveInventory("Clip", Invoker.amount);
 			}
 			stop;
 		

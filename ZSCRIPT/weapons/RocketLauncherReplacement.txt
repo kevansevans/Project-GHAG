@@ -27,6 +27,7 @@ Class GHAGRocketBox : CustomInventory replaces RocketBox
 	default {
 		inventory.pickupmessage "Found a box of ordnance!";
 		inventory.pickupsound "misc/w_pkup";
+		Inventory.Amount 5;
 	}
 	States
 	{

@@ -14,29 +14,40 @@ class GHAGMag : CustomInventory replaces Clip
 		Inventory.Amount 10;
 		inventory.pickupsound "misc/w_pkup";
 	}
+	
+	override bool TryPickup(Actor toucher)
+	{
+		let gardie = Gardevoir(Players[consoleplayer].mo);
+		
+		for (let probe = gardie.Inv; probe != NULL; probe = probe.Inv)
+		{
+			let item = Clip(probe);
+			if (item) {
+				if (gardie.countinv('clip') >= item.maxamount) return false;
+				else {
+					if (gardie.countinv("GHAGPistol") == 0)
+					{
+						gardie.giveInventory("GHAGPistol", 1);
+						gardie.giveInventory("GHAGPistolOverlay", 1);
+						gardie.A_SelectWeapon("GHAGPistol");
+					}
+					gardie.giveInventory("Clip", self.amount);
+					GoAwayAndDie();
+				}
+			}
+		}
+		return true;
+	}
+	
 	States
 	{
 		Spawn :
 			CLIP A -1;
 			Stop;
-		Pickup:
-			TNT1 A 0
-			{
-				let gardie = Gardevoir(Players[consoleplayer].mo);
-				if (gardie.countinv("GHAGPistol") == 0)
-				{
-					gardie.giveInventory("GHAGPistol", 1);
-					gardie.giveInventory("GHAGPistolOverlay", 1);
-					gardie.A_SelectWeapon("GHAGPistol");
-				}
-				gardie.giveInventory("Clip", Invoker.amount);
-			}
-			stop;
-		
 	}
 }
 
-class GHAGBulletBox : CustomInventory replaces ClipBox
+class GHAGBulletBox : GHAGMag replaces ClipBox
 {
 	default {
 		Inventory.PickupMessage "$GOTCLIPBOX";
@@ -48,20 +59,6 @@ class GHAGBulletBox : CustomInventory replaces ClipBox
 		Spawn :
 			AMMO A -1;
 			Stop;
-		Pickup:
-			TNT1 A 0
-			{
-				let gardie = Gardevoir(Players[consoleplayer].mo);
-				if (gardie.countinv("GHAGPistol") == 0)
-				{
-					gardie.giveInventory("GHAGPistol", 1);
-					gardie.giveInventory("GHAGPistolOverlay", 1);
-					gardie.A_SelectWeapon("GHAGPistol");
-				}
-				gardie.giveInventory("Clip", Invoker.amount);
-			}
-			stop;
-		
 	}
 }
 

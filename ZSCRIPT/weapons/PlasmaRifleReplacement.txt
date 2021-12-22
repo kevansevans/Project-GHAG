@@ -274,53 +274,53 @@ Class GHAGCell : CustomInventory replaces Cell
 {
 	default {
 		Inventory.PickupMessage "$GOTCELL";
-		Inventory.Amount 20;
 		inventory.pickupsound "misc/w_pkup";
+		Inventory.Amount 20;
 	}
+	
+	override bool TryPickup(Actor toucher)
+	{
+		let gardie = Gardevoir(Players[consoleplayer].mo);
+		
+		for (let probe = gardie.Inv; probe != NULL; probe = probe.Inv)
+		{
+			let item = Cell(probe);
+			if (item) {
+				if (gardie.countinv('cell') >= item.maxamount) return false;
+				else {
+					if (gardie.countinv("GHAGPlasmaRifle") == 0)
+					{
+						gardie.giveInventory("GHAGPlasmaRifle", 1);
+						gardie.giveInventory("GHAGPlasmaOverlay", 1);
+						gardie.A_SelectWeapon("GHAGPlasmaRifle");
+					}
+					gardie.giveInventory("Cell", self.amount);
+				}
+			}
+		}
+		GoAwayAndDie();
+		return true;
+	}
+	
 	States
 	{
 		Spawn:
 			CELL A -1;
 			Stop;
-		Pickup:
-			TNT1 A 0
-			{
-				let gardie = Gardevoir(Players[consoleplayer].mo);
-				if (gardie.countinv("GHAGPlasmaRifle") == 0)
-				{
-					gardie.giveInventory("GHAGPlasmaRifle", 1);
-					gardie.giveInventory("GHAGPlasmaOverlay", 1);
-					gardie.A_SelectWeapon("GHAGPlasmaRifle");
-				}
-				gardie.giveInventory("Cell", Invoker.amount);
-			}
-			stop;
 	}
 }
 
-Class GHAGCellPack : CustomInventory replaces CellPack
+Class GHAGCellPack : GHAGCell replaces CellPack
 {
 	default {
 		Inventory.PickupMessage "$GOTCELLBOX";
-		Inventory.Amount 20;
 		inventory.pickupsound "misc/w_pkup";
+		Inventory.Amount 100;
 	}
 	States
 	{
 		Spawn:
 			CELP A -1;
 			Stop;
-		Pickup:
-			TNT1 A 0
-			{
-				let gardie = Gardevoir(Players[consoleplayer].mo);
-				if (gardie.countinv("GHAGPlasmaRifle") == 0)
-				{
-					gardie.giveInventory("GHAGPlasmaRifle", 1);
-					gardie.giveInventory("GHAGPlasmaOverlay", 1);
-				}
-				gardie.giveInventory("Cell", Invoker.amount);
-			}
-			stop;
 	}
 }

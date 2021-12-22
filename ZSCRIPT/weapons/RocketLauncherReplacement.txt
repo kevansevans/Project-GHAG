@@ -1,28 +1,42 @@
 Class GHAGRocketAmmo : CustomInventory replaces RocketAmmo 
 {
 	default {
-		inventory.pickupmessage "Found a piece of ordnance!";
-		inventory.pickupsound "misc/w_pkup";
+		Inventory.pickupmessage "Found a piece of ordnance!";
+		Inventory.pickupsound "misc/w_pkup";
+		Inventory.amount 1;
 	}
+	
+	override bool TryPickup(Actor toucher)
+	{
+		let gardie = Gardevoir(Players[consoleplayer].mo);
+		
+		for (let probe = gardie.Inv; probe != NULL; probe = probe.Inv)
+		{
+			let item = RocketAmmo(probe);
+			if (item) {
+				if (gardie.countinv('rocketammo') >= item.maxamount) return false;
+				else {
+					if (gardie.countinv("GHAGRocketLauncher") == 0) {
+						gardie.A_GiveInventory("GHAGRocketLauncher", 1);
+						gardie.A_SelectWeapon("GHAGRocketLauncher");
+					}
+					gardie.A_GiveInventory("RocketAmmo", self.amount);
+				}
+			}
+		}
+		GoAwayAndDie();
+		return true;
+	}
+	
 	States
 	{
 		Spawn:
 			ROCK A -1;
 			Stop;
-		Pickup:
-			TNT1 A 0 {
-				let gardie = Gardevoir(players[consoleplayer].mo);
-				if (gardie.countinv("GHAGRocketLauncher") == 0) {
-					A_GiveInventory("GHAGRocketLauncher", 1);
-					A_SelectWeapon("GHAGRocketLauncher");
-				}
-				A_GiveInventory("RocketAmmo", 1);
-			}
-			stop;
 	}
 }
 
-Class GHAGRocketBox : CustomInventory replaces RocketBox 
+Class GHAGRocketBox : GHAGRocketAmmo replaces RocketBox 
 {
 	default {
 		inventory.pickupmessage "Found a box of ordnance!";
@@ -34,16 +48,6 @@ Class GHAGRocketBox : CustomInventory replaces RocketBox
 		Spawn:
 			BROK A -1;
 			Stop;
-		Pickup:
-			TNT1 A 0 {
-				let gardie = Gardevoir(players[consoleplayer].mo);
-				if (gardie.countinv("GHAGRocketLauncher") == 0) {
-					A_GiveInventory("GHAGRocketLauncher", 1);
-					A_SelectWeapon("GHAGRocketLauncher");
-				}
-				A_GiveInventory("RocketAmmo", Invoker.amount);
-			}
-			stop;
 	}
 }
 

@@ -32,6 +32,10 @@ Class GHAGEventHandler : EventHandler
 					{
 						munition.amount = gun.AmmoGive1;
 					}
+					//for (int i = 0; i < gun.args.Size(); i++)
+					//{
+						//munition.args[i] = gun.args[i];
+					//}
 					gun.destroy();
 				}
 			}

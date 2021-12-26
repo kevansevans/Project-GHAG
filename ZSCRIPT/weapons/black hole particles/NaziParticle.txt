@@ -1,0 +1,25 @@
+class NaziParticle : Actor
+			{
+				
+				states {
+					Spawn :
+						TNT1 A 1;
+						TNT1 A 1 {
+							
+			Self.spawn("Particle0", (self.pos.x - 0 + 16, self.pos.y, self.pos.z + (16 - 0)));
+Self.spawn("Particle0", (self.pos.x - 0 + 16, self.pos.y, self.pos.z + (16 - 4)));
+Self.spawn("Particle0", (self.pos.x - 0 + 16, self.pos.y, self.pos.z + (16 - 8)));
+Self.spawn("Particle0", (self.pos.x - 0 + 16, self.pos.y, self.pos.z + (16 - 12)));
+Self.spawn("Particle0", (self.pos.x - 4 + 16, self.pos.y, self.pos.z + (16 - 0)));
+Self.spawn("Particle16", (self.pos.x - 4 + 16, self.pos.y, self.pos.z + (16 - 4)));
+Self.spawn("Particle32", (self.pos.x - 4 + 16, self.pos.y, self.pos.z + (16 - 8)));
+Self.spawn("Particle48", (self.pos.x - 4 + 16, self.pos.y, self.pos.z + (16 - 12)));
+Self.spawn("Particle0", (self.pos.x - 8 + 16, self.pos.y, self.pos.z + (16 - 0)));
+Self.spawn("Particle32", (self.pos.x - 8 + 16, self.pos.y, self.pos.z + (16 - 4)));
+Self.spawn("Particle64", (self.pos.x - 8 + 16, self.pos.y, self.pos.z + (16 - 8)));
+Self.spawn("Particle96", (self.pos.x - 8 + 16, self.pos.y, self.pos.z + (16 - 12)));
+Self.spawn("Particle0", (self.pos.x - 12 + 16, self.pos.y, self.pos.z + (16 - 0)));
+Self.spawn("Particle48", (self.pos.x - 12 + 16, self.pos.y, self.pos.z + (16 - 4)));
+Self.spawn("Particle96", (self.pos.x - 12 + 16, self.pos.y, self.pos.z + (16 - 8)));
+Self.spawn("Particle144", (self.pos.x - 12 + 16, self.pos.y, self.pos.z + (16 - 12)));
+}Stop;}}

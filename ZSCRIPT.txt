@@ -24,7 +24,29 @@ version "4.6"
 #include "ZSCRIPT/weapons/IcePunch.txt"
 #include "ZSCRIPT/weapons/Swift.txt"
 #include "ZSCRIPT/weapons/Moonblast.txt"
+#include "ZSCRIPT/weapons/BlackHole.txt"
+#include "ZSCRIPT/weapons/black hole particles/BaseParticle.txt"
 #include "ZSCRIPT/effects/StatusEffects.txt"
+
+//Black hole includes
+//These were generated with a custom script I made in Haxe
+#include "ZSCRIPT/weapons/black hole particles/NaziParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/ChainParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/KnightParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/ZombieParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/SoulParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/BaronParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/ArachnotronParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/BonerParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/ArchvileParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/ImpParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/PainParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/PinkyParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/CyberParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/ShottyParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/SpiderParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/FattyParticle.txt"
+#include "ZSCRIPT/weapons/black hole particles/CacoParticle.txt"
 
 //Inate abilities, AKA the canonical abilities a Gardevoir has
 // [None so far]

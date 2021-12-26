@@ -1,0 +1,2323 @@
+
+		class BaseParticle : Actor
+		{
+			Default
+			{
+				+NoGravity;
+				+NOBLOCKMAP;
+				+NOTELEPORT;
+				+ALLOWPARTICLES;
+			}
+			
+			override void BeginPlay()
+			{
+				super.beginplay();
+				
+				self.vel = (random( -2, 2), random( -2, 2), random( -2, 2));
+			}
+		}
+		
+class Particle0 : BaseParticle
+			{
+				states {
+					Spawn :
+						P000 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle1 : BaseParticle
+			{
+				states {
+					Spawn :
+						P001 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle2 : BaseParticle
+			{
+				states {
+					Spawn :
+						P002 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle3 : BaseParticle
+			{
+				states {
+					Spawn :
+						P003 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle4 : BaseParticle
+			{
+				states {
+					Spawn :
+						P004 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle5 : BaseParticle
+			{
+				states {
+					Spawn :
+						P005 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle6 : BaseParticle
+			{
+				states {
+					Spawn :
+						P006 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle7 : BaseParticle
+			{
+				states {
+					Spawn :
+						P007 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle8 : BaseParticle
+			{
+				states {
+					Spawn :
+						P008 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle9 : BaseParticle
+			{
+				states {
+					Spawn :
+						P009 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle10 : BaseParticle
+			{
+				states {
+					Spawn :
+						P00A A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle11 : BaseParticle
+			{
+				states {
+					Spawn :
+						P00B A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle12 : BaseParticle
+			{
+				states {
+					Spawn :
+						P00C A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle13 : BaseParticle
+			{
+				states {
+					Spawn :
+						P00D A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle14 : BaseParticle
+			{
+				states {
+					Spawn :
+						P00E A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle15 : BaseParticle
+			{
+				states {
+					Spawn :
+						P00F A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle16 : BaseParticle
+			{
+				states {
+					Spawn :
+						P010 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle17 : BaseParticle
+			{
+				states {
+					Spawn :
+						P011 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle18 : BaseParticle
+			{
+				states {
+					Spawn :
+						P012 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle19 : BaseParticle
+			{
+				states {
+					Spawn :
+						P013 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle20 : BaseParticle
+			{
+				states {
+					Spawn :
+						P014 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle21 : BaseParticle
+			{
+				states {
+					Spawn :
+						P015 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle22 : BaseParticle
+			{
+				states {
+					Spawn :
+						P016 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle23 : BaseParticle
+			{
+				states {
+					Spawn :
+						P017 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle24 : BaseParticle
+			{
+				states {
+					Spawn :
+						P018 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle25 : BaseParticle
+			{
+				states {
+					Spawn :
+						P019 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle26 : BaseParticle
+			{
+				states {
+					Spawn :
+						P01A A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle27 : BaseParticle
+			{
+				states {
+					Spawn :
+						P01B A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle28 : BaseParticle
+			{
+				states {
+					Spawn :
+						P01C A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle29 : BaseParticle
+			{
+				states {
+					Spawn :
+						P01D A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle30 : BaseParticle
+			{
+				states {
+					Spawn :
+						P01E A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle31 : BaseParticle
+			{
+				states {
+					Spawn :
+						P01F A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle32 : BaseParticle
+			{
+				states {
+					Spawn :
+						P020 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle33 : BaseParticle
+			{
+				states {
+					Spawn :
+						P021 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle34 : BaseParticle
+			{
+				states {
+					Spawn :
+						P022 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle35 : BaseParticle
+			{
+				states {
+					Spawn :
+						P023 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle36 : BaseParticle
+			{
+				states {
+					Spawn :
+						P024 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle37 : BaseParticle
+			{
+				states {
+					Spawn :
+						P025 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle38 : BaseParticle
+			{
+				states {
+					Spawn :
+						P026 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle39 : BaseParticle
+			{
+				states {
+					Spawn :
+						P027 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle40 : BaseParticle
+			{
+				states {
+					Spawn :
+						P028 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle41 : BaseParticle
+			{
+				states {
+					Spawn :
+						P029 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle42 : BaseParticle
+			{
+				states {
+					Spawn :
+						P02A A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle43 : BaseParticle
+			{
+				states {
+					Spawn :
+						P02B A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle44 : BaseParticle
+			{
+				states {
+					Spawn :
+						P02C A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle45 : BaseParticle
+			{
+				states {
+					Spawn :
+						P02D A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle46 : BaseParticle
+			{
+				states {
+					Spawn :
+						P02E A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle47 : BaseParticle
+			{
+				states {
+					Spawn :
+						P02F A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle48 : BaseParticle
+			{
+				states {
+					Spawn :
+						P030 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle49 : BaseParticle
+			{
+				states {
+					Spawn :
+						P031 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle50 : BaseParticle
+			{
+				states {
+					Spawn :
+						P032 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle51 : BaseParticle
+			{
+				states {
+					Spawn :
+						P033 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle52 : BaseParticle
+			{
+				states {
+					Spawn :
+						P034 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle53 : BaseParticle
+			{
+				states {
+					Spawn :
+						P035 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle54 : BaseParticle
+			{
+				states {
+					Spawn :
+						P036 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle55 : BaseParticle
+			{
+				states {
+					Spawn :
+						P037 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle56 : BaseParticle
+			{
+				states {
+					Spawn :
+						P038 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle57 : BaseParticle
+			{
+				states {
+					Spawn :
+						P039 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle58 : BaseParticle
+			{
+				states {
+					Spawn :
+						P03A A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle59 : BaseParticle
+			{
+				states {
+					Spawn :
+						P03B A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle60 : BaseParticle
+			{
+				states {
+					Spawn :
+						P03C A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle61 : BaseParticle
+			{
+				states {
+					Spawn :
+						P03D A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle62 : BaseParticle
+			{
+				states {
+					Spawn :
+						P03E A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle63 : BaseParticle
+			{
+				states {
+					Spawn :
+						P03F A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle64 : BaseParticle
+			{
+				states {
+					Spawn :
+						P040 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle65 : BaseParticle
+			{
+				states {
+					Spawn :
+						P041 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle66 : BaseParticle
+			{
+				states {
+					Spawn :
+						P042 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle67 : BaseParticle
+			{
+				states {
+					Spawn :
+						P043 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle68 : BaseParticle
+			{
+				states {
+					Spawn :
+						P044 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle69 : BaseParticle
+			{
+				states {
+					Spawn :
+						P045 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle70 : BaseParticle
+			{
+				states {
+					Spawn :
+						P046 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle71 : BaseParticle
+			{
+				states {
+					Spawn :
+						P047 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle72 : BaseParticle
+			{
+				states {
+					Spawn :
+						P048 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle73 : BaseParticle
+			{
+				states {
+					Spawn :
+						P049 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle74 : BaseParticle
+			{
+				states {
+					Spawn :
+						P04A A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle75 : BaseParticle
+			{
+				states {
+					Spawn :
+						P04B A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle76 : BaseParticle
+			{
+				states {
+					Spawn :
+						P04C A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle77 : BaseParticle
+			{
+				states {
+					Spawn :
+						P04D A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle78 : BaseParticle
+			{
+				states {
+					Spawn :
+						P04E A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle79 : BaseParticle
+			{
+				states {
+					Spawn :
+						P04F A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle80 : BaseParticle
+			{
+				states {
+					Spawn :
+						P050 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle81 : BaseParticle
+			{
+				states {
+					Spawn :
+						P051 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle82 : BaseParticle
+			{
+				states {
+					Spawn :
+						P052 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle83 : BaseParticle
+			{
+				states {
+					Spawn :
+						P053 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle84 : BaseParticle
+			{
+				states {
+					Spawn :
+						P054 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle85 : BaseParticle
+			{
+				states {
+					Spawn :
+						P055 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle86 : BaseParticle
+			{
+				states {
+					Spawn :
+						P056 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle87 : BaseParticle
+			{
+				states {
+					Spawn :
+						P057 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle88 : BaseParticle
+			{
+				states {
+					Spawn :
+						P058 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle89 : BaseParticle
+			{
+				states {
+					Spawn :
+						P059 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle90 : BaseParticle
+			{
+				states {
+					Spawn :
+						P05A A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle91 : BaseParticle
+			{
+				states {
+					Spawn :
+						P05B A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle92 : BaseParticle
+			{
+				states {
+					Spawn :
+						P05C A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle93 : BaseParticle
+			{
+				states {
+					Spawn :
+						P05D A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle94 : BaseParticle
+			{
+				states {
+					Spawn :
+						P05E A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle95 : BaseParticle
+			{
+				states {
+					Spawn :
+						P05F A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle96 : BaseParticle
+			{
+				states {
+					Spawn :
+						P060 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle97 : BaseParticle
+			{
+				states {
+					Spawn :
+						P061 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle98 : BaseParticle
+			{
+				states {
+					Spawn :
+						P062 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle99 : BaseParticle
+			{
+				states {
+					Spawn :
+						P063 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle100 : BaseParticle
+			{
+				states {
+					Spawn :
+						P064 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle101 : BaseParticle
+			{
+				states {
+					Spawn :
+						P065 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle102 : BaseParticle
+			{
+				states {
+					Spawn :
+						P066 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle103 : BaseParticle
+			{
+				states {
+					Spawn :
+						P067 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle104 : BaseParticle
+			{
+				states {
+					Spawn :
+						P068 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle105 : BaseParticle
+			{
+				states {
+					Spawn :
+						P069 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle106 : BaseParticle
+			{
+				states {
+					Spawn :
+						P06A A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle107 : BaseParticle
+			{
+				states {
+					Spawn :
+						P06B A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle108 : BaseParticle
+			{
+				states {
+					Spawn :
+						P06C A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle109 : BaseParticle
+			{
+				states {
+					Spawn :
+						P06D A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle110 : BaseParticle
+			{
+				states {
+					Spawn :
+						P06E A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle111 : BaseParticle
+			{
+				states {
+					Spawn :
+						P06F A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle112 : BaseParticle
+			{
+				states {
+					Spawn :
+						P070 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle113 : BaseParticle
+			{
+				states {
+					Spawn :
+						P071 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle114 : BaseParticle
+			{
+				states {
+					Spawn :
+						P072 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle115 : BaseParticle
+			{
+				states {
+					Spawn :
+						P073 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle116 : BaseParticle
+			{
+				states {
+					Spawn :
+						P074 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle117 : BaseParticle
+			{
+				states {
+					Spawn :
+						P075 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle118 : BaseParticle
+			{
+				states {
+					Spawn :
+						P076 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle119 : BaseParticle
+			{
+				states {
+					Spawn :
+						P077 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle120 : BaseParticle
+			{
+				states {
+					Spawn :
+						P078 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle121 : BaseParticle
+			{
+				states {
+					Spawn :
+						P079 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle122 : BaseParticle
+			{
+				states {
+					Spawn :
+						P07A A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle123 : BaseParticle
+			{
+				states {
+					Spawn :
+						P07B A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle124 : BaseParticle
+			{
+				states {
+					Spawn :
+						P07C A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle125 : BaseParticle
+			{
+				states {
+					Spawn :
+						P07D A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle126 : BaseParticle
+			{
+				states {
+					Spawn :
+						P07E A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle127 : BaseParticle
+			{
+				states {
+					Spawn :
+						P07F A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle128 : BaseParticle
+			{
+				states {
+					Spawn :
+						P080 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle129 : BaseParticle
+			{
+				states {
+					Spawn :
+						P081 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle130 : BaseParticle
+			{
+				states {
+					Spawn :
+						P082 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle131 : BaseParticle
+			{
+				states {
+					Spawn :
+						P083 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle132 : BaseParticle
+			{
+				states {
+					Spawn :
+						P084 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle133 : BaseParticle
+			{
+				states {
+					Spawn :
+						P085 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle134 : BaseParticle
+			{
+				states {
+					Spawn :
+						P086 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle135 : BaseParticle
+			{
+				states {
+					Spawn :
+						P087 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle136 : BaseParticle
+			{
+				states {
+					Spawn :
+						P088 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle137 : BaseParticle
+			{
+				states {
+					Spawn :
+						P089 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle138 : BaseParticle
+			{
+				states {
+					Spawn :
+						P08A A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle139 : BaseParticle
+			{
+				states {
+					Spawn :
+						P08B A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle140 : BaseParticle
+			{
+				states {
+					Spawn :
+						P08C A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle141 : BaseParticle
+			{
+				states {
+					Spawn :
+						P08D A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle142 : BaseParticle
+			{
+				states {
+					Spawn :
+						P08E A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle143 : BaseParticle
+			{
+				states {
+					Spawn :
+						P08F A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle144 : BaseParticle
+			{
+				states {
+					Spawn :
+						P090 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle145 : BaseParticle
+			{
+				states {
+					Spawn :
+						P091 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle146 : BaseParticle
+			{
+				states {
+					Spawn :
+						P092 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle147 : BaseParticle
+			{
+				states {
+					Spawn :
+						P093 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle148 : BaseParticle
+			{
+				states {
+					Spawn :
+						P094 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle149 : BaseParticle
+			{
+				states {
+					Spawn :
+						P095 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle150 : BaseParticle
+			{
+				states {
+					Spawn :
+						P096 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle151 : BaseParticle
+			{
+				states {
+					Spawn :
+						P097 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle152 : BaseParticle
+			{
+				states {
+					Spawn :
+						P098 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle153 : BaseParticle
+			{
+				states {
+					Spawn :
+						P099 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle154 : BaseParticle
+			{
+				states {
+					Spawn :
+						P09A A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle155 : BaseParticle
+			{
+				states {
+					Spawn :
+						P09B A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle156 : BaseParticle
+			{
+				states {
+					Spawn :
+						P09C A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle157 : BaseParticle
+			{
+				states {
+					Spawn :
+						P09D A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle158 : BaseParticle
+			{
+				states {
+					Spawn :
+						P09E A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle159 : BaseParticle
+			{
+				states {
+					Spawn :
+						P09F A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle160 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0A0 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle161 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0A1 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle162 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0A2 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle163 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0A3 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle164 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0A4 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle165 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0A5 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle166 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0A6 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle167 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0A7 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle168 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0A8 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle169 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0A9 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle170 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0AA A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle171 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0AB A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle172 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0AC A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle173 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0AD A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle174 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0AE A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle175 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0AF A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle176 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0B0 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle177 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0B1 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle178 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0B2 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle179 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0B3 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle180 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0B4 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle181 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0B5 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle182 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0B6 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle183 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0B7 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle184 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0B8 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle185 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0B9 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle186 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0BA A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle187 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0BB A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle188 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0BC A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle189 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0BD A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle190 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0BE A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle191 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0BF A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle192 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0C0 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle193 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0C1 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle194 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0C2 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle195 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0C3 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle196 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0C4 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle197 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0C5 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle198 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0C6 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle199 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0C7 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle200 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0C8 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle201 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0C9 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle202 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0CA A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle203 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0CB A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle204 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0CC A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle205 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0CD A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle206 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0CE A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle207 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0CF A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle208 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0D0 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle209 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0D1 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle210 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0D2 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle211 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0D3 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle212 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0D4 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle213 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0D5 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle214 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0D6 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle215 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0D7 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle216 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0D8 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle217 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0D9 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle218 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0DA A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle219 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0DB A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle220 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0DC A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle221 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0DD A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle222 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0DE A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle223 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0DF A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle224 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0E0 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle225 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0E1 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle226 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0E2 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle227 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0E3 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle228 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0E4 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle229 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0E5 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle230 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0E6 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle231 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0E7 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle232 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0E8 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle233 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0E9 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle234 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0EA A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle235 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0EB A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle236 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0EC A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle237 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0ED A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle238 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0EE A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle239 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0EF A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle240 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0F0 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle241 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0F1 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle242 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0F2 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle243 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0F3 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle244 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0F4 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle245 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0F5 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle246 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0F6 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle247 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0F7 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle248 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0F8 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle249 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0F9 A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle250 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0FA A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle251 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0FB A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle252 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0FC A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle253 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0FD A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle254 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0FE A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			
+class Particle255 : BaseParticle
+			{
+				states {
+					Spawn :
+						P0FF A 1 Bright A_FadeOut(1 / 35, FTF_REMOVE);
+						Loop;
+				}
+			}
+			

@@ -1,0 +1,61 @@
+class SoulParticle : Actor
+			{
+				
+				states {
+					Spawn :
+						TNT1 A 1;
+						TNT1 A 1 {
+							
+			Self.spawn("Particle186", (self.pos.x - 4 + 34, self.pos.y, self.pos.z + (51 - 20)));
+Self.spawn("Particle138", (self.pos.x - 4 + 34, self.pos.y, self.pos.z + (51 - 24)));
+Self.spawn("Particle5", (self.pos.x - 4 + 34, self.pos.y, self.pos.z + (51 - 28)));
+Self.spawn("Particle186", (self.pos.x - 4 + 34, self.pos.y, self.pos.z + (51 - 32)));
+Self.spawn("Particle182", (self.pos.x - 4 + 34, self.pos.y, self.pos.z + (51 - 36)));
+Self.spawn("Particle0", (self.pos.x - 4 + 34, self.pos.y, self.pos.z + (51 - 40)));
+Self.spawn("Particle186", (self.pos.x - 8 + 34, self.pos.y, self.pos.z + (51 - 12)));
+Self.spawn("Particle181", (self.pos.x - 8 + 34, self.pos.y, self.pos.z + (51 - 16)));
+Self.spawn("Particle219", (self.pos.x - 8 + 34, self.pos.y, self.pos.z + (51 - 20)));
+Self.spawn("Particle177", (self.pos.x - 8 + 34, self.pos.y, self.pos.z + (51 - 24)));
+Self.spawn("Particle78", (self.pos.x - 8 + 34, self.pos.y, self.pos.z + (51 - 28)));
+Self.spawn("Particle186", (self.pos.x - 8 + 34, self.pos.y, self.pos.z + (51 - 32)));
+Self.spawn("Particle2", (self.pos.x - 8 + 34, self.pos.y, self.pos.z + (51 - 36)));
+Self.spawn("Particle0", (self.pos.x - 8 + 34, self.pos.y, self.pos.z + (51 - 40)));
+Self.spawn("Particle182", (self.pos.x - 8 + 34, self.pos.y, self.pos.z + (51 - 44)));
+Self.spawn("Particle223", (self.pos.x - 12 + 34, self.pos.y, self.pos.z + (51 - 16)));
+Self.spawn("Particle161", (self.pos.x - 12 + 34, self.pos.y, self.pos.z + (51 - 20)));
+Self.spawn("Particle213", (self.pos.x - 12 + 34, self.pos.y, self.pos.z + (51 - 24)));
+Self.spawn("Particle145", (self.pos.x - 12 + 34, self.pos.y, self.pos.z + (51 - 28)));
+Self.spawn("Particle76", (self.pos.x - 12 + 34, self.pos.y, self.pos.z + (51 - 32)));
+Self.spawn("Particle8", (self.pos.x - 12 + 34, self.pos.y, self.pos.z + (51 - 36)));
+Self.spawn("Particle2", (self.pos.x - 12 + 34, self.pos.y, self.pos.z + (51 - 40)));
+Self.spawn("Particle75", (self.pos.x - 12 + 34, self.pos.y, self.pos.z + (51 - 44)));
+Self.spawn("Particle75", (self.pos.x - 12 + 34, self.pos.y, self.pos.z + (51 - 48)));
+Self.spawn("Particle186", (self.pos.x - 16 + 34, self.pos.y, self.pos.z + (51 - 8)));
+Self.spawn("Particle186", (self.pos.x - 16 + 34, self.pos.y, self.pos.z + (51 - 12)));
+Self.spawn("Particle178", (self.pos.x - 16 + 34, self.pos.y, self.pos.z + (51 - 16)));
+Self.spawn("Particle177", (self.pos.x - 16 + 34, self.pos.y, self.pos.z + (51 - 20)));
+Self.spawn("Particle129", (self.pos.x - 16 + 34, self.pos.y, self.pos.z + (51 - 24)));
+Self.spawn("Particle75", (self.pos.x - 16 + 34, self.pos.y, self.pos.z + (51 - 28)));
+Self.spawn("Particle41", (self.pos.x - 16 + 34, self.pos.y, self.pos.z + (51 - 32)));
+Self.spawn("Particle147", (self.pos.x - 16 + 34, self.pos.y, self.pos.z + (51 - 36)));
+Self.spawn("Particle0", (self.pos.x - 16 + 34, self.pos.y, self.pos.z + (51 - 40)));
+Self.spawn("Particle187", (self.pos.x - 16 + 34, self.pos.y, self.pos.z + (51 - 44)));
+Self.spawn("Particle187", (self.pos.x - 16 + 34, self.pos.y, self.pos.z + (51 - 48)));
+Self.spawn("Particle186", (self.pos.x - 20 + 34, self.pos.y, self.pos.z + (51 - 12)));
+Self.spawn("Particle186", (self.pos.x - 20 + 34, self.pos.y, self.pos.z + (51 - 16)));
+Self.spawn("Particle179", (self.pos.x - 20 + 34, self.pos.y, self.pos.z + (51 - 20)));
+Self.spawn("Particle132", (self.pos.x - 20 + 34, self.pos.y, self.pos.z + (51 - 24)));
+Self.spawn("Particle145", (self.pos.x - 20 + 34, self.pos.y, self.pos.z + (51 - 28)));
+Self.spawn("Particle1", (self.pos.x - 20 + 34, self.pos.y, self.pos.z + (51 - 32)));
+Self.spawn("Particle148", (self.pos.x - 20 + 34, self.pos.y, self.pos.z + (51 - 36)));
+Self.spawn("Particle8", (self.pos.x - 20 + 34, self.pos.y, self.pos.z + (51 - 40)));
+Self.spawn("Particle0", (self.pos.x - 20 + 34, self.pos.y, self.pos.z + (51 - 44)));
+Self.spawn("Particle75", (self.pos.x - 20 + 34, self.pos.y, self.pos.z + (51 - 48)));
+Self.spawn("Particle180", (self.pos.x - 24 + 34, self.pos.y, self.pos.z + (51 - 24)));
+Self.spawn("Particle147", (self.pos.x - 24 + 34, self.pos.y, self.pos.z + (51 - 28)));
+Self.spawn("Particle187", (self.pos.x - 24 + 34, self.pos.y, self.pos.z + (51 - 32)));
+Self.spawn("Particle8", (self.pos.x - 24 + 34, self.pos.y, self.pos.z + (51 - 36)));
+Self.spawn("Particle2", (self.pos.x - 24 + 34, self.pos.y, self.pos.z + (51 - 40)));
+Self.spawn("Particle78", (self.pos.x - 28 + 34, self.pos.y, self.pos.z + (51 - 32)));
+Self.spawn("Particle78", (self.pos.x - 32 + 34, self.pos.y, self.pos.z + (51 - 32)));
+}Stop;}}

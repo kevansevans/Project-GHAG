@@ -31,7 +31,8 @@ Class Gardevoir : PlayerPawn
 		
 		Player.StartItem "IcePunch";
 		Player.StartItem "Swift";
-		Player.StartItem "MoonBlastGun";
+		//Player.StartItem "MoonBlastGun";
+		Player.StartItem "BlackHole";
 		Player.MaxHealth 350;
      }
 	

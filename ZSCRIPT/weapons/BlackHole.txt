@@ -1,0 +1,217 @@
+Class BlackHole : Weapon
+{
+	Default
+	{
+		Tag "Black Hole";
+		Weapon.slotNumber 8;
+		+Weapon.Ammo_Optional;
+		+Weapon.No_Auto_Switch;
+	}
+	
+	int charge;
+	double zoom;
+	
+	PointLight glowy;
+	
+	override void BeginPlay()
+	{
+		super.BeginPlay();
+		
+		charge = 0;
+		zoom = 1;
+	}
+	
+	states
+	{
+		Select:
+			HAND A 1 A_Raise();
+			Loop;
+		Deselect:
+			HAND A 1 A_Lower();
+			Loop;
+		Ready:
+			HAND A 1 {
+				A_WeaponReady();
+			}
+			Loop;
+		Fire:
+			HAND A 2 
+			{
+				if (Gardevoir(players[consoleplayer].mo).ragevalue <= 0 && invoker.charge <= 0)
+				{
+					return resolveState("Ready");
+				}
+				return resolveState(null);
+			}
+			TNT1 A 0
+			{
+				if (!invoker.glowy) {
+					invoker.glowy = Pointlight(self.spawn("PointLight", self.pos));
+					invoker.glowy.bSubtractive = true;
+					invoker.glowy.bDontLightSelf = true;
+					invoker.glowy.bNoShadowMap = true;
+					invoker.glowy.args[0] = 0x6A * 3;
+					invoker.glowy.args[1] = 0x06 * 3;
+					invoker.glowy.args[2] = 0xAD * 3;
+					
+					A_Overlay(-1, "BlackHoleOverlay", false);
+					A_OverlayOffset(-1, 160, 140);
+					A_OverlayScale(-1, 0.2, 0.2);
+					A_OverlayPivot(-1);
+				}
+				invoker.glowy.SetOrigin(self.pos, true);
+				Self.bShootable = false;
+				if (!A_BlackHole()) {
+					double intensity = 10 * (double(invoker.charge) / 125);
+					A_OverlayScale(-1, 0.2 + (intensity * 0.1), 0.2 + (intensity * 0.1));
+					A_OverlayOffset(-1, 160, 140);
+					A_QuakeEx(int(intensity), int(intensity), int(intensity), 25, 0, invoker.charge, "", QF_SCALEDOWN);
+					A_ZoomFactor(invoker.zoom -= 0.0025);
+					A_Refire();
+				}
+			}
+		Fire.Launch:
+			TNT1 A 0 {
+				//A_FireBlackHole();
+				A_Overlay(-1, "Clear");
+				invoker.glowy.destroy();
+				Self.bShootable = true;
+				invoker.charge = 0;
+				invoker.zoom = 1;
+			}
+			HAND BCDEFG 4 A_ZoomFactor(1);
+			goto Ready;
+		BlackHoleOverlay:
+			BKHL ABCDEFGHIKLMN 4 Bright;
+			loop;
+		ClearOverlay:
+			stop;
+		
+	}
+
+	Action bool A_BlackHole()
+	{
+		if (Gardevoir(self).rageValue > 0)
+		{
+			invoker.charge += 1;
+			Gardevoir(self).subtractAnger(8);
+			A_BlackHoleRadialAttack(invoker.charge * 4);
+			return false;
+		} 
+		else if (Gardevoir(self).rageValue == 0 && invoker.charge > 0) 
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	Action void A_BlackHoleRadialAttack(double radius = 255)
+	{
+		ThinkerIterator it = ThinkerIterator.Create("Actor");
+		Actor mo;
+		
+		if (invoker.glowy)
+		{
+			invoker.glowy.args[3] = radius;
+
+		}
+		
+		while ( (mo = Actor(it.Next ())) )
+		{
+			//ignore critical classes.
+			if (Gardevoir(mo)) continue;
+			if (Key(mo)) continue;
+			if (Inventory(mo)) {
+				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
+			}
+			if (mo is "BaseParticle") continue;
+			
+			if (Distance3D(mo) < radius * 4)
+			{
+				A_BlackHoleSuck(mo, 64, -32);
+				if (mo.bIsMonster) {
+					mo.bNoFear = false;
+					mo.bFrightened = true;
+					mo.setStateLabel("Pain");
+				}
+			}
+			
+			if (mo is "BaseParticle")
+			{
+				if (Distance2D(mo) < 32) mo.destroy();
+				continue;
+			}
+			
+			if (Distance3D(mo) < radius * 2)
+			{
+				if (mo.bIsMonster) {
+					if (mo is "DoomImp")
+					{
+						self.spawn("ImpParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "Arachnotron") {
+						self.spawn("ArachnotronParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "Demon") {
+						self.spawn("PinkyParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "HellKnight") {
+						self.spawn("KnightParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "BaronOfHell") {
+						self.spawn("BaronParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "Cacodemon") {
+						self.spawn("CacoParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "Cyberdemon") {
+						self.spawn("CyberParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "ChaingunGuy") {
+						self.spawn("ChainParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "Fatso") {
+						self.spawn("FattyParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "LostSoul") {
+						self.spawn("SoulParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "PainElemental") {
+						self.spawn("PainParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "Revenant") {
+						self.spawn("BonerParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "ShotgunGuy") {
+						self.spawn("ShottyParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "SpiderMastermind") {
+						self.spawn("SpiderParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "WolfensteinSS") {
+						self.spawn("NaziParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "Zombieman") {
+						self.spawn("ZombieParticle", mo.pos);
+						mo.destroy();
+					} else if (mo is "Archvile") {
+						self.spawn("ArchvileParticle", mo.pos);
+						mo.destroy();
+					}
+				}
+				if (mo is "Inventory") mo.destroy();
+				if (mo.bMissile) mo.destroy();
+				if (mo.bSolid) mo.destroy();
+			}
+			
+		}
+	}
+	
+	Action Void A_BlackHoleSuck (Actor victim, double strength, double speed)
+	{
+		double ang = AngleTo(victim);
+		Vector2 move = AngleToVector(ang, speed);
+		victim.Vel.XY = move;
+		victim.Vel.Z = 64. / victim.Mass;
+	}
+}

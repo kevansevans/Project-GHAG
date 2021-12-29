@@ -35,7 +35,7 @@ Class BlackHole : Weapon
 			}
 			Loop;
 		Fire:
-			HAND A 2 
+			HAND A 1 
 			{
 				if (Gardevoir(players[consoleplayer].mo).ragevalue <= 0 && invoker.charge <= 0)
 				{
@@ -56,33 +56,31 @@ Class BlackHole : Weapon
 					
 					A_Overlay(-1, "BlackHoleOverlay", false);
 					A_OverlayOffset(-1, 160, 140);
-					A_OverlayScale(-1, 0.2, 0.2);
 					A_OverlayPivot(-1);
 				}
 				invoker.glowy.SetOrigin(self.pos, true);
 				Self.bShootable = false;
 				if (!A_BlackHole()) {
 					double intensity = 10 * (double(invoker.charge) / 125);
-					A_OverlayScale(-1, 0.2 + (intensity * 0.1), 0.2 + (intensity * 0.1));
+					double scale = round((0.1 + (intensity * 0.1) * 80)) / 100;
+					A_OverlayScale(-1, scale, scale);
 					A_OverlayOffset(-1, 160, 140);
 					A_QuakeEx(int(intensity), int(intensity), int(intensity), 25, 0, invoker.charge, "", QF_SCALEDOWN);
 					A_ZoomFactor(invoker.zoom -= 0.0025);
-					A_Refire();
+					if (invoker.charge < 125) A_Refire();
 				}
 			}
 		Fire.Launch:
 			TNT1 A 0 {
-				//A_FireBlackHole();
+				A_FireBlackHole();
 				A_Overlay(-1, "Clear");
 				invoker.glowy.destroy();
 				Self.bShootable = true;
-				invoker.charge = 0;
-				invoker.zoom = 1;
 			}
-			HAND BCDEFG 4 A_ZoomFactor(1);
+			HAND BCDEFGGGGGGG 4 A_ZoomFactor(1);
 			goto Ready;
 		BlackHoleOverlay:
-			BKHL ABCDEFGHIKLMN 4 Bright;
+			BKHL ABCDEFGHIJKLMN 4 Bright;
 			loop;
 		ClearOverlay:
 			stop;
@@ -113,18 +111,21 @@ Class BlackHole : Weapon
 		if (invoker.glowy)
 		{
 			invoker.glowy.args[3] = radius;
-
 		}
+		
+		invoker.glowy.SetOrigin(self.pos, true);
 		
 		while ( (mo = Actor(it.Next ())) )
 		{
 			//ignore critical classes.
-			if (Gardevoir(mo)) continue;
-			if (Key(mo)) continue;
-			if (Inventory(mo)) {
+			if (Gardevoir(mo)) continue; //is Player. Gardevoir ignores gravity
+			if (BlackHoleProjectile(mo)) continue; //Ignore other black holes
+			if (Key(mo)) continue; //Keys are critical items. Important to not have these move from their locations
+			if (Inventory(mo)) { //Apparently player held items get checked in a thinkiterator
 				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
 			}
-			if (mo is "BaseParticle") continue;
+			if (mo is "BaseParticle") continue; //Vaporization
+			if (mo is "BossBrain") continue; //Might remove this later
 			
 			if (Distance3D(mo) < radius * 4)
 			{
@@ -132,76 +133,62 @@ Class BlackHole : Weapon
 				if (mo.bIsMonster) {
 					mo.bNoFear = false;
 					mo.bFrightened = true;
-					mo.setStateLabel("Pain");
+					if (gametic % 2 == 0 && mo.health > 0) mo.setStateLabel("Pain");
 				}
-			}
-			
-			if (mo is "BaseParticle")
-			{
-				if (Distance2D(mo) < 32) mo.destroy();
-				continue;
 			}
 			
 			if (Distance3D(mo) < radius * 2)
 			{
 				if (mo.bIsMonster) {
-					if (mo is "DoomImp")
-					{
-						self.spawn("ImpParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "Arachnotron") {
-						self.spawn("ArachnotronParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "Demon") {
-						self.spawn("PinkyParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "HellKnight") {
-						self.spawn("KnightParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "BaronOfHell") {
-						self.spawn("BaronParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "Cacodemon") {
-						self.spawn("CacoParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "Cyberdemon") {
-						self.spawn("CyberParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "ChaingunGuy") {
-						self.spawn("ChainParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "Fatso") {
-						self.spawn("FattyParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "LostSoul") {
-						self.spawn("SoulParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "PainElemental") {
-						self.spawn("PainParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "Revenant") {
-						self.spawn("BonerParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "ShotgunGuy") {
-						self.spawn("ShottyParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "SpiderMastermind") {
-						self.spawn("SpiderParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "WolfensteinSS") {
-						self.spawn("NaziParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "Zombieman") {
-						self.spawn("ZombieParticle", mo.pos);
-						mo.destroy();
-					} else if (mo is "Archvile") {
-						self.spawn("ArchvileParticle", mo.pos);
+					if (mo.health > 0) {
+						if (gametic % 2 == 0) {
+							int flags = DMSS_FOILINVUL | DMSS_FOILBUDDHA | DMSS_NOPROTECT | DMSS_NOFACTOR;
+							mo.A_DamageSelf(1000 * int(Distance3D(mo) / (radius / 2)), "none", flags);
+							mo.setStateLabel("Pain");
+						}
+					} else {
+						if (mo is "DoomImp")
+						{
+							mo.spawn("ImpParticle", mo.pos);
+						} else if (mo is "Arachnotron") {
+							mo.spawn("ArachnotronParticle", mo.pos);
+						} else if (mo is "Demon") {
+							mo.spawn("PinkyParticle", mo.pos);
+						} else if (mo is "HellKnight") {
+							mo.spawn("KnightParticle", mo.pos);
+						} else if (mo is "BaronOfHell") {
+							mo.spawn("BaronParticle", mo.pos);;
+						} else if (mo is "Cacodemon") {
+							mo.spawn("CacoParticle", mo.pos);
+						} else if (mo is "Cyberdemon") {
+							mo.spawn("CyberParticle", mo.pos);
+						} else if (mo is "ChaingunGuy") {
+							mo.spawn("ChainParticle", mo.pos);
+						} else if (mo is "Fatso") {
+							mo.spawn("FattyParticle", mo.pos);
+						} else if (mo is "LostSoul") {
+							mo.spawn("SoulParticle", mo.pos);
+						} else if (mo is "PainElemental") {
+							mo.spawn("PainParticle", mo.pos);
+						} else if (mo is "Revenant") {
+							mo.spawn("BonerParticle", mo.pos);
+						} else if (mo is "ShotgunGuy") {
+							mo.spawn("ShottyParticle", mo.pos);
+						} else if (mo is "SpiderMastermind") {
+							mo.spawn("SpiderParticle", mo.pos);
+						} else if (mo is "WolfensteinSS") {
+							mo.spawn("NaziParticle", mo.pos);
+						} else if (mo is "Zombieman") {
+							mo.spawn("ZombieParticle", mo.pos);
+						} else if (mo is "Archvile") {
+							mo.spawn("ArchvileParticle", mo.pos);
+						}
 						mo.destroy();
 					}
 				}
 				if (mo is "Inventory") mo.destroy();
 				if (mo.bMissile) mo.destroy();
-				if (mo.bSolid) mo.destroy();
+				if (mo.bSolid && !mo.bIsMonster) mo.destroy();
 			}
 			
 		}
@@ -213,5 +200,203 @@ Class BlackHole : Weapon
 		Vector2 move = AngleToVector(ang, speed);
 		victim.Vel.XY = move;
 		victim.Vel.Z = 64. / victim.Mass;
+	}
+	
+	Action void A_FireBlackHole()
+	{
+		let _locBlackHole = BlackHoleProjectile(SpawnPlayerMissile("BlackHoleProjectile"));
+		_locBlackHole.charge = invoker.charge;
+		_locBlackHole.suckRange = invoker.charge * 4;
+		
+		invoker.charge = 0;
+		invoker.zoom = 1;
+	}
+}
+
+Class BlackHoleProjectile : Actor
+{
+	int charge;
+	double suckRange;
+	double alpha;
+	PointLight glowy;
+	
+	default
+	{
+		Radius 5;
+		Height 5;
+		Speed 10;
+		+NoBlockmap;
+		+NoGravity;
+		+Dropoff;
+		+ActivateImpact;
+		+ActivatePCross;
+		+NoTeleport;
+	}
+	
+	override void Tick()
+	{
+		super.tick();
+		
+		if (self.vel.x == 0 && self.vel.y == 0) 
+		{
+			self.vel.z = 0;
+			A_SetRenderStyle(self.alpha, STYLE_Translucent);
+			self.alpha -= (1 / double(charge * 8));
+			
+			glowy.args[0] *= 1 - (1 / double(charge * 8));
+			glowy.args[1] *= 1 - (1 / double(charge * 8));
+			glowy.args[2] *= 1 - (1 / double(charge * 8));
+			
+			if (self.alpha <= 0) 
+			{
+				glowy.destroy();
+				self.destroy();
+			}
+		}
+	}
+	
+	override void BeginPlay()
+	{
+		super.BeginPlay();
+		
+		charge = 0;
+		suckRange = 0;
+		alpha = 1;
+		
+		glowy = Pointlight(self.spawn("PointLight", self.pos));
+		glowy.bSubtractive = true;
+		glowy.bDontLightSelf = true;
+		glowy.bNoShadowMap = true;
+		glowy.args[0] = 0x6A * 3;
+		glowy.args[1] = 0x06 * 3;
+		glowy.args[2] = 0xAD * 3;
+	}
+	
+	States 
+	{
+		Spawn :
+			BKHL AABBCCDDEEFFGGHHIIJJKKLLMMNN 2 Bright {
+				A_BlackHoleRadialAttack(invoker.charge * 4);
+			}
+			Loop;
+		Death :
+			TNT1 A 0
+			{
+				invoker.glowy.destroy();
+			}
+			stop;
+	}
+	
+	Action void A_BlackHoleRadialAttack(double radius = 255)
+	{
+		ThinkerIterator it = ThinkerIterator.Create("Actor");
+		Actor mo;
+		
+		invoker.glowy.args[3] = radius;
+		invoker.glowy.SetOrigin(self.pos, true);
+		
+		int flags = DMSS_FOILINVUL | DMSS_FOILBUDDHA | DMSS_NOPROTECT | DMSS_NOFACTOR;
+		
+		while ( (mo = Actor(it.Next ())) )
+		{
+			//ignore critical classes.
+			if (BlackHoleProjectile(mo)) continue;
+			if (Gardevoir(mo)) continue; //is Player. Gardevoir ignores gravity
+			if (Key(mo)) continue; //Keys are critical items. Important to not have these move from their locations
+			if (Inventory(mo)) { //Apparently player held items get checked in a thinkiterator
+				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
+			}
+			if (mo is "BaseParticle") continue; //Vaporization
+			if (mo is "BossBrain") continue; //Might remove this later
+			
+			if (Distance3D(mo) < invoker.suckRange * 4)
+			{
+				A_BlackHoleSuck(mo, 64, -32);
+				if (mo.bIsMonster) {
+					mo.bNoFear = false;
+					mo.bFrightened = true;
+					if (gametic % 2 == 0 && mo.health > 0) mo.setStateLabel("Pain");
+					if (isVisible(mo, true)) mo.A_DamageSelf(32, "none", flags);
+				}
+			}
+			
+			if (Distance3D(mo) < radius * 2)
+			{
+				if (mo.bIsMonster) {
+					if (mo.health > 0) {
+						if (gametic % 2 == 0) {
+							mo.A_DamageSelf(10000 * int(Distance3D(mo) / (radius / 2)), "none", flags);
+						}
+					} else {
+						if (mo is "DoomImp")
+						{
+							mo.spawn("ImpParticle", mo.pos);
+						} else if (mo is "Arachnotron") {
+							mo.spawn("ArachnotronParticle", mo.pos);
+						} else if (mo is "Demon") {
+							mo.spawn("PinkyParticle", mo.pos);
+						} else if (mo is "HellKnight") {
+							mo.spawn("KnightParticle", mo.pos);
+						} else if (mo is "BaronOfHell") {
+							mo.spawn("BaronParticle", mo.pos);;
+						} else if (mo is "Cacodemon") {
+							mo.spawn("CacoParticle", mo.pos);
+						} else if (mo is "Cyberdemon") {
+							mo.spawn("CyberParticle", mo.pos);
+						} else if (mo is "ChaingunGuy") {
+							mo.spawn("ChainParticle", mo.pos);
+						} else if (mo is "Fatso") {
+							mo.spawn("FattyParticle", mo.pos);
+						} else if (mo is "LostSoul") {
+							mo.spawn("SoulParticle", mo.pos);
+						} else if (mo is "PainElemental") {
+							mo.spawn("PainParticle", mo.pos);
+						} else if (mo is "Revenant") {
+							mo.spawn("BonerParticle", mo.pos);
+						} else if (mo is "ShotgunGuy") {
+							mo.spawn("ShottyParticle", mo.pos);
+						} else if (mo is "SpiderMastermind") {
+							mo.spawn("SpiderParticle", mo.pos);
+						} else if (mo is "WolfensteinSS") {
+							mo.spawn("NaziParticle", mo.pos);
+						} else if (mo is "Zombieman") {
+							mo.spawn("ZombieParticle", mo.pos);
+						} else if (mo is "Archvile") {
+							mo.spawn("ArchvileParticle", mo.pos);
+						}
+						mo.destroy();
+						
+						invoker.suckRange += double(mo.mass) / 10000;
+						
+						invoker.alpha = 1;
+						invoker.glowy.args[0] = 0x6A * 3;
+						invoker.glowy.args[1] = 0x06 * 3;
+						invoker.glowy.args[2] = 0xAD * 3;
+					}
+				}
+				if (mo is "Inventory") 
+				{
+					mo.destroy();
+					invoker.suckRange += 0.01;
+				}
+				if (mo.bMissile) {
+					mo.destroy();
+					invoker.suckRange += 0.02;
+				}
+				if (mo.bSolid && !mo.bIsMonster) {
+					mo.destroy();
+					invoker.suckRange += 0.02;
+				}
+			}
+			
+		}
+	}
+	
+	Action Void A_BlackHoleSuck (Actor victim, double strength, double speed)
+	{
+		double ang = AngleTo(victim);
+		Vector2 move = AngleToVector(ang, speed);
+		victim.Vel.XY = move;
+		victim.Vel.Z = 128. / victim.Mass;
 	}
 }

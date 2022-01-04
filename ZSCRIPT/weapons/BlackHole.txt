@@ -1,5 +1,7 @@
 Class BlackHole : Weapon
 {
+	mixin BlackHoleAttacks;
+
 	Default
 	{
 		Tag "Black Hole";
@@ -44,7 +46,8 @@ Class BlackHole : Weapon
 				return resolveState(null);
 			}
 			TNT1 A 0
-			{
+			{	
+				if (invoker.charge <= 0) A_StartSound("blackhole/POWERON", CHAN_WEAPON);
 				if (!invoker.glowy) {
 					invoker.glowy = Pointlight(self.spawn("PointLight", self.pos));
 					invoker.glowy.bSubtractive = true;
@@ -59,6 +62,8 @@ Class BlackHole : Weapon
 					A_OverlayPivot(-1);
 				}
 				invoker.glowy.SetOrigin(self.pos, true);
+				invoker.glowy.args[3] = invoker.charge * 4;
+				
 				Self.bShootable = false;
 				if (!A_BlackHole()) {
 					double intensity = 10 * (double(invoker.charge) / 125);
@@ -72,6 +77,7 @@ Class BlackHole : Weapon
 			}
 		Fire.Launch:
 			TNT1 A 0 {
+				A_StopSound(CHAN_WEAPON);
 				A_FireBlackHole();
 				A_Overlay(-1, "Clear");
 				invoker.glowy.destroy();
@@ -103,105 +109,6 @@ Class BlackHole : Weapon
 		return false;
 	}
 	
-	Action void A_BlackHoleRadialAttack(double radius = 255)
-	{
-		ThinkerIterator it = ThinkerIterator.Create("Actor");
-		Actor mo;
-		
-		if (invoker.glowy)
-		{
-			invoker.glowy.args[3] = radius;
-		}
-		
-		invoker.glowy.SetOrigin(self.pos, true);
-		
-		while ( (mo = Actor(it.Next ())) )
-		{
-			//ignore critical classes.
-			if (Gardevoir(mo)) continue; //is Player. Gardevoir ignores gravity
-			if (BlackHoleProjectile(mo)) continue; //Ignore other black holes
-			if (Key(mo)) continue; //Keys are critical items. Important to not have these move from their locations
-			if (Inventory(mo)) { //Apparently player held items get checked in a thinkiterator
-				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
-			}
-			if (mo is "BaseParticle") continue; //Vaporization
-			if (mo is "BossBrain") continue; //Might remove this later
-			
-			if (Distance3D(mo) < radius * 4)
-			{
-				A_BlackHoleSuck(mo, 64, -32);
-				if (mo.bIsMonster) {
-					mo.bNoFear = false;
-					mo.bFrightened = true;
-					if (gametic % 2 == 0 && mo.health > 0) mo.setStateLabel("Pain");
-				}
-			}
-			
-			if (Distance3D(mo) < radius * 2)
-			{
-				if (mo.bIsMonster) {
-					if (mo.health > 0) {
-						if (gametic % 2 == 0) {
-							int flags = DMSS_FOILINVUL | DMSS_FOILBUDDHA | DMSS_NOPROTECT | DMSS_NOFACTOR;
-							mo.A_DamageSelf(1000 * int(Distance3D(mo) / (radius / 2)), "none", flags);
-							mo.setStateLabel("Pain");
-						}
-					} else {
-						if (mo is "DoomImp")
-						{
-							mo.spawn("ImpParticle", mo.pos);
-						} else if (mo is "Arachnotron") {
-							mo.spawn("ArachnotronParticle", mo.pos);
-						} else if (mo is "Demon") {
-							mo.spawn("PinkyParticle", mo.pos);
-						} else if (mo is "HellKnight") {
-							mo.spawn("KnightParticle", mo.pos);
-						} else if (mo is "BaronOfHell") {
-							mo.spawn("BaronParticle", mo.pos);;
-						} else if (mo is "Cacodemon") {
-							mo.spawn("CacoParticle", mo.pos);
-						} else if (mo is "Cyberdemon") {
-							mo.spawn("CyberParticle", mo.pos);
-						} else if (mo is "ChaingunGuy") {
-							mo.spawn("ChainParticle", mo.pos);
-						} else if (mo is "Fatso") {
-							mo.spawn("FattyParticle", mo.pos);
-						} else if (mo is "LostSoul") {
-							mo.spawn("SoulParticle", mo.pos);
-						} else if (mo is "PainElemental") {
-							mo.spawn("PainParticle", mo.pos);
-						} else if (mo is "Revenant") {
-							mo.spawn("BonerParticle", mo.pos);
-						} else if (mo is "ShotgunGuy") {
-							mo.spawn("ShottyParticle", mo.pos);
-						} else if (mo is "SpiderMastermind") {
-							mo.spawn("SpiderParticle", mo.pos);
-						} else if (mo is "WolfensteinSS") {
-							mo.spawn("NaziParticle", mo.pos);
-						} else if (mo is "Zombieman") {
-							mo.spawn("ZombieParticle", mo.pos);
-						} else if (mo is "Archvile") {
-							mo.spawn("ArchvileParticle", mo.pos);
-						}
-						mo.destroy();
-					}
-				}
-				if (mo is "Inventory") mo.destroy();
-				if (mo.bMissile) mo.destroy();
-				if (mo.bSolid && !mo.bIsMonster) mo.destroy();
-			}
-			
-		}
-	}
-	
-	Action Void A_BlackHoleSuck (Actor victim, double strength, double speed)
-	{
-		double ang = AngleTo(victim);
-		Vector2 move = AngleToVector(ang, speed);
-		victim.Vel.XY = move;
-		victim.Vel.Z = 64. / victim.Mass;
-	}
-	
 	Action void A_FireBlackHole()
 	{
 		let _locBlackHole = BlackHoleProjectile(SpawnPlayerMissile("BlackHoleProjectile"));
@@ -215,22 +122,22 @@ Class BlackHole : Weapon
 
 Class BlackHoleProjectile : Actor
 {
+	mixin BlackHoleAttacks;
+
 	int charge;
+	double extra;
 	double suckRange;
 	double alpha;
 	PointLight glowy;
+	LightningFizzle fizzy;
 	
 	default
 	{
 		Radius 5;
 		Height 5;
 		Speed 10;
-		+NoBlockmap;
-		+NoGravity;
-		+Dropoff;
-		+ActivateImpact;
-		+ActivatePCross;
-		+NoTeleport;
+		Projectile;
+		+ThruActors;
 	}
 	
 	override void Tick()
@@ -239,17 +146,29 @@ Class BlackHoleProjectile : Actor
 		
 		if (self.vel.x == 0 && self.vel.y == 0) 
 		{
+			double decay = (1 / double(charge * 16));
+		
 			self.vel.z = 0;
 			A_SetRenderStyle(self.alpha, STYLE_Translucent);
-			self.alpha -= (1 / double(charge * 8));
+			self.alpha -= decay;
 			
-			glowy.args[0] *= 1 - (1 / double(charge * 8));
-			glowy.args[1] *= 1 - (1 / double(charge * 8));
-			glowy.args[2] *= 1 - (1 / double(charge * 8));
+			if (glowy) {
+				glowy.args[0] -= (1 / (double(0x6A * 3 * 16)));
+				glowy.args[1] -= (1 / (double(0x6A * 3 * 16)));
+				glowy.args[2] -= (1 / (double(0x6A * 3 * 16)));
+				glowy.SetOrigin(self.pos, true);
+				glowy.args[3] = charge * 4;
+			}
+			
+			if (fizzy)
+			{
+				fizzy.setOrigin(self.pos, true);
+			}
 			
 			if (self.alpha <= 0) 
 			{
 				glowy.destroy();
+				fizzy.destroy();
 				self.destroy();
 			}
 		}
@@ -270,53 +189,69 @@ Class BlackHoleProjectile : Actor
 		glowy.args[0] = 0x6A * 3;
 		glowy.args[1] = 0x06 * 3;
 		glowy.args[2] = 0xAD * 3;
+		
+		fizzy = LightningFizzle(self.spawn("LightningFizzle", self.pos));
+		
+		A_StartSound("blackhole/MACHAMB", CHAN_AUTO, CHANF_LOOPING);
 	}
 	
 	States 
 	{
+		Death:
 		Spawn :
 			BKHL AABBCCDDEEFFGGHHIIJJKKLLMMNN 2 Bright {
-				A_BlackHoleRadialAttack(invoker.charge * 4);
+				A_SetScale(double(invoker.charge) / double(125), double(invoker.charge) / double(125));
+				double munch = A_BlackHoleRadialAttack((invoker.charge * 4) + invoker.extra);
+				if (munch > 0) {
+					invoker.extra += munch;
+					A_ResetBlackHole();
+				}
 			}
-			Loop;
-		Death :
-			TNT1 A 0
-			{
-				invoker.glowy.destroy();
-			}
-			stop;
+		loop;
 	}
 	
-	Action void A_BlackHoleRadialAttack(double radius = 255)
+	action void A_ResetBlackHole()
+	{
+		invoker.glowy.args[0] = 0x6A * 3;
+		invoker.glowy.args[1] = 0x06 * 3;
+		invoker.glowy.args[2] = 0xAD * 3;
+		invoker.alpha = 1;
+	}
+}
+
+mixin class BlackHoleAttacks
+{
+	action double A_BlackHoleRadialAttack(double radius = 255)
 	{
 		ThinkerIterator it = ThinkerIterator.Create("Actor");
 		Actor mo;
 		
-		invoker.glowy.args[3] = radius;
-		invoker.glowy.SetOrigin(self.pos, true);
+		double addedmass = 0;
 		
 		int flags = DMSS_FOILINVUL | DMSS_FOILBUDDHA | DMSS_NOPROTECT | DMSS_NOFACTOR;
 		
 		while ( (mo = Actor(it.Next ())) )
 		{
 			//ignore critical classes.
-			if (BlackHoleProjectile(mo)) continue;
 			if (Gardevoir(mo)) continue; //is Player. Gardevoir ignores gravity
+			if (BlackHoleProjectile(mo)) continue; //Ignore other black holes
 			if (Key(mo)) continue; //Keys are critical items. Important to not have these move from their locations
 			if (Inventory(mo)) { //Apparently player held items get checked in a thinkiterator
 				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
 			}
 			if (mo is "BaseParticle") continue; //Vaporization
-			if (mo is "BossBrain") continue; //Might remove this later
+			if (mo is "BossBrain" || mo is "BossTarget" || mo is "BossEye") continue;
+			if (mo is "TeleportDest") continue;
+			if (mo is "lightningfizzle") continue;
 			
-			if (Distance3D(mo) < invoker.suckRange * 4)
+			if (Distance3D(mo) < radius * 4)
 			{
 				A_BlackHoleSuck(mo, 64, -32);
 				if (mo.bIsMonster) {
 					mo.bNoFear = false;
 					mo.bFrightened = true;
+					mo.A_DamageSelf(10, "none", flags);
 					if (gametic % 2 == 0 && mo.health > 0) mo.setStateLabel("Pain");
-					if (isVisible(mo, true)) mo.A_DamageSelf(32, "none", flags);
 				}
 			}
 			
@@ -325,7 +260,8 @@ Class BlackHoleProjectile : Actor
 				if (mo.bIsMonster) {
 					if (mo.health > 0) {
 						if (gametic % 2 == 0) {
-							mo.A_DamageSelf(10000 * int(Distance3D(mo) / (radius / 2)), "none", flags);
+							mo.A_DamageSelf(500, "none", flags);
+							if (mo.health > 0) mo.setStateLabel("Pain");
 						}
 					} else {
 						if (mo is "DoomImp")
@@ -363,40 +299,45 @@ Class BlackHoleProjectile : Actor
 							mo.spawn("ZombieParticle", mo.pos);
 						} else if (mo is "Archvile") {
 							mo.spawn("ArchvileParticle", mo.pos);
-						}
+						} 
+						addedmass += mo.mass / 10000;
 						mo.destroy();
-						
-						invoker.suckRange += double(mo.mass) / 10000;
-						
-						invoker.alpha = 1;
-						invoker.glowy.args[0] = 0x6A * 3;
-						invoker.glowy.args[1] = 0x06 * 3;
-						invoker.glowy.args[2] = 0xAD * 3;
 					}
 				}
-				if (mo is "Inventory") 
-				{
-					mo.destroy();
-					invoker.suckRange += 0.01;
-				}
-				if (mo.bMissile) {
-					mo.destroy();
-					invoker.suckRange += 0.02;
-				}
-				if (mo.bSolid && !mo.bIsMonster) {
-					mo.destroy();
-					invoker.suckRange += 0.02;
-				}
+				if (mo is "Inventory") mo.destroy();
+				if (mo.bMissile) mo.destroy();
+				if (mo.bSolid && !mo.bIsMonster) mo.destroy();
 			}
-			
 		}
+		
+		return addedmass;
 	}
 	
-	Action Void A_BlackHoleSuck (Actor victim, double strength, double speed)
+	action Void A_BlackHoleSuck (Actor victim, double strength, double speed)
 	{
 		double ang = AngleTo(victim);
 		Vector2 move = AngleToVector(ang, speed);
 		victim.Vel.XY = move;
-		victim.Vel.Z = 128. / victim.Mass;
+		victim.Vel.Z = 64. / victim.Mass;
+	}
+}
+
+Class LightningFizzle : Actor
+{
+	default
+	{
+		+NoGravity;
+		+RollSprite;
+	}
+	States
+	{
+		Spawn :
+			LTNG A 2 Bright A_SetRoll(random(0, 359), SPF_INTERPOLATE);
+			TNT1 A 0 A_SetTics(random(1, 15));
+			LTNG B 2 Bright A_SetRoll(random(0, 359), SPF_INTERPOLATE);
+			TNT1 A 0 A_SetTics(random(1, 15));
+			LTNG C 2 Bright A_SetRoll(random(0, 359), SPF_INTERPOLATE);
+			TNT1 A 0 A_SetTics(random(1, 15));
+			loop;
 	}
 }

@@ -74,11 +74,19 @@ Class GHAGPistol : Pistol replaces Pistol
 	}
 	
 	int lastRNG;
+	double spread;
 	
 	override void DoEffect()
 	{
 		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
 		super.DoEffect();
+	}
+	
+	override void BeginPlay()
+	{
+		Super.BeginPlay();
+		
+		spread = 0;
 	}
 
 	states
@@ -113,7 +121,6 @@ Class GHAGPistol : Pistol replaces Pistol
 				A_FireBullets(Gardevoir(self).GetAccuracyModifier(5.6), Gardevoir(self).GetAccuracyModifier(5.6), 1, 8, "BulletPuff");
 				A_StartSound("weapons/pistol", CHAN_WEAPON);
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
-				A_GunFlash();
 				A_OverlayPistols(true);
 			}
 			HAND EF 1 A_SetTics(Gardevoir(self).GetTicModifier(1, true));
@@ -124,24 +131,20 @@ Class GHAGPistol : Pistol replaces Pistol
 			}
 			Goto Ready;
 		AltFire:
-			HAND AB 3 {
-				A_SetTics(Gardevoir(self).GetTicModifier(3, true));
-			}
-			HAND C 3 {
-				A_SetTics(Gardevoir(self).GetTicModifier(3, false));
-			}
-			HAND D 3 {
-				A_FireBullets(3.2, 3.2, Min(4, countinv("GHAGPistolOverlay")), 8, "BulletPuff");
-				A_StartSound("weapons/pistol", CHAN_WEAPON);
-				A_SetTics(Gardevoir(self).GetTicModifier(3));
-				A_GunFlash();
-				A_OverlayPistols(true, true);
-			}
-			HAND EF 1 A_SetTics(Gardevoir(self).GetTicModifier(1, true));
-			HAND G 5
+			HAND ABC 1;
+			HAND D 1 
 			{
-				A_SetTics(Gardevoir(self).GetTicModifier(5, true));
-				A_ReFire();
+				A_FireBullets(3.4 + invoker.spread, 3.4 + (invoker.spread / 2), Min(4, countinv("GHAGPistolOverlay")), 8, "BulletPuff");
+				A_StartSound("weapons/pistol", CHAN_WEAPON);
+				A_OverlayPistols(true, true);
+				A_Refire();
+				invoker.spread += 0.5;
+				invoker.spread = min(6.6, invoker.spread);
+			}
+			HAND EFG 1;
+			TNT1 A 0 
+			{
+				invoker.spread = 0;
 			}
 			Goto Ready;
 		Flash:
@@ -149,6 +152,8 @@ Class GHAGPistol : Pistol replaces Pistol
 			Goto LightDone;
 		Fire.Overlay:
 			PIST B 3 Bright A_SetTics(Gardevoir(self).GetTicModifier(3));
+		AltFire.Overlay:
+			PIST B 2 Bright;
 		Select.Overlay:
 			PIST A 1;
 			loop;
@@ -178,7 +183,10 @@ Class GHAGPistol : Pistol replaces Pistol
 			if (i > 3) return;
 			
 			int layer = -1 * (i + 1);
-			if (i == rng && RollForFire || altFire) A_Overlay(layer, "Fire.Overlay", false);
+			if (i == rng && RollForFire || altFire) {
+				if (!altfire) A_Overlay(layer, "Fire.Overlay", false);
+				else A_Overlay(layer, "AltFire.Overlay", false);
+			}
 			else A_Overlay(layer, "Ready.Overlay", true);
 			A_OverlayFlags(layer, PSPF_ADDBOB, false);
 			if ((i + 1) % 2 == 0) A_OverlayFlags(layer, PSPF_FLIP | PSPF_MIRROR, true);

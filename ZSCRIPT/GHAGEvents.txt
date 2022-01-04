@@ -31,11 +31,8 @@ Class GHAGEventHandler : EventHandler
 					if (munition) 
 					{
 						munition.amount = gun.AmmoGive1;
+						if (munition is "Clip") munition.amount *= 1.5;
 					}
-					//for (int i = 0; i < gun.args.Size(); i++)
-					//{
-						//munition.args[i] = gun.args[i];
-					//}
 					gun.destroy();
 				}
 			}

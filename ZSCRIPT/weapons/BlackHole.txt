@@ -26,18 +26,18 @@ Class BlackHole : Weapon
 	states
 	{
 		Select:
-			HAND A 1 A_Raise();
+			MPUN A 1 A_Raise();
 			Loop;
 		Deselect:
-			HAND A 1 A_Lower();
+			MPUN A 1 A_Lower();
 			Loop;
 		Ready:
-			HAND A 1 {
+			MPUN A 1 {
 				A_WeaponReady();
 			}
 			Loop;
 		Fire:
-			HAND A 1 
+			MPUN A 1 
 			{
 				if (Gardevoir(players[consoleplayer].mo).ragevalue <= 0 && invoker.charge <= 0)
 				{
@@ -83,7 +83,7 @@ Class BlackHole : Weapon
 				invoker.glowy.destroy();
 				Self.bShootable = true;
 			}
-			HAND BCDEFGGGGGGG 4 A_ZoomFactor(1);
+			MPUN A 48 A_ZoomFactor(1);
 			goto Ready;
 		BlackHoleOverlay:
 			BKHL ABCDEFGHIJKLMN 4 Bright;
@@ -129,7 +129,9 @@ Class BlackHoleProjectile : Actor
 	double suckRange;
 	double alpha;
 	PointLight glowy;
-	LightningFizzle fizzy;
+	LightningFizzle fizzyA;
+	LightningFizzle fizzyB;
+	LightningFizzle fizzyC;
 	
 	default
 	{
@@ -152,26 +154,31 @@ Class BlackHoleProjectile : Actor
 			A_SetRenderStyle(self.alpha, STYLE_Translucent);
 			self.alpha -= decay;
 			
-			if (glowy) {
-				glowy.args[0] -= (1 / (double(0x6A * 3 * 16)));
-				glowy.args[1] -= (1 / (double(0x6A * 3 * 16)));
-				glowy.args[2] -= (1 / (double(0x6A * 3 * 16)));
-				glowy.SetOrigin(self.pos, true);
-				glowy.args[3] = charge * 4;
-			}
-			
-			if (fizzy)
-			{
-				fizzy.setOrigin(self.pos, true);
-			}
-			
 			if (self.alpha <= 0) 
 			{
 				glowy.destroy();
-				fizzy.destroy();
+				fizzyA.destroy();
+				fizzyB.destroy();
+				fizzyC.destroy();
 				self.destroy();
 			}
 		}
+		
+		if (glowy) {
+			glowy.args[0] -= (1 / (double(0x6A * 3 * 16)));
+			glowy.args[1] -= (1 / (double(0x6A * 3 * 16)));
+			glowy.args[2] -= (1 / (double(0x6A * 3 * 16)));
+			glowy.SetOrigin(self.pos, true);
+			glowy.args[3] = charge * 4;
+		}
+			
+		if (fizzyA && fizzyB && fizzyC)
+		{
+			fizzyA.setOrigin(self.pos, true);
+			fizzyB.setOrigin(self.pos, true);
+			fizzyC.setOrigin(self.pos, true);
+		}
+			
 	}
 	
 	override void BeginPlay()
@@ -190,9 +197,12 @@ Class BlackHoleProjectile : Actor
 		glowy.args[1] = 0x06 * 3;
 		glowy.args[2] = 0xAD * 3;
 		
-		fizzy = LightningFizzle(self.spawn("LightningFizzle", self.pos));
+		fizzyA = LightningFizzle(self.spawn("LightningFizzle", self.pos));
+		fizzyB = LightningFizzle(self.spawn("LightningFizzle", self.pos));
+		fizzyC = LightningFizzle(self.spawn("LightningFizzle", self.pos));
 		
 		A_StartSound("blackhole/MACHAMB", CHAN_AUTO, CHANF_LOOPING);
+		A_StartSound("blackhole/ELECSUCK", CHAN_AUTO, CHANF_LOOPING);
 	}
 	
 	States 
@@ -216,6 +226,7 @@ Class BlackHoleProjectile : Actor
 		invoker.glowy.args[1] = 0x06 * 3;
 		invoker.glowy.args[2] = 0xAD * 3;
 		invoker.alpha = 1;
+		A_SetRenderStyle(1.0, STYLE_Translucent);
 	}
 }
 
@@ -260,7 +271,7 @@ mixin class BlackHoleAttacks
 				if (mo.bIsMonster) {
 					if (mo.health > 0) {
 						if (gametic % 2 == 0) {
-							mo.A_DamageSelf(500, "none", flags);
+							mo.A_DamageSelf(500 + (500 * (Distance3D(mo) / (radius * 2))), "none", flags);
 							if (mo.health > 0) mo.setStateLabel("Pain");
 						}
 					} else {
@@ -300,7 +311,7 @@ mixin class BlackHoleAttacks
 						} else if (mo is "Archvile") {
 							mo.spawn("ArchvileParticle", mo.pos);
 						} 
-						addedmass += mo.mass / 10000;
+						addedmass += double(mo.mass) / 10000;
 						mo.destroy();
 					}
 				}

@@ -31,11 +31,18 @@ Class GHAGEventHandler : EventHandler
 					if (munition) 
 					{
 						munition.amount = gun.AmmoGive1;
-						if (munition is "Clip") munition.amount *= 1.5;
 					}
 					gun.destroy();
 				}
 			}
+		}
+		
+		if (Ammo(event.thing))
+		{
+			let munition = Ammo(event.thing);
+			if (!munition) return;
+			
+			//if (munition is "Clip") munition.amount = double(munition.amount) * 1.5;
 		}
 	}
 	
@@ -189,7 +196,101 @@ Class GHAGEventHandler : EventHandler
 		if (!gardie) return;
 		if (ExplosiveBarrel(event.thing)) return;
 		if (Gardevoir(event.thing.target) || ExplosiveBarrel(event.thing.target)) {
-			Gardie.CatharsisBonus(event.thing);
+			CatharsisBonus(event.thing);
+		}
+	}
+	
+	void CatharsisBonus(Actor thing) 
+	{
+		if (!thing) return;
+		
+		let gardie = Gardevoir(players[consoleplayer].mo);
+		if (!gardie) return;
+		
+		int angerBonus = Max(int(thing.spawnHealth() / 5), 1);
+		int willBonus = int(AngerBonus / 10);
+		
+		if (ActorTracker.getActorStats(thing)) {
+			
+		}
+		
+		if (gardie.player.ReadyWeapon is "IcePunch" ||
+			gardie.player.ReadyWeapon is "Swift"		 ||
+			gardie.player.ReadyWeapon is "MoonBlastGun") 
+		{ } else {
+		
+			if (WolfensteinSS(thing)) angerbonus = 3000;
+			
+			while (true) 
+			{
+				let rageitem = RageEssence(thing.A_DropItem("RageEssence", 1));
+				rageitem.A_SetPitch(random(60, 80));
+				rageitem.A_SetAngle(random(1, 360));
+				
+				if (WolfensteinSS(thing)) 
+				{
+					rageitem.amount = 100;
+					rageitem.A_SetScale(1, 1);
+					angerbonus -= 100;
+					rageitem.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
+					rageitem.A_SetPitch(random(80, 120));
+					if (angerbonus <= 0) break;
+					else continue;
+				}
+				
+				rageitem.A_ChangeVelocity(random(-2, 2), random(-2, 2), random(-2, 2), CVF_REPLACE);
+				
+				if (angerbonus >= 1000) 
+				{
+					rageitem.amount = 500;
+					rageitem.A_SetScale(3, 3);
+					angerbonus -= 500;
+				} 
+				else if (angerbonus >= 500)
+				{
+					rageitem.amount = 250;
+					rageitem.A_SetScale(2, 2);
+					angerbonus -= 250;
+				}
+				else if (angerbonus >= 250)
+				{
+					rageitem.amount = 100;
+					rageitem.A_SetScale(1.5, 1.5);
+					angerbonus -= 100;
+				} 
+				else if (angerbonus >= 50)
+				{
+					rageitem.amount = 50;
+					rageitem.A_SetScale(1, 1);
+					angerbonus -= 50;
+				}
+				else if (angerbonus >= 5)
+				{
+					rageitem.amount = 5;
+					rageitem.A_SetScale(0.5, 0.5);
+					angerbonus -= 5;
+				}
+				else if (angerbonus <= 5)
+				{
+					rageitem.amount = angerbonus;
+					rageitem.A_SetScale(0.5, 0.5);
+					break;
+				}
+			}
+			
+		}
+		
+		if (willBonus > 0) {
+			let healitem = HealEssence(thing.A_DropItem("HealEssence", 1));
+			healitem.amount = willBonus;
+			if (WolfensteinSS(thing)) healitem.amount = 350;
+			healitem.A_ChangeVelocity(random(-2, 2), random(-2, 2), random(-2, 2), CVF_REPLACE);
+			healitem.A_SetPitch(random(60, 80));
+			healitem.A_SetAngle(random(1, 360));
+		}
+		
+		if (gardie.OverTheEdge) {
+			gardie.RageDelay += 2;
 		}
 	}
 	

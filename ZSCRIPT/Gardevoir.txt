@@ -98,98 +98,6 @@ Class Gardevoir : PlayerPawn
 		rollCounterAnger += value;
 	}
 	
-	void CatharsisBonus(Actor thing) 
-	{
-		if (self.health <= 0) return;
-		if (!thing) return;
-		
-		int angerBonus = Max(int(thing.spawnHealth() / 5), 1);
-		int willBonus = int(AngerBonus / 10);
-		
-		if (ActorTracker.getActorStats(thing)) {
-			
-		}
-		
-		if (Player.ReadyWeapon is "IcePunch" ||
-			Player.ReadyWeapon is "Swift"		 ||
-			Player.ReadyWeapon is "MoonBlastGun") 
-		{ } else {
-		
-			if (WolfensteinSS(thing)) angerbonus = 3000;
-			
-			while (true) 
-			{
-				let rageitem = RageEssence(thing.A_DropItem("RageEssence", 1));
-				rageitem.A_SetPitch(random(60, 80));
-				rageitem.A_SetAngle(random(1, 360));
-				
-				if (WolfensteinSS(thing)) 
-				{
-					rageitem.amount = 100;
-					rageitem.A_SetScale(1, 1);
-					angerbonus -= 100;
-					rageitem.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
-					rageitem.A_SetPitch(random(80, 120));
-					if (angerbonus <= 0) break;
-					else continue;
-				}
-				
-				rageitem.A_ChangeVelocity(random(-2, 2), random(-2, 2), random(-2, 2), CVF_REPLACE);
-				
-				if (angerbonus >= 1000) 
-				{
-					rageitem.amount = 500;
-					rageitem.A_SetScale(3, 3);
-					angerbonus -= 500;
-				} 
-				else if (angerbonus >= 500)
-				{
-					rageitem.amount = 250;
-					rageitem.A_SetScale(2, 2);
-					angerbonus -= 250;
-				}
-				else if (angerbonus >= 250)
-				{
-					rageitem.amount = 100;
-					rageitem.A_SetScale(1.5, 1.5);
-					angerbonus -= 100;
-				} 
-				else if (angerbonus >= 50)
-				{
-					rageitem.amount = 50;
-					rageitem.A_SetScale(1, 1);
-					angerbonus -= 50;
-				}
-				else if (angerbonus >= 5)
-				{
-					rageitem.amount = 5;
-					rageitem.A_SetScale(0.5, 0.5);
-					angerbonus -= 5;
-				}
-				else if (angerbonus <= 5)
-				{
-					rageitem.amount = angerbonus;
-					rageitem.A_SetScale(0.5, 0.5);
-					break;
-				}
-			}
-			
-		}
-		
-		if (willBonus > 0) {
-			let healitem = HealEssence(thing.A_DropItem("HealEssence", 1));
-			healitem.amount = willBonus;
-			if (WolfensteinSS(thing)) healitem.amount = 350;
-			healitem.A_ChangeVelocity(random(-2, 2), random(-2, 2), random(-2, 2), CVF_REPLACE);
-			healitem.A_SetPitch(random(60, 80));
-			healitem.A_SetAngle(random(1, 360));
-		}
-		
-		if (OverTheEdge) {
-			RageDelay += 2;
-		}
-	}
-	
 	void GetLivid()
 	{
 		if (!overTheEdge) RageValue += 750;
@@ -409,7 +317,9 @@ Class NameClass : Actor
 		"PSY Rocket!", "The perfect gift", "Imp Encounter", "300mb!", "Dud", "Objection!", "Hold it!", "Take that!",
 		"Silence!", "Perfect IV", "Laser!", "Caution!", "Goodnight Everybody!", "Helloooooo Nurse!", "Love", "Heart",
 		"Brain", "Control", "CAFFEINATE!", "Wake up!", "Smack!", "That's great", "Fuck Hexen", "What is the time?",
-		"Archvile repellant", "Raw kit lawn chair", "Hydrate", "Posture check"
+		"Archvile repellant", "Raw kit lawn chair", "Hydrate", "Posture check", "You", "Major Arlene", "Kaapeli", "Bridge Burner",
+		"Jimmy", "You let me complicate you", "Excuse me", "Ultimate Cup of Coffee", "Try Haxe!", "Bosh", "Bish", "Chaz", "Bailey",
+		"Coco", "Finn"
 		
 	};
 
@@ -429,6 +339,10 @@ Class NameClass : Actor
 		"It starts", "With an", "Earth", "Quake", "Birds and Snakes", "an Airplane", "and", "BILLY JOEL", "Is not afraid..."
 	};
 	
+	static const string contempt[] = {
+		"humour", "me", "greatly", "with", "your", "arrogance", "and", 'contempt,', "a", "flood", "of", "accusations", "born", "from", "the", "poison", "of", "envy", "and", "smite", "of", "disrespect."
+	};
+	
 	string GetName() {
 		
 		string rng_name = '[I am error]';
@@ -441,6 +355,7 @@ Class NameClass : Actor
 				if (rng_name == "Creeper") getMode = 2;
 				if (rng_name == "I like shorts!") getMode = 3;
 				if (rng_name == "That's great") getMode = 4;
+				if (rng_name == "You") getMode = 5;
 				break;
 			case 1:
 				rng_name = NameClass.navyseal[wordtracker];
@@ -470,6 +385,14 @@ Class NameClass : Actor
 				rng_name = NameClass.spacemonkey[wordtracker];
 				wordtracker += 1;
 				if (rng_name == "Is not afraid...") {
+					getMode = 0;
+					wordTracker = 0;
+				}
+				break;
+			case 5:
+				rng_name = NameClass.contempt[wordtracker];
+				wordtracker += 1;
+				if (rng_name == "disrespect.") {
 					getMode = 0;
 					wordTracker = 0;
 				}

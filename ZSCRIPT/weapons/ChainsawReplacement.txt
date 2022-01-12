@@ -9,6 +9,7 @@ Class GHAGSawBlade : Weapon replaces Chainsaw
 		Weapon.AmmoGive 1;
 		Weapon.AmmoType "SawBladeAmmo";
 		+FlatSprite;
+		Weapon.SelectionOrder 2000;
 	}
 	
 	override void DoEffect()

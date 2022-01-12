@@ -6,6 +6,7 @@ Class MoonBlastGun : Weapon
 		Tag "Moon Blast";
 		+Weapon.NoAlert;
 		+Weapon.No_Auto_Switch;
+		Weapon.SelectionOrder 4000;
 	}
 	
 	States

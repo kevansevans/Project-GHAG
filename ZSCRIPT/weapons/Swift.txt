@@ -4,6 +4,7 @@ Class Swift : Weapon
 	{
 		Weapon.slotNumber 4;
 		+Weapon.No_Auto_Switch;
+		Weapon.SelectionOrder 3000;
 	}
 	
 	Action bool A_CheckRageAmmo() 

@@ -34,6 +34,7 @@ Class IcePunch : Weapon
 		Weapon.kickback 150;
 		Tag "Ice Punch";
 		+Weapon.No_Auto_Switch;
+		Weapon.SelectionOrder 2000;
 	}
 	
 	override void DoEffect()

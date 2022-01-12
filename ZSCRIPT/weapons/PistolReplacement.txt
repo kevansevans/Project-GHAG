@@ -151,7 +151,7 @@ Class GHAGPistol : Pistol replaces Pistol
 			TNT1 A 0;
 			Goto LightDone;
 		Fire.Overlay:
-			PIST B 3 Bright A_SetTics(Gardevoir(self).GetTicModifier(3));
+			PIST B 2 Bright A_SetTics(Gardevoir(self).GetTicModifier(2));
 		AltFire.Overlay:
 			PIST B 2 Bright;
 		Select.Overlay:

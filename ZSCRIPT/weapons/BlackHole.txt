@@ -8,6 +8,7 @@ Class BlackHole : Weapon
 		Weapon.slotNumber 8;
 		+Weapon.Ammo_Optional;
 		+Weapon.No_Auto_Switch;
+		Weapon.SelectionOrder 5000;
 	}
 	
 	int charge;

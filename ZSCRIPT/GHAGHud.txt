@@ -3,13 +3,14 @@ Class GHAGStatus : BaseStatusBar
 
 	double v_width;
 	double v_height;
+	double textscale_reg;
 	vector2 scale;
 	
 	bool lowHealth;
 	
 	string wtfString;
 	
-	Font fnt;
+	Font fnt_white;
 	HUDFont pokefont;
 	
 	override void Init() {
@@ -21,8 +22,8 @@ Class GHAGStatus : BaseStatusBar
 		
 		wtfString = wtf();
 		
-		fnt = "Pokemon";
-		pokefont = HUDFont.Create(fnt);
+		fnt_white = "PKMNWHITE";
+		pokefont = HUDFont.Create(fnt_white);
 	}
 	
 	String activeMessage;
@@ -56,7 +57,7 @@ Class GHAGStatus : BaseStatusBar
 		let gardie = Gardevoir(CPlayer.mo);
 		if (!gardie) return;
 		
-		float xy_scale = 1.5;
+		float xy_scale = 0.85;
 		
 		if (Gardie.health >= 175) {
 			DrawBar("hpbar", "hparmbg", Min(Gardie.health, 350), 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
@@ -97,14 +98,14 @@ Class GHAGStatus : BaseStatusBar
 					(120, v_height - 106), 
 					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
 					Font.CR_UNTRANSLATED, 1, -1, 4,
-					(1.25, 1.25));
+					(0.75, 0.75));
 					
 		DrawString(pokefont,
 					GetArmorAmount() .. " Armor",
-					(120, v_height - 82), 
+					(120, v_height - 86), 
 					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
 					Font.CR_UNTRANSLATED, 1, -1, 4,
-					(1.25, 1.25));
+					(0.75, 0.75));
 					
 			
 		if (gametic % 10 == 0) wtfString = wtf();
@@ -113,34 +114,34 @@ Class GHAGStatus : BaseStatusBar
 		
 			DrawString(pokefont,
 					wtfString,
-					(140 + random(-5, 5), v_height - 25 + random(-5, 5)), 
+					(110 + random(-10, 10), v_height - 25 + random(-10, 10)), 
 					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
 					Font.CR_UNTRANSLATED, 1, -1, 4,
-					(1.25, 1.25));
+					(0.75, 0.75));
 		
 			DrawString(pokefont,
 					GetAngerString(),
-					(23 + random(-5, 5), v_height - 60 + random(-5, 5)), 
+					(23 + random(-10, 10), v_height - 60 + random(-10, 10)), 
 					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
-					Font.CR_FIRE, 1, -1, 4, 
-					(3.5, 3.5));
+					Font.CR_DARKRED, 1, -1, 4, 
+					(2.2, 2.2));
 		}
 	
 		DrawString(pokefont,
 					GetAngerString(),
-					(23, v_height - 60), 
+					(23, v_height - 65), 
 					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
-					Font.CR_FIRE, 1, -1, 4, 
-					(3.5, 3.5));
+					Font.CR_DARKRED, 1, -1, 4, 
+					(2.2, 2.2));
 					
 		string angy_percent = String.Format("%.1f", (Float(Gardie.RageValue) / 10));
 		string angry_cap = String.format("%.1f", (Float(Gardie.RageConstant) / 10));
 		DrawString(pokefont,
 					Gardie.RageValue > Gardie.RageConstant ? wtfString : angy_percent .. '/' .. angry_cap,
-					(140, v_height - 25), 
+					(Gardie.RageValue > Gardie.RageConstant ? 110 : 120, v_height - 24), 
 					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
 					Font.CR_UNTRANSLATED, 1, -1, 4,
-					(1.25, 1.25));
+					(0.75, 0.75));
 		
 		int x_tracker = v_width - 1;
 		for (let inv = gardie.inv; inv; inv = inv.inv)

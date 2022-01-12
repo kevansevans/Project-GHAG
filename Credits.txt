@@ -21,6 +21,7 @@ Slade
 Adobe Animate 2020 (Will call it flash in this file from here on)
 My phone
 Gimp
+Unicode Doom Font Creator
 Lots of googling
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,5 +75,6 @@ Chainsaw attack sound from Doom 3, the one where it's tearing into an enemy
 Hud uses sprites ripped from Gen 2 pokemon games, assets were borrowed from here:
 https://www.spriters-resource.com/game_boy_gbc/pokemongoldsilver/sheet/18976/
 
-Pokemon font from here:
-https://bmf.php5.cz/index.php?font=pokemon-gen-1
+Pokemon font is based on a font I've had installed on my PC for some time, I do
+not recall where I got it. However, the program that generated the bitmaps can
+be downloaded here (Thank you Arlene): https://forum.zdoom.org/viewtopic.php?f=232&t=65818

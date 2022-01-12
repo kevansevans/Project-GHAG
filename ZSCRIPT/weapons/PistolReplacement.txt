@@ -152,6 +152,8 @@ Class GHAGPistol : Pistol replaces Pistol
 			Goto LightDone;
 		Fire.Overlay:
 			PIST B 2 Bright A_SetTics(Gardevoir(self).GetTicModifier(2));
+			PIST A 100;
+			stop;
 		AltFire.Overlay:
 			PIST B 2 Bright;
 		Select.Overlay:
@@ -187,7 +189,7 @@ Class GHAGPistol : Pistol replaces Pistol
 				if (!altfire) A_Overlay(layer, "Fire.Overlay", false);
 				else A_Overlay(layer, "AltFire.Overlay", false);
 			}
-			else A_Overlay(layer, "Ready.Overlay", true);
+			else A_Overlay(layer, "Ready.Overlay", false);
 			A_OverlayFlags(layer, PSPF_ADDBOB, false);
 			if ((i + 1) % 2 == 0) A_OverlayFlags(layer, PSPF_FLIP | PSPF_MIRROR, true);
 			A_OverlayOffset(layer, (sin(gametic + (72 * i))) + (45 * (i / 2)) + 30, (cos(gametic + (72 * i))) - (10 * (i / 2)), WOF_INTERPOLATE);

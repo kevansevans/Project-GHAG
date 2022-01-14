@@ -86,13 +86,13 @@ Class GHAGShotgun : Weapon
 		Ready.Standard :
 			HAND A 1 {
 				Invoker.AmmoUse2 = countinv("GHAGShotgunOverlay");
-				A_WeaponReady(WRF_ALLOWRELOAD);
+				if (!Gardevoir(players[consoleplayer].mo).blocking) A_WeaponReady(WRF_ALLOWRELOAD);
 				A_OverlayShotguns();
 			}
 			goto Ready;
 		Ready.Baseball :
 			GSHT I 1 {
-				A_WeaponReady(WRF_ALLOWRELOAD);
+				if (!Gardevoir(players[consoleplayer].mo).blocking) A_WeaponReady(WRF_ALLOWRELOAD);
 				A_OverlayShotguns();
 			}
 			goto Ready;
@@ -184,7 +184,7 @@ Class GHAGShotgun : Weapon
 			HAND E 2;
 			HAND FGAAAAA 3;
 			HAND A 7 {
-				if (invoker.ammo1.amount == 0) {
+				if (invoker.ammo1.amount <= 0) {
 						return resolveState("Reload");
 				}
 				A_ReFire();

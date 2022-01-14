@@ -86,7 +86,7 @@ Class GHAGSawBlade : Weapon replaces Chainsaw
 		Ready :
 			HAND A 1 {
 				A_OverlaySawblades();
-				A_WeaponReady();
+				if (!Gardevoir(players[consoleplayer].mo).blocking) A_WeaponReady();
 			}
 			loop;
 		Fire :

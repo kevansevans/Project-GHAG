@@ -28,7 +28,9 @@ Class Swift : Weapon
 			SWFT A 1 A_Lower();
 			Loop;
 		Ready :
-			SWFT ABCD 3 A_WeaponReady();
+			SWFT ABCD 3 {
+				if (!Gardevoir(players[consoleplayer].mo).blocking) A_WeaponReady(WRF_ALLOWRELOAD);
+			}
 			Loop;
 		Fire :
 			TNT1 A 0 

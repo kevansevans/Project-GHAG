@@ -45,7 +45,7 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			loop;
 		Ready:
 			HAND A 1 {
-				A_WeaponReady();
+				if (!Gardevoir(players[consoleplayer].mo).blocking) A_WeaponReady();
 				A_PlasmaOverlay();
 			}
 			loop;

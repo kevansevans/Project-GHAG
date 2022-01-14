@@ -34,7 +34,7 @@ Class BlackHole : Weapon
 			Loop;
 		Ready:
 			MPUN A 1 {
-				A_WeaponReady();
+				if (!Gardevoir(players[consoleplayer].mo).blocking) A_WeaponReady();
 			}
 			Loop;
 		Fire:

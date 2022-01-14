@@ -207,7 +207,7 @@ Class GHAGEventHandler : EventHandler
 		let gardie = Gardevoir(players[consoleplayer].mo);
 		if (!gardie) return;
 		
-		int angerBonus = Max(int(thing.spawnHealth() / 5), 1);
+		int angerBonus = Max(int(thing.spawnHealth() / 6.5), 1);
 		int willBonus = int(AngerBonus / 10);
 		
 		if (ActorTracker.getActorStats(thing)) {

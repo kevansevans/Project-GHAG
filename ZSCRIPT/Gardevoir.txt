@@ -263,8 +263,10 @@ Class Gardevoir : PlayerPawn
 			dashed = false;
 			if (!blocking_release && !v_dashed)
 			{
-				blocking = !blocking;
-				blocking_release = true;
+				if (!(buttons & (BT_Forward | BT_Back | BT_MoveLeft | BT_MoveRight))) {
+					blocking = !blocking;
+					blocking_release = true;
+				}
 			}
 		}
 		else if (!(buttons & BT_Speed) && shift_tic != -1) {
@@ -291,6 +293,7 @@ Class Gardevoir : PlayerPawn
 				v_dashed = true;
 				blocking = false;
 				player.cheats |= CF_FROZEN;
+				A_Blast(BF_ONLYVISIBLETHINGS);
 			}
 					
 		}

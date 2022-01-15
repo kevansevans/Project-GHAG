@@ -261,7 +261,7 @@ Class Gardevoir : PlayerPawn
 		if (buttons & BT_Speed && shift_tic == -1) {
 			shift_tic = gametic;
 			dashed = false;
-			if (!blocking_release)
+			if (!blocking_release && !v_dashed)
 			{
 				blocking = !blocking;
 				blocking_release = true;
@@ -289,6 +289,7 @@ Class Gardevoir : PlayerPawn
 			{
 				self.vel.z = 10;
 				v_dashed = true;
+				blocking = false;
 				player.cheats |= CF_FROZEN;
 			}
 					

@@ -116,7 +116,7 @@ Class Gardevoir : PlayerPawn
 	
 	double GetRageModifier()
 	{
-		return GetRageValue() * 0.001;
+		return GetRageValue() * 0.001 * (v_dashed ? 3 : 1);
 	}
 	
 	double GetTicModifier(int tic, bool allowZero = false) 

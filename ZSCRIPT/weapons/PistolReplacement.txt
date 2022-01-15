@@ -138,8 +138,8 @@ Class GHAGPistol : Pistol replaces Pistol
 				A_StartSound("weapons/pistol", CHAN_WEAPON);
 				A_OverlayPistols(true, true);
 				A_Refire();
-				invoker.spread += 0.5;
-				invoker.spread = min(6.6, invoker.spread);
+				invoker.spread += 0.2;
+				invoker.spread = min(8.8, invoker.spread);
 			}
 			HAND EFG 1;
 			TNT1 A 0 

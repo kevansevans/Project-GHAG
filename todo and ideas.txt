@@ -15,16 +15,15 @@
 - Psybeam
 	- Concentrated beam of attack, costs a lot of rage
 	- Replace swift?
-	
-- Shotgun bat mode
-	- Shotgun works as an effective melee with good knockback
-	- If player has extra shotguns, they'll shoot the enemy mid knockback
-	
-- Black hole
-	- Requires at least 1000 anger
-	- Drains anger as a charge attack, while doing so, gravity slowly inverts
-	- Slow moving projectile that pulls in all enemies
-	- Anything caught in range is dead. ANYTHING.
+
+- Pokken style movement mechanics
+	- Activated via shift
+	- Tap/Hold shift = Shield
+	- Jump + Shift = Hold position in air
+	- Direction + tap shift = Quick dodge
+	- Direction + hold shift = slide behavior
+		- Both tap and hold shift brings up shield.
+		- Forward attack will push enemies around
 	
 - Think of something better for the plasma rifle replacement
 	- Plasma balls have a chance of exploding enemies

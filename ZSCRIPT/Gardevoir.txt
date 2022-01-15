@@ -261,22 +261,26 @@ Class Gardevoir : PlayerPawn
 		if (buttons & BT_Speed && shift_tic == -1) {
 			shift_tic = gametic;
 			dashed = false;
-			if (!blocking_release && !v_dashed)
-			{
-				if (!(buttons & (BT_Forward | BT_Back | BT_MoveLeft | BT_MoveRight))) {
-					blocking = !blocking;
-					blocking_release = true;
-				}
-			}
 		}
 		else if (!(buttons & BT_Speed) && shift_tic != -1) {
 			shift_tic = -1;
 		}
 		
+		if (!blocking_release && !v_dashed && buttons & BT_Crouch)
+		{
+			if (!(buttons & (BT_Forward | BT_Back | BT_MoveLeft | BT_MoveRight))) {
+				blocking = !blocking;
+				blocking_release = true;
+			}
+		} 
+		else if (!(buttons & BT_Crouch))
+		{
+			blocking_release = false;
+		}
+		
 		if (!(buttons & BT_Jump)) {
 			if (v_dashed) player.cheats &= ~CF_FROZEN;
 			v_dashed = false;
-			blocking_release = false;
 		}
 		
 		if (player.onGround && buttons & BT_Jump) jumped = true;
@@ -337,7 +341,7 @@ Class Gardevoir : PlayerPawn
 		else
 		{
 			++dash_timer;
-			if (dash_timer >= 5 && dashed == false)
+			if (dash_timer >= 2 && dashed == false)
 			{
 				dashed = true;
 			
@@ -352,16 +356,13 @@ Class Gardevoir : PlayerPawn
 					else if (buttons & BT_MoveRight) theta = 270;
 					else if (buttons & BT_Back) theta = 180;
 					
-					if (theta != 0 || buttons & BT_Forward)
-					{
-						theta += (self.angle % 360);
+					theta += (self.angle % 360);
 					
-						double thrust_x = speed * cos(theta);
-						double thrust_y = speed * sin(theta);
+					double thrust_x = speed * cos(theta);
+					double thrust_y = speed * sin(theta);
 					
-						self.vel.x = thrust_x;
-						self.vel.y = thrust_y;
-					}
+					self.vel.x = thrust_x;
+					self.vel.y = thrust_y;
 				}
 			} 
 		}

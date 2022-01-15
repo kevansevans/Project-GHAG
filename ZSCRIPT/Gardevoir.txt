@@ -144,7 +144,8 @@ Class Gardevoir : PlayerPawn
 	{
 		int _locDamage = damage;
 		int _locFlags = flags;
-		if (blocking && (isVisible(source, false) || isVisible(inflictor, false)))
+		
+		if (blocking && (abs(angleto(source) - (self.angle % 360)) < 45   || abs(angleto(source) - (self.angle % 360)) > (360 - 45)))
 		{
 			shield_health -= damage;
 			_locDamage = 0;

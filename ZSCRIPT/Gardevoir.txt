@@ -192,8 +192,6 @@ Class Gardevoir : PlayerPawn
 	
 	override void Tick()
 	{
-		Super.Tick();
-		
 		RageTimer++;
 		
 		if (RageValue > RageConstant) OverTheEdge = true;
@@ -244,19 +242,91 @@ Class Gardevoir : PlayerPawn
 			self.giveInventory("IcePunch", 1);
 			self.giveInventory("Swift", 1);
 			self.giveInventory("MoonBlastGun", 1);
+			self.giveInventory("BlackHole", 1);
 		}
 		
-		//int curArmor = player.armor;
+		int curArmor = countInv('BasicArmor');
+		if (curArmor > prev_armor)
+		{
+			shield_health += (curArmor - prev_armor);
+			shield_health = min(1000, shield_health);
+		}
+		prev_armor = curArmor;
+		
 		
 		let buttons = player.cmd.buttons;
+		double theta = 0;
+		double speed = 45;
 		
 		if (buttons & BT_Speed && shift_tic == -1) {
 			shift_tic = gametic;
 			dashed = false;
-			v_dashed = false;
+			if (!blocking_release)
+			{
+				blocking = !blocking;
+				blocking_release = true;
+			}
 		}
 		else if (!(buttons & BT_Speed) && shift_tic != -1) {
 			shift_tic = -1;
+		}
+		
+		if (!(buttons & BT_Jump)) {
+			if (v_dashed) player.cheats &= ~CF_FROZEN;
+			v_dashed = false;
+			blocking_release = false;
+		}
+		
+		if (player.onGround && buttons & BT_Jump) jumped = true;
+		else if (player.onGround) {
+			jumped = false;
+			v_dashed = false;
+		}
+		
+		if (!player.onGround && jumped && buttons & BT_Jump)
+		{
+			if (!v_dashed && self.vel.z <= 0)
+			{
+				self.vel.z = 10;
+				v_dashed = true;
+				player.cheats |= CF_FROZEN;
+			}
+					
+		}
+		
+		if (v_dashed && self.vel.z <= 0)
+		{
+			if (holdpos != self.pos) holdpos = self.pos;
+			else {
+				self.setOrigin(holdpos, false);
+			}
+			self.vel.z = 0;
+			
+			if (buttons & BT_Speed)
+			{	
+				speed = 15;
+					
+				theta += (self.angle % 360);
+				
+				double thrust_x = min(speed * cos(theta), 15);
+				double thrust_y = min(speed * sin(theta), 15);
+					
+				self.vel.x = thrust_x;
+				self.vel.y = thrust_y;
+				
+				double cooldown = sqrt((thrust_x * thrust_x) + (thrust_y * thrust_y));
+				if (gametic % 17 == 0) SubtractAnger(int(cooldown));
+			} 
+			else
+			{
+				if (self.vel.x > 0.5) self.vel.x -= 0.3;
+				else if (self.vel.x < -0.5) self.vel.x += 0.3;
+				else self.vel.x = 0;
+				
+				if (self.vel.y > 0.5) self.vel.y -= 0.3;
+				else if (self.vel.y < -0.5) self.vel.y += 0.3;
+				else self.vel.y = 0;
+			}
 		}
 		
 		if (shift_tic == -1) dash_timer = 0;
@@ -267,71 +337,54 @@ Class Gardevoir : PlayerPawn
 			{
 				dashed = true;
 			
-				double theta = 0;
-				double speed = 45;
-			
 				if (shift_tic != -1)
 				{
 					theta = 0;
 				}
 				
-				if (buttons & BT_MoveLeft) theta = 90;
-				else if (buttons & BT_MoveRight) theta = 270;
-				else if (buttons & BT_Back) theta = 180;
-				
-				if (theta != 0 || buttons & BT_Forward)
+				if (!v_dashed)
 				{
-					theta += (self.angle % 360);
-				
-					double thrust_x = speed * cos(theta);
-					double thrust_y = speed * sin(theta);
-				
-					self.vel.x = thrust_x;
-					self.vel.y = thrust_y;
-				} 
-				else if (!player.onGround && jumped)
-				{
-					if (!v_dashed)
-					{
-						self.vel.z = 15;
-						v_dashed = true;
-					}
+					if (buttons & BT_MoveLeft) theta = 90;
+					else if (buttons & BT_MoveRight) theta = 270;
+					else if (buttons & BT_Back) theta = 180;
 					
-				} 
-			}
+					if (theta != 0 || buttons & BT_Forward)
+					{
+						theta += (self.angle % 360);
+					
+						double thrust_x = speed * cos(theta);
+						double thrust_y = speed * sin(theta);
+					
+						self.vel.x = thrust_x;
+						self.vel.y = thrust_y;
+					}
+				}
+			} 
 		}
 		
-		if (player.onGround && buttons & BT_Jump) jumped = true;
-		else if (player.onGround) jumped = false;
-		
-		if (v_dashed && self.vel.z <= 0)
-		{
-			if (holdpos != self.pos) holdpos = self.pos;
-			else {
-				self.setOrigin(holdpos, false);
-			}
-			self.vel.x = 0;
-			self.vel.y = 0;
-			self.vel.z = 0;
-			if (!(buttons & BT_Speed)) v_dashed = false;
-		}
-		
-		if (buttons & BT_Crouch)
-		{
-			blocking = true;
-			bNoRadiusDmg = true;
-		}
-		else
-		{
-			blocking = false;
-			bNoRadiusDmg = false;
-		}
+		Super.Tick();
+	}
+	
+	override void PlayerThink()
+	{
+		super.PlayerThink();
+	}
+	
+	override void FireWeapon(State stat)
+	{
+		if (!blocking) super.FireWeapon(stat);
+	}
+	
+	override void FireWeaponAlt(State stat)
+	{
+		if (!blocking) super.FireWeaponAlt(stat);
 	}
 	
 	Vector3 holdpos;
 	bool dashed;
 	bool v_dashed;
 	bool blocking;
+	bool blocking_release;
 	bool jumped;
 	int shield_health;
 	int dash_timer;

@@ -266,7 +266,7 @@ mixin class BlackHoleAttacks
 					if (gametic % 2 == 0 && mo.health > 0) mo.setStateLabel("Pain");
 				}
 				
-				if (mo.isSolid && isVisible(mo) && !mo.bIsMonster) continue;
+				if (mo.bSolid && isVisible(mo, true) && !mo.bIsMonster) continue;
 			}
 			
 			if (Distance3D(mo) < radius * 2)
@@ -320,7 +320,7 @@ mixin class BlackHoleAttacks
 				}
 				if (mo is "Inventory") mo.destroy();
 				if (mo.bMissile) mo.destroy();
-				if (mo.bSolid && !mo.isMonster) mo.destroy();
+				if (mo.bSolid && !mo.bIsMonster) mo.destroy();
 			}
 		}
 		

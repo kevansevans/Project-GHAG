@@ -18,7 +18,7 @@ Class GHAGRocketAmmo : CustomInventory replaces RocketAmmo
 				else {
 					if (gardie.countinv("GHAGRocketLauncher") == 0) {
 						gardie.A_GiveInventory("GHAGRocketLauncher", 1);
-						gardie.A_SelectWeapon("GHAGRocketLauncher");
+						if (!gardie.chargingBlackHole) gardie.A_SelectWeapon("GHAGRocketLauncher");
 					}
 					gardie.A_GiveInventory("RocketAmmo", self.amount);
 				}

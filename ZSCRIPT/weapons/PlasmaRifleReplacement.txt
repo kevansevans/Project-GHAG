@@ -292,7 +292,7 @@ Class GHAGCell : CustomInventory replaces Cell
 					{
 						gardie.giveInventory("GHAGPlasmaRifle", 1);
 						gardie.giveInventory("GHAGPlasmaOverlay", 1);
-						gardie.A_SelectWeapon("GHAGPlasmaRifle");
+						if (!gardie.chargingBlackHole) gardie.A_SelectWeapon("GHAGPlasmaRifle");
 					}
 					gardie.giveInventory("Cell", self.amount);
 				}

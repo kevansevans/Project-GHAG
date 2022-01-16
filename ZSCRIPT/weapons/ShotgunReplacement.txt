@@ -401,7 +401,7 @@ Class ShellReplacement : CustomInventory replaces Shell
 					{
 						gardie.giveInventory("GHAGShotgun", 1);
 						gardie.giveInventory("GHAGShotgunOverlay", 1);
-						gardie.A_SelectWeapon("GHAGShotgun");
+						if (!gardie.chargingBlackHole) gardie.A_SelectWeapon("GHAGShotgun");
 					}
 					gardie.giveInventory("Shell", self.amount);
 				}

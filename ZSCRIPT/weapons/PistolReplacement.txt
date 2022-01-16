@@ -29,7 +29,7 @@ class GHAGMag : CustomInventory replaces Clip
 					{
 						gardie.giveInventory("GHAGPistol", 1);
 						gardie.giveInventory("GHAGPistolOverlay", 1);
-						gardie.A_SelectWeapon("GHAGPistol");
+						if (!gardie.chargingBlackHole) gardie.A_SelectWeapon("GHAGPistol");
 					}
 					gardie.giveInventory("Clip", self.amount);
 					GoAwayAndDie();

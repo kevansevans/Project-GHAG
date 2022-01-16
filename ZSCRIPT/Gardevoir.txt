@@ -10,6 +10,7 @@ Class Gardevoir : PlayerPawn
 	
 	bool OverTheEdge;
 	bool charonmode;
+	bool chargingBlackHole;
 	//property charonmode: charonmode;
 	
 	int PunchMode;
@@ -157,6 +158,7 @@ Class Gardevoir : PlayerPawn
 				shield_health = 0;
 				blocking = false;
 				restore_kaboom = gametic + 5;
+				A_StartSound("shield/FAIL");
 			}
 		} 
 		else 
@@ -268,9 +270,18 @@ Class Gardevoir : PlayerPawn
 		
 		if (!blocking_release && !v_dashed && buttons & BT_Crouch)
 		{
-			if (!(buttons & (BT_Forward | BT_Back | BT_MoveLeft | BT_MoveRight))) {
-				blocking = !blocking;
-				blocking_release = true;
+			if (shield_health > 0) {
+				if (!(buttons & (BT_Forward | BT_Back | BT_MoveLeft | BT_MoveRight))) {
+					blocking = !blocking;
+					blocking_release = true;
+				
+					if (blocking) A_StartSound("shield/START");
+				}
+			} 
+			else 
+			{
+				A_StartSound("shield/FAIL");
+				blocking = false; //just to make sure it stays false
 			}
 		} 
 		else if (!(buttons & BT_Crouch))

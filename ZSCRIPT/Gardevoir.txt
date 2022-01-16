@@ -324,6 +324,7 @@ Class Gardevoir : PlayerPawn
 			if (buttons & BT_Speed)
 			{	
 				speed = 15;
+				A_StartSound("dash/AirLoop", CHAN_BODY, CHANF_LOOP | CHANF_NOSTOP);
 					
 				theta += (self.angle % 360);
 				
@@ -338,6 +339,7 @@ Class Gardevoir : PlayerPawn
 			} 
 			else
 			{
+				A_StopSound(CHAN_BODY);
 				if (self.vel.x > 0.5) self.vel.x -= 0.3;
 				else if (self.vel.x < -0.5) self.vel.x += 0.3;
 				else self.vel.x = 0;
@@ -374,6 +376,8 @@ Class Gardevoir : PlayerPawn
 					
 					self.vel.x = thrust_x;
 					self.vel.y = thrust_y;
+					
+					A_StartSound("dash/Start", CHAN_AUTO);
 				}
 			} 
 		}

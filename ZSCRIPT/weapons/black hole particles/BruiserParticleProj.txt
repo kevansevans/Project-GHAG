@@ -1,0 +1,25 @@
+class BruiserParticleProj : Actor
+			{
+				
+				states {
+					Spawn :
+						TNT1 A 1;
+						TNT1 A 1 {
+							
+			Self.spawn("Particle119", (self.pos.x - 0 + 19, self.pos.y, self.pos.z + (16 - 4)));
+Self.spawn("Particle117", (self.pos.x - 0 + 19, self.pos.y, self.pos.z + (16 - 8)));
+Self.spawn("Particle113", (self.pos.x - 4 + 19, self.pos.y, self.pos.z + (16 - 4)));
+Self.spawn("Particle112", (self.pos.x - 4 + 19, self.pos.y, self.pos.z + (16 - 8)));
+Self.spawn("Particle116", (self.pos.x - 4 + 19, self.pos.y, self.pos.z + (16 - 12)));
+Self.spawn("Particle119", (self.pos.x - 8 + 19, self.pos.y, self.pos.z + (16 - 0)));
+Self.spawn("Particle112", (self.pos.x - 8 + 19, self.pos.y, self.pos.z + (16 - 4)));
+Self.spawn("Particle112", (self.pos.x - 8 + 19, self.pos.y, self.pos.z + (16 - 8)));
+Self.spawn("Particle114", (self.pos.x - 8 + 19, self.pos.y, self.pos.z + (16 - 12)));
+Self.spawn("Particle119", (self.pos.x - 12 + 19, self.pos.y, self.pos.z + (16 - 0)));
+Self.spawn("Particle113", (self.pos.x - 12 + 19, self.pos.y, self.pos.z + (16 - 4)));
+Self.spawn("Particle113", (self.pos.x - 12 + 19, self.pos.y, self.pos.z + (16 - 8)));
+Self.spawn("Particle116", (self.pos.x - 12 + 19, self.pos.y, self.pos.z + (16 - 12)));
+Self.spawn("Particle114", (self.pos.x - 16 + 19, self.pos.y, self.pos.z + (16 - 4)));
+Self.spawn("Particle115", (self.pos.x - 16 + 19, self.pos.y, self.pos.z + (16 - 8)));
+Self.spawn("Particle119", (self.pos.x - 16 + 19, self.pos.y, self.pos.z + (16 - 12)));
+}Stop;}}

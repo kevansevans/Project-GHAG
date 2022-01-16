@@ -253,7 +253,6 @@ mixin class BlackHoleAttacks
 			if (Inventory(mo)) { //Apparently player held items get checked in a thinkiterator
 				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
 			}
-			if (mo is "BaseParticle") continue; //Vaporization
 			if (mo is "BossBrain" || mo is "BossTarget" || mo is "BossEye") continue;
 			if (mo is "TeleportDest") continue;
 			if (mo is "lightningfizzle") continue;
@@ -276,6 +275,20 @@ mixin class BlackHoleAttacks
 			if (Distance3D(mo) < radius * 2)
 			{
 				if (mo.bMissile) {
+					if (mo is "ArachnotronPlasma")
+					{
+						mo.spawn("ArachnotronParticleProj", mo.pos);
+					} else if (mo is "BaronBall") {
+						mo.spawn("BruiserParticleProj", mo.pos);
+					} else if (mo is "CacodemonBall") {
+						mo.spawn("CacoParticleProj", mo.pos);
+					} else if (mo is "rocket") {
+						mo.spawn("RocketParticle", mo.pos);
+					} else if (mo is "FatShot") {
+						mo.spawn("FattyParticleProj", mo.pos);
+					} else if (mo is "RevenantTracer") {
+						mo.spawn("BonerParticleProj", mo.pos);
+					}
 					mo.destroy();
 					addedMass += 0.001;
 				}
@@ -335,7 +348,7 @@ mixin class BlackHoleAttacks
 							} else if (mo is "Archvile") {
 								mo.spawn("ArchvileParticle", mo.pos);
 							} 
-							addedmass += double(mo.mass) / 10000;
+							addedmass += double(mo.mass) * 0.0002;
 							mo.destroy();
 						}
 					}

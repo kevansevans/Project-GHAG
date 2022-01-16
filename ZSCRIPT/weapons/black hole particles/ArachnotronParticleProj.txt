@@ -1,0 +1,15 @@
+class ArachnotronParticleProj : Actor
+			{
+				
+				states {
+					Spawn :
+						TNT1 A 1;
+						TNT1 A 1 {
+							
+			Self.spawn("Particle122", (self.pos.x - 4 + 15, self.pos.y, self.pos.z + (15 - 4)));
+Self.spawn("Particle112", (self.pos.x - 4 + 15, self.pos.y, self.pos.z + (15 - 8)));
+Self.spawn("Particle112", (self.pos.x - 8 + 15, self.pos.y, self.pos.z + (15 - 4)));
+Self.spawn("Particle227", (self.pos.x - 8 + 15, self.pos.y, self.pos.z + (15 - 8)));
+Self.spawn("Particle119", (self.pos.x - 8 + 15, self.pos.y, self.pos.z + (15 - 12)));
+Self.spawn("Particle120", (self.pos.x - 12 + 15, self.pos.y, self.pos.z + (15 - 8)));
+}Stop;}}

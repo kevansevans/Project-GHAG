@@ -1,0 +1,17 @@
+class RocketParticle : Actor
+			{
+				
+				states {
+					Spawn :
+						TNT1 A 1;
+						TNT1 A 1 {
+							
+			Self.spawn("Particle150", (self.pos.x - 4 + 15, self.pos.y, self.pos.z + (14 - 4)));
+Self.spawn("Particle78", (self.pos.x - 4 + 15, self.pos.y, self.pos.z + (14 - 8)));
+Self.spawn("Particle147", (self.pos.x - 8 + 15, self.pos.y, self.pos.z + (14 - 0)));
+Self.spawn("Particle148", (self.pos.x - 8 + 15, self.pos.y, self.pos.z + (14 - 4)));
+Self.spawn("Particle149", (self.pos.x - 8 + 15, self.pos.y, self.pos.z + (14 - 8)));
+Self.spawn("Particle1", (self.pos.x - 8 + 15, self.pos.y, self.pos.z + (14 - 12)));
+Self.spawn("Particle1", (self.pos.x - 12 + 15, self.pos.y, self.pos.z + (14 - 4)));
+Self.spawn("Particle1", (self.pos.x - 12 + 15, self.pos.y, self.pos.z + (14 - 8)));
+}Stop;}}

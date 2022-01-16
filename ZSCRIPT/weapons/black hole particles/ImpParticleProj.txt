@@ -1,0 +1,20 @@
+class ImpParticleProj : Actor
+			{
+				
+				states {
+					Spawn :
+						TNT1 A 1;
+						TNT1 A 1 {
+							
+			Self.spawn("Particle185", (self.pos.x - 0 + 15, self.pos.y, self.pos.z + (15 - 8)));
+Self.spawn("Particle219", (self.pos.x - 4 + 15, self.pos.y, self.pos.z + (15 - 4)));
+Self.spawn("Particle222", (self.pos.x - 4 + 15, self.pos.y, self.pos.z + (15 - 8)));
+Self.spawn("Particle181", (self.pos.x - 4 + 15, self.pos.y, self.pos.z + (15 - 12)));
+Self.spawn("Particle187", (self.pos.x - 8 + 15, self.pos.y, self.pos.z + (15 - 0)));
+Self.spawn("Particle219", (self.pos.x - 8 + 15, self.pos.y, self.pos.z + (15 - 4)));
+Self.spawn("Particle214", (self.pos.x - 8 + 15, self.pos.y, self.pos.z + (15 - 8)));
+Self.spawn("Particle184", (self.pos.x - 8 + 15, self.pos.y, self.pos.z + (15 - 12)));
+Self.spawn("Particle180", (self.pos.x - 12 + 15, self.pos.y, self.pos.z + (15 - 4)));
+Self.spawn("Particle178", (self.pos.x - 12 + 15, self.pos.y, self.pos.z + (15 - 8)));
+Self.spawn("Particle188", (self.pos.x - 12 + 15, self.pos.y, self.pos.z + (15 - 12)));
+}Stop;}}

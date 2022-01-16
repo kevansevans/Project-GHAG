@@ -88,7 +88,7 @@ Class GHAGRocketLauncher : RocketLauncher
 			HAND I 3 {
 				invoker.queuedRockets = 0;
 				A_ResetTracker();
-				if (!Gardevoir(players[consoleplayer].mo).blocking) A_WeaponReady();
+				A_WeaponReady();
 				A_OverlaySpin();
 			}
 			Loop;

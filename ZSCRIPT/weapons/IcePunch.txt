@@ -238,9 +238,7 @@ Class IcePunch : Weapon
 			IPUN A 1 A_Lower();
 			Loop;
 		Ready :
-			IPUN A 1 {
-				if (!Gardevoir(players[consoleplayer].mo).blocking) A_WeaponReady();
-			}
+			IPUN A 1 A_WeaponReady();
 			Loop;
 		Fire :
 			#### # 2 {

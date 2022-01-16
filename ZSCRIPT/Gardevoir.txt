@@ -146,45 +146,27 @@ Class Gardevoir : PlayerPawn
 		int _locDamage = damage;
 		int _locFlags = flags;
 		
-		if (blocking && (abs(angleto(source) - (self.angle % 360)) < 45   || abs(angleto(source) - (self.angle % 360)) > (360 - 45)))
+		if (RageValue <= RageConstant) {
+		
+			RageValue += int(damage / 5);
+		
+			RageTimer = 0;
+			if (RageValue > RageConstant) RageValue = RageConstant;
+		}
+		
+		if (!Gardevoir(source)) ActorTracker.trackThing(Source, NONE, damage);
+		else
 		{
-			shield_health -= damage;
+			_locDamage *= 0.25;
+		}
+		
+		let player = Gardevoir(players[consoleplayer].mo);
+		if (self.health - _locDamage <= 0 && player.countinv("ReviveHalf") >= 1)
+		{
+			reviveAmount = 175;
+			player.takeInventory("ReviveHalf", 1);
 			_locDamage = 0;
-			
-			_locFlags |= (DMG_NO_PAIN | DMG_THRUSTLESS);
-			
-			if (shield_health <= 0)
-			{
-				shield_health = 0;
-				blocking = false;
-				restore_kaboom = gametic + 5;
-				A_StartSound("shield/FAIL");
-			}
-		} 
-		else 
-		{
-			if (RageValue <= RageConstant) {
-			
-				RageValue += int(damage / 5);
-			
-				RageTimer = 0;
-				if (RageValue > RageConstant) RageValue = RageConstant;
-			}
-			
-			if (!Gardevoir(source)) ActorTracker.trackThing(Source, NONE, damage);
-			else
-			{
-				_locDamage *= 0.25;
-			}
-			
-			let player = Gardevoir(players[consoleplayer].mo);
-			if (self.health - _locDamage <= 0 && player.countinv("ReviveHalf") >= 1)
-			{
-				reviveAmount = 175;
-				player.takeInventory("ReviveHalf", 1);
-				_locDamage = 0;
-				//GHAGStatus.hudMessageBox(Cvar.findCvar("name").getString() .. " got in a pinch and had to use a revive!", 10);
-			}
+			//GHAGStatus.hudMessageBox(Cvar.findCvar("name").getString() .. " got in a pinch and had to use a revive!", 10);
 		}
 		
 		if (gametic > restore_kaboom && restore_kaboom != -1) bNoRadiusDmg = false;
@@ -268,27 +250,6 @@ Class Gardevoir : PlayerPawn
 			shift_tic = -1;
 		}
 		
-		if (!blocking_release && !v_dashed && buttons & BT_Crouch)
-		{
-			if (shield_health > 0) {
-				if (!(buttons & (BT_Forward | BT_Back | BT_MoveLeft | BT_MoveRight))) {
-					blocking = !blocking;
-					blocking_release = true;
-				
-					if (blocking) A_StartSound("shield/START");
-				}
-			} 
-			else 
-			{
-				A_StartSound("shield/FAIL");
-				blocking = false; //just to make sure it stays false
-			}
-		} 
-		else if (!(buttons & BT_Crouch))
-		{
-			blocking_release = false;
-		}
-		
 		if (!(buttons & BT_Jump)) {
 			if (v_dashed) player.cheats &= ~CF_FROZEN;
 			v_dashed = false;
@@ -307,7 +268,6 @@ Class Gardevoir : PlayerPawn
 			{
 				self.vel.z = 10;
 				v_dashed = true;
-				blocking = false;
 				player.cheats |= CF_FROZEN;
 				A_Blast(BF_ONLYVISIBLETHINGS);
 				A_StartSound("dash/Start", CHAN_AUTO);
@@ -413,21 +373,9 @@ Class Gardevoir : PlayerPawn
 		super.PlayerThink();
 	}
 	
-	override void FireWeapon(State stat)
-	{
-		if (!blocking) super.FireWeapon(stat);
-	}
-	
-	override void FireWeaponAlt(State stat)
-	{
-		if (!blocking) super.FireWeaponAlt(stat);
-	}
-	
 	Vector3 holdpos;
 	bool dashed;
 	bool v_dashed;
-	bool blocking;
-	bool blocking_release;
 	bool jumped;
 	int shield_health;
 	int dash_timer;

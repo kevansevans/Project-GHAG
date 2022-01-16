@@ -298,6 +298,7 @@ Class Gardevoir : PlayerPawn
 		else if (player.onGround) {
 			jumped = false;
 			v_dashed = false;
+			A_StopSound(CHAN_BODY);
 		}
 		
 		if (!player.onGround && jumped && buttons & BT_Jump)
@@ -309,6 +310,7 @@ Class Gardevoir : PlayerPawn
 				blocking = false;
 				player.cheats |= CF_FROZEN;
 				A_Blast(BF_ONLYVISIBLETHINGS);
+				A_StartSound("dash/Start", CHAN_AUTO);
 			}
 					
 		}
@@ -323,23 +325,36 @@ Class Gardevoir : PlayerPawn
 			
 			if (buttons & BT_Speed)
 			{	
-				speed = 15;
+				speed = 20;
+				
 				A_StartSound("dash/AirLoop", CHAN_BODY, CHANF_LOOP | CHANF_NOSTOP);
+				
+				if (buttons & BT_MoveLeft) {
+					theta = 90;
+					if (buttons & BT_Forward && !(buttons & BT_Back)) theta -= 45;
+					else if (buttons & BT_Back && !(buttons & BT_Forward)) theta += 45;
+				}
+				else if (buttons & BT_MoveRight) {
+					theta = 270;
+					if (buttons & BT_Forward && !(buttons & BT_Back)) theta += 45;
+					else if (buttons & BT_Back && !(buttons & BT_Forward)) theta -= 45;
+				}
+				else if (buttons & BT_Back && !(buttons & (BT_MoveRight | BT_MoveLeft))) theta = 180;
 					
 				theta += (self.angle % 360);
 				
-				double thrust_x = min(speed * cos(theta), 15);
-				double thrust_y = min(speed * sin(theta), 15);
+				double thrust_x = min(speed * cos(theta), speed);
+				double thrust_y = min(speed * sin(theta), speed);
 					
 				self.vel.x = thrust_x;
 				self.vel.y = thrust_y;
 				
-				double cooldown = sqrt((thrust_x * thrust_x) + (thrust_y * thrust_y));
-				if (gametic % 17 == 0) SubtractAnger(int(cooldown));
+				if (gametic % 17 == 0) SubtractAnger(15);
 			} 
 			else
 			{
 				A_StopSound(CHAN_BODY);
+			
 				if (self.vel.x > 0.5) self.vel.x -= 0.3;
 				else if (self.vel.x < -0.5) self.vel.x += 0.3;
 				else self.vel.x = 0;
@@ -354,7 +369,7 @@ Class Gardevoir : PlayerPawn
 		else
 		{
 			++dash_timer;
-			if (dash_timer >= 2 && dashed == false)
+			if (dash_timer >= 5 && dashed == false)
 			{
 				dashed = true;
 			
@@ -365,9 +380,17 @@ Class Gardevoir : PlayerPawn
 				
 				if (!v_dashed)
 				{
-					if (buttons & BT_MoveLeft) theta = 90;
-					else if (buttons & BT_MoveRight) theta = 270;
-					else if (buttons & BT_Back) theta = 180;
+					if (buttons & BT_MoveLeft) {
+						theta = 90;
+						if (buttons & BT_Forward && !(buttons & BT_Back)) theta -= 45;
+						else if (buttons & BT_Back && !(buttons & BT_Forward)) theta += 45;
+					}
+					else if (buttons & BT_MoveRight) {
+						theta = 270;
+						if (buttons & BT_Forward && !(buttons & BT_Back)) theta += 45;
+						else if (buttons & BT_Back && !(buttons & BT_Forward)) theta -= 45;
+					}
+					else if (buttons & BT_Back && !(buttons & (BT_MoveRight | BT_MoveLeft))) theta = 180;
 					
 					theta += (self.angle % 360);
 					

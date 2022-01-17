@@ -251,11 +251,18 @@ mixin class BlackHoleAttacks
 			if (Inventory(mo)) { //Apparently player held items get checked in a thinkiterator
 				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
 			}
-			if (mo is "BossBrain" || mo is "BossTarget" || mo is "BossEye") continue;
+			if (mo is "BossTarget" || mo is "BossEye" || (mo is "Rocket" && !(mo.target))) continue;
 			if (mo is "TeleportDest") continue;
 			if (mo is "lightningfizzle") continue;
 			if (PowerupGiver(mo)) continue;
 			if (Weapon(mo)) continue;
+			
+			//special code for icon of sin
+			if (mo is "BossBrain" && Distance3D(mo) < radius * 2)
+			{
+				mo.A_DamageSelf(2, "none", flags);
+				continue;
+			}
 			
 			if (Distance3D(mo) < radius * 4)
 			{

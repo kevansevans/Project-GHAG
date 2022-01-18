@@ -61,12 +61,19 @@ https://www.spriters-resource.com/ds_dsi/pokemondiamondpearl/sheet/32113/
 //Sounds
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-From various pokemon games
-
+From various pokemon games:
 https://www.sounds-resource.com/ds_dsi/pokemonblackwhite/sound/24408/
 https://www.sounds-resource.com/game_boy_gbc/pokemongoldsilvercrystal/sound/17239/
+https://www.sounds-resource.com/wii_u/pokkentournament/sound/6413/
 
 Chainsaw attack sound from Doom 3, the one where it's tearing into an enemy
+
+Other sounds home made and or borrowed from older projects
+
+Doom 2 revenant whiff sound borrowed for Doom 1/Ultimate compatibility
+
+Pistol and shotgun sounds from Dementium, NDS: https://en.wikipedia.org/wiki/Dementium:_The_Ward
+(Sounds extracted via decompilation from wayyyyy back ago)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //HUD

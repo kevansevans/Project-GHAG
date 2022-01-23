@@ -267,14 +267,25 @@ mixin class BlackHoleAttacks
 			if (Distance3D(mo) < radius * 4)
 			{
 				A_BlackHoleSuck(mo, 64, -32);
-				if (mo.bIsMonster) {
+				if (mo.bIsMonster && mo.health > 0) {
 					mo.bNoFear = false;
 					mo.bFrightened = true;
-					mo.A_DamageSelf(10, "none", flags);
+					mo.A_DamageSelf(((radius * 2) - (distance3D(mo) * 2)), "none", flags);
 					if (gametic % 2 == 0 && mo.health > 0) mo.setStateLabel("Pain");
 				}
 				
 				if (mo.bSolid && isVisible(mo, true) && !mo.bIsMonster) continue;
+			}
+			
+			if (Distance3D(mo) < radius * 3.5)
+			{
+				//This statement here helps improve performance among actors who are very likely to die
+				//Enemies here are extremely close to the event horizon AND WILL DIE, so to save on
+				//performance and ensure they don't hitch on each other, these flags are set to true
+				if (mo.bIsMonster) {
+					mo.bThruActors = true;
+					mo.A_ChangeLinkFlags(false);
+				}
 			}
 			
 			if (Distance3D(mo) < radius * 2)
@@ -305,11 +316,10 @@ mixin class BlackHoleAttacks
 					}
 				}
 				if (mo.bIsMonster) {
-					if (mo.health > 0) {
-						if (gametic % 2 == 0) {
-							mo.A_DamageSelf(500 + (500 * (Distance3D(mo) / (radius * 2))), "none", flags);
-							if (mo.health > 0) mo.setStateLabel("Pain");
-						}
+					if (mo.bCorpse && distance3D(mo) <= 16) mo.destroy();
+					else if (mo.health > 0) {
+						mo.A_DamageSelf(50 * ((radius * 2) - distance3D(mo)), "none", flags);
+						if (gametic % 2 == 0 && mo.health > 0) mo.setStateLabel("Pain");
 					} else {
 						if (mo.tics <= 0) {
 							if (mo is "DoomImp")
@@ -360,7 +370,6 @@ mixin class BlackHoleAttacks
 				}
 			}
 		}
-		
 		return addedmass;
 	}
 	

@@ -232,7 +232,7 @@ Class GHAGStatus : BaseStatusBar
 			case 6:
 				return "Savage";
 			case 7:
-				return "Scorn";
+				return "Scornful";
 			case 8:
 				return "Livid";
 			case 9:

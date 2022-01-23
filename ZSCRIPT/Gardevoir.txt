@@ -435,7 +435,8 @@ Class Gardevoir : PlayerPawn
 			Actor mo = self.curSector.thinglist;
 			while (mo)
 			{
-				if (mo is 'RageCandyBar' || mo is 'ExtraPistol' || mo is 'ExtraShotgun' || mo is 'ExtraPlasma')
+				let c = self.curSector.centerspot;
+				if (level.IsPointInLevel((c.x, c.y, self.curSector.floorplane.ZAtPoint(c))))
 				{
 					bonus = true;
 					break;

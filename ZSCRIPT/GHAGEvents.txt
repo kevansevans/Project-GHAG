@@ -407,7 +407,7 @@ Class GHAGEventHandler : EventHandler
 	void SpawnBonusItem(double _x, double _y, double _z)
 	{
 
-		if (level.levelNum == 1)
+		if (level.levelNum <= 1)
 		{
 			Actor.spawn('RageCandyBar', (_x, _y, _z));
 		}
@@ -423,10 +423,9 @@ Class GHAGEventHandler : EventHandler
 				/*
 				 * Weights to be applied to bonus items
 				 *
-				 * Plasma rifle needs to be impossible, episode 1 of Doom
-				 * Does not have it anywhere in it's maps, and no way to get
-				 * cells (aside from backpacks). No point giving them if you 
-				 * aren't given the ammo.
+				 * Extra plasma set to be impossible to spawn unless:
+				 * A) Map level is greater than 9
+				 * B) A Plasma rifle is spawned in any way
 				 */
 				
 				int candybar = 0;
@@ -439,22 +438,32 @@ Class GHAGEventHandler : EventHandler
 				int shottycount = gardie.countinv('GHAGShotgunOverlay');
 				int plasmacount = gardie.countinv('GHAGPlasmaOverlay');
 				
-				if (pistcount == 4) pist = 999999;
+				if (pistcount == 4) {
+					pist = 999999;
+					shotty -= 100;
+					plasma -= 100;
+				}
 				else 
 				{
 					if (pistcount > shottycount) pistcount += 40;
 					if (pistcount > plasmacount) pistcount += 20;
 				}
 				
-				if (shottycount == 4) shotty = 999999;
+				if (shottycount == 4) 
+				{
+					shotty = 999999;
+					plasma -= 100;
+				}
 				else
 				{
 					if (shottycount > pistcount) shottycount += 40;
 					if (shottycount > plasmacount) shottycount += 20;
 				}
 				
-				if (level.levelNum > 9) plasma = 300;
-				else if (plasmacount == 4) plasma = 999999;
+				if (level.levelNum > 9 || plasmaspawned) plasma = 300;
+				else if (plasmacount == 4) {
+					plasma = 999999;
+				}
 				else
 				{
 					if (plasmacount > shottycount) plasma += 40;

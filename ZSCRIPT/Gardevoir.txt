@@ -422,6 +422,34 @@ Class Gardevoir : PlayerPawn
 		super.CheatGive(_name, _amount);
 		
 	}
+	
+	override bool OnGiveSecret(bool print, bool playsound)
+	{
+		bool rtn = super.OnGiveSecret(print, playsound);
+		
+		//In the situation a sector fails to spawn a secret,
+		//we grant a rage candybar to compensate
+		if (self.curSector)
+		{
+			bool bonus = false;
+			Actor mo = self.curSector.thinglist;
+			while (mo)
+			{
+				if (mo is 'RageCandyBar' || mo is 'ExtraPistol' || mo is 'ExtraShotgun' || mo is 'ExtraPlasma')
+				{
+					bonus = true;
+					break;
+				}
+				mo = mo.snext;
+			}
+			if (!bonus)
+			{
+				RageCandyBar(Actor.Spawn('RageCandyBar', self.pos)).touch(self);
+			}
+		}
+		
+		return rtn;
+	}
 }
 
 Class NameClass : Actor

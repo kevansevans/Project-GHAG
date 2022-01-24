@@ -20,44 +20,199 @@ class GHAGKeyEvents : EventHandler
 			if ((key1 && key1 == e.Args[0]) || (key2 && key2 == e.Args[0]))
 			{
 				FLineTraceData shot;
-				gardie.LineTrace(gardie.angle, 2048, gardie.pitch, TRF_ALLACTORS, gardie.height - 12, 0, 0, shot);
-				if (shot.HitType == TRACE_HitActor)
+				int kinesis_distance = 32;
+				
+				Array<Actor> list;
+				
+				int iterations = 0;
+				
+				while (kinesis_distance < 2048)
 				{
-					if (shot.HitActor.bIsMonster && shot.HitActor.health > 0)
+					gardie.LineTrace(gardie.angle, kinesis_distance, gardie.pitch, TRF_THRUACTORS | TRF_THRUHITSCAN, gardie.height - 12, 0, 0, shot);
+					
+					let blast = KinesisBlast(Actor.spawn('KinesisBlast', shot.HitLocation));
+					blast.getRadialActors();
+					list.copy(blast.list);
+					
+					if (list.size() != 0)
 					{
-						ActorTracker.TrackThing(shot.HitActor, KINESIS);
-						
+						blast.startpulling = true;
+						break;
 					}
-					else if (inventory(shot.HitActor))
-					{
-						shot.HitActor.target = gardie;
-						ActorTracker.TrackThing(shot.HitActor, KINESIS);
-					}
-				}
-			}
-		}
-		
-		if (e.Name == "KinesisDeactivate")  
-		{
-			int key1, key2;
-			[key1, key2] = Bindings.GetKeysForCommand("kinesis");
-			if ((key1 && key1 == e.Args[0]) || (key2 && key2 == e.Args[0]))
-			{
-				let tracker = ActorTrackerThinker.get();
-				if (!tracker) return;
-			
-				for (int i = 0; i < tracker.Infolist.size(); ++i)
-				{
-					ActorInfo info = tracker.Infolist[i];
-					if (info.kinesis) {
-						info.kinesis = false;
-						info.owner.painChance = info.prevPainValue;
-					}
+					
+					kinesis_distance += 32;
+					++iterations;
 				}
 			}
 		}
 	}
 }
 
-Class KinesisToken : Inventory
-{}
+Class KinesisBlast : Actor
+{
+
+	Array<Actor> list;
+	bool startPulling;
+	bool slapProjectile;
+
+	void getRadialActors()
+	{
+		list.clear();
+		
+		int radial = 64;
+		
+		let gardie = Gardevoir(players[consoleplayer].mo);
+		ThinkerIterator it = ThinkerIterator.Create("Actor");
+		Actor mo;
+		while ( (mo = Actor(it.Next ())) )
+		{
+			if (mo == self || mo is 'KinesisBlast') continue;
+			if (mo is 'Gardevoir') continue;
+			if (mo.bCorpse) continue;
+			if (mo.bIsMonster) continue;
+			if (!gardie.isVisible(mo, false)) continue;
+			if (Inventory(mo)) {
+				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
+			}
+			if (distance3D(mo) <= radial) {
+				list.push(mo);
+				//if any valid actors are detected, restart the search with wider range
+				if (radial == 64) 
+				{	
+					it.Reinit();
+					list.clear();
+					radial = 256;
+				}
+				if (mo.bMissile)
+				{
+					slapprojectile = true;
+				}
+			}
+		}
+	}
+	
+	void ReturnToSender()
+	{
+		let gardie = Gardevoir(players[consoleplayer].mo);
+		
+		for (int i = 0; i < list.size(); ++i)
+		{
+			if (!list[i]) {
+				list.delete(i--);
+				continue;
+			}
+			else
+			{
+				Actor victim = list[i];
+				
+				if (ExplosiveBarrel(victim) && !victim.bMissile)
+				{
+					victim.target = gardie;
+					victim.bMissile = true;
+					victim.bNoExplodeFloor = true;
+					victim.bSeekerMissile = true;
+					victim.vel.z += 4;
+					victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
+					continue;
+				} 
+				else if (ExplosiveBarrel(victim) && victim.bMissile && !victim.InStateSequence(victim.CurState, victim.ResolveState("Death")))
+				{
+					victim.target = gardie;
+					victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
+					if (victim.tracer) victim.Vel3DFromAngle(40, victim.angleTo(victim.tracer), 0);
+					continue;
+				} 
+				else if (ExplosiveBarrel(victim) && victim.InStateSequence(victim.CurState, victim.ResolveState("Death")))
+				{
+					victim.vel = (0, 0, 0);
+					continue;
+				}
+				
+				if (Inventory(victim))
+				{
+					Inventory(victim).bNoCLip = true;
+				}
+	
+				if (gametic % 2 == 0)
+				{
+					double angle = gardie.AngleTo(victim);
+					Vector2 move = gardie.AngleToVector(angle, -32);
+					victim.Vel.XY = move;
+					victim.Vel.Z = 64. / victim.Mass;
+					
+					if (gardie.distance2D(victim) <= 32)
+					{
+						if (Inventory(victim))
+						{
+							Inventory(victim).touch(gardie);
+							if (victim) {
+								victim.bNoClip = false;
+								victim.vel = (0, 0, 0);
+							}
+						}
+						list.delete(i);
+						list.ShrinkToFit();
+					}
+				}
+			}
+		}
+	}
+	
+	void KnockThatShitOff()
+	{
+		startpulling = false;
+		let player = players[consoleplayer].mo;
+		
+		for (int i = 0; i < list.size(); ++i)
+		{
+			if (!list[i]) {
+				list.delete(i--);
+				list.shrinkToFit();
+				continue;
+			}
+			if (!list[i].bMissile)
+			{
+				list.delete(i--);
+				list.shrinkToFit();
+				continue;
+			}
+			else
+			{
+				let missile = list[i];
+				
+				if (missile.target != player)
+				{
+					missile.target = player;
+					
+					missile.angle *= -1;
+					missile.pitch *= -1;
+					missile.Vel3DFromAngle(missile.speed * 2, player.angle, player.pitch);
+				
+					missile.bSeekerMissile = true;
+					missile.bThruSpecies = false;
+					missile.bScreenSeeker = true;
+				}
+				
+				missile.A_SeekerMissile(360, 15, SMF_LOOK | SMF_PRECISE);
+			}
+		}
+	}
+	
+	default
+	{
+		+NoGravity;
+	}
+	
+	states
+	{
+		Spawn:
+			TNT1 A 1 Bright
+			{
+				if (invoker.slapProjectile) self.knockThatShitOff();
+				if (invoker.startpulling) self.returnToSender();
+				if (invoker.list.size() == 0) self.destroy();
+			}
+			loop;
+	}
+
+}

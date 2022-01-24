@@ -6,6 +6,8 @@ Class GHAGEventHandler : EventHandler
 	
 	bool mapHasMinimalSecrets;
 	
+	bool plasmaspawned;
+	
 	override void WorldThingSpawned(WorldEvent event)
 	{
 		if (Gardevoir(event.thing)) return;
@@ -17,7 +19,7 @@ Class GHAGEventHandler : EventHandler
 			if (!gun) return;
 			
 			//Ignore any spawning GHAG weapons
-			if (GHAGPistol(gun) || GHAGShotgun(gun) || GHAGSawblade(gun) || GHAGRocketLauncher(gun) || GHAGPlasmaRifle(gun))
+			if (GHAGPistol(gun) || GHAGShotgun(gun) || GHAGRocketLauncher(gun) || GHAGPlasmaRifle(gun) || GHAGPsychoCutter(gun))
 			{
 				return;
 			}
@@ -32,8 +34,11 @@ Class GHAGEventHandler : EventHandler
 					{
 						munition.amount = gun.AmmoGive1;
 					}
+					if (PlasmaRifle(gun)) {
+						plasmaspawned = true;
+					}
 					gun.destroy();
-				}
+				} 
 			}
 		}
 		

@@ -99,6 +99,7 @@ Class KinesisBlast : Actor
 		{
 			if (!list[i]) {
 				list.delete(i--);
+				list.shrinkToFit();
 				continue;
 			}
 			else
@@ -111,14 +112,27 @@ Class KinesisBlast : Actor
 					victim.bMissile = true;
 					victim.bNoExplodeFloor = true;
 					victim.bSeekerMissile = true;
-					victim.vel.z += 4;
-					victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
+					victim.bRollSprite = true;
+					victim.bRollCenter = true;
+					for (int i = 0; i < 10; ++ i) victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
+					if (victim.tracer)
+					{
+						victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
+						victim.A_SetRoll(victim.roll + 45, SPF_INTERPOLATE);
+					} 
+					else if (!victim.InStateSequence(victim.CurState, victim.ResolveState("Death")))
+					{
+						victim.SetStateLabel("Death");
+						list.delete(i--);
+						list.shrinkToFit();
+					}
 					continue;
 				} 
 				else if (ExplosiveBarrel(victim) && victim.bMissile && !victim.InStateSequence(victim.CurState, victim.ResolveState("Death")))
 				{
 					victim.target = gardie;
 					victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
+					victim.A_SetRoll(victim.roll + 45, SPF_INTERPOLATE);
 					if (victim.tracer) victim.Vel3DFromAngle(40, victim.angleTo(victim.tracer), 0);
 					continue;
 				} 

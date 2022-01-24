@@ -58,22 +58,6 @@ Class Gardevoir : PlayerPawn
 		prev_armor = 0;
 	}
 	
-	int blades;
-	int getBladeCount() 
-	{
-		for (let inv = inv; inv; inv = inv.inv)
-		{
-			string wep = '';
-			if (inv is "weapon") {
-				let saw = GHAGSawBlade(inv);
-				if(saw) {
-					return saw.ammo1.amount;
-				}
-			}	
-		}
-		return -1;
-	}
-	
 	string getRNGName() {
 		
 		if (!self.names) {

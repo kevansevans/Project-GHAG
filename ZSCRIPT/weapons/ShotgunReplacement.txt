@@ -142,12 +142,12 @@ Class GHAGShotgun : Weapon
 				double ang = angle + Random2() * (5.625 / 256);
 				double pitch = AimLineAttack(ang, 64, null, 0., ALF_CHECK3D);
 				LineAttack(ang, 64, pitch, 128, 'Melee', "BulletPuff", LAF_ISMELEEATTACK, t);
-				A_StartSound("skeleton/swing");
+				A_StartSound("skeleton/swing", CHAN_WEAPON);
 				if (t.linetarget)
 				{
 					Actor target = t.linetarget;
 					float rage = Gardevoir(players[consoleplayer].mo).getRageModifier();
-					A_StartSound("fists/LPUNCH");
+					A_StartSound("fists/LPUNCH", CHAN_WEAPON);
 					ShottyThwackBlastActor(target, 64 + (64 * rage), 16 + (16 * rage), "", true);
 					if (target.health > 0) target.setStateLabel("Pain");
 				}

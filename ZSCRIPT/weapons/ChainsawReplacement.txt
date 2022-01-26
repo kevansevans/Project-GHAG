@@ -198,7 +198,7 @@ Class GHAGPsychoProjectile : Actor
 	states
 	{
 		Spawn:
-			CSAW A 1 Bright;
+			CSAW AB 1 Bright;
 			Loop;
 		Death :
 			CSAW A 1 Bright {
@@ -216,7 +216,8 @@ Class GHAGPsychoProjectile : Actor
 			}
 			stop;
 		Lacerate:
-			CSAW A 5 Bright
+			CSAW ABABA 1 Bright;
+			TNT1 A 0
 			{
 				A_StartSound("weapons/chainhit", CHAN_AUTO);
 				Self.SetOrigin((Invoker.target.pos.x + pos_x + random(-1, 1), Invoker.target.pos.y + pos_y + random(-1, 1), Invoker.target.pos.z + pos_z + random(-1, 1)), true);

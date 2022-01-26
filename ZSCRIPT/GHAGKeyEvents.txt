@@ -67,11 +67,14 @@ Class KinesisBlast : Actor
 		while ( (mo = Actor(it.Next ())) )
 		{
 			if (mo is 'KinesisPing') continue;
+			if (mo is 'BulletPuff') continue;
+			if (mo is 'Blood') continue;
 			if (mo == self || mo is 'KinesisBlast') continue;
 			if (mo is 'Gardevoir') continue;
 			if (mo.bCorpse) continue;
 			if (mo.bIsMonster) continue;
 			if (!gardie.isVisible(mo, false)) continue;
+			if (gardie.distance3D(mo) < 64) continue;
 			if (mo is "BossTarget" || mo is "BossEye" || (mo is "Rocket" && !(mo.target))) continue;
 			if (mo is "TeleportDest") continue;
 			if (mo is "lightningfizzle") continue;
@@ -189,7 +192,15 @@ Class KinesisBlast : Actor
 					{
 						if (Inventory(victim))
 						{
-							Inventory(victim).touch(gardie);
+							if (RageEssence(Victim))
+							{
+								int rage = gardie.GetRageValue();
+								if (rage < gardie.rageconstant) Inventory(victim).touch(gardie);
+							} 
+							else 
+							{
+								Inventory(victim).touch(gardie);
+							}
 							if (victim) {
 								victim.bNoClip = false;
 								victim.vel = (0, 0, 0);

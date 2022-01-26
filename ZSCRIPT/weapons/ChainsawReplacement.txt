@@ -43,6 +43,7 @@ Class ExtraPsychoCutterDrop : CustomInventory
 	default
 	{
 		+Floatbob;
+		Inventory.PickupMessage "";
 		Inventory.pickupsound "misc/w_pkup";
 	}
 	States
@@ -175,6 +176,7 @@ Class GHAGPsychoProjectile : Actor
 	{
 		+RollSprite;
 		+HitTarget;
+		+SkyExplode;
 		Projectile;
 		Speed 20;
 		DropItem "ExtraPsychoCutterDrop";

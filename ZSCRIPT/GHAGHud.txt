@@ -90,6 +90,13 @@ Class GHAGStatus : BaseStatusBar
 							DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
 							Font.CR_UNTRANSLATED, 1, -1, 4, 
 							(xy_scale, xy_scale));
+			} else if (GHAGPsychoCutter(Gardie.player.ReadyWeapon)) {
+				DrawString(pokefont, 
+							Gardie.countInv('GHAGPsychoCutterOverlay') .. '/4 Lacerators', 
+							(30, v_height - 125), 
+							DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
+							Font.CR_UNTRANSLATED, 1, -1, 4, 
+							(xy_scale, xy_scale));
 			}
 			
 		}

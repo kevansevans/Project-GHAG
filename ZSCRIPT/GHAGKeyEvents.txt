@@ -48,6 +48,9 @@ class GHAGKeyEvents : EventHandler
 	}
 }
 
+Class HudModifier : Inventory
+{}
+
 Class KinesisBlast : Actor
 {
 
@@ -69,6 +72,7 @@ Class KinesisBlast : Actor
 			if (mo is 'KinesisPing') continue;
 			if (mo is 'BulletPuff') continue;
 			if (mo is 'Blood') continue;
+			if (mo is 'GHAGPsychoProjectile') continue;
 			if (mo == self || mo is 'KinesisBlast') continue;
 			if (mo is 'Gardevoir') continue;
 			if (mo.bCorpse) continue;

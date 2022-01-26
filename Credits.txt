@@ -32,17 +32,17 @@ Gardevoir hands were based off of my own hands. Took pictures of them and then
 traced over them in Flash. Drawing a three fingered creature based off of a five
 fingered creature is actually pretty hard.
 
-Sawblade, I just googled a sawblade, lol.
+Chainsaw is traced over Doom Eternal's "Bucktooth Dopesaw"
 
 Pistol is currently based off of Team Fortress 2's pistol, using the same traced
 over method as the hands. Would like something different.
 
 Pistol pickup is (formerly) unreleased original pistol sprite for the Doom Beta by John Romero.
 
-Shotgun is based off of a Winchester 1912. This was my late Great Grandfather's
+Shotgun is based off of a Real Winchester 1912. This was my late Great Grandfather's
 shotgun, which eventually ended up in my Father's possesion.
 
-Rocket Launcher is just Doom's rocket animated to be spinning.
+Rocket Launcher is just Doom's rocket upscaled and animated to be spinning.
 
 Plasma Rifle is based off of a watergun I bought at a hardware store.
 
@@ -50,7 +50,7 @@ Gen 2 move sprites, for elemental punches:
 https://www.spriters-resource.com/game_boy_gbc/pokemongoldsilver/sheet/9087/
 Fists were done in Flash, just added a glow with appropriate color
 
-Moon Blast "Moon" from Gen 3 FRLG
+Moon Blast "Moon" from Gen 3 Fire Red Leaf Green
 Will-o-wisp fire sprites from Gen 3 FRLG, for Rage Essence pickup
 https://www.spriters-resource.com/fullview/3860/
 

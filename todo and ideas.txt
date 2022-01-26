@@ -12,56 +12,36 @@
 	- 25 percent chance to temporarily make actor friendly, aka "confused"
 	- 25 percent chance to unconfuse
 	
-- Psybeam
-	- Concentrated beam of attack, costs a lot of rage
-	- Replace swift?
-
-- Pokken style movement mechanics
-	- Activated via shift
-	- Tap/Hold shift = Shield
-	- Jump + Shift = Hold position in air
-	- Direction + tap shift = Quick dodge
-	- Direction + hold shift = slide behavior
-		- Both tap and hold shift brings up shield.
-		- Forward attack will push enemies around
+- Psychic Charge
+	- Move is seen performed by Gardevoir in pokken tournament
+	- Does not have official/specified name
+	- Move shows Gardevoir performing a bow and arrow like motion
+	- Base attack should be powerful, but longer charges should get stronger
 	
-- Think of something better for the plasma rifle replacement
-	- Plasma balls have a chance of exploding enemies
-	- Explosions can inflict a status effect
-		- Costs 1 anger in this mode
-		- Regular mode that just does an explosion
+- Fix kinesis attack for projectiles.
+	
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Polishing
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-- Proper gun flashs
 - Better sounds
 - Better hand sprites for attacks
 - Make attacks "crunchier"
-- XDeath for all enemies?
+- Player sprites
+- Player sounds so Gardevoir doesn't sound like doomguy
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Brainstorming
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-Scanners attack
-
-	- Drains anger to perform a guranteed AOE kill
-	- More anger = greater range
-	
-Psychic push
-
-	- Direction dependedt
-	- One medium AOE that repells all directions
-	- Arrow keys being held determins direction enemies get pushed/pulled under line of sight
-
 Use Tag property to allow players to name their guns
 
 Hud organization
 
 	- Weapons that occupy the same slot should appear vertically
 	- Anger and health bonus nums when killing enemies
+	- Maybe SOME way to display ammo capacity
 	
 pokeball
 
@@ -71,5 +51,3 @@ pokeball
 	- Use actual formula catch...?
 	- spawn, add +friendly tag
 	- Finding secret grants random chance to find ball.
-	
-Guns increase anger, Moves refill health. Should encourage switching between the two.

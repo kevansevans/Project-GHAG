@@ -50,25 +50,45 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			}
 			loop;
 		Fire:
-			HAND A 1 A_PsychicPlasma();
+			HAND A 1 {
+				A_PsychicPlasma();
+				A_PlasmaOverlay(true);
+			}
 			HAND BC 1;
 			HAND DE 1 A_Refire();
 			Goto Ready;
 		AltFire:
-			TNT1 A 0 A_DetonatePlasma();
-			HAND ABCDE 1;
+			HAND A 20 {
+				A_PlasmaOverlay(false, true);
+				A_BFGSound();
+				Invoker.AmmoUse2 = int(40 / CountInv('GHAGPlasmaOverlay'));
+				A_SetTics(int(20 / CountInv('GHAGPlasmaOverlay')));
+			}
+			HAND A 10;
+			TNT1 A 0 A_FireBFG();
+			HAND BCDE 2;
+			HAND A 12;
+			HAND A 20 A_Refire();
 			goto Ready;
 		Plasma.Overlay :
 			PLSM ABCDE 1;
-			Loop;
+			loop;
+		PlasmaFire.Overlay :
+			PLSM PBCD 1;
+			stop;
+		PlasmaBFG.Overlay :
+			PLSM FGHIJKLMNO 3 A_SetTics(max(3 - CountInv("GHAGPlasmaOverlay"), 2));
+			goto Plasma.Overlay;
 	}
 	
-	Action void A_PlasmaOverlay()
+	Action void A_PlasmaOverlay(bool _primary = false, bool _bfg = false)
 	{
 		for (int i = 0; i < CountInv("GHAGPlasmaOverlay"); ++ i)
 		{
 			int layer = -1 * (i + 1);
-			A_Overlay(layer, "Plasma.Overlay", false);
+			if (_bfg) A_Overlay(layer, "PlasmaBFG.Overlay", false);
+			else if (_primary) A_Overlay(layer, "PlasmaFire.Overlay", false);
+			else A_Overlay(layer, "Plasma.Overlay", false);
 			A_OverlayFlags(layer, PSPF_ADDBOB, false);
 			if ((i + 1) % 2 == 0) A_OverlayFlags(layer, PSPF_FLIP | PSPF_MIRROR, true);
 			A_OverlayOffset(layer, (sin(gametic + (72 * i))) + (45 * (i / 2)) + 30, (cos(gametic + (72 * i))) - (55 * (i / 2)) + (i < 2 ? 5 : 0), WOF_INTERPOLATE);

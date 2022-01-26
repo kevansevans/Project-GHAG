@@ -145,13 +145,15 @@ Class Gardevoir : PlayerPawn
 		}
 		
 		let player = Gardevoir(players[consoleplayer].mo);
-		if (self.health - _locDamage <= 0 && player.countinv("ReviveHalf") >= 1)
+		
+		//Disable revive for now
+		/*if (self.health - _locDamage <= 0 && player.countinv("ReviveHalf") >= 1)
 		{
 			reviveAmount = 175;
 			player.takeInventory("ReviveHalf", 1);
 			_locDamage = 0;
 			//GHAGStatus.hudMessageBox(Cvar.findCvar("name").getString() .. " got in a pinch and had to use a revive!", 10);
-		}
+		}*/
 		
 		if (gametic > restore_kaboom && restore_kaboom != -1) bNoRadiusDmg = false;
 		

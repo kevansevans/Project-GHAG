@@ -221,7 +221,7 @@ Class GHAGPsychoProjectile : Actor
 			{
 				A_StartSound("weapons/chainhit", CHAN_AUTO);
 				Self.SetOrigin((Invoker.target.pos.x + pos_x + random(-1, 1), Invoker.target.pos.y + pos_y + random(-1, 1), Invoker.target.pos.z + pos_z + random(-1, 1)), true);
-				int damage = random() % 10 + 1;
+				int damage = int((random() % 10 + 1) * 1.5);
 				Invoker.target.damagemobj(self, Gardevoir(players[consoleplayer].mo), damage, 'Melee');
 				for (int i = 0; i < bloodscale; ++ i) 
 				{

@@ -66,26 +66,52 @@ Class KinesisBlast : Actor
 		Actor mo;
 		while ( (mo = Actor(it.Next ())) )
 		{
+			if (mo is 'KinesisPing') continue;
 			if (mo == self || mo is 'KinesisBlast') continue;
 			if (mo is 'Gardevoir') continue;
 			if (mo.bCorpse) continue;
 			if (mo.bIsMonster) continue;
 			if (!gardie.isVisible(mo, false)) continue;
+			if (mo is "BossTarget" || mo is "BossEye" || (mo is "Rocket" && !(mo.target))) continue;
+			if (mo is "TeleportDest") continue;
+			if (mo is "lightningfizzle") continue;
 			if (Inventory(mo)) {
 				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
 			}
 			if (distance3D(mo) <= radial) {
-				list.push(mo);
-				//if any valid actors are detected, restart the search with wider range
+			
 				if (radial == 64) 
 				{	
 					it.Reinit();
 					list.clear();
 					radial = 256;
 				}
-				if (mo.bMissile)
+			
+				if (!mo.bMissile) 
 				{
-					slapprojectile = true;
+					list.push(mo);
+					KinesisPing(Actor.spawn('KinesisPing', mo.pos));
+				}
+				
+				if (mo.bMissile && gardie.distance3D(mo) <= 512)
+				{
+					if (mo.target)
+					{
+						KinesisPing(Actor.spawn('KinesisPing', mo.pos));
+					
+						mo.tracer = mo.target;
+						mo.target = gardie;
+						
+						mo.angle *= -1;
+						mo.pitch *= -1;
+						mo.Vel3DFromAngle(mo.speed * 2, angleTo(mo.tracer), mo.pitch);
+						mo.speed *= 2;
+						
+						mo.bSeekerMissile = true;
+						mo.bThruSpecies = false;
+						mo.bScreenSeeker = true;
+						mo.A_SeekerMissile(360, 15, SMF_LOOK | SMF_PRECISE);
+					}
 				}
 			}
 		}
@@ -106,39 +132,44 @@ Class KinesisBlast : Actor
 			{
 				Actor victim = list[i];
 				
-				if (ExplosiveBarrel(victim) && !victim.bMissile)
+				if (ExplosiveBarrel(victim))
 				{
-					victim.target = gardie;
-					victim.bMissile = true;
-					victim.bNoExplodeFloor = true;
-					victim.bSeekerMissile = true;
-					victim.bRollSprite = true;
-					victim.bRollCenter = true;
-					for (int i = 0; i < 10; ++ i) victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
-					if (victim.tracer)
+					if (!victim.InStateSequence(victim.CurState, victim.ResolveState("Death")))
 					{
-						victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
-						victim.A_SetRoll(victim.roll + 45, SPF_INTERPOLATE);
-					} 
-					else if (!victim.InStateSequence(victim.CurState, victim.ResolveState("Death")))
+						if (!victim.tracer)
+						{
+							victim.target = gardie;
+							victim.bMissile = true;
+							victim.bNoExplodeFloor = true;
+							victim.bSeekerMissile = true;
+							victim.bRollSprite = true;
+							victim.bRollCenter = true;
+							for (int i = 0; i < 10; ++ i) victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
+							KinesisPing(Actor.spawn('KinesisPing', victim.pos));
+							if (victim.tracer)
+							{
+								victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
+								victim.A_SetRoll(victim.roll + 25, SPF_INTERPOLATE);
+							} 
+							else
+							{
+								victim.bMissile = false;
+								victim.damageMobj(victim, victim, 9999999, '');
+								list.delete(i--);
+								list.shrinkToFit();
+							}
+						}
+						else
+						{
+							victim.Vel3DFromAngle(40, victim.angleTo(victim.tracer), 0);
+							victim.A_SetRoll(victim.roll + 25, SPF_INTERPOLATE);
+						}
+					}
+					else
 					{
-						victim.SetStateLabel("Death");
 						list.delete(i--);
 						list.shrinkToFit();
 					}
-					continue;
-				} 
-				else if (ExplosiveBarrel(victim) && victim.bMissile && !victim.InStateSequence(victim.CurState, victim.ResolveState("Death")))
-				{
-					victim.target = gardie;
-					victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
-					victim.A_SetRoll(victim.roll + 45, SPF_INTERPOLATE);
-					if (victim.tracer) victim.Vel3DFromAngle(40, victim.angleTo(victim.tracer), 0);
-					continue;
-				} 
-				else if (ExplosiveBarrel(victim) && victim.InStateSequence(victim.CurState, victim.ResolveState("Death")))
-				{
-					victim.vel = (0, 0, 0);
 					continue;
 				}
 				
@@ -154,7 +185,7 @@ Class KinesisBlast : Actor
 					victim.Vel.XY = move;
 					victim.Vel.Z = 64. / victim.Mass;
 					
-					if (gardie.distance2D(victim) <= 32)
+					if (gardie.distance2D(victim) <= 64)
 					{
 						if (Inventory(victim))
 						{
@@ -172,46 +203,6 @@ Class KinesisBlast : Actor
 		}
 	}
 	
-	void KnockThatShitOff()
-	{
-		startpulling = false;
-		let player = players[consoleplayer].mo;
-		
-		for (int i = 0; i < list.size(); ++i)
-		{
-			if (!list[i]) {
-				list.delete(i--);
-				list.shrinkToFit();
-				continue;
-			}
-			if (!list[i].bMissile)
-			{
-				list.delete(i--);
-				list.shrinkToFit();
-				continue;
-			}
-			else
-			{
-				let missile = list[i];
-				
-				if (missile.target != player)
-				{
-					missile.target = player;
-					
-					missile.angle *= -1;
-					missile.pitch *= -1;
-					missile.Vel3DFromAngle(missile.speed * 2, player.angle, player.pitch);
-				
-					missile.bSeekerMissile = true;
-					missile.bThruSpecies = false;
-					missile.bScreenSeeker = true;
-				}
-				
-				missile.A_SeekerMissile(360, 15, SMF_LOOK | SMF_PRECISE);
-			}
-		}
-	}
-	
 	default
 	{
 		+NoGravity;
@@ -222,11 +213,20 @@ Class KinesisBlast : Actor
 		Spawn:
 			TNT1 A 1 Bright
 			{
-				if (invoker.slapProjectile) self.knockThatShitOff();
 				if (invoker.startpulling) self.returnToSender();
 				if (invoker.list.size() == 0) self.destroy();
 			}
 			loop;
 	}
+}
 
+Class KinesisPing : Actor
+{
+	States
+	{
+		Spawn :
+			TNT1 A 4 A_SetTics(Random(1, 3));
+			PING ABCDEFGHIJKLMN 1 Bright;
+			Stop;
+	}
 }

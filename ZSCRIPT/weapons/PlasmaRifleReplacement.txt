@@ -16,8 +16,6 @@ Class GHAGPlasmaRifle : PlasmaRifle
 		Weapon.AmmoType2 "Cell";
 	}
 	
-	Array<PsychicPlasma> PlasmaTracker;
-	
 	override void DoEffect()
 	{
 		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
@@ -108,24 +106,8 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			if (gun == 2) x = -15;
 			else if (gun == 3) x = 20;
 			else if (gun == 4) x = -20;
-			let _locPlasma = PsychicPlasma(A_FireAimedProjectile("PsychicPlasma", i == 0 ? true : false, x, gun > 2 ? 12 : 5));
-			if (_locPlasma) {
-				invoker.PlasmaTracker.push(_locPlasma);
-			}
+			let _locPlasma = PlasmaBall(A_FireAimedProjectile("PlasmaBall", i == 0 ? true : false, x, gun > 2 ? 12 : 5));
 		}
-	}
-	
-	Action void A_DetonatePlasma()
-	{
-		for (int a = 0; a < invoker.PlasmaTracker.Size(); ++a)
-		{
-			let ball = PsychicPlasma(invoker.PlasmaTracker[a]);
-			if (!ball) continue;
-			else {
-				if (!ball.isDead) ball.setStateLabel("Death.Overdrive");
-			}
-		}
-		invoker.PlasmaTracker.Clear();
 	}
 	
 	action Actor A_FireAimedProjectile(class<Actor> missiletype, bool useammo = true, double spawnofs_xy = 0, double spawnheight = 0, int flags = 0)
@@ -156,137 +138,7 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			}
 		}
     
-    return misl;
-	}
-}
-
-Class PsychicPlasma : PlasmaBall replaces PlasmaBall
-{
-	bool isDead;
-
-	default {
-		+ForceRadiusDmg;
-	}
-
-	States
-	{
-		Death:
-			TNT1 A 0 {
-				invoker.isDead = true;
-			}
-			Goto Super::Death;
-		Death.Overdrive:
-			PLSE A 2 Bright {
-				A_StartSound("weapons/elecboom", CHAN_BODY, 0, 1.5);
-				A_SetTranslation('PlasmaOverdrive');
-				double modifier = Gardevoir(players[consoleplayer].mo).getRageModifier();
-				A_PlasmaBlast(BF_DONTWARN | BF_AFFECTBOSSES | BF_NOIMPACTDAMAGE, 255 * modifier, 255 * modifier, 20 * modifier);
-				A_SetScale(2.5, 2.5);
-			}
-			PLSE BC 2 Bright A_StartSound("Weapon/GenericExplode", CHAN_WEAPON);
-			PLSE DE 2 Bright;
-			stop;
-	}
-	
-	action void PlasmaBlastActor (Actor victim, double strength, double speed, Class<Actor> blasteffect, bool dontdamage)
-	{
-		if (!victim.SpecialBlastHandling (self, strength))
-		{
-			return;
-		}
-
-		double ang = AngleTo(victim);
-		Vector2 move = AngleToVector(ang, speed);
-		victim.Vel.XY = move;
-
-		// Spawn blast puff
-		ang -= 180.;
-		Vector3 spawnpos = victim.Vec3Offset(
-			(victim.radius + 1) * cos(ang),
-			(victim.radius + 1) * sin(ang),
-			(victim.Height / 2) - victim.Floorclip);
-		Actor mo = blasteffect? Spawn (blasteffect, spawnpos, ALLOW_REPLACE) : null;
-		if (mo)
-		{
-			mo.Vel.XY = victim.Vel.XY;
-		}
-		if (victim.bMissile)
-		{
-			// [RH] Floor and ceiling huggers should not be blasted vertically.
-			if (!victim.bFloorHugger && !victim.bCeilingHugger)
-			{
-				victim.Vel.Z = 8;
-				if (mo != null) mo.Vel.Z = 8;
-			}
-		}
-		else
-		{
-			victim.Vel.Z = 1000. / victim.Mass;
-		}
-		if (victim.player)
-		{
-			// Players handled automatically
-		}
-		else if (!dontdamage)
-		{
-			victim.bBlasted = true;
-		}
-		if (victim.bTouchy)
-		{ // Touchy objects die when blasted
-			victim.bArmed = false; // Disarm
-			victim.DamageMobj(self, self, victim.health, 'Melee', DMG_FORCED|DMG_EXPLOSION);
-		} else {
-			victim.DamageMobj(self, Gardevoir(players[consoleplayer].mo), 16 * (255 / Distance3D(victim)), "Plasma");
-			if (victim.health > 0) victim.SetStateLabel('Pain');
-		}
-	}
-
-	action void A_PlasmaBlast(int blastflags = 0, double strength = 255, double radius = 255, double speed = 20, class<Actor> blasteffect = "BlastEffect", sound blastsound = "BlastRadius")
-	{
-		A_StartSound (blastsound, CHAN_AUTO);
-
-		if (!(blastflags & BF_DONTWARN))
-		{
-			SoundAlert (self);
-		}
-		ThinkerIterator it = ThinkerIterator.Create("Actor");
-		Actor mo;
-		while ( (mo = Actor(it.Next ())) )
-		{
-			//ignore player
-			if (Gardevoir(mo)) continue;
-			if (mo == self || (mo.bBoss && !(blastflags & BF_AFFECTBOSSES)) || mo.bDormant || mo.bDontBlast)
-			{ // Not a valid monster: originator, boss, dormant, or otherwise protected
-				continue;
-			}
-			if (mo.bIceCorpse || mo.bCanBlast)
-			{
-				// Let these special cases go
-			}
-			else if (mo.bIsMonster && mo.health <= 0)
-			{
-				continue;
-			}
-			else if (!mo.player && !mo.bMissile && !mo.bIsMonster && !mo.bCanBlast && !mo.bTouchy && !mo.bVulnerable)
-			{	// Must be monster, player, missile, touchy or vulnerable
-				continue;
-			}
-			if (Distance2D(mo) > radius)
-			{ // Out of range
-				continue;
-			}
-			if (mo.CurSector.PortalGroup != CurSector.PortalGroup && !CheckSight(mo))
-			{
-				// in another region and cannot be seen.
-				continue;
-			}
-			if ((blastflags & 16) && !isVisible(mo, true)) 
-			{
-				//only blast if target can bee seen by calling actor
-				continue;
-			}
-			PlasmaBlastActor(mo, strength, speed, blasteffect, !!(blastflags & BF_NOIMPACTDAMAGE));
-		}
+		return misl;
 	}
 }
 

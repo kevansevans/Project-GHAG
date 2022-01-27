@@ -56,7 +56,7 @@ Class ExtraPsychoCutterDrop : CustomInventory
 		Pickup :
 			TNT1 A 0
 			{
-				if (!invoker.touched)
+				if (!invoker.touched) //Prevents chainsaw duplicating
 				{
 					invoker.touched = true;
 					let player = Gardevoir(players[consoleplayer].mo);
@@ -238,7 +238,7 @@ Class GHAGPsychoProjectile : Actor
 					Invoker.target.spawnblood(bloodpos, invoker.angle, damage);
 				}
 				--lifespan;
-				if (lifespan == 0 || !Invoker.target) 
+				if (lifespan == 0 || !Invoker.target || Invoker.target.health <= 0) 
 				{
 					return ResolveState('LacerationDeath');
 				}

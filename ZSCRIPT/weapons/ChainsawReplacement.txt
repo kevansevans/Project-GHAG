@@ -40,12 +40,14 @@ Class ExtraPsychoCutter : CustomInventory replaces Chainsaw
 
 Class ExtraPsychoCutterDrop : CustomInventory
 {
+	bool touched;
 	default
 	{
 		+Floatbob;
 		Inventory.PickupMessage "";
 		Inventory.pickupsound "misc/w_pkup";
 	}
+	
 	States
 	{
 		Spawn:
@@ -54,9 +56,13 @@ Class ExtraPsychoCutterDrop : CustomInventory
 		Pickup :
 			TNT1 A 0
 			{
-				let player = Gardevoir(players[consoleplayer].mo);
-				player.giveInventory("GHAGPsychoCutterOverlay", 1);
-				if (player.countinv("GHAGPsychoCutter") == 0) player.giveInventory("GHAGPsychoCutter", 1);
+				if (!invoker.touched)
+				{
+					invoker.touched = true;
+					let player = Gardevoir(players[consoleplayer].mo);
+					player.giveInventory("GHAGPsychoCutterOverlay", 1);
+					if (player.countinv("GHAGPsychoCutter") == 0) player.giveInventory("GHAGPsychoCutter", 1);
+				}
 			}
 			stop;
 	}

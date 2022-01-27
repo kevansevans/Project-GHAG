@@ -195,12 +195,6 @@ Class Gardevoir : PlayerPawn
 			rollCounterAnger -= 1;
 		}
 		
-		if (reviveAmount > 0 && gametic % 3 == 0)
-		{
-			self.giveBody(Min(175 - self.health, 5));
-			reviveAmount -= 1;
-		}
-		
 		//This script assumes that the map maker has some sort of script
 		//that manually gives player items
 		if (self.countinv("Pistol") >= 1)

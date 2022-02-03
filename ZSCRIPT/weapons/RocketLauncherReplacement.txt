@@ -61,10 +61,19 @@ Class GHAGRocketLauncher : RocketLauncher
 		GHAGRocketLauncher.maxRockets 6;
 	}
 	
+	NameClass names;
+	
 	int maxRockets;
 	property maxRockets: maxRockets;
 	int queuedRockets;
 	Array<Int> rocketTracker;
+	
+	override void BeginPlay()
+	{
+		super.BeginPlay();
+		
+		self.names = NameClass(Spawn("NameClass"));
+	}
 	
 	override void DoEffect()
 	{
@@ -75,6 +84,10 @@ Class GHAGRocketLauncher : RocketLauncher
 	override void tick()
 	{
 		super.tick();
+	}
+	
+	string getRNGName() {
+		return self.names.GetName();
 	}
 
 	States {
@@ -241,7 +254,7 @@ Class GHAGRocketLauncher : RocketLauncher
 	
 	action void A_SetNewTagName() 
 	{
-		Invoker.setTag(Gardevoir(self).getRNGName());
+		Invoker.setTag(Invoker.names.getName());
 	}
 	
 	action void A_PsychicMissile() 
@@ -291,5 +304,144 @@ Class GrenadeRocket : Rocket
 	default
 	{
 		//+Gravity;
+	}
+}
+
+Class NameClass : Actor
+{
+
+	int getMode;
+	int wordtracker;
+	
+	property getMode: getMode;
+	property wordtracker: WordTracker;
+	property names: names;
+	
+	default 
+	{
+		
+		NameClass.getMode 0;
+		NameClass.wordTracker 0;
+
+	}
+	
+	//Your name here? Hit me up!
+	static const string names[] =
+	{
+		"Joey", "Billy", "Kevy", "Kablooey", "Pill", "Martha", "Rachael", "Weasel", "Nash", "Emma",
+		"April", "Ghost", "Kekz", "Bob", "Jimmy", "Cali", "Kesha", "Gutawer", "Marisa", "Hugo",
+		"Romero", "Carmack", "Adrian", "Tom", "Sandy", "American", "Kid Mystic", "Trouble", "Peace Keeper",
+		"Chocolate Thunder", "Vanilla Thunder", "Strawberry Thunder", "Pomegranate Fury", "Fuck you in particular",
+		"Death from above", "Oh shit, he", "ASSHAT", "ASSCLOWN", "ASSFART", "RED", "BLUE", "GREEN", "YELLOW", "GOLD", "SILVER",
+		"CRYSTAL", "Prof. Oak", "Prof. Elm", "Prof. Birch", "Prof. Rowan", "Prof. Juniper", "Prof. Sycamore", 
+		"Prof. Kukui", "Prof. Magnolia", "RUBY", "SAPPHIRE", "EMERALD", "DIAMOND", "PEARL", "PLATINUM", "BLACK", 
+		"WHITE", "X", "Y", "SWORD", "SHIELD", "Explosive Diplomacy", "Diplomacy", "Zero Diplomacy", "Fuck you, Baltimore!",
+		"Zabivaka, no!", "BASTARD!", "I AM CALM!", "Crocket", "Screaming Eagles!", "The Original", "Stanley",
+		"Pikachu", "Shirely", "Surely", "Flynn", "Dacote", "Problem Solver", "Problem Causer", "9K38 Igla", "Bitterman",
+		"Rocket", "Rocket No. 524", "Rocky", "Rocky Road", "Rocky Horror", "Not a shiny", "Wonder-trade me", "Fiddlyfaddlybiddlybaddlydiddlydoodlyhiddlyhoodly",
+		"Problem Maker", "Problem Deleter", "Kibbles n' bits", "Howler Head", "Dr. Pepper", "Not Safe For Self Propulsion",
+		"Safe For Self Propulsion", "Death Bringer", "Funny Name", "Funny Name Here", "Made you look", "Made you explode",
+		"ZScript was a mistake", "AEUHHH????", "[No]", "[Added]", "[Already In]", "[DIY]", "[Duplicate]", "[Not Needed]",
+		"[Closed]", "[???!?!?!?!????]", "Icon Killer", "This one's for Daisy", "Bottled Up Rage", "Explosive Personality",
+		"Explosive Diarrhea", "Bottled Up Rage", "Can of Whoop Ass", "What", "Sin Killer", "MERCILESS EXTERMINATION",
+		"SPEEEN", "Merry Christmas", "Apple!", "Hey!", "Apple, hey Apple!", "Adios", "Busting makes me feel good!",
+		"Ok I Love You Bye Bye", "Not funny, didn't laugh", "Frag out", "Fire in the hole!", "50 Shades of Explode",
+		"50 Shades of you're dead", "50 shades of gibitude", "50 shades of death", "ZoomyPop", "Zoomie Boomies",
+		"Congrats! You've won!", "NOT THE BEES!", '"Dildo Joke Here"', "Help I'm trapped in a rocket factory!",
+		"Sit down, That means you Billy!", "Lil' smokey", "Ayy Pappie!", "Sparky", "Charging Charlie",
+		"Mister Roger's Middle Finger", "Fandango", "The Rectifier", "Buelah", "Chumlee", "Butterface", "Gone Fission",
+		"Not your dad's colonoscopy", "Bitch Slap", "The Dreaded CONE", "Bloop", "Muzzle Maggot", "Track Trolls",
+		"Breach Creature", "Bore Baby", "Novacaine", "Karma", "Karma Bringer", "Wake Up Call", "Hey! Listen!",
+		"I like shorts!", "Hot explosives in your area!", "Happy Accident", "Chaos... Control!", "Chaos... Swiss Roll!",
+		"Creeper", "Shoutout to Simpleflips", "Lamb sauce located", "Target Acquired", "Eightball", "Going out with a bang!",
+		"Liam", "Olivia", "Noah", "Oliver", "Ava", "Elijah", "Charlotte", "William", "Sophia", "James", "Jesse", "Amelia",
+		"Benjamin", "Isabella", "Lucas", "Mia", "Henry", "Evelyn", "Alexander", "Harper", "Bojack", "Princess", "Nguyen",
+		"Todd", "Neal McBeal", "Margo Martindale", "Peanut Butter", "Hollyhock", "Judah", "Surprise!", "PK Rocket!",
+		"PSY Rocket!", "The perfect gift", "Imp Encounter", "300mb!", "Dud", "Objection!", "Hold it!", "Take that!",
+		"Silence!", "Perfect IV", "Laser!", "Caution!", "Goodnight Everybody!", "Helloooooo Nurse!", "Love", "Heart",
+		"Brain", "Control", "CAFFEINATE!", "Wake up!", "Smack!", "That's great", "Fuck Hexen", "What is the time?",
+		"Archvile repellant", "Raw kit lawn chair", "Hydrate", "Posture check", "You", "Major Arlene", "Kaapeli", "Bridge Burner",
+		"Jimmy", "You let me complicate you", "Excuse me", "Ultimate Cup of Coffee", "Try Haxe!", "Bosh", "Bish", "Chaz", "Bailey",
+		"Coco", "Finn"
+		
+	};
+
+	static const string navyseal[] = {
+		"the", "fuck", "did", "you", "just", "fucking", "say", "about", "me,", "you", "little", "bitch?"
+	};
+	
+	static const string awman[] = {
+		"Ah man", "So", "way", "back", "in", "the", "mine,", "got", "our", "pickaxe", "swingin'", "from", "side", "to", "side!"
+	};
+	
+	static const string shorts[] = {
+		"They're comfy,", "And easy to wear!"
+	};
+	
+	static const string spacemonkey[] = {
+		"It starts", "With an", "Earth", "Quake", "Birds and Snakes", "an Airplane", "and", "BILLY JOEL", "Is not afraid..."
+	};
+	
+	static const string contempt[] = {
+		"humour", "me", "greatly", "with", "your", "arrogance", "and", 'contempt,', "a", "flood", "of", "accusations", "born", "from", "the", "poison", "of", "envy", "and", "smite", "of", "disrespect."
+	};
+	
+	string GetName() {
+		
+		string rng_name = '[I am error]';
+		
+		switch (getMode)
+		{
+			case 0:
+				rng_name = NameClass.names[random(0, NameClass.names.size() - 1)];
+				if (rng_name == "What") getMode = 1;
+				if (rng_name == "Creeper") getMode = 2;
+				if (rng_name == "I like shorts!") getMode = 3;
+				if (rng_name == "That's great") getMode = 4;
+				if (rng_name == "You") getMode = 5;
+				break;
+			case 1:
+				rng_name = NameClass.navyseal[wordtracker];
+				wordtracker += 1;
+				if (rng_name == "bitch?") {
+					getMode = 0;
+					wordTracker = 0;
+				}
+				break;
+			case 2:
+				rng_name = NameClass.awman[wordtracker];
+				wordtracker += 1;
+				if (rng_name == "side!") {
+					getMode = 0;
+					wordTracker = 0;
+				}
+				break;
+			case 3:
+				rng_name = NameClass.shorts[wordtracker];
+				wordtracker += 1;
+				if (rng_name == "And easy to wear!") {
+					getMode = 0;
+					wordTracker = 0;
+				}
+				break;
+			case 4:
+				rng_name = NameClass.spacemonkey[wordtracker];
+				wordtracker += 1;
+				if (rng_name == "Is not afraid...") {
+					getMode = 0;
+					wordTracker = 0;
+				}
+				break;
+			case 5:
+				rng_name = NameClass.contempt[wordtracker];
+				wordtracker += 1;
+				if (rng_name == "disrespect.") {
+					getMode = 0;
+					wordTracker = 0;
+				}
+				break;
+		}
+		
+		return rng_name;
 	}
 }

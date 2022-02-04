@@ -20,12 +20,30 @@ class GHAGKeyEvents : EventHandler
 			if ((key1 && key1 == e.Args[0]) || (key2 && key2 == e.Args[0]))
 			{
 				FLineTraceData shot;
+				
+				//Prioritize walls and switches first
+				gardie.LineTrace(gardie.angle, 2048, gardie.pitch, TRF_THRUACTORS | TRF_THRUHITSCAN | TRF_THRUBLOCK | TRF_NOSKY, gardie.height - 12, 0, 0, shot);
+				if (shot.HitLine)
+				{
+					if (shot.hitline.special != 243 && shot.hitline.special != 244)
+					{
+						int orgSpeed = shot.HitLine.args[1];
+						if (shot.HitLine.args[0] == 0 && shot.HitLine.args[1] != 0) shot.HitLine.args[1] += int(shot.HitLine.args[1] * gardie.getRageModifier() * 2);
+						bool activate = shot.HitLine.Activate(Gardie, shot.LineSide, SPAC_Use);
+						if (activate)
+						{
+							KinesisPing.spawn('KinesisPing', shot.HitLocation);
+							return;
+						} else {
+							shot.HitLine.args[1] = orgSpeed;
+						}
+					}
+				}
+				
+				//Perform item pulls and barrel tossing
 				int kinesis_distance = 32;
-				
 				Array<Actor> list;
-				
 				int iterations = 0;
-				
 				while (kinesis_distance < 2048)
 				{
 					gardie.LineTrace(gardie.angle, kinesis_distance, gardie.pitch, TRF_THRUACTORS | TRF_THRUHITSCAN, gardie.height - 12, 0, 0, shot);
@@ -74,7 +92,10 @@ Class KinesisBlast : Actor
 			if (Inventory(mo)) {
 				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
 			}
-			if (distance3D(mo) <= radial) {
+			
+			if (Gardie.distance2D(mo) <= 64) continue; //ignore items within single step distance
+			
+			if (distance3D(mo) <= radial && isVisible(mo, true)) {
 			
 				if (radial == 64) 
 				{	
@@ -206,6 +227,10 @@ Class KinesisBlast : Actor
 
 Class KinesisPing : Actor
 {
+	default
+	{
+		+NoGravity;
+	}
 	States
 	{
 		Spawn :

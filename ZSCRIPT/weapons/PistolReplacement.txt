@@ -115,7 +115,7 @@ Class GHAGPistol : Pistol replaces Pistol
 				A_SetTics(Gardevoir(self).GetTicModifier(3, true));
 			}
 			HAND C 3 {
-				A_SetTics(Gardevoir(self).GetTicModifier(3, false));
+				A_SetTics(Gardevoir(self).GetTicModifier(3));
 			}
 			HAND D 3 {
 				A_FireBullets(Gardevoir(self).GetAccuracyModifier(5.6), Gardevoir(self).GetAccuracyModifier(5.6), 1, 8, "BulletPuff");

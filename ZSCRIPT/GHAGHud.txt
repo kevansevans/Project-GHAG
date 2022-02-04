@@ -226,7 +226,7 @@ Class GHAGStatus : BaseStatusBar
 		switch (anger) {
 			case 0:
 				return "Calm";
-			Case 1:
+			case 1:
 				return "Annoyed";
 			case 2:
 				return "Bitter";
@@ -235,7 +235,7 @@ Class GHAGStatus : BaseStatusBar
 			case 4:
 				return "Fuming";
 			case 5:
-				return "Irate";
+				return "Hateful";
 			case 6:
 				return "Savage";
 			case 7:
@@ -243,6 +243,7 @@ Class GHAGStatus : BaseStatusBar
 			case 8:
 				return "Livid";
 			case 9:
+				return "Viscious";
 			case 10:
 				return "MURDEROUS";
 		}

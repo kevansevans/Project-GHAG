@@ -1,20 +1,14 @@
 Class Gardevoir : PlayerPawn
 {
 	int RageTimer;
-	int RageDelay;
 	int RageConstant;
 	int RageValue;
-	int RageCooldownTics;
-	
-	int reviveAmount;
+	int RageBonus;
 	
 	bool OverTheEdge;
 	bool charonmode;
 	bool chargingBlackHole;
 	//property charonmode: charonmode;
-	
-	int PunchMode;
-	property PunchMode: PunchMode;
 	
 	default {
 		Health 350;
@@ -41,18 +35,12 @@ Class Gardevoir : PlayerPawn
 		Super.BeginPlay();
 		
 		RageValue = 0;
-		RageDelay = 35 * 3;
 		Ragetimer = 0;
 		RageConstant = 200;
-		RageCooldownTics = 35;
+		RageBonus = 0;
 		
 		OverTheEdge = false;
 		charonmode = false;
-		
-		PunchMode = 0;
-		
-		shield_health = 1000;
-		prev_armor = 0;
 	}
 	
 	void subtractAnger(Int value)
@@ -81,7 +69,7 @@ Class Gardevoir : PlayerPawn
 	{
 		if (!overTheEdge) RageValue += 750;
 		else RageValue += 250;
-		RageCooldownTics += 5;
+		++RageBonus;
 	}
 	
 	int GetRageValue() {
@@ -153,17 +141,30 @@ Class Gardevoir : PlayerPawn
 	{
 		RageTimer++;
 		
+		if (rollCounterAnger > 0 && gametic % 2 == 0) {
+			RageConstant += 1;
+			rollCounterAnger -= 1;
+		}
+		
 		if (RageValue > RageConstant) OverTheEdge = true;
 		else if (RageValue <= RageConstant) OverTheEdge = false;
 		
 		if (rageValue != 0)
 		{
 			int draintic = int(100 / (rageValue / 10. / 2.)) * 2;
-			if (RageTimer >= draintic) {
-				--ragevalue;
+			int drainrate = 1;
+			if (ragevalue > 1000 && !overTheEdge)
+			{
+				int rate = int((ragevalue - 1000) / 100 / 2);
+				drainrate += rate;
+			}
+			if (RageTimer >= (draintic + RageBonus)) {
+				ragevalue -= drainrate;
 				RageTimer = 0;
 			}
 		}
+		
+		
 		
 		//This script assumes that the map maker has some sort of script
 		//that manually gives player items

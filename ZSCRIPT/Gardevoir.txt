@@ -151,16 +151,24 @@ Class Gardevoir : PlayerPawn
 		
 		if (rageValue != 0)
 		{
-			int draintic = int(100 / (rageValue / 10. / 2.)) * 2;
-			int drainrate = 1;
-			if (ragevalue > 1000 && !overTheEdge)
+			if (!overTheEdge)
 			{
-				int rate = int((ragevalue - 1000) / 100 / 2);
-				drainrate += rate;
-			}
-			if (RageTimer >= (draintic + RageBonus)) {
-				ragevalue -= drainrate;
-				RageTimer = 0;
+				int draintic = int(100 / (rageValue / 10. / 2.)) * 2;
+				int drainrate = 1;
+				if (ragevalue > 1000 && !overTheEdge)
+				{
+					int rate = int((ragevalue - 1000) / 100 / 2);
+					drainrate += rate;
+				}
+				if (RageTimer >= (draintic + RageBonus)) {
+					ragevalue -= drainrate;
+					RageTimer = 0;
+				}
+			} else if (overTheEdge) {
+				if (RageTimer >= (10 + RageBonus)) {
+					ragevalue -= 3;
+					RageTimer = 0;
+				}
 			}
 		}
 		

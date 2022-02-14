@@ -3,7 +3,7 @@ Class Gardevoir : PlayerPawn
 	int RageTimer;
 	int RageConstant;
 	int RageValue;
-	int RageBonus;
+	double RageBonus;
 	
 	bool OverTheEdge;
 	bool charonmode;
@@ -28,7 +28,28 @@ Class Gardevoir : PlayerPawn
 		Player.MaxHealth 350;
 		
 		Player.ForwardMove 2, 1;
-     }
+		
+		xscale 0.325;
+		yscale 0.325;
+	}
+	
+	States
+	{
+		Spawn:
+			GARD BCBA 16;
+			Loop;
+		See:
+			GARD BCBA 6;
+			Loop;
+		Missile:
+		Melee:
+			TNT1 A 1;
+			goto spawn;
+		Death:
+			TNT1 A -1;
+			stop;
+			
+	}
 	
 	override void BeginPlay()
 	{

@@ -69,7 +69,7 @@ Class Gardevoir : PlayerPawn
 	{
 		if (!overTheEdge) RageValue += 750;
 		else RageValue += 250;
-		++RageBonus;
+		RageBonus += 0.34;
 	}
 	
 	int GetRageValue() {
@@ -139,6 +139,9 @@ Class Gardevoir : PlayerPawn
 	
 	override void Tick()
 	{
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		//Rage cooldown
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		RageTimer++;
 		
 		if (rollCounterAnger > 0 && gametic % 2 == 0) {
@@ -160,22 +163,21 @@ Class Gardevoir : PlayerPawn
 					int rate = int((ragevalue - 1000) / 100 / 2);
 					drainrate += rate;
 				}
-				if (RageTimer >= (draintic + RageBonus)) {
+				if (RageTimer >= (draintic + int(RageBonus))) {
 					ragevalue -= drainrate;
 					RageTimer = 0;
 				}
 			} else if (overTheEdge) {
-				if (RageTimer >= (10 + RageBonus)) {
+				if (RageTimer >= (10 + int(RageBonus))) {
 					ragevalue -= 3;
 					RageTimer = 0;
 				}
 			}
 		}
 		
-		
-		
-		//This script assumes that the map maker has some sort of script
-		//that manually gives player items
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		//Incorrect inventory handler
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		if (self.countinv("Pistol") >= 1)
 		{
 			self.clearInventory();
@@ -188,14 +190,9 @@ Class Gardevoir : PlayerPawn
 			self.giveInventory("BlackHole", 1);
 		}
 		
-		int curArmor = countInv('BasicArmor');
-		if (curArmor > prev_armor)
-		{
-			shield_health += (curArmor - prev_armor);
-			shield_health = min(1000, shield_health);
-		}
-		prev_armor = curArmor;
-		
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		//Dash handler
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		let buttons = player.cmd.buttons;
 		double theta = 0;

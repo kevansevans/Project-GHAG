@@ -118,7 +118,7 @@ Class GHAGPistol : Pistol replaces Pistol
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
 			}
 			HAND D 3 {
-				A_FireBullets(Gardevoir(self).GetAccuracyModifier(5.6), Gardevoir(self).GetAccuracyModifier(5.6), 1, 8, "BulletPuff");
+				A_FireBullets(Gardevoir(self).GetAccuracyModifier(4.3), Gardevoir(self).GetAccuracyModifier(4.3), 1, 8, "BulletPuff");
 				A_StartSound("weapons/pistol", CHAN_WEAPON);
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
 				A_OverlayPistols(true);
@@ -139,7 +139,7 @@ Class GHAGPistol : Pistol replaces Pistol
 				A_OverlayPistols(true, true);
 				A_Refire();
 				invoker.spread += 0.2;
-				invoker.spread = min(8.8, invoker.spread);
+				invoker.spread = min(10, invoker.spread);
 			}
 			HAND EFG 1;
 			TNT1 A 0 

@@ -71,8 +71,6 @@ Class GHAGRocketLauncher : RocketLauncher
 	override void BeginPlay()
 	{
 		super.BeginPlay();
-		
-		self.names = NameClass(Spawn("NameClass"));
 	}
 	
 	override void DoEffect()
@@ -254,6 +252,7 @@ Class GHAGRocketLauncher : RocketLauncher
 	
 	action void A_SetNewTagName() 
 	{
+		if (!Invoker.names) Invoker.names = NameClass(Spawn("NameClass"));
 		Invoker.setTag(Invoker.names.getName());
 	}
 	

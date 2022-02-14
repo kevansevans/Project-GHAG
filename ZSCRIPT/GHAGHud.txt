@@ -222,6 +222,8 @@ Class GHAGStatus : BaseStatusBar
 		if (Gardie.RageValue < 0) return "your turn will come....";
 		if (Gardie.overTheEdge) return "HELL HATH NO FURY";
 		
+		if (Gardie.RageValue > 1000) return "MURDEROUS";
+		
 		int anger = Min(Gardie.RageValue, 1000) / 100;
 		switch (anger) {
 			case 0:
@@ -243,9 +245,9 @@ Class GHAGStatus : BaseStatusBar
 			case 8:
 				return "Livid";
 			case 9:
-				return "Viscious";
 			case 10:
-				return "MURDEROUS";
+				return "Seeing Red";
+				
 		}
 		
 		return "So hecking angery, that idk what to call this!";

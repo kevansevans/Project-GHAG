@@ -420,81 +420,75 @@ Class GHAGEventHandler : EventHandler
 			}
 			else
 			{
-			
-				/*
-				 * Weights to be applied to bonus items
-				 *
-				 * Extra plasma set to be impossible to spawn unless:
-				 * A) Map level is greater than 9
-				 * B) A Plasma rifle is spawned in any way
-				 */
-				
-				int candybar = 0;
-				int pist = 100;
-				int shotty = 200;
-				int plasma = 999999;
-				
-				//Apply weights depending on current status of player.
-				int pistcount = gardie.countinv('GHAGPistolOverlay');
-				int shottycount = gardie.countinv('GHAGShotgunOverlay');
-				int plasmacount = gardie.countinv('GHAGPlasmaOverlay');
-				
-				if (pistcount == 4) {
-					pist = 999999;
-					shotty -= 100;
-					plasma -= 100;
-				}
-				else 
-				{
-					if (pistcount > shottycount) pistcount += 40;
-					if (pistcount > plasmacount) pistcount += 20;
-				}
-				
-				if (shottycount == 4) 
-				{
-					shotty = 999999;
-					plasma -= 100;
-				}
+				int rng = random(1, 10);
+				if (rng != 10 || weaponspawned == level.levelNum) Actor.spawn('RageCandyBar', (_x, _y, _z));
 				else
 				{
-					if (shottycount > pistcount) shottycount += 40;
-					if (shottycount > plasmacount) shottycount += 20;
-				}
-				
-				if (level.levelNum > 9 || plasmaspawned) plasma = 300;
-				else if (plasmacount == 4) {
-					plasma = 999999;
-				}
-				else
-				{
-					if (plasmacount > shottycount) plasma += 40;
-					if (plasmacount > pistcount) plasma += 80;
-				}
-				
-				//less likely to keep spawning guns *every* level
-				if (weaponspawned)
-				{
-					pist += 300;
-					shotty += 300;
-					plasma += 300;
-				}
-				
-				int rng = random(0, 300 + (weaponspawned ? 300 : 0));
-				
-				if (rng > plasma && !weaponspawned) {
-					Actor.spawn('ExtraPlasma', (_x, _y, _z));
+					int mod = 1;
+					
+					int pistolBonus = 0;
+					int shottyBonus = 1;
+					int plasmaBonus = 2;
+					
+					if (gardie.countInv('GHAGPistolOverlay') == 4)
+					{
+						pistolBonus = -1;
+						shottyBonus -= 1;
+						plasmaBonus -= 1;
+					}
+					
+					if (gardie.countInv('GHAGShotgun')) 
+					{
+						if (gardie.countInv('GHAGShotgunOverlay') == 4)
+						{
+							shottyBonus = -1;
+							plasmaBonus -= 1;
+						} else {
+							mod += 1;
+						}
+					}
+					if (gardie.countInv('GHAGPlasmaRifle')) 
+					{
+						if (gardie.countInv('GHAGPlasmaOverlay') == 4)
+						{
+							plasmaBonus = -1;
+						} else {
+							mod += 1;
+						}
+					}
+					
 					weaponspawned = level.levelNum;
+					if (pistolBonus == -1 && shottyBonus == -1 && plasmaBonus == -1)
+					{
+						return;
+					}
+					
+					int tries = 0;
+					while (true)
+					{
+						if (tries > 5) //Should be impossible to happen, but just to be safe
+						{
+							Actor.spawn('RageCandyBar', (_x, _y, _z));
+							return;
+						}
+					
+						int bonus = (level.levelNum + tries) % mod;
+						
+						if (bonus == pistolBonus) {
+							Actor.spawn('ExtraPistol', (_x, _y, _z));
+							return;
+						}
+						if (bonus == shottyBonus) {
+							Actor.spawn('ExtraShotgun', (_x, _y, _z));
+							return;
+						}
+						if (bonus == plasmaBonus) {
+							Actor.spawn('ExtraPlasma', (_x, _y, _z));
+							return;
+						}
+						++tries;
+					}			
 				}
-				else if (rng > shotty && !weaponspawned) {
-					Actor.spawn('ExtraShotgun', (_x, _y, _z));
-					weaponspawned = level.levelNum;
-				}
-				else if (rng > pist && !weaponspawned)
-				{ 
-					Actor.spawn('ExtraPistol', (_x, _y, _z));
-					weaponspawned = level.levelNum;
-				}
-				else Actor.spawn('RageCandyBar', (_x, _y, _z));
 			}
 		}
 	}

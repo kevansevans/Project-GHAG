@@ -11,9 +11,65 @@ Class GHAGEventHandler : EventHandler
 	override void WorldThingSpawned(WorldEvent event)
 	{
 		if (Gardevoir(event.thing)) return;
-		else SetActorProperties(event.thing);
 		
-		if (Weapon(event.thing))
+										//Nazis don't get to be shiny
+		if (Actor(event.thing).bIsMonster && !WolfensteinSS(event.thing) && !event.thing.bFriendly)
+		{
+			if (shinyodds == 0) shinyodds = 4096;
+			int rng = random(1, shinyodds);
+			if (rng == shinyodds / 2 || shinyodds == 1) 
+			{
+				GHAGEventHandler.SetShinyDemon(event.thing);
+			}
+			return;
+		}
+		
+		if (Health(event.thing)) {
+				
+			let healItem = Health(event.thing);
+			if (healItem.maxAmount < 350) {
+				healItem.MaxAmount = 350;
+			} else {
+				healItem.MaxAmount = Int(healItem.MaxAmount * 1.75);
+			}
+			if(healItem.Amount >= 100) {
+				healItem.Amount = Int(healItem.Amount * 1.75);
+			}
+			return;
+		}
+		
+		if (event.thing is "DehackedPickup")
+		{
+			let deh = DehackedPickup(event.thing);
+			Actor dummy = Actor.Spawn("DummyActor");
+			
+			Inventory curInv = dummy.inv;
+			
+			if (deh.CallTryPickup(dummy) && deh.RealPickup is "Weapon")
+			{
+				let gun = Weapon(deh.RealPickup);
+				if (!gun) return;
+				
+				if (gun.AmmoType1)
+				{
+					string ammoType = getWeaponClass(gun.AmmoType1.getClassName());
+					if (ammoType != "NullAmmoType")
+					{
+						let munition = Ammo(gun.spawn(ammoType, gun.pos));
+						if (munition) 
+						{
+							munition.amount = gun.AmmoGive1;
+						}
+						gun.destroy();
+						dummy.Destroy();
+						return;
+					}
+				}
+			}
+			dummy.Destroy();
+		}
+		
+		if (event.thing is "Weapon")
 		{
 			let gun = Weapon(event.thing);
 			if (!gun) return;
@@ -24,6 +80,7 @@ Class GHAGEventHandler : EventHandler
 				return;
 			}
 			
+			//Agnostic weapon type check
 			if (gun.AmmoType1)
 			{
 				string ammoType = getWeaponClass(gun.AmmoType1.getClassName());
@@ -34,11 +91,9 @@ Class GHAGEventHandler : EventHandler
 					{
 						munition.amount = gun.AmmoGive1;
 					}
-					if (PlasmaRifle(gun)) {
-						plasmaspawned = true;
-					}
 					gun.destroy();
-				} 
+					return;
+				}
 			}
 		}
 		
@@ -59,34 +114,6 @@ Class GHAGEventHandler : EventHandler
 		if (_type == "Cell") return "GHAGCellPack";
 	
 		return "NullAmmoType";
-	}
-	
-	void SetActorProperties(Actor thing) 
-	{
-		if (Health(thing)) {
-				
-			let healItem = Health(thing);
-			if (healItem.maxAmount < 350) {
-				healItem.MaxAmount = 350;
-			} else {
-				healItem.MaxAmount = Int(healItem.MaxAmount * 1.75);
-			}
-			if(healItem.Amount >= 100) {
-				healItem.Amount = Int(healItem.Amount * 1.75);
-			}
-			return;
-		}
-										//Nazis don't get to be shiny
-		if (Actor(thing).bIsMonster && !WolfensteinSS(thing) && !thing.bFriendly)
-		{
-			if (shinyodds == 0) shinyodds = 4096;
-			int rng = random(1, shinyodds);
-			if (rng == shinyodds / 2 || shinyodds == 1) 
-			{
-				GHAGEventHandler.SetShinyDemon(thing);
-			}
-			return;
-		}
 	}
 	
 	static void SetShinyDemon(Actor thing)
@@ -371,7 +398,6 @@ Class GHAGEventHandler : EventHandler
 	override void WorldLoaded(WorldEvent event)
 	{
 		numSecrets = 0;
-	
 		mapHasMinimalSecrets = true;
 		for (int i = 0; i < level.Sectors.Size(); i++)
 		{
@@ -493,3 +519,6 @@ Class GHAGEventHandler : EventHandler
 		}
 	}
 }
+
+Class DummyActor : Actor
+{}

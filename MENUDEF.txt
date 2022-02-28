@@ -1,0 +1,15 @@
+OptionMenu "GHAGOptions"
+{
+	Title "GHAG Options"
+	
+	TextField "Chainsaw name", "ChainsawName"
+	TextField "Pistol name", "PistolName"
+	TextField "Shotgun name", "ShotgunName"
+	TextField "Plasma name", "PlasmaName"
+}
+
+AddOptionMenu "OptionsMenu" after "PlayerMenu"
+{
+	StaticText ""
+	submenu "GHAG Options", "GHAGOPtions"
+}

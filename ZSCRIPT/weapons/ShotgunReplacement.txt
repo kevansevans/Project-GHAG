@@ -27,6 +27,13 @@ Class GHAGShotgun : Weapon
 		super.DoEffect();
 	}
 	
+	override void tick()
+	{
+		Super.tick();
+		
+		setTag(Cvar.findCvar("ShotgunName").getString());
+	}
+	
 	int layer;
 	int meleeframes;
 	

@@ -88,6 +88,13 @@ Class GHAGPistol : Pistol replaces Pistol
 		
 		spread = 0;
 	}
+	
+	override void tick()
+	{
+		Super.Tick();
+		
+		setTag(Cvar.findCvar("PistolName").getString());
+	}	
 
 	states
 	{

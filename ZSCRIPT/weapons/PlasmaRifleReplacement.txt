@@ -25,6 +25,8 @@ Class GHAGPlasmaRifle : PlasmaRifle
 	override void Tick()
 	{
 		Super.tick();
+		
+		setTag(Cvar.findCvar("PlasmaName").getString());
 	}	
 	
 	States

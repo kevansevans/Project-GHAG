@@ -76,6 +76,13 @@ Class GHAGPsychoCutter : Weapon
 		Tag "Psycho Cutter";
 	}
 	
+	override void tick()
+	{
+		Super.tick();
+		
+		setTag(Cvar.findCvar("ChainsawName").getString());
+	}
+	
 	States
 	{
 		Select:
@@ -126,7 +133,7 @@ Class GHAGPsychoCutter : Weapon
 				A_FireProjectile('GHAGPsychoProjectile'); 
 				A_OverlayChainsaws(false);
 			}
-			HAND ABCDE 1 A_OverlayChainsaws(false);
+			HAND AABBCCDDEE 1 A_OverlayChainsaws(false);
 			goto Ready;
 		Overlay:
 			PSAW AB 2;

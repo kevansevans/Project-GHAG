@@ -48,7 +48,12 @@ Class GHAGEventHandler : EventHandler
 			if (deh.CallTryPickup(dummy) && deh.RealPickup is "Weapon")
 			{
 				let gun = Weapon(deh.RealPickup);
-				if (!gun) return;
+				if (!gun) 
+				{
+					dummy.spawn(deh.RealPickup.getClassName(), deh.pos);
+					dummy.Destroy();
+					return;
+				}
 				
 				if (gun.AmmoType1)
 				{

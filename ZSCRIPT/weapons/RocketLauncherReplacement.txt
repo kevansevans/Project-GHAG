@@ -306,17 +306,19 @@ Class NameClass : Actor
 
 	int getMode;
 	int wordtracker;
+	int index;
 	
 	property getMode: getMode;
 	property wordtracker: WordTracker;
 	property names: names;
+	property index: index;
 	
 	default 
 	{
 		
 		NameClass.getMode 0;
 		NameClass.wordTracker 0;
-
+		NameClass.index 0;
 	}
 	
 	//Your name here? Hit me up!
@@ -357,7 +359,7 @@ Class NameClass : Actor
 		"Archvile repellant", "Raw kit lawn chair", "Hydrate", "Posture check", "You", "Major Arlene", "Kaapeli", "Bridge Burner",
 		"Jimmy", "You let me complicate you", "Excuse me", "Ultimate Cup of Coffee", "Try Haxe!", "Bosh", "Bish", "Chaz", "Bailey",
 		"Coco", "Finn", "Perkele", "No niin", "Pee is stored in the rocket", "Rockets are stored in the balls",
-		"Here's lookin' at you"
+		"Here's lookin' at you", "Rocket Launcher"
 		
 	};
 
@@ -388,7 +390,9 @@ Class NameClass : Actor
 		switch (getMode)
 		{
 			case 0:
-				rng_name = NameClass.names[random(0, NameClass.names.size() - 1)];
+				index += random(1, 20);
+				index = index % NameClass.names.size();
+				rng_name = NameClass.names[index];
 				if (rng_name == "What") getMode = 1;
 				if (rng_name == "Creeper") getMode = 2;
 				if (rng_name == "I like shorts!") getMode = 3;

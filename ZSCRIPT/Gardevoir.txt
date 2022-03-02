@@ -13,7 +13,7 @@ Class Gardevoir : PlayerPawn
 	default {
 		Health 350;
 		PainChance 255;
-        Player.DisplayName "Gardevoir" ;
+        Player.DisplayName "Gardevoir";
 		
 		Player.StartItem "GHAGPistol";
 		Player.StartItem "GHAGPistolOverlay";
@@ -172,18 +172,10 @@ Class Gardevoir : PlayerPawn
 			_locDamage *= 0.25;
 		}
 		
-		let player = Gardevoir(players[consoleplayer].mo);
-		
-		//Disable revive for now
-		/*if (self.health - _locDamage <= 0 && player.countinv("ReviveHalf") >= 1)
+		if (_locDamage >= 5)
 		{
-			reviveAmount = 175;
-			player.takeInventory("ReviveHalf", 1);
-			_locDamage = 0;
-			//GHAGStatus.hudMessageBox(Cvar.findCvar("name").getString() .. " got in a pinch and had to use a revive!", 10);
-		}*/
-		
-		if (gametic > restore_kaboom && restore_kaboom != -1) bNoRadiusDmg = false;
+			A_StartSound("gardie/Pain", CHAN_AUTO, 0, min(3, (double(_locdamage / 10.0))));
+		}
 		
 		return Super.DamageMobj(inflictor, source, _locDamage, mod, _locFlags, angle);
 	}

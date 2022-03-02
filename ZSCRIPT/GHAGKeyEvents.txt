@@ -29,7 +29,7 @@ class GHAGKeyEvents : EventHandler
 					{
 						int orgSpeed = shot.HitLine.args[1];
 						if (shot.HitLine.args[0] == 0 && shot.HitLine.args[1] != 0) shot.HitLine.args[1] += int(shot.HitLine.args[1] * gardie.getRageModifier() * 2);
-						bool activate = shot.HitLine.Activate(Gardie, shot.LineSide, SPAC_Use);
+						bool activate = shot.HitLine.Activate(Gardie, shot.LineSide, SPAC_Use | SPAC_Impact);
 						if (activate)
 						{
 							KinesisPing.spawn('KinesisPing', shot.HitLocation);

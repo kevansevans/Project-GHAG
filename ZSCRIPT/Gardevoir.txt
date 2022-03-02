@@ -132,13 +132,15 @@ Class Gardevoir : PlayerPawn
 		return GetRageValue() * 0.001 * (v_dashed ? 3 : 1);
 	}
 	
-	double GetTicModifier(int tic, bool allowZero = false) 
+	double GetTicModifier(int tic, bool allowZero = false, int weight = -1) 
 	{
-		double value = tic * (1 - GetRageModifier());
+		int tics = weight == -1 ? tic : weight;
+		double value = tics * (1 - GetRageModifier());
 		if (!allowZero) {
 			if (value < 1) value = 1;
 		}
 		value = round(value);
+		if (weight != -1) value = min(tic, value);
 		return Max(value, 0);
 	}
 	

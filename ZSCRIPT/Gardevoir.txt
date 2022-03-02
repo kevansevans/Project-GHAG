@@ -265,6 +265,8 @@ Class Gardevoir : PlayerPawn
 		//Dash handler
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		
+		if (player)
+		{
 		let buttons = player.cmd.buttons;
 		double theta = 0;
 		double speed = 45;
@@ -409,6 +411,7 @@ Class Gardevoir : PlayerPawn
 					
 				}
 			}
+		}
 		}
 		
 		Super.Tick();

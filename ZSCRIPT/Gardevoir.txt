@@ -62,9 +62,35 @@ Class Gardevoir : PlayerPawn
 			GARD B 1 Bright;
 			goto spawn;
 		Death:
-			TNT1 A -1;
-			stop;
-			
+			GARD A 1
+			{
+				A_SetRenderStyle(1, STYLE_Stencil);
+				SetShade("FF0000");
+			}
+		Death.Shrink:
+			GARD A 4 A_JumpIf(A_Shrink(), "Death.Loop");
+			loop;
+		Death.Loop:
+			TNT1 A 0 A_SetScale(1);
+			PBAL B 16;
+			TNT1 A 0 A_StartSound("pokeball/Shake", CHAN_BODY, CHANF_OVERLAP);
+			PBAL BFB 4;
+			PBAL B 16;
+			TNT1 A 0 A_StartSound("pokeball/Shake", CHAN_BODY, CHANF_OVERLAP);
+			PBAL BEB 4;
+			loop;
+	}
+	
+	Action bool A_Shrink()
+	{
+		if (scale.x > 0.1)
+		{
+			A_SetScale(scale.x - 0.05);
+			return false;
+		} else {
+			A_SetRenderStyle(1, STYLE_Normal);
+			return true;
+		}
 	}
 	
 	Action state A_GetSwayDirection()

@@ -189,11 +189,10 @@ Class KinesisBlast : Actor
 							} 
 							else 
 							{
-								if (DoomKey(victim)) {
-									gardie.GiveInventory(victim.getClassName(), 1);
-									victim.destroy();
+								if (Inventory(victim) && !victim.bDestroyed) 
+								{
+									gardie.touch(victim);
 								}
-								else if (Inventory(victim) && !victim.bDestroyed) victim.touch(gardie);
 							}
 							if (victim) {
 								victim.bNoClip = false;

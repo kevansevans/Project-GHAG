@@ -50,11 +50,11 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			}
 			loop;
 		Fire:
-			HAND A 1 {
+			HAND A 1 Bright {
 				A_PsychicPlasma();
 				A_PlasmaOverlay(true);
 			}
-			HAND BC 1;
+			HAND BC 1 Bright;
 			HAND DE 1 A_Refire();
 			Goto Ready;
 		AltFire:
@@ -73,11 +73,11 @@ Class GHAGPlasmaRifle : PlasmaRifle
 		Plasma.Overlay :
 			PLSM ABCDE 1;
 			loop;
-		PlasmaFire.Overlay :
-			PLSM PBCD 1;
+		PlasmaFire.Overlay:
+			PLSM PBCD 1 Bright;
 			stop;
 		PlasmaBFG.Overlay :
-			PLSM FGHIJKLMNO 3 A_SetTics(max(3 - CountInv("GHAGPlasmaOverlay"), 2));
+			PLSM FGHIJKLMNO 3 Bright A_SetTics(max(3 - CountInv("GHAGPlasmaOverlay"), 2));
 			goto Plasma.Overlay;
 	}
 	

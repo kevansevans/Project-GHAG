@@ -238,7 +238,7 @@ Class GHAGShotgun : Weapon
 			GSHT A 999;
 			stop;
 		Fire.Overlay:
-			GSHT G 5 
+			GSHT G 5 Bright
 			{
 				for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
 				{

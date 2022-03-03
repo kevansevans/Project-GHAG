@@ -154,9 +154,6 @@ Class GHAGPistol : Pistol replaces Pistol
 				invoker.spread = 0;
 			}
 			Goto Ready;
-		Flash:
-			TNT1 A 0;
-			Goto LightDone;
 		Fire.Overlay:
 			PIST B 2 Bright A_SetTics(Gardevoir(self).GetTicModifier(2));
 			PIST A 100;

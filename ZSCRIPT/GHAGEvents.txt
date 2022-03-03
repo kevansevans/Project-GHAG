@@ -438,7 +438,9 @@ Class GHAGEventHandler : EventHandler
 	
 	void SpawnBonusItem(double _x, double _y, double _z)
 	{
-
+		console.printf("Don't forget to remove me!");
+		Actor.spawn('RageCandyBar', (_x, _y, _z));
+		return;
 		if (level.levelNum <= 1)
 		{
 			Actor.spawn('RageCandyBar', (_x, _y, _z));

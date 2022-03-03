@@ -10,6 +10,8 @@ Class Gardevoir : PlayerPawn
 	bool chargingBlackHole;
 	//property charonmode: charonmode;
 	
+	PointLight glowy;
+	
 	default {
 		Health 350;
 		PainChance 255;
@@ -57,7 +59,22 @@ Class Gardevoir : PlayerPawn
 			goto See;
 		Missile:
 		Melee:
-			GARD F 10;
+			GARD F 10
+			{
+				if (!invoker.glowy)
+				{
+					Vector3 lightpos = (self.pos.x, self.pos.y, self.pos.z + 50);
+					invoker.glowy = Pointlight(self.spawn("PointLight", lightpos));
+					invoker.glowy.args[0] = 0x6A;
+					invoker.glowy.args[1] = 0x06;
+					invoker.glowy.args[2] = 0xAD;
+					invoker.glowy.args[3] = 16;
+				}
+			}
+			TNT1 A 0
+			{
+				invoker.glowy.destroy();
+			}
 			goto spawn;
 		Death:
 			GARD A 1
@@ -208,6 +225,12 @@ Class Gardevoir : PlayerPawn
 	
 	override void Tick()
 	{
+		if (self.glowy)
+		{
+			Vector3 lightpos = (self.pos.x, self.pos.y, self.pos.z + 50);
+			self.glowy.setOrigin(lightpos, true);
+		}
+	
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Rage cooldown
 		////////////////////////////////////////////////////////////////////////////////////////////////////

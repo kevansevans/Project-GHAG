@@ -60,9 +60,6 @@ version "4.6"
 #include "ZSCRIPT/weapons/black hole particles/ImpParticleGib.txt"
 #include "ZSCRIPT/weapons/black hole particles/SpiderParticle.txt"
 
-//Inate abilities, AKA the canonical abilities a Gardevoir has
-// [None so far]
-
 //Pokeball code. DON'T ENABLE ME! I'm not ready!
 //#include "ZSCRIPT/pokeball/TrainerTracker.txt"
 //#include "ZSCRIPT/pokeball/Pokeball.txt"

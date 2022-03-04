@@ -100,7 +100,7 @@ Class MoonBlastKaboom : Actor
 			{
 				double modifier = Gardevoir(players[consoleplayer].mo).getRageModifier();
 				A_SetScale(1 + modifier, 1 + modifier);
-				A_MoonBlastBlast(BF_DONTWARN | BF_AFFECTBOSSES | BF_NOIMPACTDAMAGE | 16, 512, 512, 40);
+				A_MoonBlastBlast(BF_DONTWARN | BF_AFFECTBOSSES | BF_NOIMPACTDAMAGE | 16, 512 + (512 * modifier), 512 + (512 * modifier), 40 + (40 * modifier));
 			}
 			MNBL A 1 Bright;
 			MNBL BCDEFGHIJKLMNOPQRS 2 Bright;

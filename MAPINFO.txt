@@ -4,5 +4,5 @@ GameInfo
 	StatusBarClass = "GHAGStatus"
 	AddEventHandlers = "GHAGEventHandler"
 	AddEventHandlers = "GHAGKeyEvents"
-	AddEventHandlers = "ActorTracker"
+	//AddEventHandlers = "ActorTracker"
 }

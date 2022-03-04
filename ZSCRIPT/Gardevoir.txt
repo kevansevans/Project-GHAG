@@ -209,11 +209,13 @@ Class Gardevoir : PlayerPawn
 			if (RageValue > RageConstant) RageValue = RageConstant;
 		}
 		
-		if (!Gardevoir(source)) ActorTracker.trackThing(Source, NONE, damage);
+		/*if (!Gardevoir(source)) ActorTracker.trackThing(Source, NONE, damage);
 		else
 		{
 			_locDamage *= 0.25;
-		}
+		}*/
+		
+		if (Gardevoir(source)) _locDamage *= 0.25;
 		
 		if (_locDamage >= 5)
 		{

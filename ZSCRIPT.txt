@@ -4,7 +4,7 @@ version "4.6"
 #include "ZSCRIPT/Gardevoir.txt"
 #include "ZSCRIPT/GHAGEvents.txt"
 #include "ZSCRIPT/GHAGKeyEvents.txt"
-#include "ZSCRIPT/ActorTracker.txt"
+//#include "ZSCRIPT/ActorTracker.txt"
 #include "ZSCRIPT/GHAGHud.txt"
 
 //Pickups and stuff that need to behave differently

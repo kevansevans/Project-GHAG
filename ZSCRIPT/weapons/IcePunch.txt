@@ -290,7 +290,7 @@ Class BasePunchPuff : BulletPuff
 		}
 	}
 	
-	action void A_Inflict(int odds, StatusType Status) 
+	/*action void A_Inflict(int odds, StatusType Status) 
 	{
 		int rng = random(1, 100);
 		if (rng <= odds) {
@@ -298,7 +298,7 @@ Class BasePunchPuff : BulletPuff
 				ActorTracker.TrackThing(target, Status);
 			}
 		}
-	}
+	}*/
 	
 	override void tick() {
 	
@@ -332,7 +332,7 @@ Class IcePuff : BasePunchPuff
 		Melee :
 			IPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
 			IPFB ABCDEFGHIJKLM 1 Bright;
-			IPFB K 1 Bright A_Inflict(chance, FROZEN);
+			IPFB K 1 Bright /*A_Inflict(chance, FROZEN)*/;
 			IPFB NO 1 Bright;
 			IPFB K 1 Bright;
 			TNT1 A 1 Bright;

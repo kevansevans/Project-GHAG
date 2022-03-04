@@ -126,7 +126,7 @@ Class GHAGEventHandler : EventHandler
 		let shinything = Actor(thing);
 		if (!shinything) return;
 		
-		ActorTracker.TrackThing(thing, SHINY);
+		//ActorTracker.TrackThing(thing, SHINY);
 		
 		if (Zombieman(shinything)) 
 		{
@@ -246,10 +246,6 @@ Class GHAGEventHandler : EventHandler
 		
 		int angerBonus = Max(int(thing.spawnHealth() / 5), 1);
 		int willBonus = int(AngerBonus / 10);
-		
-		if (ActorTracker.getActorStats(thing)) {
-			
-		}
 		
 		if (gardie.player.ReadyWeapon is "IcePunch" ||
 			gardie.player.ReadyWeapon is "Swift"		 ||

@@ -29,7 +29,7 @@ class GHAGKeyEvents : EventHandler
 					{
 						int orgSpeed = shot.HitLine.args[1];
 						if (shot.HitLine.args[0] == 0 && shot.HitLine.args[1] != 0) shot.HitLine.args[1] += int(shot.HitLine.args[1] * gardie.getRageModifier() * 2);
-						bool activate = shot.HitLine.Activate(Gardie, shot.LineSide, SPAC_Use | SPAC_Impact);
+						bool activate = shot.HitLine.Activate(Gardie, shot.LineSide, SPAC_Use);
 						if (activate)
 						{
 							KinesisPing.spawn('KinesisPing', shot.HitLocation);
@@ -66,9 +66,6 @@ class GHAGKeyEvents : EventHandler
 	}
 }
 
-Class HudModifier : Inventory
-{}
-
 Class KinesisBlast : Actor
 {
 
@@ -87,6 +84,13 @@ Class KinesisBlast : Actor
 		Actor mo;
 		while ( (mo = Actor(it.Next ())) )
 		{
+			if (mo.bIsMonster && mo.bIceCorpse && distance3D(mo) <= radial)
+			{
+				mo.spawn("KinesisPing", mo.pos);
+				mo.A_DamageSelf(1);
+				continue;
+			}
+		
 			if (!Inventory(mo) && !ExplosiveBarrel(mo)) continue;
 			
 			if (Inventory(mo)) {

@@ -2,23 +2,9 @@
 // To Do
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-- Rocket alt
-	- "smash" rocket like a can, grenade/mine
-	- Reload to place, right click to detonate
-	- Snapping finger animation
-	- Guranteed big boom
-
-- Confusion
-	- 25 percent chance to temporarily make actor friendly, aka "confused"
-	- 25 percent chance to unconfuse
-	
-- Psychic Charge
-	- Move is seen performed by Gardevoir in pokken tournament
-	- Does not have official/specified name
-	- Move shows Gardevoir performing a bow and arrow like motion
-	- Base attack should be powerful, but longer charges should get stronger
-	
-- Fix kinesis attack for projectiles.
+- Replace hud sprites with floating actors that point wherever player is pointing
+	- Later update
+	- Look into Guncaster to see how this is accomplished
 	
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,21 +13,12 @@
 
 - Better sounds
 - Better hand sprites for attacks
-- Make attacks "crunchier"
+- Make attacks "crunchier" (How?)
 - Player sprites
-- Player sounds so Gardevoir doesn't sound like doomguy
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Brainstorming
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-Use Tag property to allow players to name their guns
-
-Hud organization
-
-	- Weapons that occupy the same slot should appear vertically
-	- Anger and health bonus nums when killing enemies
-	- Maybe SOME way to display ammo capacity
 	
 pokeball
 
@@ -51,3 +28,19 @@ pokeball
 	- Use actual formula catch...?
 	- spawn, add +friendly tag
 	- Finding secret grants random chance to find ball.
+	
+	- Psychic Charge
+	- Move is seen performed by Gardevoir in pokken tournament
+	- Does not have official/specified name
+	- Move shows Gardevoir performing a bow and arrow like motion
+	- Base attack should be powerful, but longer charges should get stronger
+	
+- Rocket alt
+	- "smash" rocket like a can, grenade/mine
+	- Reload to place, right click to detonate
+	- Snapping finger animation
+	- Guranteed big boom
+
+- Confusion
+	- 25 percent chance to temporarily make actor friendly, aka "confused"
+	- 25 percent chance to unconfuse

@@ -363,7 +363,7 @@ Class NameClass : Actor
 		"Archvile repellant", "Raw kit lawn chair", "Hydrate", "Posture check", "You", "Major Arlene", "Kaapeli", "Bridge Burner",
 		"Jimmy", "You let me complicate you", "Excuse me", "Ultimate Cup of Coffee", "Try Haxe!", "Bosh", "Bish", "Chaz", "Bailey",
 		"Coco", "Finn", "Perkele", "No niin", "Pee is stored in the rocket", "Rockets are stored in the balls",
-		"Here's lookin' at you", "Rocket Launcher"
+		"Here's lookin' at you", "Rocket Launcher", "Wake your psyche up", "Dig your anger up"
 		
 	};
 

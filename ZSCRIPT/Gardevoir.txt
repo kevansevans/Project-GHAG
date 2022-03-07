@@ -521,15 +521,11 @@ Class Gardevoir : PlayerPawn
 			if (RageConstant < 1000) RageConstant = 1000;
 			else RageConstant += 100;
 			
+			RageValue = RageConstant;
+			
 			super.CheatGive("GHAGBackpack", 40);
 			super.CheatGive("GHAGBackpack", 40);
 			super.CheatGive("all", _amount);
-			return;
-		}
-		
-		if (_name == "maxanger")
-		{
-			RageValue = RageConstant;
 			return;
 		}
 		

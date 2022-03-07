@@ -59,8 +59,3 @@ version "4.6"
 #include "ZSCRIPT/weapons/black hole particles/PinkyParticle.txt"
 #include "ZSCRIPT/weapons/black hole particles/ImpParticleGib.txt"
 #include "ZSCRIPT/weapons/black hole particles/SpiderParticle.txt"
-
-//Pokeball code. DON'T ENABLE ME! I'm not ready!
-//#include "ZSCRIPT/pokeball/TrainerTracker.txt"
-//#include "ZSCRIPT/pokeball/Pokeball.txt"
-//#include "ZSCRIPT/pokeball/MissingNo.txt"

@@ -11,7 +11,7 @@
 // Polishing
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-- Better sounds
+- Better sounds (Like what?)
 - Better hand sprites for attacks
 - Make attacks "crunchier" (How?)
 - Player sprites
@@ -29,11 +29,12 @@ pokeball
 	- spawn, add +friendly tag
 	- Finding secret grants random chance to find ball.
 	
-	- Psychic Charge
+- Psychic Charge
 	- Move is seen performed by Gardevoir in pokken tournament
 	- Does not have official/specified name
 	- Move shows Gardevoir performing a bow and arrow like motion
 	- Base attack should be powerful, but longer charges should get stronger
+	- Should replace switft
 	
 - Rocket alt
 	- "smash" rocket like a can, grenade/mine

@@ -63,7 +63,7 @@ Class MoonBlastGun : Weapon
 		if (gardie.ragevalue <= 99  && invoker.charge <= 99) 
 		{
 			++invoker.charge;
-			int rngrange = 20 * gardie.getRageModifier();
+			int rngrange = 20 * invoker.charge / 1000;
 			A_ClearOverlays();
 			A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
 			return false;

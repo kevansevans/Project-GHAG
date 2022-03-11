@@ -5,4 +5,5 @@ GameInfo
 	AddEventHandlers = "GHAGEventHandler"
 	AddEventHandlers = "GHAGKeyEvents"
 	//AddEventHandlers = "ActorTracker"
+	DrawReadThis = true
 }

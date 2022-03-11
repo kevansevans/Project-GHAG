@@ -282,7 +282,7 @@ mixin class BlackHoleAttacks
 				//This statement here helps improve performance among actors who are very likely to die
 				//Enemies here are extremely close to the event horizon AND WILL DIE, so to save on
 				//performance and ensure they don't hitch on each other, these flags are set to true
-				if (mo.bIsMonster) {
+				if (mo.bIsMonster && isVisible(mo, true)) {
 					mo.bThruActors = true;
 					mo.A_ChangeLinkFlags(false);
 				}

@@ -9,6 +9,8 @@ Class MoonBlastGun : Weapon
 		Weapon.SelectionOrder 4000;
 	}
 	
+	int charge;
+	
 	States
 	{
 		Select :
@@ -25,6 +27,7 @@ Class MoonBlastGun : Weapon
 			Loop;
 		Ready :
 			HAND A 1 {
+				invoker.charge == 0;
 				A_WeaponReady();
 				A_DrawMoonOverlay();
 			}
@@ -57,9 +60,9 @@ Class MoonBlastGun : Weapon
 	{
 		let gardie = Gardevoir(players[consoleplayer].mo);
 		
-		if (gardie.ragevalue <= 99) 
+		if (gardie.ragevalue <= 99  && invoker.charge <= 99) 
 		{
-			gardie.addAnger(1);
+			++invoker.charge;
 			int rngrange = 20 * gardie.getRageModifier();
 			A_ClearOverlays();
 			A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
@@ -79,6 +82,7 @@ Class MoonBlastGun : Weapon
 			A_AlertMonsters();
 			
 			gardie.subtractAnger(100);
+			invoker.charge = 0;
 			return true;
 		}
 		return false;

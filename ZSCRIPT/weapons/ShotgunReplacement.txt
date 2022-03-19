@@ -120,10 +120,15 @@ Class GHAGShotgun : Weapon
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
 				A_OverlayShotguns();
 			}
+			TNT1 A 0
+			{
+				//Does not work on next state for some reason...?
+				if (Cvar.findCvar("sv_infiniteammo").GetBool() == false) A_GiveInventory("Shell");
+			}
 			HAND B 2 Bright {
-				A_GiveInventory("Shell");
 				A_FireBullets(4, 4, 10, 5, "BulletPuff");
-				A_FireBullets(4, 4, floor(14 * Gardevoir(Self).GetRageModifier()), 5, "GHAGPsychicPuff");
+				int pellets = floor(14 * Gardevoir(Self).GetRageModifier());
+				A_FireBullets(4, 4, pellets, 5, "GHAGPsychicPuff");
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_SetTics(Gardevoir(self).GetTicModifier(2));
 				A_OverlayShotguns(true);

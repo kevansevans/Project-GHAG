@@ -186,8 +186,8 @@ Class GHAGShotgun : Weapon
 				A_OverlayShotguns();
 			}
 			HAND B 1 Bright {
-				A_FireBullets(6, 6, 15 * Min(countinv("GHAGShotgunOverlay"), 3), 5, "GHAGPsychicPuff");
-				A_TakeInventory("Shell", Min(countinv("GHAGShotgunOverlay"), 3));
+				A_FireBullets(6, 6, 15 * countinv("GHAGShotgunOverlay"), 5, "GHAGPsychicPuff");
+				if (Cvar.findCvar("sv_infiniteammo").GetBool() == false) A_TakeInventory("Shell", Min(countinv("GHAGShotgunOverlay"), 3));
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_SetTics(Gardevoir(self).GetTicModifier(2));
 				A_OverlayShotguns(true, true);

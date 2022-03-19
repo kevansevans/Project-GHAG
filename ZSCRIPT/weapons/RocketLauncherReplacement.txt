@@ -175,7 +175,6 @@ Class GHAGRocketLauncher : RocketLauncher
 					int layer = A_GetRandomLayer();
 					A_Overlay(layer, "Clear");
 				}
-
 			}
 			TNT1 A 0 
 			{

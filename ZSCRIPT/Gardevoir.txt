@@ -12,6 +12,9 @@ Class Gardevoir : PlayerPawn
 	
 	PointLight glowy;
 	
+	Weapon ActiveGun;
+	Array<Actor> FloatGuns;
+	
 	default {
 		Health 350;
 		PainChance 255;

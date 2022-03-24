@@ -1,0 +1,63 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//For actors that need a sprite replacement, but behave the same otherwise
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Class DoomSmallHealItem : HealthBonus replaces HealthBonus
+{
+	Default
+	{
+		+FloatBob;
+		Inventory.PickupMessage "Used a Small Potion";
+	}
+	States
+	{
+		Spawn:
+			HEAL A 1 Bright;
+			Loop;
+	}
+}
+
+Class DoomMediumHealItem : Stimpack replaces Stimpack
+{
+	Default
+	{
+		+FloatBob;
+		Inventory.PickupMessage "Used a Potion";
+	}
+	States
+	{
+		Spawn:
+			HEAL B 1 Bright;
+			Loop;
+	}
+}
+
+Class DoomLargeHealItem : Medikit replaces Medikit
+{
+	Default
+	{
+		+FloatBob;
+		Inventory.PickupMessage "Used a Large Potion";
+	}
+	States
+	{
+		Spawn:
+			HEAL C 1 Bright;
+			Loop;
+	}
+}
+
+Class DoomExtraLargeHealItem : Soulsphere replaces Soulsphere
+{
+	Default
+	{
+		+FloatBob;
+		Inventory.PickupMessage "Used an Extra Large Potion";
+	}
+	States
+	{
+		Spawn:
+			HEAL D 1 Bright;
+			Loop;
+	}
+}

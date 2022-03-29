@@ -1,56 +1,3 @@
-Class GHAGRocketAmmo : CustomInventory replaces RocketAmmo 
-{
-	default {
-		Inventory.pickupmessage "Found a piece of ordnance!";
-		Inventory.pickupsound "misc/w_pkup";
-		Inventory.amount 1;
-	}
-	
-	override bool TryPickup(Actor toucher)
-	{
-		let gardie = Gardevoir(Players[consoleplayer].mo);
-		
-		for (let probe = gardie.Inv; probe != NULL; probe = probe.Inv)
-		{
-			let item = RocketAmmo(probe);
-			if (item) {
-				if (gardie.countinv('rocketammo') >= item.maxamount) return false;
-				else {
-					if (gardie.countinv("GHAGRocketLauncher") == 0) {
-						gardie.A_GiveInventory("GHAGRocketLauncher", 1);
-						if (!gardie.chargingBlackHole) gardie.A_SelectWeapon("GHAGRocketLauncher");
-					}
-					gardie.A_GiveInventory("RocketAmmo", self.amount);
-				}
-			}
-		}
-		GoAwayAndDie();
-		return true;
-	}
-	
-	States
-	{
-		Spawn:
-			ROCK A -1;
-			Stop;
-	}
-}
-
-Class GHAGRocketBox : GHAGRocketAmmo replaces RocketBox 
-{
-	default {
-		inventory.pickupmessage "Found a box of ordnance!";
-		inventory.pickupsound "misc/w_pkup";
-		Inventory.Amount 5;
-	}
-	States
-	{
-		Spawn:
-			BROK A -1;
-			Stop;
-	}
-}
-
 Class GHAGRocketLauncher : RocketLauncher
 {
 	default {
@@ -373,7 +320,8 @@ Class NameClass : Actor
 		"Archvile repellant", "Raw kit lawn chair", "Hydrate", "Posture check", "You", "Major Arlene", "Kaapeli", "Bridge Burner",
 		"Jimmy", "You let me complicate you", "Excuse me", "Ultimate Cup of Coffee", "Try Haxe!", "Bosh", "Bish", "Chaz", "Bailey",
 		"Coco", "Finn", "Perkele", "No niin", "Pee is stored in the rocket", "Rockets are stored in the balls",
-		"Here's lookin' at you", "Rocket Launcher", "Wake your psyche up", "Dig your anger up"
+		"Here's lookin' at you", "Rocket Launcher", "Wake your psyche up", "Dig your anger up", "Delete This",
+		"Exterminate", "EXTERMINATUS"
 		
 	};
 

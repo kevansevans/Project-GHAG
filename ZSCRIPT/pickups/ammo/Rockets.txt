@@ -1,0 +1,52 @@
+Class GHAGRocketAmmo : CustomInventory replaces RocketAmmo 
+{
+	default {
+		Inventory.pickupmessage "Found a piece of ordnance!";
+		Inventory.pickupsound "misc/w_pkup";
+		Inventory.amount 1;
+	}
+	
+	override bool TryPickup(Actor toucher)
+	{
+		let gardie = Gardevoir(Players[consoleplayer].mo);
+		
+		for (let probe = gardie.Inv; probe != NULL; probe = probe.Inv)
+		{
+			let item = RocketAmmo(probe);
+			if (item) {
+				if (gardie.countinv('rocketammo') >= item.maxamount) return false;
+				else {
+					if (gardie.countinv("GHAGRocketLauncher") == 0) {
+						gardie.A_GiveInventory("GHAGRocketLauncher", 1);
+						if (!gardie.chargingBlackHole) gardie.A_SelectWeapon("GHAGRocketLauncher");
+					}
+					gardie.A_GiveInventory("RocketAmmo", self.amount);
+				}
+			}
+		}
+		GoAwayAndDie();
+		return true;
+	}
+	
+	States
+	{
+		Spawn:
+			ROCK A -1;
+			Stop;
+	}
+}
+
+Class GHAGRocketBox : GHAGRocketAmmo replaces RocketBox 
+{
+	default {
+		inventory.pickupmessage "Found a box of ordnance!";
+		inventory.pickupsound "misc/w_pkup";
+		Inventory.Amount 5;
+	}
+	States
+	{
+		Spawn:
+			BROK A -1;
+			Stop;
+	}
+}

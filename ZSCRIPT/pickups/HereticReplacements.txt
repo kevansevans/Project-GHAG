@@ -1,0 +1,10 @@
+//Color coding is important
+Class HereticMediumHealItem : DoomMediumHealItem replaces CrystalVial
+{
+	States
+	{
+		Spawn:
+			HEAL A 1 Bright;
+			Loop;
+	}
+}

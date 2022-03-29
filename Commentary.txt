@@ -1,0 +1,99 @@
+Hey, thanks for opening up my wad to look around. If you know the places I like
+to hang out, feel free to shoot me any questions you may have.
+
+This file sort of acts as a developer commentary. I have two sections, dev
+commentary, where I talk about the mod, and character commentary, where I talk
+about the gardevoir you play as. I like to talk about my thought process behind
+stuff I work on, I feel it's important to share the sort of lessons you learn
+through thinking about it yourself, or looking for solutions/inspiration.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//Developer commentary
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+The inspiration for the mod came down to a single image: https://twitter.com/marikbentusi/status/1173682164707315712
+
+I found it incredibly hilarious the idea of a psychic not actually using a gun
+"correctly", so that's where the mod kicked off. Originally, this was going to
+be a plain reskin, but I quickly realized this was a chance to make something 
+more engaging. Initially, every weapon was going to do something goofy.
+
+The shotgun would do a sort of "reverse" animation, where instead of pumping the
+forend, the forend would stay still and the ENTIRE REST of the gun would move.
+This is also where the idea of throwing rockets spawned, it was a goofy idea, so
+it went in.
+
+But, as I said, quickly I realized I had to do something more. Coming to terms
+with the difficulty of making every other gun do something silly, I thought about
+how that if a gun was being psychically held, why not psychically operated as well?
+I thought about how someone could psychically operate the slide of a hand gun 
+faster than pulling the trigger, and the term I lovingly gave this was 
+"Forced Fuller Auto mode". The need to figure out how to balance this inspired
+the anger system, and made making the other guns act similar came along.
+
+However, I wranged with a problem still. I still wanted the guns to be silly, and
+what could I do to make the chaingun, SSG, and plasma rifle do differently?
+I wanted to keep the pistol relevant. As is, unless you're doing a tyson run,
+the pistol gets put aside for every gun, so I wanted to keep it relevant. It already
+took the slot of "Gun that fires fast", so the chaingun couldn't just get... faster.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//Character commentary
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Kev is a boy.
+
+I'm only mildly annoyed at the fact that people get this wrong. This isn't my fault,
+this isn't their fault, it's Game Freak's, so I'm more mad at them. For those who 
+are probably raising their eyebrows at the possibility at aGardevoir being male, 
+let's go through their history.
+
+Gardevoir was introduced Gen 3, Ruby/Sapphire/Emerald. Gallade was Introduced
+Gen 4, Diamond/Pearl/Platinum. Gardevoir has always been able to be a boy since 
+their introduction in Gen 3. Level a Kirlia up to 36 and it will evolve regardless
+of gender. So, then it was a retcon in Gen 4? Nope.
+
+Gen 4 introduced a lot of pokemon that evolved from previously "unevolvable" and
+ton of "side evolutions" (Think how eevee has several evolutions). Gallade is
+one of these. In order to get a Gallade, you must obtain two things. A male
+kirlia, and a dawn stone. Then use that dawn stone on the kirlia.
+
+Then, the internet doing what it does best, assumed that masculine pokemon meant
+boy, and feminine pokemon meant girl. Is it a big deal? Naw not really, the most
+I'll go on about this publicly is probably this text file. BUT, hope you learned
+something today. Gardevoir can be boys :)
+
+Now for the more cringe part, haha.
+
+The idea for using a gardevoir, and not just making Doomguy psychic with a hand 
+wavy "he's now psychic", or inventing my own character, was the fact that I used
+to do the whole pokesona thing. Gardevoir has been my favorite pokemon (long before
+I learned how things worked in my pants, don't y'all get the wrong ideas) and did
+what any angsty pre-pubescent kid with access to Tumblr and DeviantArt did. Try 
+to build an online persona where I was a self insert fan character, doughnut steel!
+
+His outfit was inspired by Scout's Ticket Boy cosmetic from Team Fortress 2. It
+was my second cosmetic drop while I was still F2P, which if you know what that means,
+you can imagine my excitement for it. I still have it, gave it a stragifier, and
+still keep my original load out saved away for nostalgia purposes.
+
+Kev doesn't really have a concrete personality. I'm not a good character writer,
+so the best I can offer is imagining how I would respond getting angry. The anger
+system with the words describing how angry you are comes from my own sense of
+lingo and what sort of words I would use to describe various levels of being
+pissed off. I don't like calling myself pissed off per se in anything more formal
+than a chat with friends, so it was a pretty good exercise.
+
+Kev has no master/owner. He is a feral gardevoir. He wears clothes so people can 
+see he's a boy, and so pervs can't get a good look when they upskirt him. He's not 
+afraid to call his dress a dress. Why does he have a gun? WhY iS hE sO aNgErY!?! 
+IDK, haven't thought of a reason, and I don't really feel the need to come up 
+with one. Modest otherwise, and easily embarassed.
+
+Angry gardevoir are such a mood, though. As much as I like the more cute and delicate
+depictions of them, the agressive, violent, and even psychopathic ones are just
+so much more interesting and alluring to me. The capacity for world ending violence,
+and the glimpses of them being pushed just enough to consciously choose violence.
+They're psychic pomemon with insane special attack that can summon black holes.
+
+And this one chose a gun. Sends chills down my spine, and I love the idea.

@@ -1,0 +1,72 @@
+Class MagicMunitions : Actor
+{
+	Actor munitions;
+	String type;
+	
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			{
+				if (!munitions)
+				{
+					return resolveState("Respawn");
+				}
+				return resolveState(null);
+			}
+		Loop;
+		Respawn:
+			TNT1 A 35;
+			TNT1 A 0 {
+				if (!munitions)
+					{
+						let shootybangbangs = Actor(Spawn(type));
+						let fog = TeleportFog(Spawn("TeleportFog"));
+						shootybangbangs.setOrigin(invoker.pos, false);
+						fog.setOrigin(invoker.pos, false);
+						munitions = shootybangbangs;
+					}
+				}
+			goto Spawn;
+	}
+}
+
+Class MagicBullets : MagicMunitions
+{
+	override void BeginPlay()
+	{
+		type = "GHAGBulletBox";
+		munitions = GHAGMag(Spawn(type));
+		munitions.setOrigin(self.pos, false);
+	}
+}
+
+Class MagicShells : MagicMunitions
+{
+	override void BeginPlay()
+	{
+		type = "GHAGShellBox";
+		munitions = GHAGShellBox(Spawn(type));
+		munitions.setOrigin(self.pos, false);
+	}
+}
+
+Class MagicRockets : MagicMunitions
+{
+	override void BeginPlay()
+	{
+		type = "GHAGRocketBox";
+		munitions = GHAGRocketBox(Spawn(type));
+		munitions.setOrigin(self.pos, false);
+	}
+}
+
+Class MagicPlasma : MagicMunitions
+{
+	override void BeginPlay()
+	{
+		type = "GHAGCellPack";
+		munitions = GHAGCellPack(Spawn(type));
+		munitions.setOrigin(self.pos, false);
+	}
+}

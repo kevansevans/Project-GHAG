@@ -5,6 +5,21 @@
 - Replace hud sprites with floating actors that point wherever player is pointing
 	- Later update
 	- Look into Guncaster to see how this is accomplished
+	- Add CVARS that can adjust positioning of weapons for various monitor sizes.
+	
+- Finish sprite replacement for better Dehacked support
+
+- Psychic Charge
+	- Move is seen performed by Gardevoir in pokken tournament
+	- Does not have official/specified name
+	- Move shows Gardevoir performing a bow and arrow like motion
+	- Base attack should be powerful, but longer charges should get stronger
+	- Should replace switft
+	
+- Heretic Support!
+	- Do not work on Heretic weapons until floating gun system is done
+	- Rip sprites for cross iwad support
+		- Try best to investigate sprite replacements that aren't copyrighted
 	
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,13 +43,6 @@ pokeball
 	- Use actual formula catch...?
 	- spawn, add +friendly tag
 	- Finding secret grants random chance to find ball.
-	
-- Psychic Charge
-	- Move is seen performed by Gardevoir in pokken tournament
-	- Does not have official/specified name
-	- Move shows Gardevoir performing a bow and arrow like motion
-	- Base attack should be powerful, but longer charges should get stronger
-	- Should replace switft
 	
 - Rocket alt
 	- "smash" rocket like a can, grenade/mine

@@ -1,9 +1,22 @@
 GameInfo
 {
-	PlayerClasses = "Gardevoir"
+	PlayerClasses = "GardevoirDoom", "GardevoirHeretic"
 	StatusBarClass = "GHAGStatus"
 	AddEventHandlers = "GHAGEventHandler"
 	AddEventHandlers = "GHAGKeyEvents"
 	//AddEventHandlers = "ActorTracker"
 	DrawReadThis = true
+}
+
+DoomEdNums
+{
+  11001 = SubDoll
+  11002 = MagicBullets
+  11003 = MagicShells
+  11004 = MagicRockets
+  11005 = MagicPlasma
+  11006 = ExtraPistol
+  11007 = ExtraShotgun
+  11008 = ExtraPlasma
+  11009 = RageCandyBar
 }

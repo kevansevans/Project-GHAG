@@ -1,0 +1,47 @@
+Class SubDoll : Actor
+{
+	Default
+	{
+		Monster;
+		Radius 20;
+		Height 56;
+		Health 200;
+		xscale 0.138;
+		yscale 0.138;
+	}
+	
+	Vector3 respawn;
+	
+	override void BeginPlay()
+	{
+		respawn = self.pos;
+	}
+	
+	States
+	{
+		Pain:
+		Spawn:
+			SUBS A 1;
+			Loop;
+		GenericFreezeDeath:
+			#### # 5 A_GenericFreezeDeath();
+			---- A 1 {
+				A_RespawnDoll();
+				A_FreezeDeathChunks();
+			}
+			stop;
+		Death:
+			TNT1 A 35;
+			TNT1 A 0 A_RespawnDoll();
+			Stop;
+	}
+	
+	Action void A_RespawnDoll()
+	{
+		let sub = SubDoll(Spawn("SubDoll"));
+		let fog = TeleportFog(Spawn("TeleportFog"));
+		sub.respawn = invoker.respawn;
+		sub.setOrigin(invoker.respawn, false);
+		fog.setOrigin(invoker.respawn, false);
+	}
+}

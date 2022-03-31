@@ -10,8 +10,10 @@ Class GHAGEventHandler : EventHandler
 	
 	override void WorldThingSpawned(WorldEvent event)
 	{
-		if (Gardevoir(event.thing)) return;
-		
+		if (Gardevoir(event.thing)) {
+			gardie = Gardevoir(event.thing);
+			return;
+		}
 										//Nazis don't get to be shiny
 		if (Actor(event.thing).bIsMonster && !WolfensteinSS(event.thing) && !event.thing.bFriendly)
 		{
@@ -38,42 +40,6 @@ Class GHAGEventHandler : EventHandler
 			return;
 		}
 		
-		if (event.thing is "DehackedPickup")
-		{
-			let deh = DehackedPickup(event.thing);
-			Actor dummy = Actor.Spawn("DummyActor");
-			
-			Inventory curInv = dummy.inv;
-			
-			if (deh.CallTryPickup(dummy) && deh.RealPickup is "Weapon")
-			{
-				let gun = Weapon(deh.RealPickup);
-				if (!gun) 
-				{
-					dummy.spawn(deh.RealPickup.getClassName(), deh.pos);
-					dummy.Destroy();
-					return;
-				}
-				
-				if (gun.AmmoType1)
-				{
-					string ammoType = getWeaponClass(gun.AmmoType1.getClassName());
-					if (ammoType != "NullAmmoType")
-					{
-						let munition = Ammo(gun.spawn(ammoType, gun.pos));
-						if (munition) 
-						{
-							munition.amount = gun.AmmoGive1;
-						}
-						gun.destroy();
-						dummy.Destroy();
-						return;
-					}
-				}
-			}
-			dummy.Destroy();
-		}
-		
 		if (event.thing is "Weapon")
 		{
 			let gun = Weapon(event.thing);
@@ -83,6 +49,42 @@ Class GHAGEventHandler : EventHandler
 			if (GHAGPistol(gun) || GHAGShotgun(gun) || GHAGRocketLauncher(gun) || GHAGPlasmaRifle(gun) || GHAGPsychoCutter(gun))
 			{
 				return;
+			}
+			
+			switch(gardie.iwad)
+			{
+				case 0:
+					if (gun is "Gauntlets") 
+					{
+						gun.spawn("ExtraPsychoCutter", gun.pos);
+						gun.destroy();
+						return;
+					}
+					if (gun is "CrossBow") 
+					{
+						gun.spawn("GHAGShellBox", gun.pos);
+						gun.destroy();
+						return;
+					}
+					if (gun is "Blaster")
+					{
+						gun.spawn("GHAGBulletBox", gun.pos);
+						gun.destroy();
+						return;
+					}
+					if (gun is "Mace")
+					{
+						gun.spawn("GHAGRocketBox", gun.pos);
+						gun.destroy();
+						return;
+					}
+					if (gun is "PhoenixRod" || gun is "SkullRod")
+					{
+						gun.spawn("GHAGCellPack", gun.pos);
+						gun.destroy();
+						return;
+					}
+					break;
 			}
 			
 			//Agnostic weapon type check
@@ -104,17 +106,38 @@ Class GHAGEventHandler : EventHandler
 		
 		if (Ammo(event.thing))
 		{
-			let munition = Ammo(event.thing);
-			if (!munition) return;
+			let bullets = Ammo(Event.Thing);
 			
-			//if (munition is "Clip") munition.amount = double(munition.amount) * 1.5;
+			switch (gardie.iwad)
+			{
+				case 0:
+					if (bullets is "GoldWandAmmo")
+					{
+						bullets.spawn("GHAGMag", bullets.pos);
+						bullets.destroy();
+						return;
+					}
+					if (bullets is "GoldWandHefty")
+					{
+						bullets.spawn("GHAGBulletBox", bullets.pos);
+						bullets.destroy();
+						return;
+					}
+					if (bullets is "CrossbowAmmo")
+					{
+						bullets.spawn("GHAGShell", bullets.pos);
+						bullets.destroy();
+						return;
+					}
+					break;
+			}
 		}
 	}
 	
 	string getWeaponClass(String _type)
 	{
 		if (_type == "Clip") return "GHAGBulletBox";
-		if (_type == "Shell") return "ShellBoxReplacement";
+		if (_type == "Shell") return "GHAGShellBox";
 		if (_type == "RocketAmmo") return "GHAGRocketBox";
 		if (_type == "Cell") return "GHAGCellPack";
 	

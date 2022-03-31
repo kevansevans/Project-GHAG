@@ -8,10 +8,6 @@ version "4.6"
 #include "ZSCRIPT/weapons/FloatingGun.txt"
 #include "ZSCRIPT/GHAGHud.txt"
 
-//Cosmetic replacements
-#include "ZSCRIPT/pickups/DoomReplacements.txt"
-#include "ZSCRIPT/pickups/HereticReplacements.txt"
-
 //Tutorial map stuff
 #include "ZSCRIPT/tutorial/Substitute.txt"
 #include "ZSCRIPT/tutorial/MagicAmmo.txt"

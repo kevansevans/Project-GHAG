@@ -1,5 +1,13 @@
+enum BaseIwad
+{
+	IWAD_DOOM = 0,
+	IWAD_HERETIC = 1,
+}
+
 Class Gardevoir : PlayerPawn
 {
+	BaseIwad iwad;
+
 	int RageTimer;
 	int RageConstant;
 	int RageValue;
@@ -18,19 +26,6 @@ Class Gardevoir : PlayerPawn
 	default {
 		Health 350;
 		PainChance 255;
-        Player.DisplayName "Gardevoir";
-		
-		Player.StartItem "GHAGPistol";
-		Player.StartItem "GHAGPistolOverlay";
-		Player.StartItem "Clip", 100;
-		Player.StartItem "Shell", 0;
-		Player.StartItem "RocketAmmo", 0;
-		Player.StartItem "Cell", 0;
-		
-		Player.StartItem "IcePunch";
-		Player.StartItem "Swift";
-		Player.StartItem "MoonBlastGun";
-		Player.StartItem "BlackHole";
 		Player.MaxHealth 350;
 		
 		Player.ForwardMove 2, 1;
@@ -220,12 +215,6 @@ Class Gardevoir : PlayerPawn
 			if (RageValue > RageConstant) RageValue = RageConstant;
 		}
 		
-		/*if (!Gardevoir(source)) ActorTracker.trackThing(Source, NONE, damage);
-		else
-		{
-			_locDamage *= 0.25;
-		}*/
-		
 		if (Gardevoir(source)) _locDamage *= 0.25;
 		
 		if (_locDamage >= 5)
@@ -301,108 +290,57 @@ Class Gardevoir : PlayerPawn
 		
 		if (player)
 		{
-		let buttons = player.cmd.buttons;
-		double theta = 0;
-		double speed = 45;
-		
-		if (buttons & BT_Speed && shift_tic == -1) {
-			shift_tic = gametic;
-			dashed = false;
-		}
-		else if (!(buttons & BT_Speed) && shift_tic != -1) {
-			shift_tic = -1;
-		}
-		
-		if (!(buttons & BT_Jump)) {
-			if (v_dashed) player.cheats &= ~CF_FROZEN;
-			v_dashed = false;
-		}
-		
-		if (player.onGround && buttons & BT_Jump) jumped = true;
-		else if (player.onGround) {
-			jumped = false;
-			v_dashed = false;
-			A_StopSound(CHAN_BODY);
-		}
-		
-		if (!player.onGround && jumped && buttons & BT_Jump)
-		{
-			if (!v_dashed && self.vel.z <= 0)
-			{
-				self.vel.z = 10;
-				v_dashed = true;
-				player.cheats |= CF_FROZEN;
-				A_Blast(BF_ONLYVISIBLETHINGS);
-				A_StartSound("dash/Start", CHAN_AUTO);
-			}
-					
-		}
-		
-		if (v_dashed && self.vel.z <= 0)
-		{
-			if (holdpos != self.pos) holdpos = self.pos;
-			else {
-				self.setOrigin(holdpos, false);
-			}
-			self.vel.z = 0;
+			let buttons = player.cmd.buttons;
+			double theta = 0;
+			double speed = 45;
 			
-			if (buttons & BT_Speed)
-			{	
-				speed = 20;
-				
-				A_StartSound("dash/AirLoop", CHAN_BODY, CHANF_LOOP | CHANF_NOSTOP);
-				
-				if (buttons & BT_MoveLeft) {
-					theta = 90;
-					if (buttons & BT_Forward && !(buttons & BT_Back)) theta -= 45;
-					else if (buttons & BT_Back && !(buttons & BT_Forward)) theta += 45;
-				}
-				else if (buttons & BT_MoveRight) {
-					theta = 270;
-					if (buttons & BT_Forward && !(buttons & BT_Back)) theta += 45;
-					else if (buttons & BT_Back && !(buttons & BT_Forward)) theta -= 45;
-				}
-				else if (buttons & BT_Back && !(buttons & (BT_MoveRight | BT_MoveLeft))) theta = 180;
-					
-				theta += (self.angle % 360);
-				
-				double thrust_x = min(speed * cos(theta), speed);
-				double thrust_y = min(speed * sin(theta), speed);
-					
-				self.vel.x = thrust_x;
-				self.vel.y = thrust_y;
-				
-				if (gametic % 17 == 0) SubtractAnger(15);
-			} 
-			else
-			{
+			if (buttons & BT_Speed && shift_tic == -1) {
+				shift_tic = gametic;
+				dashed = false;
+			}
+			else if (!(buttons & BT_Speed) && shift_tic != -1) {
+				shift_tic = -1;
+			}
+			
+			if (!(buttons & BT_Jump)) {
+				if (v_dashed) player.cheats &= ~CF_FROZEN;
+				v_dashed = false;
+			}
+			
+			if (player.onGround && buttons & BT_Jump) jumped = true;
+			else if (player.onGround) {
+				jumped = false;
+				v_dashed = false;
 				A_StopSound(CHAN_BODY);
-			
-				if (self.vel.x > 0.5) self.vel.x -= 0.3;
-				else if (self.vel.x < -0.5) self.vel.x += 0.3;
-				else self.vel.x = 0;
-				
-				if (self.vel.y > 0.5) self.vel.y -= 0.3;
-				else if (self.vel.y < -0.5) self.vel.y += 0.3;
-				else self.vel.y = 0;
 			}
-		}
-		
-		if (shift_tic == -1) dash_timer = 0;
-		else
-		{
-			++dash_timer;
-			if (dash_timer >= 5 && dashed == false)
-			{
-				dashed = true;
 			
-				if (shift_tic != -1)
+			if (!player.onGround && jumped && buttons & BT_Jump)
+			{
+				if (!v_dashed && self.vel.z <= 0)
 				{
-					theta = 0;
+					self.vel.z = 10;
+					v_dashed = true;
+					player.cheats |= CF_FROZEN;
+					A_Blast(BF_ONLYVISIBLETHINGS);
+					A_StartSound("dash/Start", CHAN_AUTO);
 				}
+						
+			}
+			
+			if (v_dashed && self.vel.z <= 0)
+			{
+				if (holdpos != self.pos) holdpos = self.pos;
+				else {
+					self.setOrigin(holdpos, false);
+				}
+				self.vel.z = 0;
 				
-				if (!v_dashed)
-				{
+				if (buttons & BT_Speed)
+				{	
+					speed = 20;
+					
+					A_StartSound("dash/AirLoop", CHAN_BODY, CHANF_LOOP | CHANF_NOSTOP);
+					
 					if (buttons & BT_MoveLeft) {
 						theta = 90;
 						if (buttons & BT_Forward && !(buttons & BT_Back)) theta -= 45;
@@ -414,41 +352,93 @@ Class Gardevoir : PlayerPawn
 						else if (buttons & BT_Back && !(buttons & BT_Forward)) theta -= 45;
 					}
 					else if (buttons & BT_Back && !(buttons & (BT_MoveRight | BT_MoveLeft))) theta = 180;
-					
+						
 					theta += (self.angle % 360);
 					
-					double thrust_x = speed * cos(theta);
-					double thrust_y = speed * sin(theta);
-					
+					double thrust_x = min(speed * cos(theta), speed);
+					double thrust_y = min(speed * sin(theta), speed);
+						
 					self.vel.x = thrust_x;
 					self.vel.y = thrust_y;
 					
-					A_StartSound("dash/Start", CHAN_AUTO);
-				}
-			} 
-		}
-		
-		double p_speed = sqrt((self.vel.x * self.vel.x) + (self.vel.y * self.vel.y));
-		
-		if (p_speed >= 20)
-		{
-			double r_speed = (p_speed - 20.0) / 20;
-			
-			FLineTraceData bash;
-			if (self.LineTrace(self.angle, 64, self.pitch, 0, self.height - 12, 0, 0, bash))
-			{
-				double x = bash.HitLocation.x - self.pos.x;
-				double y = bash.HitLocation.y - self.pos.y;
-				double dist = sqrt((x * x) + (y * y));
-				if (bash.hitline)
+					if (gametic % 17 == 0) SubtractAnger(15);
+				} 
+				else
 				{
+					A_StopSound(CHAN_BODY);
+				
+					if (self.vel.x > 0.5) self.vel.x -= 0.3;
+					else if (self.vel.x < -0.5) self.vel.x += 0.3;
+					else self.vel.x = 0;
 					
+					if (self.vel.y > 0.5) self.vel.y -= 0.3;
+					else if (self.vel.y < -0.5) self.vel.y += 0.3;
+					else self.vel.y = 0;
+				}
+			}
+			
+			if (shift_tic == -1) dash_timer = 0;
+			else
+			{
+				++dash_timer;
+				if (dash_timer >= 5 && dashed == false)
+				{
+					dashed = true;
+				
+					if (shift_tic != -1)
+					{
+						theta = 0;
+					}
+					
+					if (!v_dashed)
+					{
+						if (buttons & BT_MoveLeft) {
+							theta = 90;
+							if (buttons & BT_Forward && !(buttons & BT_Back)) theta -= 45;
+							else if (buttons & BT_Back && !(buttons & BT_Forward)) theta += 45;
+						}
+						else if (buttons & BT_MoveRight) {
+							theta = 270;
+							if (buttons & BT_Forward && !(buttons & BT_Back)) theta += 45;
+							else if (buttons & BT_Back && !(buttons & BT_Forward)) theta -= 45;
+						}
+						else if (buttons & BT_Back && !(buttons & (BT_MoveRight | BT_MoveLeft))) theta = 180;
+						
+						theta += (self.angle % 360);
+						
+						double thrust_x = speed * cos(theta);
+						double thrust_y = speed * sin(theta);
+						
+						self.vel.x = thrust_x;
+						self.vel.y = thrust_y;
+						
+						A_StartSound("dash/Start", CHAN_AUTO);
+					}
+				} 
+			}
+			
+			double p_speed = sqrt((self.vel.x * self.vel.x) + (self.vel.y * self.vel.y));
+			
+			if (p_speed >= 20)
+			{
+				double r_speed = (p_speed - 20.0) / 20;
+				
+				FLineTraceData bash;
+				if (self.LineTrace(self.angle, 64, self.pitch, 0, self.height - 12, 0, 0, bash))
+				{
+					double x = bash.HitLocation.x - self.pos.x;
+					double y = bash.HitLocation.y - self.pos.y;
+					double dist = sqrt((x * x) + (y * y));
+					if (bash.hitline)
+					{
+						
+					}
 				}
 			}
 		}
-		}
 		
 		Super.Tick();
+		
 	}
 	
 	//From GZDoom.pk3, just removes the check to see if the level turns of jumping

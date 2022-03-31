@@ -13,6 +13,9 @@ Class GHAGStatus : BaseStatusBar
 	Font fnt_white;
 	HUDFont pokefont;
 	
+	InventoryBarState diparms;
+	InventoryBarState diparms_sbar;
+	
 	override void Init() {
 		Super.Init();
 		
@@ -24,6 +27,9 @@ Class GHAGStatus : BaseStatusBar
 		
 		fnt_white = "PKMNWHITE";
 		pokefont = HUDFont.Create(fnt_white);
+		
+		diparms = InventoryBarState.Create(pokefont);
+		diparms_sbar = InventoryBarState.CreateNoBox(pokefont, boxsize:(31, 31), arrowoffs:(0,-10));
 	}
 	
 	String activeMessage;
@@ -199,6 +205,8 @@ Class GHAGStatus : BaseStatusBar
 		}*/
 		
 		hudMessageBox();
+		
+		DrawInventoryBar(diparms_sbar, (49, 160), 7, DI_ITEM_LEFT_TOP, HX_SHADOW);
 		
 	}
 	

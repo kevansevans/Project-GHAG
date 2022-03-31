@@ -37,6 +37,11 @@ Class Gardevoir : PlayerPawn
 		
 		xscale 0.325;
 		yscale 0.325;
+		
+		DamageFactor "Slime", 2.0;
+		DamageFactor "Poison", 2.0;
+		DamageFactor "PoisonCloud", 2.0;
+		DamageFactor "Melee", 0.25;
 	}
 	
 	States

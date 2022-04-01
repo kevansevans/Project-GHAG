@@ -177,24 +177,58 @@ Class GHAGStatus : BaseStatusBar
 		
 		bool locks[6];
 		String image;
-		for (int i = 0; i < 6; i++) locks[i] = CPlayer.mo.CheckKeys(i + 1, false, true);
+		vector2 drawPos = (v_width, v_height - 35);
+		for (int i = 0; i < 6; i++) {
+			locks[i] = CPlayer.mo.CheckKeys(i + 1, false, true);
+			//console.printf(i .. ':' .. locks[i]);
+		}
 		// key 1
-		if (locks[1] && locks[4]) image = "STKEYS6";
-		else if (locks[1]) image = "STKEYS0";
-		else if (locks[4]) image = "STKEYS3";
-		DrawImage(image, (v_width - 20, v_height - 35),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
+		if (gameinfo.gametype == 1)
+		{
+			if (locks[1] && locks[4]) image = "STKEYS6";
+			else if (locks[1]) image = "STKEYS0";
+			else if (locks[4]) image = "STKEYS3";
+			else image = "";
+			drawPos.x -= 20;
+		} 
+		else if (gameinfo.gametype == 2)
+		{
+			if (locks[1]) image = "BKEYICON";
+			else image = "";
+			drawPos.x -= 20;
+		}
+		DrawImage(image, drawPos,  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
 		// key 2
-		if (locks[2] && locks[5]) image = "STKEYS7";
-		else if (locks[2]) image = "STKEYS1";
-		else if (locks[5]) image = "STKEYS4";
-		else image = "";
-		DrawImage(image, (v_width - 35, v_height - 35),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
+		if (gameinfo.gametype == 1)
+		{
+			if (locks[2] && locks[5]) image = "STKEYS7";
+			else if (locks[2]) image = "STKEYS1";
+			else if (locks[5]) image = "STKEYS4";
+			else image = "";
+			drawPos.x -= 15;
+		}
+		else if (gameinfo.gametype == 2)
+		{
+			if (locks[0]) image = "GKEYICON";
+			else image = "";
+			drawPos.x -= 25;
+		}
+		DrawImage(image, drawPos,  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
 		// key 3
-		if (locks[0] && locks[3]) image = "STKEYS8";
-		else if (locks[0]) image = "STKEYS2";
-		else if (locks[3]) image = "STKEYS5";
-		else image = "";
-		DrawImage(image, (v_width - 50, v_height - 35),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
+		if (gameinfo.gametype == 1)
+		{
+			if (locks[0] && locks[3]) image = "STKEYS8";
+			else if (locks[0]) image = "STKEYS2";
+			else if (locks[3]) image = "STKEYS5";
+			drawPos.x -= 15;
+		}
+		else if (gameinfo.gametype == 2)
+		{
+			if (locks[2]) image = "YKEYICON";
+			else image = "";
+			drawPos.x -= 25;
+		}
+		DrawImage(image, drawPos,  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
 		
 		/*int rev_half = gardie.countinv("ReviveHalf");
 		if (rev_half >= 1)

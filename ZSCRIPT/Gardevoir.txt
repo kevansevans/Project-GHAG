@@ -6,7 +6,8 @@ enum BaseIwad
 
 Class Gardevoir : PlayerPawn
 {
-	BaseIwad iwad;
+	BaseIwad iwadClass;
+	BaseIwad iwadGame;
 
 	int RageTimer;
 	int RageConstant;

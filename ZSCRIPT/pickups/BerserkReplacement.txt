@@ -5,6 +5,7 @@ class GHAGBerserk : Berserk replaces Berserk
 		Pickup:
 			TNT1 A 0 {
 				A_GiveInventory("PowerStrength");
+				Gardevoir(self).RageValue = Gardevoir(self).RageConstant;
 				Gardevoir(self).GetLivid();
 			}
 			TNT1 A 0 HealThing(100, 0);

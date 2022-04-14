@@ -561,31 +561,3 @@ Class Gardevoir : PlayerPawn
 		return rtn;
 	}
 }
-
-class PlayerRef : Actor
-{
-	default
-	{
-	}
-	States
-	{
-		Spawn :
-			PLAY A 1 Bright;
-			Loop;
-	}
-}
-
-Class TestVoir : Actor
-{
-	default
-	{
-		xscale 0.325;
-		yscale 0.325;
-	}
-	States
-	{
-		Spawn:
-			GARD F 4 Bright;
-			Loop;
-	}
-}

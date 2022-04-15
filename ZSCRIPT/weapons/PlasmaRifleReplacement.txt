@@ -5,6 +5,13 @@ Class GHAGPlasmaOverlay : Ammo
 		Inventory.MaxAmount 4;
 		Inventory.pickupMessage "Found an extra plasma rifle!";
 	}
+	
+	override void beginplay()
+	{
+		super.beginPlay();
+		
+		if (GameInfo.GameType == 2) Self.MaxAmount = 2;
+	}
 }
 
 Class GHAGPlasmaRifle : PlasmaRifle
@@ -28,6 +35,11 @@ Class GHAGPlasmaRifle : PlasmaRifle
 		
 		setTag(Cvar.findCvar("PlasmaName").getString());
 	}	
+	
+	int getPlasmaCount()
+	{
+		return owner.countInv('GHAGPlasmaOverlay') * (owner.CountInv("PowerWeaponLevel2") >= 1 ? 2 : 1);
+	}
 	
 	States
 	{
@@ -61,8 +73,8 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			HAND A 20 {
 				A_PlasmaOverlay(false, true);
 				A_BFGSound();
-				Invoker.AmmoUse2 = int(40 / CountInv('GHAGPlasmaOverlay'));
-				A_SetTics(int(20 / CountInv('GHAGPlasmaOverlay')));
+				Invoker.AmmoUse2 = int(40 / invoker.getPlasmaCount());
+				A_SetTics(int(20 / invoker.getPlasmaCount()));
 			}
 			HAND A 10;
 			TNT1 A 0 A_FireBFG();
@@ -74,16 +86,16 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			PLSM ABCDE 1;
 			loop;
 		PlasmaFire.Overlay:
-			PLSM PBCD 1 Bright;
+			PLSM PBCDE 1 Bright;
 			stop;
 		PlasmaBFG.Overlay :
-			PLSM FGHIJKLMNO 3 Bright A_SetTics(max(3 - CountInv("GHAGPlasmaOverlay"), 2));
+			PLSM FGHIJKLMNO 3 Bright A_SetTics(max(3 - invoker.getPlasmaCount(), 2));
 			goto Plasma.Overlay;
 	}
 	
 	Action void A_PlasmaOverlay(bool _primary = false, bool _bfg = false)
 	{
-		for (int i = 0; i < CountInv("GHAGPlasmaOverlay"); ++ i)
+		for (int i = 0; i < invoker.getPlasmaCount(); ++ i)
 		{
 			int layer = -1 * (i + 1);
 			if (_bfg) A_Overlay(layer, "PlasmaBFG.Overlay", false);
@@ -96,7 +108,7 @@ Class GHAGPlasmaRifle : PlasmaRifle
 	}
 	
 	Action void A_PsychicPlasma() {
-		for (int i = 0; i < CountInv("GHAGPlasmaOverlay"); ++i)
+		for (int i = 0; i < invoker.getPlasmaCount(); ++i)
 		{
 			if (player == null)
 			{

@@ -12,10 +12,15 @@ Class GHAGShotgun : Weapon
 	
 	bool batMode;
 	
+	int getShotgunCount()
+	{
+		return owner.countInv('GHAGShotgunOverlay') * (owner.CountInv("PowerWeaponLevel2") >= 1 ? 2 : 1);
+	}
+	
 	override void BeginPlay()
 	{
 		self.AmmoUse1 = 1;
-		self.AmmoUse2 = countinv("GHAGShotgunOverlay");
+		self.AmmoUse2 = countInv('GHAGShotgunOverlay');
 		self.batMode = False;
 		
 		super.beginPlay();
@@ -92,7 +97,7 @@ Class GHAGShotgun : Weapon
 			Loop;
 		Ready.Standard :
 			HAND A 1 {
-				Invoker.AmmoUse2 = countinv("GHAGShotgunOverlay");
+				Invoker.AmmoUse2 = invoker.getShotgunCount();
 				A_WeaponReady(WRF_ALLOWRELOAD);
 				A_OverlayShotguns();
 			}
@@ -178,7 +183,7 @@ Class GHAGShotgun : Weapon
 					return resolveState("AltFire.Batmode");
 				}
 				if (invoker.ammo2.amount == 0) return resolveState("ready");
-				invoker.AmmoUse2 = Min(countinv("GHAGShotgunOverlay"), 3);
+				invoker.AmmoUse2 = Min(invoker.getShotgunCount(), 3);
 				return resolveState(null);
 			}
 			HAND A 3 {
@@ -186,8 +191,8 @@ Class GHAGShotgun : Weapon
 				A_OverlayShotguns();
 			}
 			HAND B 1 Bright {
-				A_FireBullets(6, 6, 15 * countinv("GHAGShotgunOverlay"), 5, "GHAGPsychicPuff");
-				if (Cvar.findCvar("sv_infiniteammo").GetBool() == false) A_TakeInventory("Shell", Min(countinv("GHAGShotgunOverlay"), 3));
+				A_FireBullets(6, 6, 15 * invoker.getShotgunCount(), 5, "GHAGPsychicPuff");
+				if (Cvar.findCvar("sv_infiniteammo").GetBool() == false) A_TakeInventory("Shell", Min(invoker.getShotgunCount(), 3));
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_SetTics(Gardevoir(self).GetTicModifier(2));
 				A_OverlayShotguns(true, true);
@@ -206,7 +211,7 @@ Class GHAGShotgun : Weapon
 		AltFire.Batmode : 
 			TNT1 A 0
 			{
-				if (invoker.ammo2.amount == 0 || CountInv("GHAGShotgunOverlay") <= 1) return resolveState("Fire.Swing");
+				if (invoker.ammo2.amount == 0 || invoker.getShotgunCount() <= 1) return resolveState("Fire.Swing");
 				return resolveState(null);
 			}
 			GSHT I 3 A_OverlayShotguns();
@@ -245,7 +250,7 @@ Class GHAGShotgun : Weapon
 		Fire.Overlay:
 			GSHT G 5 Bright
 			{
-				for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
+				for (int i = 0; i < invoker.getShotgunCount(); i++)
 				{
 					int layer = -1 * (i + 1);
 					A_OverlayPivot(layer, 53, 0, WOF_ADD | WOF_KEEPY);
@@ -268,7 +273,7 @@ Class GHAGShotgun : Weapon
 		AltFire.Overlay:
 			GSHT G 5 
 			{
-				for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
+				for (int i = 0; i < invoker.getShotgunCount(); i++)
 				{
 					int layer = -1 * (i + 1);
 					A_OverlayPivot(layer, 2, 0, WOF_ADD | WOF_KEEPY);
@@ -300,11 +305,11 @@ Class GHAGShotgun : Weapon
 	{
 		int rng;
 		if (invoker.batmode && rollForFire) {
-			rng = random(1, countinv("GHAGShotgunOverlay") - 1);
+			rng = random(1, invoker.getShotgunCount() - 1);
 		} else {
-			rng = random(0, countinv("GHAGShotgunOverlay") - 1);
+			rng = random(0, invoker.getShotgunCount() - 1);
 		}
-		for (int i = 0; i < countinv("GHAGShotgunOverlay"); i++)
+		for (int i = 0; i < invoker.getShotgunCount(); i++)
 		{
 			if (invoker.batmode && i == 0) {
 				continue;
@@ -389,5 +394,12 @@ class GHAGShotgunOverlay : Ammo
 	{
 		Inventory.MaxAmount 4;
 		Inventory.pickupMessage "Seized an extra shotgun!";
+	}
+	
+	override void beginplay()
+	{
+		super.beginPlay();
+		
+		if (GameInfo.GameType == 2) Self.MaxAmount = 2;
 	}
 }

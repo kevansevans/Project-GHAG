@@ -51,7 +51,7 @@ Class GHAGEventHandler : EventHandler
 				return;
 			}
 			
-			switch(gardie.iwad)
+			switch(gardie.iwadClass)
 			{
 				case 0:
 					if (gun is "Gauntlets") 
@@ -108,7 +108,7 @@ Class GHAGEventHandler : EventHandler
 		{
 			let bullets = Ammo(Event.Thing);
 			
-			switch (gardie.iwad)
+			switch (gardie.iwadClass)
 			{
 				case 0:
 					if (bullets is "GoldWandAmmo")
@@ -126,6 +126,24 @@ Class GHAGEventHandler : EventHandler
 					if (bullets is "CrossbowAmmo")
 					{
 						bullets.spawn("GHAGShell", bullets.pos);
+						bullets.destroy();
+						return;
+					}
+					if (bullets is "CrossbowHefty")
+					{
+						bullets.spawn("GHAGShellBox", bullets.pos);
+						bullets.destroy();
+						return;
+					}
+					if (bullets is "BlasterAmmo")
+					{
+						bullets.spawn("GHAGMag", bullets.pos);
+						bullets.destroy();
+						return;
+					}
+					if (bullets is "BlasterHefty")
+					{
+						bullets.spawn("GHAGBulletBox", bullets.pos);
 						bullets.destroy();
 						return;
 					}

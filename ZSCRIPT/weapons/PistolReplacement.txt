@@ -5,6 +5,13 @@ Class GHAGPistolOverlay : Ammo
 		Inventory.MaxAmount 4;
 		Inventory.pickupMessage "Found an extra pistol!";
 	}
+	
+	override void beginplay()
+	{
+		super.beginPlay();
+		
+		if (GameInfo.GameType == 2) Self.MaxAmount = 2;
+	}
 }
 Class GHAGPistol : Pistol replaces Pistol
 {
@@ -38,13 +45,18 @@ Class GHAGPistol : Pistol replaces Pistol
 		Super.Tick();
 		
 		setTag(Cvar.findCvar("PistolName").getString());
-	}	
+	}
+	
+	int getPistolCount()
+	{
+		return owner.countInv('GHAGPistolOverlay') * (owner.CountInv("PowerWeaponLevel2") >= 1 ? 2 : 1);
+	}
 
 	states
 	{
 		Ready:
 			HAND A 1 {
-				Invoker.AmmoUse2 = countinv("GHAGPistolOverlay");
+				Invoker.AmmoUse2 = invoker.getPistolCount();
 				A_WeaponReady();
 				A_OverlayPistols();
 			}
@@ -85,7 +97,7 @@ Class GHAGPistol : Pistol replaces Pistol
 			HAND ABC 1;
 			HAND D 1 
 			{
-				A_FireBullets(3.4 + invoker.spread, 3.4 + (invoker.spread / 2), Min(4, countinv("GHAGPistolOverlay")), 8, "BulletPuff");
+				A_FireBullets(3.4 + invoker.spread, 3.4 + (invoker.spread / 2), Min(4, invoker.getPistolCount()), 8, "BulletPuff");
 				A_StartSound("weapons/pistol", CHAN_WEAPON);
 				A_OverlayPistols(true, true);
 				invoker.spread += 0.2;
@@ -120,18 +132,18 @@ Class GHAGPistol : Pistol replaces Pistol
 	
 	Action void A_OverlayPistols(bool RollForFire = false, bool AltFire = false)
 	{
-		int rng = random(0, Min((CountInv("GHAGPistolOverlay") - 1), 3));
-		if (countInv("GHAGPistolOverlay") > 1 && rng == invoker.lastRNG) 
+		int rng = random(0, (Min(invoker.getPistolCount() - 1, 3)));
+		if (invoker.getPistolCount() > 1 && rng == invoker.lastRNG) 
 		{
 			while (rng == invoker.lastRNG)
 			{
-				rng = random(0, (CountInv("GHAGPistolOverlay") - 1));
+				rng = random(0, (invoker.getPistolCount() - 1));
 			}
 		}
 		
 		invoker.lastRNG = rng;
 		
-		for (int i = 0; i < CountInv("GHAGPistolOverlay"); ++ i)
+		for (int i = 0; i < invoker.getPistolCount(); ++ i)
 		{
 			if (i > 3) return;
 			

@@ -4,6 +4,13 @@ Class GHAGPsychoCutterOverlay : Ammo
 	{
 		Inventory.MaxAmount 4;
 	}
+	
+	override void beginplay()
+	{
+		super.beginPlay();
+		
+		if (GameInfo.GameType == 2) Self.MaxAmount = 2;
+	}
 }
 
 Class ExtraPsychoCutter : CustomInventory replaces Chainsaw
@@ -83,6 +90,11 @@ Class GHAGPsychoCutter : Weapon
 		setTag(Cvar.findCvar("ChainsawName").getString());
 	}
 	
+	int getChainsawCount()
+	{
+		return owner.countInv('GHAGPsychoCutterOverlay') * (owner.CountInv("PowerWeaponLevel2") >= 1 ? 2 : 1);
+	}
+	
 	States
 	{
 		Select:
@@ -108,15 +120,15 @@ Class GHAGPsychoCutter : Weapon
 		Fire:
 			HAND JJJJ 1 A_OverlayChainsaws(true);
 			TNT1 A 0 {
-				for (int i = 0; i < countInv('GHAGPsychoCutterOverlay'); ++i)
+				for (int i = 0; i < invoker.getChainsawCount(); ++i)
 				{
 					A_Saw(	"weapons/sawfull", 
 							"weapons/sawhit", 
-							2 * countInv('GHAGPsychoCutterOverlay'), 
+							2 * invoker.getChainsawCount(), 
 							"BulletPuff", 
 							SF_NOUSEAMMO | SF_NOPULLIN | SF_NOTURN, 
-							56 + (8 * countInv('GHAGPsychoCutterOverlay') + (44 * Gardevoir(self).getRageModifier())), 
-							4.8125 * countInv('GHAGPsychoCutterOverlay')
+							56 + (8 * invoker.getChainsawCount() + (44 * Gardevoir(self).getRageModifier())), 
+							4.8125 * invoker.getChainsawCount()
 						);
 				}
 			}
@@ -143,7 +155,7 @@ Class GHAGPsychoCutter : Weapon
 	Action Void A_OverlayChainsaws(bool _psycho = false)
 	{
 		if (_psycho) {
-			for (int i = 0; i < countInv('GHAGPsychoCutterOverlay'); ++i)
+			for (int i = 0; i < invoker.getChainsawCount(); ++i)
 			{
 				int layer = (i * -1) -1;
 				
@@ -161,7 +173,7 @@ Class GHAGPsychoCutter : Weapon
 		}
 		else
 		{
-			for (int i = 0; i < countInv('GHAGPsychoCutterOverlay'); ++i)
+			for (int i = 0; i < invoker.getChainsawCount(); ++i)
 			{
 				int layer = (i * -1) - 1;
 				

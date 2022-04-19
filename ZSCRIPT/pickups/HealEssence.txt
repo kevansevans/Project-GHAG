@@ -5,7 +5,6 @@ Class HealEssence : CustomInventory
 		XScale 0.75;
 		YScale 0.75;
 		Inventory.PickupMessage "Absorbed some Essence of Health";
-		+NoBlockmap;
 	}
 	
 	States

@@ -91,7 +91,7 @@ Class KinesisBlast : Actor
 				continue;
 			}
 		
-			if (!Inventory(mo) && !ExplosiveBarrel(mo)) continue;
+			if (!Inventory(mo) && !ExplosiveBarrel(mo) && !Pod(mo)) continue;
 			
 			if (Inventory(mo)) {
 				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
@@ -129,7 +129,7 @@ Class KinesisBlast : Actor
 			{
 				Actor victim = list[i];
 				
-				if (ExplosiveBarrel(victim))
+				if (victim is "ExplosiveBarrel" || victim is "pod")
 				{
 					if (!victim.InStateSequence(victim.CurState, victim.ResolveState("Death")))
 					{

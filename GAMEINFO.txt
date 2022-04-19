@@ -1,0 +1,2 @@
+STARTUPTITLE = "Gardevoir has a gun"
+STARTUPCOLORS = "D56671", "BADBB2" 

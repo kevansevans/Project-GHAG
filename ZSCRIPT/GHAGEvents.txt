@@ -111,13 +111,13 @@ Class GHAGEventHandler : EventHandler
 			switch (gardie.iwadClass)
 			{
 				case 0:
-					if (bullets is "GoldWandAmmo")
+					if (bullets is "GoldWandAmmo" || bullets is "BlasterAmmo")
 					{
 						bullets.spawn("GHAGMag", bullets.pos);
 						bullets.destroy();
 						return;
 					}
-					if (bullets is "GoldWandHefty")
+					if (bullets is "GoldWandHefty" || bullets is "BlasterHefty")
 					{
 						bullets.spawn("GHAGBulletBox", bullets.pos);
 						bullets.destroy();
@@ -135,15 +135,27 @@ Class GHAGEventHandler : EventHandler
 						bullets.destroy();
 						return;
 					}
-					if (bullets is "BlasterAmmo")
+					if (bullets is "SkullRodAmmo")
 					{
-						bullets.spawn("GHAGMag", bullets.pos);
+						bullets.spawn("GHAGRocketAmmo", bullets.pos);
 						bullets.destroy();
 						return;
 					}
-					if (bullets is "BlasterHefty")
+					if (bullets is "SkullRodHefty")
 					{
-						bullets.spawn("GHAGBulletBox", bullets.pos);
+						bullets.spawn("GHAGRocketBox", bullets.pos);
+						bullets.destroy();
+						return;
+					}
+					if (bullets is "PhoenixRodAmmo" || bullets is "MaceAmmo")
+					{
+						bullets.spawn("GHAGCell", bullets.pos);
+						bullets.destroy();
+						return;
+					}
+					if (bullets is "PhoenixRodHefty" || bullets is "MaceHefty")
+					{
+						bullets.spawn("CellPack", bullets.pos);
 						bullets.destroy();
 						return;
 					}

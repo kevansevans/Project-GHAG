@@ -27,9 +27,11 @@ Class ExtraPsychoCutter : CustomInventory replaces Chainsaw
 			CSAW A 1 Bright
 			{
 				let player = Gardevoir(players[consoleplayer].mo);
-				if (player.countinv("GHAGPsychoCutterOverlay") == GameInfo.GameType == 1 ? 4 : 2)
+				int limit = GameInfo.GameType == 1 ? 4 : 2;
+				if (player.countinv("GHAGPsychoCutterOverlay") == limit)
 				{
 					invoker.spawn("RageCandyBar", invoker.pos);
+					console.printf('' .. limit);
 					invoker.destroy();
 				}
 			}

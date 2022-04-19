@@ -487,6 +487,7 @@ Class GHAGEventHandler : EventHandler
 			}
 			else
 			{
+				int limit = GameInfo.GameType == 1 ? 4 : 2;
 				int rng = random(1, 10);
 				if (rng != 10 || weaponspawned == level.levelNum) Actor.spawn('RageCandyBar', (_x, _y, _z));
 				else
@@ -497,7 +498,7 @@ Class GHAGEventHandler : EventHandler
 					int shottyBonus = 1;
 					int plasmaBonus = 2;
 					
-					if (gardie.countInv('GHAGPistolOverlay') == 4)
+					if (gardie.countInv('GHAGPistolOverlay') == limit)
 					{
 						pistolBonus = -1;
 						shottyBonus -= 1;
@@ -506,7 +507,7 @@ Class GHAGEventHandler : EventHandler
 					
 					if (gardie.countInv('GHAGShotgun')) 
 					{
-						if (gardie.countInv('GHAGShotgunOverlay') == 4)
+						if (gardie.countInv('GHAGShotgunOverlay') == limit)
 						{
 							shottyBonus = -1;
 							plasmaBonus -= 1;
@@ -516,7 +517,7 @@ Class GHAGEventHandler : EventHandler
 					}
 					if (gardie.countInv('GHAGPlasmaRifle')) 
 					{
-						if (gardie.countInv('GHAGPlasmaOverlay') == 4)
+						if (gardie.countInv('GHAGPlasmaOverlay') == limit)
 						{
 							plasmaBonus = -1;
 						} else {

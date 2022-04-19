@@ -233,6 +233,26 @@ Class BlackHoleProjectile : Actor
 
 mixin class BlackHoleAttacks
 {
+	action bool IgnoreMe(actor victim)
+	{
+		if (
+		//Doom and general
+		victim is "Gardevoir" || victim is "weapon" || victim is "PowerupGiver" ||
+		victim is "BlackHoleProjectile" || victim is "lightningfizzle" ||
+		victim is "Key" || (victim is "Inventory" && Inventory(victim).owner is "PlayerPawn") ||
+		victim is "BossTarget" || victim is "BossEye" || (victim is "Rocket" && !(victim.target)) ||
+		victim is "TeleportDest" ||
+		//Heretic
+		victim is "SoundSequence" || victim is "SoundWaterfall" || victim is "SoundWind" ||
+		victim is "WallTorch" ||
+		victim is "TeleGlitterGenerator1" || victim is "TeleGlitterGenerator2" || victim is "TeleGlitter1"
+		)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	action double A_BlackHoleRadialAttack(double radius = 255)
 	{
 		ThinkerIterator it = ThinkerIterator.Create("Actor");
@@ -245,17 +265,7 @@ mixin class BlackHoleAttacks
 		while ( (mo = Actor(it.Next ())) )
 		{
 			//ignore critical classes.
-			if (Gardevoir(mo)) continue; //is Player. Gardevoir ignores gravity
-			if (BlackHoleProjectile(mo)) continue; //Ignore other black holes
-			if (Key(mo)) continue; //Keys are critical items. Important to not have these move from their locations
-			if (Inventory(mo)) { //Apparently player held items get checked in a thinkiterator
-				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
-			}
-			if (mo is "BossTarget" || mo is "BossEye" || (mo is "Rocket" && !(mo.target))) continue;
-			if (mo is "TeleportDest") continue;
-			if (mo is "lightningfizzle") continue;
-			if (PowerupGiver(mo)) continue;
-			if (Weapon(mo)) continue;
+			if (ignoreMe(mo)) continue;
 			
 			//special code for icon of sin
 			if (mo is "BossBrain" && Distance3D(mo) < radius * 2)

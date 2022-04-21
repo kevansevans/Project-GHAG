@@ -13,9 +13,6 @@ Class GHAGStatus : BaseStatusBar
 	Font fnt_white;
 	HUDFont pokefont;
 	
-	InventoryBarState diparms;
-	InventoryBarState diparms_sbar;
-	
 	override void Init() {
 		Super.Init();
 		
@@ -27,9 +24,6 @@ Class GHAGStatus : BaseStatusBar
 		
 		fnt_white = "PKMNWHITE";
 		pokefont = HUDFont.Create(fnt_white);
-		
-		diparms = InventoryBarState.Create(pokefont);
-		diparms_sbar = InventoryBarState.CreateNoBox(pokefont, boxsize:(31, 31), arrowoffs:(0,-10));
 	}
 	
 	String activeMessage;
@@ -88,18 +82,19 @@ Class GHAGStatus : BaseStatusBar
 		
 		if (Gardie.player.ReadyWeapon) {
 		
-			DrawString(pokefont, Gardie.player.ReadyWeapon.GetTag(), (30, v_height - 140),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, Font.CR_UNTRANSLATED, 1, -1, 4, (xy_scale, xy_scale));
+			DrawString(pokefont, Gardie.player.ReadyWeapon.GetTag(), (30, v_height - 145),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, Font.CR_UNTRANSLATED, 1, -1, 4, (xy_scale, xy_scale));
 			if (Gardie.player.ReadyWeapon.Ammo1) {
 				DrawString(pokefont, 
 							"Ammo: " .. Gardie.player.ReadyWeapon.Ammo1.amount .. "/" .. Gardie.player.ReadyWeapon.Ammo1.maxamount, 
-							(30, v_height - 125), 
+							(30, v_height - 130), 
 							DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
 							Font.CR_UNTRANSLATED, 1, -1, 4, 
 							(xy_scale, xy_scale));
 			} else if (GHAGPsychoCutter(Gardie.player.ReadyWeapon)) {
+				int laceratorLimit = GameInfo.GameType == 1 ? 4 : 2;
 				DrawString(pokefont, 
-							Gardie.countInv('GHAGPsychoCutterOverlay') .. '/4 Lacerators', 
-							(30, v_height - 125), 
+							Gardie.countInv('GHAGPsychoCutterOverlay') .. '/' .. laceratorLimit .. ' Lacerators', 
+							(30, v_height - 130), 
 							DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
 							Font.CR_UNTRANSLATED, 1, -1, 4, 
 							(xy_scale, xy_scale));
@@ -230,18 +225,53 @@ Class GHAGStatus : BaseStatusBar
 		}
 		DrawImage(image, drawPos,  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
 		
-		/*int rev_half = gardie.countinv("ReviveHalf");
-		if (rev_half >= 1)
+		DrawGHAGInventory();
+		
+	}
+	
+	void DrawGHAGInventory()
+	{
+		TextureID ItemSprite;
+		Vector2 Scale;
+		if (!isInventoryBarVisible())
 		{
-			for (rev_half; rev_half > 0; --rev_half) {
-				drawImage("HREVA0", (v_width - 14 - (rev_half * 6), v_height - 55), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (0.15, 0.15));
+			let InvItem = CPlayer.mo.InvSel;
+			[ItemSprite, Scale] = GetIcon(InvItem, 0, false);
+			if (ItemSprite.isValid())
+			{
+				DrawImage("INVBOT", (20, v_height - 150), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
+				DrawImage("INVMID", (20, v_height - 185), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
+				DrawImage("INVTOP", (20, v_height - 188), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
+				
+				DrawTexture(ItemSprite, (40, v_height - 165), DI_ITEM_CENTER, 1, (28, 28), (1, 1));
+				DrawString(pokefont, "x" .. CPlayer.mo.InvSel.Amount, (115, v_height - 175), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 			}
-		}*/
-		
-		hudMessageBox();
-		
-		DrawInventoryBar(diparms_sbar, (49, 160), 7, DI_ITEM_LEFT_TOP, HX_SHADOW);
-		
+		}
+		else
+		{
+			CPlayer.mo.InvFirst = ValidateInvFirst(10);
+			if (CPlayer.mo.InvFirst == null) return;
+			
+			int h_offset = v_height - 185;
+			DrawImage("INVBOT", (20, v_height - 150), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
+			
+			Inventory item = CPlayer.mo.InvFirst;
+			while (item != NULL)
+			{
+				DrawImage("INVMID", (20, h_offset), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
+				[ItemSprite, Scale] = GetIcon(item, 0, false);
+				DrawTexture(ItemSprite, (40, h_offset + 20), DI_ITEM_CENTER, 1, (28, 28), (1, 1));
+				DrawString(pokefont, "x" .. CPlayer.mo.InvSel.Amount, (115, h_offset + 10), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+				if (item == CPlayer.mo.InvSel)
+				{
+					DrawImage("ARROW", (70, h_offset + 20), DI_MIRROR | DI_ITEM_CENTER, 1, (-1, -1), (2.5, 2.5));
+				}
+				item = item.nextInv();
+				if (item != null) h_offset -= 35;
+			}
+			
+			DrawImage("INVTOP", (20, h_offset - 3), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
+		}
 	}
 	
 	string wtf()
@@ -262,7 +292,11 @@ Class GHAGStatus : BaseStatusBar
 		if (!gardie) return "I'm so angry, I simply do not exist!";
 		
 		if (Gardie.RageValue < 0) return "your turn will come....";
-		if (Gardie.overTheEdge) return "HELL HATH NO FURY";
+		if (Gardie.overTheEdge) {
+			if (GameInfo.GameType == 1) return "HELL HATH NO FURY";
+			if (GameInfo.GameType == 2) return "D'SPARIL TREMBLES";
+			return "BLIND WRATH AND FURY";
+		}
 		
 		if (Gardie.RageValue > 1000) return "MURDEROUS";
 		

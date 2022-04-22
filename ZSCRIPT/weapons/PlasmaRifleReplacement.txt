@@ -63,6 +63,9 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			loop;
 		Fire:
 			HAND A 1 Bright {
+				if (GameInfo.GameType != 1) {
+					A_StartSound("plasma/fire", CHAN_AUTO);
+				}
 				A_PsychicPlasma();
 				A_PlasmaOverlay(true);
 			}

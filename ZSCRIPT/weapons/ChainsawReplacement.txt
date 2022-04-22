@@ -31,7 +31,6 @@ Class ExtraPsychoCutter : CustomInventory replaces Chainsaw
 				if (player.countinv("GHAGPsychoCutterOverlay") == limit)
 				{
 					invoker.spawn("RageCandyBar", invoker.pos);
-					console.printf('' .. limit);
 					invoker.destroy();
 				}
 			}

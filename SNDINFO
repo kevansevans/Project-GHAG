@@ -28,4 +28,5 @@ psychic/Ping "Sounds/Ping.ogg"
 gardie/Pain "Sounds/GARDPAIN.ogg"
 
 //ripped audio for cross wad support
-skeleton/swing "Sounds/rips/DSSKESWG"
+skeleton/swing "Sounds/rips/DSSKESWG.wav"
+plasma/fire "Sounds/rips/DSPLASMA.wav"

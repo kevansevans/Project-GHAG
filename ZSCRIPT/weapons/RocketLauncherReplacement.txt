@@ -322,7 +322,7 @@ Class NameClass : Actor
 		"Jimmy", "You let me complicate you", "Excuse me", "Ultimate Cup of Coffee", "Try Haxe!", "Bosh", "Bish", "Chaz", "Bailey",
 		"Coco", "Finn", "Perkele", "No niin", "Pee is stored in the rocket", "Rockets are stored in the balls",
 		"Here's lookin' at you", "Rocket Launcher", "Wake your psyche up", "Dig your anger up", "Delete This",
-		"Exterminate", "EXTERMINATUS"
+		"Exterminate", "EXTERMINATUS", "TNT was a mistake"
 		
 	};
 
@@ -353,7 +353,7 @@ Class NameClass : Actor
 		switch (getMode)
 		{
 			case 0:
-				index += random(1, 20) * (random(0, 100) % 4 == 0 ? 1 : -1);
+				index += random(1, int(NameClass.names.size() / 2)) * (random(0, 100) % 4 == 0 ? 1 : -1);
 				index = index % NameClass.names.size();
 				if (index < 0) index += NameClass.names.size();
 				rng_name = NameClass.names[index];

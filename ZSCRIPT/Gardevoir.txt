@@ -22,6 +22,7 @@ Class Gardevoir : PlayerPawn
 	PointLight glowy;
 	
 	Weapon ActiveGun;
+	Weapon PreviousGun;
 	Array<Actor> FloatGuns;
 	
 	default {
@@ -31,6 +32,8 @@ Class Gardevoir : PlayerPawn
 		
 		Player.ForwardMove 2, 1;
 		
+		Player.UseRange 0;
+		
 		xscale 0.325;
 		yscale 0.325;
 		
@@ -38,6 +41,7 @@ Class Gardevoir : PlayerPawn
 		DamageFactor "Poison", 2.0;
 		DamageFactor "PoisonCloud", 2.0;
 		DamageFactor "Melee", 0.25;
+		
 	}
 	
 	States
@@ -282,6 +286,15 @@ Class Gardevoir : PlayerPawn
 			self.giveInventory("Swift", 1);
 			self.giveInventory("MoonBlastGun", 1);
 			self.giveInventory("BlackHole", 1);
+		}
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		//Use handler
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		if (KeyCheck(BT_USE, KPT_JUSTPRESSED, self) && CountInv("IcePunchItem") == 0)
+		{
+			Self.giveInventory("IcePunchItem", 1);
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -559,4 +572,22 @@ Class Gardevoir : PlayerPawn
 		
 		return rtn;
 	}
+	
+	//ty Cali: https://gist.github.com/caligari87/ca20c1547c76fb6f1999a2bfa952463f
+	bool KeyCheck(int toCheck, int checkType, PlayerPawn pointer) {
+	int b = pointer.player.cmd.buttons; int ob = pointer.player.oldbuttons;
+	switch (checkType) {
+		case KPT_PRESSING: return (b&toCheck);break;
+		case KPT_JUSTPRESSED: return ((b&toCheck) && !(ob&toCheck));break;
+		case KPT_JUSTRELEASED: return (!(b&toCheck) && (ob&toCheck));break;
+		case KPT_HELD: return ((b&toCheck) && (ob&toCheck));break;
+	}return false;
+}
+}
+
+enum KeyPressTypes {
+	KPT_PRESSING,
+	KPT_JUSTPRESSED,
+	KPT_JUSTRELEASED,
+	KPT_HELD,
 }

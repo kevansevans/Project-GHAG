@@ -1,5 +1,11 @@
+class IcePunchItem : Inventory {}
+
 Mixin Class IcePunch
 {
+
+	Array<Actor> Affected;
+	property Affected: Affected;
+	
 	//Can't figure out how to override A_ExplosivePunch, so this will have to do for now
 	Action void A_ExplosivePunch(int damage, bool norandom = false, int flags = CPF_USEAMMO, class<Actor> pufftype = "BulletPuff", double range = 0, double lifesteal = 0, int lifestealmax = 0, class<BasicArmorBonus> armorbonustype = "ArmorBonus", sound MeleeSound = 0, sound MissSound = "")
 	{
@@ -181,10 +187,42 @@ Mixin Class IcePunch
 		}
 	}
 	
+	Action void A_IcePunchPrecalc()
+	{
+		FLineTraceData shot;
+		let gardie = Gardevoir(players[consoleplayer].mo);
+		gardie.LineTrace(gardie.angle, 64, gardie.pitch, TRF_THRUHITSCAN, gardie.height - 12, 0, 0, shot);
+		
+		//Prioritize using linedefs first
+		if (shot.HitLine)
+		{
+			bool activate = shot.HitLine.Activate(gardie, shot.LineSide, SPAC_Use);
+			if (!activate) A_StartSound("gardie/Noway", CHAN_AUTO);
+		}
+		else {
+			gardie.LineTrace(gardie.angle, 64 + (128 * gardie.GetRageValue()), gardie.pitch, TRF_THRUHITSCAN, gardie.height - 12, 0, 0, shot);
+			{
+				if (shot.HitActor && shot.HitActor.bIsMonster)
+				{
+					if (gardie.distance3d(shot.HitActor) > 128)
+					{
+						gardie.Vel3DFromAngle(20 + (40 * Min(2, gardie.GetRageModifier())), gardie.angle, gardie.pitch);
+					}
+				}
+			}
+		}
+	}
+	
 	Action void A_IcePunch() 
 	{
-		Invoker.kickback = 100 + (300 * Gardevoir(self).GetRageModifier());
-		A_ExplosivePunch(60 + (120 * Gardevoir(self).GetRageModifier()), true, CPF_NOTURN, "IcePuff", 64 + (64 * Gardevoir(self).GetRageModifier()), 0, 0, "", "attack/CONTACT");
+		let gardie = Gardevoir(players[consoleplayer].mo);
+		A_ExplosivePunch(30 + (60 * gardie.GetRageModifier()), 0, true, "IcePuff", 64, 0, 0, "", "");
+	}
+	
+	Action void A_OverlayIcePunch()
+	{
+		A_Overlay(3, "IcePunch.Overlay", true);
+		A_OverlayScale(3, 0.8, 0.8); 
 	}
 }
 
@@ -231,6 +269,7 @@ Class IcePuff : BasePunchPuff
 	{
 		Spawn :
 		Melee :
+			TNT1 A 0 A_StartSound("attack/Contact", CHAN_AUTO);
 			IPFA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 Bright;
 			IPFB ABCDEFGHIJKLM 1 Bright;
 			IPFB K 1 Bright /*A_Inflict(chance, FROZEN)*/;

@@ -16,6 +16,9 @@ Class GHAGPlasmaOverlay : Ammo
 
 Class GHAGPlasmaRifle : PlasmaRifle
 {
+
+	mixin IcePunch;
+
 	default {
 		Weapon.SlotNumber 6;
 		Tag "Generic Energy Weapon";
@@ -59,6 +62,11 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			HAND A 1 {
 				A_WeaponReady();
 				A_PlasmaOverlay();
+				if (invoker.owner.CountInv("IcePunchItem") > 0)
+				{
+					return resolveState("IcePunchAttack");
+				}
+				return resolveState(null);
 			}
 			loop;
 		Fire:
@@ -85,6 +93,27 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			HAND A 12;
 			HAND A 20 A_Refire();
 			goto Ready;
+		IcePunchAttack:
+			TNT1 A 0 A_IcePunchPrecalc();
+			HAND AAA 2 {
+				A_OverlayIcePunch();
+			}
+			HAND AA 2
+			{
+				A_OverlayIcePunch();
+				A_IcePunch();
+			}
+			HAND A 1
+			{
+				A_ClearOverlays(2, 2);
+				invoker.owner.TakeInventory("IcePunchItem", 1);
+			}
+			goto Ready;
+		IcePunch.Overlay:
+			IPUN AB 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
+			IPUN C 4;
+			IPUN DEF 4 A_SetTics(Gardevoir(self).GetTicModifier(4));
+			stop;
 		Plasma.Overlay :
 			PLSM ABCDE 1;
 			loop;

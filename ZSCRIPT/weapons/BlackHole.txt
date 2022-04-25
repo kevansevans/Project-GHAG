@@ -1,6 +1,7 @@
 Class BlackHole : Weapon
 {
 	mixin BlackHoleAttacks;
+	mixin IcePunch;
 
 	Default
 	{

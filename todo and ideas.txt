@@ -53,3 +53,9 @@ pokeball
 - Confusion
 	- 25 percent chance to temporarily make actor friendly, aka "confused"
 	- 25 percent chance to unconfuse
+
+- E to Melee option
+	- Activates lines of course
+	- If enemy is in range, leap towards it and punch
+		- Range increases with anger.
+		- Damage increases with anger

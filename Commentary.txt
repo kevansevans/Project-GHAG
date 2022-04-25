@@ -31,11 +31,16 @@ faster than pulling the trigger, and the term I lovingly gave this was
 "Forced Fuller Auto mode". The need to figure out how to balance this inspired
 the anger system, and made making the other guns act similar came along.
 
-However, I wranged with a problem still. I still wanted the guns to be silly, and
+However, I wrangled with a problem still. I wanted the guns to be silly, and
 what could I do to make the chaingun, SSG, and plasma rifle do differently?
 I wanted to keep the pistol relevant. As is, unless you're doing a tyson run,
 the pistol gets put aside for every gun, so I wanted to keep it relevant. It already
 took the slot of "Gun that fires fast", so the chaingun couldn't just get... faster.
+
+Eventually, I realized that I needed to drop the silly guns idea. The premise of
+an angry pokemon being too good to just hold a gun served the humor just fine.
+I dropped the chaingun and SSG in favor of the fact that I simply could not think
+of how to make them stand out.
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //Character commentary

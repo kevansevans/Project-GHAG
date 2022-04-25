@@ -19,4 +19,4 @@ DoomEdNums
   11007 = ExtraShotgun
   11008 = ExtraPlasma
   11009 = RageCandyBar
-}
+}	

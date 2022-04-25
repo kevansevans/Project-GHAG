@@ -10,7 +10,6 @@ Class GardevoirDoom : Gardevoir
 		Player.StartItem "Shell", 0;
 		Player.StartItem "RocketAmmo", 0;
 		Player.StartItem "Cell", 0;
-		Player.StartItem "IcePunch";
 		Player.StartItem "Swift";
 		Player.StartItem "MoonBlastGun";
 		Player.StartItem "BlackHole";
@@ -23,24 +22,3 @@ Class GardevoirDoom : Gardevoir
 		Super.BeginPlay();
 	}
 }
-
-Class GardevoirHeretic : Gardevoir
-{
-	default {
-	
-		Player.DisplayName "Heretic";
-	
-		Player.StartItem "IcePunch";
-		Player.StartItem "Swift";
-		Player.StartItem "MoonBlastGun";
-		Player.StartItem "BlackHole";
-	}
-	
-	override void BeginPlay()
-	{
-		self.iwadClass = IWAD_HERETIC;
-		
-		Super.BeginPlay();
-	}
-}
-

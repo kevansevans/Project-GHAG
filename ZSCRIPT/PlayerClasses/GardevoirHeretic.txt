@@ -1,0 +1,18 @@
+Class GardevoirHeretic : Gardevoir
+{
+	default {
+	
+		Player.DisplayName "Heretic";
+	
+		Player.StartItem "Swift";
+		Player.StartItem "MoonBlastGun";
+		Player.StartItem "BlackHole";
+	}
+	
+	override void BeginPlay()
+	{
+		self.iwadClass = IWAD_HERETIC;
+		
+		Super.BeginPlay();
+	}
+}

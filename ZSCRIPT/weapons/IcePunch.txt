@@ -1,48 +1,5 @@
-class InflictOdds : Thinker
+Mixin Class IcePunch
 {
-	int chance;
-	
-	InflictOdds Init()
-	{
-		chance = 25;
-		ChangeStatNum(STAT_STATIC);
-		return self;
-	}
-	
-	Static InflictOdds Get()
-	{
-		ThinkerIterator odds = ThinkerIterator.create("InflictOdds", STAT_STATIC);
-		let p = InflictOdds(odds.next());
-		if (p == null)
-		{
-			p = new("InflictOdds").Init();
-		}
-		return p;
-	}
-	
-}
-
-Class IcePunch : Weapon
-{
-
-	Array<Actor> Affected;
-	property Affected: Affected;
-	
-	Default
-	{
-		Weapon.SlotNumber 1;
-		Weapon.kickback 150;
-		Tag "Ice Punch";
-		+Weapon.No_Auto_Switch;
-		Weapon.SelectionOrder 2000;
-	}
-	
-	override void DoEffect()
-	{
-		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
-		super.DoEffect();
-	}
-	
 	//Can't figure out how to override A_ExplosivePunch, so this will have to do for now
 	Action void A_ExplosivePunch(int damage, bool norandom = false, int flags = CPF_USEAMMO, class<Actor> pufftype = "BulletPuff", double range = 0, double lifesteal = 0, int lifestealmax = 0, class<BasicArmorBonus> armorbonustype = "ArmorBonus", sound MeleeSound = 0, sound MissSound = "")
 	{
@@ -229,42 +186,6 @@ Class IcePunch : Weapon
 		Invoker.kickback = 100 + (300 * Gardevoir(self).GetRageModifier());
 		A_ExplosivePunch(60 + (120 * Gardevoir(self).GetRageModifier()), true, CPF_NOTURN, "IcePuff", 64 + (64 * Gardevoir(self).GetRageModifier()), 0, 0, "", "attack/CONTACT");
 	}
-	
-	States {
-		Select :
-			IPUN A 1 A_Raise();
-			Loop;
-		Deselect :
-			IPUN A 1 A_Lower();
-			Loop;
-		Ready :
-			IPUN A 1 A_WeaponReady();
-			Loop;
-		Fire :
-			#### # 2 {
-				Gardevoir(self).subtractAnger(10);
-			}
-			#### A 0 A_StartSound("fists/MEGAPNCH", CHAN_AUTO);
-			#### A 0 A_JumpIf(random(1, 100) <= 50, "Fire.Lefty");
-		Fire.Righty:
-			#### BC 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			#### D 4 A_IcePunch();
-			#### EFG 4 {
-				A_WeaponReady(WRF_NOFIRE | WRF_ALLOWRELOAD);
-				A_SetTics(Gardevoir(self).GetTicModifier(4));
-			}
-			#### A 1 A_Refire();
-			goto Ready;
-		Fire.Lefty:
-			#### HI 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			#### J 4 A_IcePunch();
-			#### KLM 4 {
-				A_WeaponReady(WRF_NOFIRE | WRF_ALLOWRELOAD);
-				A_SetTics(Gardevoir(self).GetTicModifier(4));
-			}
-			#### A 1 A_Refire();
-			goto Ready;
-	}
 }
 
 Class BasePunchPuff : BulletPuff
@@ -279,26 +200,6 @@ Class BasePunchPuff : BulletPuff
 		VSpeed 0;
 		Alpha 1;
 	}
-	
-	override void BeginPlay()
-	{
-		let odds = InflictOdds.get();
-		if (odds) {
-			Self.chance = odds.chance + (25 * Gardevoir(players[consoleplayer].mo).getRageModifier());
-		} else {
-			self.chance = 25;
-		}
-	}
-	
-	/*action void A_Inflict(int odds, StatusType Status) 
-	{
-		int rng = random(1, 100);
-		if (rng <= odds) {
-			if (target && !target.bMissile) {
-				ActorTracker.TrackThing(target, Status);
-			}
-		}
-	}*/
 	
 	override void tick() {
 	

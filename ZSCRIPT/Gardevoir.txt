@@ -279,7 +279,6 @@ Class Gardevoir : PlayerPawn
 			
 			self.giveInventory("GHAGPistol", 1);
 			self.giveInventory("GHAGPistolOverlay", 1);
-			self.giveInventory("IcePunch", 1);
 			self.giveInventory("Swift", 1);
 			self.giveInventory("MoonBlastGun", 1);
 			self.giveInventory("BlackHole", 1);

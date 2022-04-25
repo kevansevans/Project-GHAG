@@ -300,8 +300,7 @@ Class GHAGEventHandler : EventHandler
 		int angerBonus = Max(int(thing.spawnHealth() / 5), 1);
 		int willBonus = int(AngerBonus / 10);
 		
-		if (gardie.player.ReadyWeapon is "IcePunch" ||
-			gardie.player.ReadyWeapon is "Swift"		 ||
+		if (gardie.player.ReadyWeapon is "Swift"		 ||
 			gardie.player.ReadyWeapon is "MoonBlastGun") 
 		{ } else {
 		
@@ -388,22 +387,6 @@ Class GHAGEventHandler : EventHandler
 				{
 					Gardie.RageValue = rage.getInt();
 					rage.resetToDefault();
-				}
-			}
-			
-			//change the odds of an element punch inflicting it's status effect
-			//set to -1 to reset it to a default of 25
-			cvar punchodds = Cvar.findCvar("ghagpunchodds");
-			if (punchodds) {
-				let odds = InflictOdds.get();
-				if (odds) {
-					if (punchodds.getInt() != -1)
-					{
-						odds.chance = punchodds.getInt();
-					} else if (odds.chance == -1) {
-						odds.chance = 25;
-					}
-					punchodds.resetToDefault();
 				}
 			}
 			

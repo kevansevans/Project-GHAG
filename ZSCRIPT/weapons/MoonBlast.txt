@@ -51,6 +51,16 @@ Class MoonBlastGun : Weapon
 			goto Ready;
 		IcePunchAttack:
 			TNT1 A 0 A_IcePunchPrecalc();
+		IcePunchSwing:
+			HAND A 1;
+			HAND A 0
+			{
+				if (Gardevoir(self).IcePunchTarget && distance3d(Gardevoir(self).IcePunchTarget) > 128 && invoker.IcePunchGetSpeed() > 16.0)
+				{
+					return resolveState("IcePunchSwing");
+				}
+				return resolveState(null);
+			}
 			HAND AAA 2 {
 				A_OverlayIcePunch();
 			}
@@ -63,6 +73,7 @@ Class MoonBlastGun : Weapon
 			{
 				A_ClearOverlays(2, 2);
 				invoker.owner.TakeInventory("IcePunchItem", 1);
+				Gardevoir(self).IcePunchTarget = null;
 			}
 			goto Ready;
 		IcePunch.Overlay:

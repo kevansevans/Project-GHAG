@@ -25,6 +25,8 @@ Class Gardevoir : PlayerPawn
 	Weapon PreviousGun;
 	Array<Actor> FloatGuns;
 	
+	Actor IcePunchTarget;
+	
 	default {
 		Health 350;
 		PainChance 255;

@@ -40,7 +40,10 @@ Class ExtraPsychoCutter : CustomInventory replaces Chainsaw
 			{
 				let player = Gardevoir(players[consoleplayer].mo);
 				player.giveInventory("GHAGPsychoCutterOverlay", 1);
-				if (player.countinv("GHAGPsychoCutter") == 0) player.giveInventory("GHAGPsychoCutter", 1);
+				if (player.countinv("GHAGPsychoCutter") == 0) {
+					player.giveInventory("GHAGPsychoCutter", 1);
+					A_SelectWeapon("GHAGPsychoCutter");
+				}
 			}
 			stop;
 	}

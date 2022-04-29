@@ -243,7 +243,7 @@ Class GHAGStatus : BaseStatusBar
 				DrawImage("INVMID", (20, v_height - 185), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
 				DrawImage("INVTOP", (20, v_height - 188), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
 				
-				DrawTexture(ItemSprite, (40, v_height - 165), DI_ITEM_CENTER, 1, (28, 28), (1, 1));
+				DrawTexture(ItemSprite, (40, v_height - 165), DI_ITEM_CENTER, 1, (32, 32), (1, 1));
 				DrawString(pokefont, "x" .. CPlayer.mo.InvSel.Amount, (115, v_height - 175), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
 			}
 		}
@@ -293,9 +293,18 @@ Class GHAGStatus : BaseStatusBar
 		
 		if (Gardie.RageValue < 0) return "your turn will come....";
 		if (Gardie.overTheEdge) {
-			if (GameInfo.GameType == 1) return "HELL HATH NO FURY";
-			if (GameInfo.GameType == 2) return "D'SPARIL TREMBLES";
-			return "BLIND WRATH AND FURY";
+			switch(GameInfo.GameType)
+			{
+				case 1:
+					return "HELL HATH NO FURY";
+				case 2:
+					return "D'SPARIL TREMBLES";
+				case 4:
+					return "KORAX SHALL CRAWL";
+				default:
+					console.printf('' .. GameInfo.GameType);
+					return "hurrrrrr";
+			}
 		}
 		
 		if (Gardie.RageValue > 1000) return "MURDEROUS";

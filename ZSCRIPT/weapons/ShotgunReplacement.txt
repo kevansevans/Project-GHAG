@@ -456,7 +456,7 @@ Class GHAGPsychicPuff : BulletPuff
 	}
 }
 
-class GHAGShotgunOverlay : Ammo
+class GHAGShotgunOverlay : Inventory
 {
 	default
 	{

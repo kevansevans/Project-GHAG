@@ -1,4 +1,4 @@
-Class GHAGPlasmaOverlay : Ammo
+Class GHAGPlasmaOverlay : Inventory
 {
 	Default
 	{

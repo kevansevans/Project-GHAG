@@ -1,4 +1,4 @@
-Class GHAGPistolOverlay : Ammo
+Class GHAGPistolOverlay : Inventory
 {
 	Default
 	{

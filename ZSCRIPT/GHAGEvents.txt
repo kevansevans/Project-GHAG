@@ -285,6 +285,7 @@ Class GHAGEventHandler : EventHandler
 	{
 		if (!gardie) return;
 		if (ExplosiveBarrel(event.thing)) return;
+		if (gardie.countInv("IcePunchItem")) return;
 		if (Gardevoir(event.thing.target) || ExplosiveBarrel(event.thing.target)) {
 			CatharsisBonus(event.thing);
 		}

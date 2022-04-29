@@ -34,8 +34,6 @@ Class Gardevoir : PlayerPawn
 		
 		Player.ForwardMove 2, 1;
 		
-		Player.UseRange 0;
-		
 		xscale 0.325;
 		yscale 0.325;
 		

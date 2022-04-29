@@ -197,28 +197,21 @@ Mixin Class IcePunch
 		return sqrt(x + y + z);
 	}
 	
+	line hitLine;
+	
 	Action void A_IcePunchPrecalc()
 	{
 		FLineTraceData shot;
+	
 		let gardie = Gardevoir(players[consoleplayer].mo);
-		gardie.LineTrace(gardie.angle, 64, gardie.pitch, TRF_THRUHITSCAN, gardie.height - 12, 0, 0, shot);
-		
-		//Prioritize using linedefs first
-		if (shot.HitLine)
+		gardie.LineTrace(gardie.angle, 64 + (128 * gardie.GetRageValue()), gardie.pitch, TRF_THRUHITSCAN, gardie.height - 12, 0, 0, shot);
 		{
-			bool activate = shot.HitLine.Activate(gardie, shot.LineSide, SPAC_Use);
-			if (!activate) A_StartSound("gardie/Noway", CHAN_AUTO);
-		}
-		else {
-			gardie.LineTrace(gardie.angle, 64 + (128 * gardie.GetRageValue()), gardie.pitch, TRF_THRUHITSCAN, gardie.height - 12, 0, 0, shot);
+			if (shot.HitActor && shot.HitActor.bIsMonster)
 			{
-				if (shot.HitActor && shot.HitActor.bIsMonster)
+				if (gardie.distance3d(shot.HitActor) > 128)
 				{
-					if (gardie.distance3d(shot.HitActor) > 128)
-					{
-						gardie.IcePunchTarget = shot.HitActor;
-						gardie.Vel3DFromAngle(20 + (40 * Min(2, gardie.GetRageModifier())), gardie.angle, gardie.pitch);
-					}
+					gardie.IcePunchTarget = shot.HitActor;
+					gardie.Vel3DFromAngle(20 + (40 * Min(2, gardie.GetRageModifier())), gardie.angle, gardie.pitch);
 				}
 			}
 		}
@@ -227,7 +220,9 @@ Mixin Class IcePunch
 	Action void A_IcePunch() 
 	{
 		let gardie = Gardevoir(players[consoleplayer].mo);
-		A_ExplosivePunch(15 + (60 * gardie.GetRageModifier()), 0, true, "IcePuff", 64, 0, 0, "", "");
+		if (!invoker.hitline) gardie.subtractAnger(20);
+		A_ExplosivePunch(15 + (60 * gardie.GetRageModifier()), 0, true, "IcePuff", 32 + (16 * gardie.GetRageModifier()), 0, 0, "", "");
+		invoker.hitline = null;
 	}
 	
 	Action void A_OverlayIcePunch()

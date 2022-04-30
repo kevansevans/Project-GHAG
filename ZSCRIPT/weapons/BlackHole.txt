@@ -238,6 +238,7 @@ mixin class BlackHoleAttacks
 	{
 		if (
 		//Doom and general
+		victim is "Blood" ||
 		victim is "Gardevoir" || victim is "weapon" || victim is "PowerupGiver" ||
 		victim is "BlackHoleProjectile" || victim is "lightningfizzle" ||
 		victim is "Key" || (victim is "Inventory" && Inventory(victim).owner is "PlayerPawn") ||

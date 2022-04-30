@@ -17,8 +17,7 @@ Class GHAGStatus : BaseStatusBar
 		Super.Init();
 		
 		scale = getHUDScale();
-		
-		SetSize(0, Screen.getWidth() / (scale.x / 2), Screen.getHeight() / (scale.y / 2));
+		SetSize(0, 320, 200);
 		
 		wtfString = wtf();
 		
@@ -175,7 +174,6 @@ Class GHAGStatus : BaseStatusBar
 		vector2 drawPos = (v_width, v_height - 35);
 		for (int i = 0; i < 6; i++) {
 			locks[i] = CPlayer.mo.CheckKeys(i + 1, false, true);
-			//console.printf(i .. ':' .. locks[i]);
 		}
 		// key 1
 		if (gameinfo.gametype == 1)

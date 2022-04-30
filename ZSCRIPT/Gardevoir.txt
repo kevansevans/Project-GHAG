@@ -535,8 +535,14 @@ Class Gardevoir : PlayerPawn
 			RageValue = RageConstant;
 			
 			super.CheatGive("GHAGBackpack", 40);
-			super.CheatGive("GHAGBackpack", 40);
 			super.CheatGive("all", _amount);
+			for (int i = 0; i < 5; ++i)
+			{
+				super.CheatGive("ExtraPistol", 1);
+				super.CheatGive("ExtraShotgun", 1);
+				super.CheatGive("ExtraPlasma", 1);
+				super.CheatGive("ExtraPsychoCutter", 1);
+			}
 			return;
 		}
 		

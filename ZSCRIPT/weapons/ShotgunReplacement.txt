@@ -139,7 +139,7 @@ Class GHAGShotgun : Weapon
 			}
 			HAND B 2 Bright {
 				A_FireBullets(4, 4, 10, 5, "BulletPuff");
-				int pellets = floor(14 * Gardevoir(Self).GetRageModifier()) * (invoker.owner.CountInv("PowerWeaponLevel2") >= 1 ? 2 : 1);
+				int pellets = floor(14 * Gardevoir(Self).GetRageModifier()) * (Gardevoir(self).rageValue > Gardevoir(self).rageConstant ? 2 : 1);
 				A_FireBullets(4, 4, pellets, 5, "GHAGPsychicPuff");
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_SetTics(Gardevoir(self).GetTicModifier(2));

@@ -1,0 +1,12 @@
+Sprite SGN2A0, 32, 12
+{
+	offset 16, 12
+	Patch SBOXA0, 0, 0
+}
+
+Sprite MGUNA0, 28, 16
+{
+	offset 12, 16
+	Patch AMMOA0, 0, 0
+}
+

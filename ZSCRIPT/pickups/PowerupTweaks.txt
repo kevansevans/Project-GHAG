@@ -16,10 +16,6 @@ Class GHAGMegasphere : Megasphere replaces Megasphere
 	}
 	states 
 	{
-		Spawn:
-			HEAL E 6 Bright;
-			HEAL E 36;
-			Loop;
 		Pickup:
 			TNT1 A 0 A_GiveInventory("BlueArmorForMegasphere", 1);
 			TNT1 A 0 A_GiveInventory("GHAGMegasphereHealth", 1);

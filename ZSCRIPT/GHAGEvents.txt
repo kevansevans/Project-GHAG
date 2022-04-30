@@ -435,6 +435,8 @@ Class GHAGEventHandler : EventHandler
 	
 	override void WorldLoaded(WorldEvent event)
 	{
+		gardie.takeInventory("IcePunchItem", 1);
+	
 		numSecrets = 0;
 		mapHasMinimalSecrets = true;
 		for (int i = 0; i < level.Sectors.Size(); i++)

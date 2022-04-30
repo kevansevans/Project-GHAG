@@ -282,7 +282,7 @@ mixin class BlackHoleAttacks
 				if (mo.bIsMonster && mo.health > 0) {
 					mo.bNoFear = false;
 					mo.bFrightened = true;
-					mo.A_DamageSelf(((radius * 2) - (distance3D(mo) * 2)), "none", flags);
+					mo.A_DamageSelf(abs((radius) - (distance3D(mo))), "none", flags);
 					if (gametic % 2 == 0 && mo.health > 0) mo.setStateLabel("Pain");
 				}
 				

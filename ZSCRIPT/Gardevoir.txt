@@ -233,7 +233,10 @@ Class Gardevoir : PlayerPawn
 	override void Tick()
 	{
 	
-		if (countInv("BlackHole") == 0 && RageConstant >= 500) giveInventory("BlackHole", 1);
+		if (countInv("BlackHole") == 0 && RageConstant >= 500) {
+			giveInventory("BlackHole", 1);
+			A_SelectWeapon("BlackHole");
+		}
 	
 		if (self.glowy)
 		{

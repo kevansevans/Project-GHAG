@@ -12,7 +12,6 @@ Class GardevoirDoom : Gardevoir
 		Player.StartItem "Cell", 0;
 		Player.StartItem "Swift";
 		Player.StartItem "MoonBlastGun";
-		Player.StartItem "BlackHole";
 	}
 	
 	override void BeginPlay()

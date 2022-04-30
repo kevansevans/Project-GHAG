@@ -232,6 +232,9 @@ Class Gardevoir : PlayerPawn
 	
 	override void Tick()
 	{
+	
+		if (countInv("BlackHole") == 0 && RageConstant >= 500) giveInventory("BlackHole", 1);
+	
 		if (self.glowy)
 		{
 			Vector3 lightpos = (self.pos.x, self.pos.y, self.pos.z + 50);

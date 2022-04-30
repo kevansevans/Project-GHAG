@@ -1,11 +1,10 @@
 GameInfo
 {
-	PlayerClasses = "GardevoirDoom", "GardevoirHeretic"
+	PlayerClasses = "GardevoirDoom"
 	StatusBarClass = "GHAGStatus"
 	AddEventHandlers = "GHAGEventHandler"
 	AddEventHandlers = "GHAGKeyEvents"
 	//AddEventHandlers = "ActorTracker"
-	DrawReadThis = true
 }
 
 DoomEdNums
@@ -20,3 +19,10 @@ DoomEdNums
   11008 = ExtraPlasma
   11009 = RageCandyBar
 }	
+
+episode TUT01
+{
+	name = "GHAG Tutorial"
+}
+map TUT01 "GHAG Tutorial"
+{}

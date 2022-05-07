@@ -1,5 +1,3 @@
-class IcePunchItem : Inventory {}
-
 Mixin Class IcePunch
 {
 
@@ -193,7 +191,6 @@ Mixin Class IcePunch
 		double x = gardie.vel.x * gardie.vel.x;
 		double y = gardie.vel.y * gardie.vel.y;
 		double z = gardie.vel.z * gardie.vel.z;
-		console.printf('' .. sqrt(x + y + z));
 		return sqrt(x + y + z);
 	}
 	
@@ -212,6 +209,7 @@ Mixin Class IcePunch
 				{
 					gardie.IcePunchTarget = shot.HitActor;
 					gardie.Vel3DFromAngle(20 + (40 * Min(2, gardie.GetRageModifier())), gardie.angle, gardie.pitch);
+					A_StartSound("dash/Start", CHAN_AUTO, 0, 1.2);
 				}
 			}
 		}
@@ -220,7 +218,6 @@ Mixin Class IcePunch
 	Action void A_IcePunch() 
 	{
 		let gardie = Gardevoir(players[consoleplayer].mo);
-		if (!invoker.hitline) gardie.subtractAnger(20);
 		A_ExplosivePunch(15 + (60 * gardie.GetRageModifier()), 0, true, "IcePuff", 32 + (16 * gardie.GetRageModifier()), 0, 0, "", "");
 		invoker.hitline = null;
 	}

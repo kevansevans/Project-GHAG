@@ -14,16 +14,14 @@ Class GHAGPlasmaOverlay : Inventory
 	}
 }
 
-Class GHAGPlasmaRifle : PlasmaRifle
+Class GHAGPlasmaRifle : GHAGWeapon
 {
-
-	mixin IcePunch;
-
 	default {
 		Weapon.SlotNumber 6;
 		Tag "Generic Energy Weapon";
 		Weapon.AmmoType1 "Cell";
 		Weapon.AmmoType2 "Cell";
+		Weapon.AmmoUse1 1;
 	}
 	
 	override void DoEffect()
@@ -60,12 +58,8 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			loop;
 		Ready:
 			HAND A 1 {
-				A_WeaponReady();
+				A_WeaponReady(WRF_ALLOWUSER1);
 				A_PlasmaOverlay();
-				if (invoker.owner.CountInv("IcePunchItem") > 0)
-				{
-					return resolveState("IcePunchAttack");
-				}
 				return resolveState(null);
 			}
 			loop;
@@ -93,39 +87,6 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			HAND A 12;
 			HAND A 20 A_Refire();
 			goto Ready;
-		IcePunchAttack:
-			TNT1 A 0 A_IcePunchPrecalc();
-		IcePunchSwing:
-			HAND A 1;
-			HAND A 0
-			{
-				if (Gardevoir(self).IcePunchTarget && distance3d(Gardevoir(self).IcePunchTarget) > 128 && invoker.IcePunchGetSpeed() > 16.0)
-				{
-					return resolveState("IcePunchSwing");
-				}
-				return resolveState(null);
-			}
-			TNT1 A 0 A_StartSound("fists/ICEPUNCH", CHAN_AUTO);
-			HAND AAA 2 {
-				A_OverlayIcePunch();
-			}
-			HAND AA 2
-			{
-				A_OverlayIcePunch();
-				A_IcePunch();
-			}
-			HAND A 1
-			{
-				A_ClearOverlays(2, 2);
-				invoker.owner.TakeInventory("IcePunchItem", 1);
-				Gardevoir(self).IcePunchTarget = null;
-			}
-			goto Ready;
-		IcePunch.Overlay:
-			IPUN AB 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			IPUN C 4;
-			IPUN DEF 4 A_SetTics(Gardevoir(self).GetTicModifier(4));
-			stop;
 		Plasma.Overlay :
 			PLSM ABCDE 1;
 			loop;
@@ -172,7 +133,6 @@ Class GHAGPlasmaRifle : PlasmaRifle
 			{
 				return;
 			}
-			Weapon weap = player.ReadyWeapon;
 			int gun = i + 1;
 			int x = 15;
 			if (gun == 2) x = -15;

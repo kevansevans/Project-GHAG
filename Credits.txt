@@ -50,6 +50,8 @@ Rocket Launcher is just Doom's rocket upscaled and animated to be spinning.
 
 Plasma Rifle is based off of a watergun I bought at a hardware store.
 
+Nailgun sprites: https://forum.zdoom.org/viewtopic.php?f=37&t=45524
+
 Gen 2 move sprites, for elemental punches:
 https://www.spriters-resource.com/game_boy_gbc/pokemongoldsilver/sheet/9087/
 Fists were done in Flash, just added a glow with appropriate color

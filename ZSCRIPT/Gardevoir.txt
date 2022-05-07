@@ -295,15 +295,6 @@ Class Gardevoir : PlayerPawn
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		//Use handler
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		if (KeyCheck(BT_USE, KPT_JUSTPRESSED, self) && CountInv("IcePunchItem") == 0)
-		{
-			Self.giveInventory("IcePunchItem", 1);
-		}
-		
-		////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Dash handler
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -533,22 +524,34 @@ Class Gardevoir : PlayerPawn
 	
 	override void CheatGive(String _name, int _amount)
 	{
-		if (_name == 'all')
+		if (_name == 'all' || _name == 'weapons')
 		{
 			if (RageConstant < 1000) RageConstant = 1000;
 			else RageConstant += 100;
 			
 			RageValue = RageConstant;
 			
-			super.CheatGive("GHAGBackpack", 40);
-			super.CheatGive("all", _amount);
-			for (int i = 0; i < 5; ++i)
+			GiveInventory("GHAGPistol", 1);
+			GiveInventory("GHAGPsychocutter", 1);
+			GiveInventory("GHAGShotgun", 1);
+			GiveInventory("GHAGNailgun", 1);
+			GiveInventory("GHAGRocketLauncher", 1);
+			GiveInventory("GHAGPlasmarifle", 1);
+			GiveInventory("Swift", 1);
+			GiveInventory("MoonBlastGun", 1);
+			GiveInventory("Blackhole", 1);
+			for (int i = 0; i < 4; ++i)
 			{
-				super.CheatGive("ExtraPistol", 1);
-				super.CheatGive("ExtraShotgun", 1);
-				super.CheatGive("ExtraPlasma", 1);
-				super.CheatGive("ExtraPsychoCutter", 1);
+				GiveInventory("GHAGPistolOverlay", 1);
+				GiveInventory("GHAGShotgunOverlay", 1);
+				GiveInventory("GHAGNailgunOverlay", 1);
+				GiveInventory("GHAGPlasmaOverlay", 1);
+				GiveInventory("GHAGPsychocutterOverlay", 1);
+				GiveInventory("GHAGBackpack", 10);
 			}
+			
+			super.CheatGive(_name, _amount);
+			
 			return;
 		}
 		

@@ -46,7 +46,7 @@ Class GHAGEventHandler : EventHandler
 			if (!gun) return;
 			
 			//Ignore any spawning GHAG weapons
-			if (GHAGPistol(gun) || GHAGShotgun(gun) || GHAGRocketLauncher(gun) || GHAGPlasmaRifle(gun) || GHAGPsychoCutter(gun))
+			if (GHAGWeapon(gun))
 			{
 				return;
 			}
@@ -285,7 +285,6 @@ Class GHAGEventHandler : EventHandler
 	{
 		if (!gardie) return;
 		if (ExplosiveBarrel(event.thing)) return;
-		if (gardie.countInv("IcePunchItem")) return;
 		if (Gardevoir(event.thing.target) || ExplosiveBarrel(event.thing.target)) {
 			CatharsisBonus(event.thing);
 		}
@@ -435,8 +434,6 @@ Class GHAGEventHandler : EventHandler
 	
 	override void WorldLoaded(WorldEvent event)
 	{
-		gardie.takeInventory("IcePunchItem", 1);
-	
 		numSecrets = 0;
 		mapHasMinimalSecrets = true;
 		for (int i = 0; i < level.Sectors.Size(); i++)
@@ -495,12 +492,14 @@ Class GHAGEventHandler : EventHandler
 					int pistolBonus = 0;
 					int shottyBonus = 1;
 					int plasmaBonus = 2;
+					int nailygBonus = 3;
 					
 					if (gardie.countInv('GHAGPistolOverlay') == limit)
 					{
 						pistolBonus = -1;
 						shottyBonus -= 1;
 						plasmaBonus -= 1;
+						nailygBonus -= 1;
 					}
 					
 					if (gardie.countInv('GHAGShotgun')) 
@@ -509,22 +508,35 @@ Class GHAGEventHandler : EventHandler
 						{
 							shottyBonus = -1;
 							plasmaBonus -= 1;
+							nailygBonus -= 1;
 						} else {
 							mod += 1;
 						}
 					}
+					
 					if (gardie.countInv('GHAGPlasmaRifle')) 
 					{
 						if (gardie.countInv('GHAGPlasmaOverlay') == limit)
 						{
 							plasmaBonus = -1;
+							nailygBonus -= 1;
+						} else {
+							mod += 1;
+						}
+					}
+					
+					if (gardie.countInv('GHAGNailgun')) 
+					{
+						if (gardie.countInv('GHAGNailGun') == limit)
+						{
+							nailygBonus -= 1;
 						} else {
 							mod += 1;
 						}
 					}
 					
 					weaponspawned = level.levelNum;
-					if (pistolBonus == -1 && shottyBonus == -1 && plasmaBonus == -1)
+					if (pistolBonus == -1 && shottyBonus == -1 && plasmaBonus == -1 && nailygBonus == -1)
 					{
 						return;
 					}
@@ -532,9 +544,17 @@ Class GHAGEventHandler : EventHandler
 					int tries = 0;
 					while (true)
 					{
+					
 						if (tries > 5) //Should be impossible to happen, but just to be safe
 						{
 							Actor.spawn('RageCandyBar', (_x, _y, _z));
+							return;
+						}
+					
+						if (!gardie.countInv("GHAGNailGun"))
+						{
+							int chance = random(0, 1);
+							if (chance) Actor.spawn('ExtraNailgun', (_x, _y, _z));
 							return;
 						}
 					
@@ -550,6 +570,10 @@ Class GHAGEventHandler : EventHandler
 						}
 						if (bonus == plasmaBonus) {
 							Actor.spawn('ExtraPlasma', (_x, _y, _z));
+							return;
+						}
+						if (bonus == nailygBonus) {
+							Actor.spawn('ExtraNailgun', (_x, _y, _z));
 							return;
 						}
 						++tries;

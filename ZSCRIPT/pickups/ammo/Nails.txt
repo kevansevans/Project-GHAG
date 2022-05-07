@@ -1,0 +1,8 @@
+Class Nails : Ammo
+{
+	Default
+	{
+		Inventory.MaxAmount 200;
+		Ammo.BackpackMaxAmount 400;
+	}
+}

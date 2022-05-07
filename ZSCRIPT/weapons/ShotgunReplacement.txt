@@ -2,6 +2,7 @@ Class GHAGShotgun : GHAGWeapon
 {
 	default
 	{
+		Weapon.AmmoUse1 1;
 		Weapon.SlotNumber 3;
 		Weapon.AmmoType1 "Shell";
 		Weapon.AmmoType2 "Shell";
@@ -10,151 +11,94 @@ Class GHAGShotgun : GHAGWeapon
 		Tag "1912 Shotgun";
 	}
 	
-	bool batMode;
+	bool batmode;
 	
 	int getShotgunCount()
 	{
-		return owner.countInv('GHAGShotgunOverlay') * (owner.CountInv("PowerWeaponLevel2") >= 1 ? 2 : 1);
+		return owner.countInv("GHAGShotgunOverlay");
 	}
 	
 	override void BeginPlay()
 	{
-		self.AmmoUse1 = 1;
-		self.AmmoUse2 = countInv('GHAGShotgunOverlay');
-		self.batMode = False;
+		self.batMode = false;
 		
 		super.beginPlay();
 	}
 	
-	override void DoEffect()
+	states
 	{
-		players[consoleplayer].WeaponState |= WF_WEAPONBOBBING;
-		super.DoEffect();
-	}
-	
-	override void tick()
-	{
-		Super.tick();
-		
-		setTag(Cvar.findCvar("ShotgunName").getString());
-	}
-	
-	int layer;
-	int meleeframes;
-	
-	States
-	{
-		Select :
-			TNT1 A 0
+		Select:
+			HAND A 1
 			{
-				if (invoker.ammo1.amount == 0 || invoker.ammo2.amount == 0) invoker.batmode = true;
-				else invoker.batmode = false;
-				
-				if (!invoker.batmode) return resolveState("Select.Norm");
-				else if (invoker.batmode) return resolveState("Select.Batgun");
-				return resolveState(null);
-			}
-			Loop;
-		Select.Norm :
-			HAND A 1 {
+				A_OverlayShotguns();
 				A_Raise();
-				A_OverlayShotguns();
 			}
 			Loop;
-		Select.Batgun :
-			GSHT I 1 {
-				A_Raise();
+		Deselect:
+			HAND A 1
+			{
 				A_OverlayShotguns();
+				A_Lower();
 			}
 			Loop;
-		Deselect :
+		Ready:
+			TNT1 A 0 A_JumpIf(invoker.BatMode, "Ready.Batmode");
+			HAND A 1
+			{
+				A_OverlayShotguns();
+				A_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER1);
+			}
+			Loop;
+		Ready.BatMode:
+			GSHT I 1
+			{
+				A_OverlayShotguns();
+				A_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER1);
+			}
+			goto Ready;
+		Reload:
+			TNT1 A 0 A_JumpIf(!Invoker.Batmode, "Reload.BatMode"); 
+			TNT1 A 0 A_JumpIf(Invoker.Batmode, "Reload.DeBatMode"); 
+			goto Ready;
+		Reload.DeBatMode:
+			GSHT I 4;
+			GSHT H 4;
 			TNT1 A 0
 			{
-				if (!invoker.batmode) return resolveState("Deselect.Norm");
-				else if (invoker.batmode) return resolveState("Deselect.Batgun");
-				return resolveState(null);
-			}
-			Loop;
-		Deselect.Norm :
-			HAND A 1 {
-				A_Lower();
-				A_OverlayShotguns();
-			}
-			Loop;
-		Deselect.Batgun :
-			GSHT I 1 {
-				A_Lower();
-				A_OverlayShotguns();
-			}
-			Loop;
-		Ready :
-			TNT1 A 0
-			{
-				if (invoker.owner.CountInv("IcePunchItem") > 0)
-				{
-					return resolveState("IcePunchAttack");
-				}
-				if (!invoker.batmode) return resolveState("Ready.Standard");
-				else if (invoker.batmode) return resolveState("Ready.Baseball");
-				return resolveState(null);
-			}
-			Loop;
-		Ready.Standard :
-			HAND A 1 {
-				Invoker.AmmoUse2 = invoker.getShotgunCount();
-				A_WeaponReady(WRF_ALLOWRELOAD);
+				Invoker.batmode = false;
 				A_OverlayShotguns();
 			}
 			goto Ready;
-		Ready.Baseball :
-			GSHT I 1 {
-				A_WeaponReady(WRF_ALLOWRELOAD);
-				A_OverlayShotguns();
-			}
-			goto Ready;
-		Fire :
+		Reload.BatMode:
 			TNT1 A 0
 			{
-				if (countinv('shell') <= 0 && !invoker.batmode) return resolveState("reload");
-				if (!invoker.batmode && countinv('shell') > 0) return resolveState("Fire.Gun");
-				else if (invoker.batmode) return resolveState("Fire.Swing");
-				return resolveState(null);
+				Invoker.batmode = true;
+				A_OverlayShotguns();
 			}
-		Fire.Gun :
-			TNT1 A 0 
-			{
-				return resolveState(null);
-			}
+			GSHT H 4;
+			GSHT I 4;
+			goto Ready;
+		Fire:
+			TNT1 A 0 A_JumpIf(invoker.batmode, "Fire.Swing");
+			TNT1 A 0 A_JumpIf(invoker.countInv("shell") == 0, "Ready");
 			HAND A 3 {
 				A_SetTics(Gardevoir(self).GetTicModifier(3));
 				A_OverlayShotguns();
 			}
-			TNT1 A 0
-			{
-				//Does not work on next state for some reason...?
-				if (Cvar.findCvar("sv_infiniteammo").GetBool() == false) A_GiveInventory("Shell");
-			}
 			HAND B 2 Bright {
-				A_FireBullets(4, 4, 10, 5, "BulletPuff");
 				int pellets = floor(14 * Gardevoir(Self).GetRageModifier()) * (Gardevoir(self).rageValue > Gardevoir(self).rageConstant ? 2 : 1);
-				A_FireBullets(4, 4, pellets, 5, "GHAGPsychicPuff");
+				A_FireBullets(4, 4, 10 + pellets, 5, "BulletPuff");
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_SetTics(Gardevoir(self).GetTicModifier(2));
 				bool powered = invoker.owner.CountInv("PowerWeaponLevel2") >= 1;
-				A_OverlayShotguns(true, false, powered);
+				A_OverlayShotguns(true);
 			}
 			HAND CCDDD 1 Bright;
 			HAND E 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
 			HAND FGAAAAA 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			HAND A 7 {
-				if (invoker.ammo1.amount == 0) {
-						return resolveState("Reload");
-				}
-				A_ReFire();
-				return resolveState(null);
-			}
+			HAND A 7 A_ReFire();
 			Goto Ready;
-		Fire.Swing :
+		Fire.Swing:
 			TNT1 A 0 A_OverlayPivot(0, 0.75, 0.75);
 			GSHT IIII 1 {
 				A_OverlayRotate(0, 25, WOF_ADD);
@@ -183,92 +127,44 @@ Class GHAGShotgun : GHAGWeapon
 			}
 			goto Ready;
 		AltFire:
-			TNT1 A 0
-			{
-				if (invoker.batmode == true)
-				{
-					return resolveState("AltFire.Batmode");
-				}
-				if (invoker.ammo2.amount == 0) return resolveState("ready");
-				invoker.AmmoUse2 = Min(invoker.getShotgunCount(), 3);
-				return resolveState(null);
-			}
-			HAND A 3 {
-				A_SetTics(Gardevoir(self).GetTicModifier(3));
-				A_OverlayShotguns();
-			}
+			TNT1 A 0 A_JumpIf(invoker.batmode, "AltFire.SingleShot");
+			TNT1 A 0 A_JumpIf(invoker.countInv("shell") == 0, "Ready");
+			HAND A 3 A_OverlayShotguns();
 			HAND B 1 Bright {
-				A_FireBullets(6, 6, (15 * invoker.getShotgunCount()) + (15 * Gardevoir(Self).GetRageModifier()), 5, "GHAGPsychicPuff");
-				if (Cvar.findCvar("sv_infiniteammo").GetBool() == false) A_TakeInventory("Shell", Min(invoker.getShotgunCount(), 3));
+				invoker.AmmoUse2 = invoker.getShotgunCount();
+				A_FireBullets(6, 6, (15 * invoker.getShotgunCount()) + (15 * Gardevoir(Self).GetRageModifier()), 5, "BulletPuff");
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
-				A_SetTics(Gardevoir(self).GetTicModifier(2));
 				A_OverlayShotguns(true, true);
 			}
 			HAND CCDDD 1 Bright;
 			HAND E 2;
 			HAND FGAAAAA 3;
-			HAND A 7 {
-				if (invoker.ammo1.amount <= 0) {
-						return resolveState("Reload");
-				}
-				A_ReFire();
-				return resolveState(null);
-			}
-			Goto Ready;
-		AltFire.Batmode : 
-			TNT1 A 0
-			{
-				if (invoker.ammo2.amount == 0 || invoker.getShotgunCount() <= 1) return resolveState("Fire.Swing");
-				return resolveState(null);
-			}
+			TNT1 A 0 A_Refire();
+			goto Ready;
+		AltFire.SingleShot:
+			TNT1 A 0 A_JumpIf(invoker.countInv("shell") == 0, "Ready");
 			GSHT I 3 A_OverlayShotguns();
-			GSHT I 2 Bright {
-				invoker.AmmoUse2 = 1;
-				if (CountInv("Shell") != 0) A_GiveInventory("Shell");
-				A_FireBullets(4, 4, 10, 5, "BulletPuff");
-				A_FireBullets(4, 4, floor(14 * Gardevoir(Self).GetRageModifier()), 5, "GHAGPsychicPuff");
+			GSHT I 1 Bright {
+				int pellets = floor(14 * Gardevoir(Self).GetRageModifier()) * (Gardevoir(self).rageValue > Gardevoir(self).rageConstant ? 2 : 1);
+				A_FireBullets(4, 4, 10 + pellets, 5, "BulletPuff");
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
+				A_SetTics(Gardevoir(self).GetTicModifier(2));
+				bool powered = invoker.owner.CountInv("PowerWeaponLevel2") >= 1;
 				A_OverlayShotguns(true);
 			}
-			GSHT IIIII 1 Bright;
-			GSHT I 24;
-			GSHT I 7 A_ReFire();
-			Goto Ready;
-		Reload:
-			TNT1 A 7
-			{
-				A_OverlayShotgunBatGrab();
-				invoker.batmode = !invoker.batmode;
-			}
+			GSHT I 5;
+			GSHT I 2;
+			GSHT I 21;
+			TNT1 A 0 A_Refire();
 			goto Ready;
-			goto Ready;
-		IcePunch.Overlay:
-			IPUN AB 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			IPUN C 4;
-			IPUN DEF 4 A_SetTics(Gardevoir(self).GetTicModifier(4));
-			stop;
-		Grab.Overlay.Enable :
-			GSHT H 4;
-			GSHT I 3;
-			stop;
-		Grab.Overlay.Disable :
-			GSHT I 3;
-			GSHT H 4;
-			stop;
-		Select.Overlay:
-		Deselect.Overlay:
 		Ready.Overlay:
-			GSHT A 999;
-			stop;
+			GSHT A 1;
+			Loop;
+		Nothing.Overlay:
+			TNT1 A 1;
+			Loop;
 		Fire.Overlay:
-			GSHT G 5 Bright
-			{
-				for (int i = 0; i < invoker.getShotgunCount(); i++)
-				{
-					int layer = -1 * (i + 1);
-					A_OverlayPivot(layer, 53, 0, WOF_ADD | WOF_KEEPY);
-				}
-			}
+			GSHT G 5 Bright;
 		Pump.Overlay :
 			GSHT A 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
 			GSHT A 2 A_SetTics(Gardevoir(self).GetTicModifier(2));
@@ -284,14 +180,7 @@ Class GHAGShotgun : GHAGWeapon
 			GSHT A 999;
 			stop;
 		AltFire.Overlay:
-			GSHT G 5 
-			{
-				for (int i = 0; i < invoker.getShotgunCount(); i++)
-				{
-					int layer = -1 * (i + 1);
-					A_OverlayPivot(layer, 2, 0, WOF_ADD | WOF_KEEPY);
-				}
-			}
+			GSHT G 5 Bright;
 		AltPump.Overlay :
 			GSHT A 3;
 			GSHT A 2;
@@ -300,68 +189,36 @@ Class GHAGShotgun : GHAGWeapon
 			GSHT C 5;
 			GSHT D 4;
 			GSHT E 5 A_StartSound("weapons/shotpl", CHAN_WEAPON);
+			GSHT A 999;
+			stop;
 	}
 	
-	Action void A_OverlayShotgunBatGrab()
+	Action void A_OverlayShotguns(bool _rollForFire = false, bool _altFire = false)
 	{
-		if (!invoker.batmode) A_Overlay(-1, "Grab.Overlay.Enable", false);
-		if (invoker.batmode) A_Overlay(-1, "Grab.Overlay.Disable", false);
-		A_OverlayFlags(-1, PSPF_PIVOTPERCENT, true);
-		A_OverlayPivot(-1, 0.5, 0.5);
-		int degree = int(2 * invoker.batmode ? -1 : 1);
-		A_OverlayRotate(-1, degree, WOF_ADD | WOF_INTERPOLATE);
-		if (!invoker.batmode) invoker.meleeframes++;
-		else invoker.meleeframes--;
-	}
-	
-	Action void A_OverlayShotguns(bool rollForFire = false, bool altFire = false, bool powered = false)
-	{
-		int rng;
-		int rng2;
-		
-		if (invoker.batmode && rollForFire) {
-			rng = random(1, invoker.getShotgunCount() - 1);
-			rng2 = rng;
-			while (powered && rng2 == rng)
-			{
-				rng2 = random(1, invoker.getShotgunCount() - 1);
-			}
-		} else {
-			rng = random(0, invoker.getShotgunCount() - 1);
-			rng2 = rng;
-			while (powered && rng2 == rng)
-			{
-				rng2 = random(0, invoker.getShotgunCount() - 1);
-			}
-		}
-		for (int i = 0; i < invoker.getShotgunCount(); i++)
+		int count = invoker.getShotgunCount();
+		int rng = random(invoker.batmode ? 1 : 0, invoker.getShotgunCount() - 1);
+		for (int i = 0; i < count; ++i)
 		{
-			if (invoker.batmode && i == 0) {
+			int layer = -1 * (i + 1);
+			
+			if (invoker.batmode && i == 0) 
+			{
+				A_overlay(layer, "Nothing.Overlay");
 				continue;
 			}
 			
-			int layer = invoker.layer = -1 * (i + 1);
-			
-			if (rollForFire && (i == rng || i == rng2) && !altFire) {
-				A_Overlay(layer, "Fire.Overlay", false);
+			if (_rollForFire && rng == i || _altFire)
+			{
+				if (!_altfire) A_overlay(layer, "Fire.Overlay");
+				else A_overlay(layer, "AltFire.Overlay");
 			}
-			else if (altFire) A_Overlay(layer, "AltFire.Overlay", false);
-			else A_Overlay(layer, "Ready.Overlay", false);
-			
-			A_OverlayFlags(layer, PSPF_ADDBOB | PSPF_PIVOTPERCENT, false);
+			else
+			{
+				A_overlay(layer, "Ready.Overlay");
+			}
+			A_OverlayFlags(layer, PSPF_ADDBOB, false);
 			if ((i + 1) % 2 == 0) A_OverlayFlags(layer, PSPF_FLIP | PSPF_MIRROR, true);
 			A_OverlayOffset(layer, sin(gametic + (63 * i)) + (55 * (i / 2)) + 30, cos(gametic - (234 * i)) - (18 * (i / 2)), WOF_INTERPOLATE);
-			
-			if (invoker.owner.countInv("PowerWeaponLevel2") >= 1)
-			{
-				int realCount = int(invoker.getShotgunCount() / 2);
-				if (i + 1 > realcount)
-				{
-					A_OverlayFlags(layer, PSPF_RENDERSTYLE, true);
-					A_OverlayRenderstyle(layer, STYLE_SoulTrans);
-					A_OverlayAlpha (layer, 0.25);
-				}
-			} 
 		}
 		
 		int layerStart = invoker.getShotgunCount() * -1;
@@ -416,14 +273,6 @@ Class GHAGShotgun : GHAGWeapon
 			victim.bArmed = false; // Disarm
 			victim.DamageMobj(self, self, victim.health, 'Melee', DMG_FORCED|DMG_EXPLOSION);
 		}
-	}
-}
-
-Class GHAGPsychicPuff : BulletPuff
-{
-	Default
-	{
-		Translation "96:111=250:254";
 	}
 }
 

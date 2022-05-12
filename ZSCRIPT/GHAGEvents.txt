@@ -62,25 +62,25 @@ Class GHAGEventHandler : EventHandler
 					}
 					if (gun is "CrossBow") 
 					{
-						gun.spawn("GHAGShellBox", gun.pos);
+						gun.spawn("ShellBox", gun.pos);
 						gun.destroy();
 						return;
 					}
 					if (gun is "Blaster")
 					{
-						gun.spawn("GHAGBulletBox", gun.pos);
+						gun.spawn("ClipBox", gun.pos);
 						gun.destroy();
 						return;
 					}
 					if (gun is "Mace")
 					{
-						gun.spawn("GHAGRocketBox", gun.pos);
+						gun.spawn("RocketBox", gun.pos);
 						gun.destroy();
 						return;
 					}
 					if (gun is "PhoenixRod" || gun is "SkullRod")
 					{
-						gun.spawn("GHAGCellPack", gun.pos);
+						gun.spawn("CellPack", gun.pos);
 						gun.destroy();
 						return;
 					}
@@ -88,19 +88,57 @@ Class GHAGEventHandler : EventHandler
 			}
 			
 			//Agnostic weapon type check
-			if (gun.AmmoType1)
+			if (!gun.bTossed)
 			{
-				string ammoType = getWeaponClass(gun.AmmoType1.getClassName());
-				if (ammoType != "NullAmmoType")
+				if (gun is "Pistol")
 				{
-					let munition = Ammo(gun.spawn(ammoType, gun.pos));
-					if (munition) 
-					{
-						munition.amount = gun.AmmoGive1;
+					if (gardie.countinv("GHAGPistol") == 0) {
+						gun.spawn("PistolPickup", gun.pos);
+					} else {
+						gun.spawn("Clipbox", gun.pos);
 					}
+					gun.destroy();
+				}
+				if (gun is "Shotgun" || gun is "SuperShotgun")
+				{
+					if (gardie.countinv("GHAGShotgun") == 0) {
+						gun.spawn("ShotgunPickup", gun.pos);
+					} else {
+						gun.spawn("Shellbox", gun.pos);
+					}
+					gun.destroy();
+				}
+				if (gun is "RocketLauncher")
+				{
+					gun.spawn("GHAGRocketBox", gun.pos);
 					gun.destroy();
 					return;
 				}
+				if (gun is "Chaingun")
+				{
+					gun.spawn("ClipBox", gun.pos);
+					gun.destroy();
+				}
+				if (gun is "PlasmaRifle" || gun is "BFG9000")
+				{
+					if (gardie.countinv("GHAGPlasmaRifle") == 0) {
+						gun.spawn("PlasmaPickup", gun.pos);
+					} else {
+						gun.spawn("CellPack", gun.pos);
+					}
+					gun.destroy();
+				}
+			} 
+			else
+			{
+				if (gun.AmmoType1)
+				{
+					if (gun.AmmoType1.getClassName() == "Shell") gun.spawn("ShellBox", gun.pos);
+					if (gun.AmmoType1.getClassName() == "Clip") gun.spawn("ClipBox", gun.pos);
+					if (gun.AmmoType1.getClassName() == "RocketAmmo") gun.spawn("RocketBox", gun.pos);
+					if (gun.AmmoType1.getClassName() == "Cell") gun.spawn("CellPack", gun.pos);
+				}
+				gun.destroy();
 			}
 		}
 		
@@ -113,25 +151,25 @@ Class GHAGEventHandler : EventHandler
 				case 0:
 					if (bullets is "GoldWandAmmo" || bullets is "BlasterAmmo")
 					{
-						bullets.spawn("GHAGMag", bullets.pos);
+						bullets.spawn("Clip", bullets.pos);
 						bullets.destroy();
 						return;
 					}
 					if (bullets is "GoldWandHefty" || bullets is "BlasterHefty")
 					{
-						bullets.spawn("GHAGBulletBox", bullets.pos);
+						bullets.spawn("ClipBox", bullets.pos);
 						bullets.destroy();
 						return;
 					}
 					if (bullets is "CrossbowAmmo")
 					{
-						bullets.spawn("GHAGShell", bullets.pos);
+						bullets.spawn("Shell", bullets.pos);
 						bullets.destroy();
 						return;
 					}
 					if (bullets is "CrossbowHefty")
 					{
-						bullets.spawn("GHAGShellBox", bullets.pos);
+						bullets.spawn("ShellBox", bullets.pos);
 						bullets.destroy();
 						return;
 					}
@@ -149,7 +187,7 @@ Class GHAGEventHandler : EventHandler
 					}
 					if (bullets is "PhoenixRodAmmo" || bullets is "MaceAmmo")
 					{
-						bullets.spawn("GHAGCell", bullets.pos);
+						bullets.spawn("Cell", bullets.pos);
 						bullets.destroy();
 						return;
 					}
@@ -549,15 +587,15 @@ Class GHAGEventHandler : EventHandler
 						int bonus = (level.levelNum + tries) % mod;
 						
 						if (bonus == pistolBonus) {
-							Actor.spawn('ExtraPistol', (_x, _y, _z));
+							Actor.spawn('SecretPistol', (_x, _y, _z));
 							return;
 						}
 						if (bonus == shottyBonus) {
-							Actor.spawn('ExtraShotgun', (_x, _y, _z));
+							Actor.spawn('SecretShotgun', (_x, _y, _z));
 							return;
 						}
 						if (bonus == plasmaBonus) {
-							Actor.spawn('ExtraPlasma', (_x, _y, _z));
+							Actor.spawn('SecretPlasma', (_x, _y, _z));
 							return;
 						}
 						if (bonus == nailygBonus) {

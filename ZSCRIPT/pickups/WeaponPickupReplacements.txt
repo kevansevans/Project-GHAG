@@ -1,0 +1,158 @@
+Class WeaponPickup : Inventory
+{
+	Default
+	{
+		+Bright;
+		+FloatBob;
+		+Inventory.AlwaysPickup;
+		Inventory.MaxAmount 4;
+	}
+	
+	override bool TryPickup(in out Actor toucher)
+	{
+		bool result = Super.tryPickup(toucher);
+		if (result)
+		{
+			A_StartSound("misc/w_pkup", CHAN_AUTO);
+		}
+		return result;
+	}
+	
+	bool touched;
+}
+
+Class PistolPickup : WeaponPickup
+{
+	Default
+	{
+		Inventory.PickupMessage "Seized a Pistol!";
+		Inventory.pickupsound "misc/w_pkup";
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		bool result = super.TryPickup(toucher);
+		console.printf('' .. result);
+		if (result)
+		{
+			if (toucher.countInv("GHAGPistol") == 0)
+			{
+				toucher.giveInventory("GHAGPistol", 1);
+				toucher.A_SelectWeapon("GHAGPistol");
+			}
+			console.printf("HURGUS");
+			toucher.giveInventory("GHAGPistolOverlay", 1);
+			toucher.giveInventory("Clip", 40);
+		}
+		touched = result;
+		return result;
+	}
+	
+	override void Tick()
+	{
+		super.Tick();
+		
+		if (players[consoleplayer].mo.countInv("GHAGPistol") > 0 && !touched)
+		{
+			self.spawn("ClipBox", self.pos);
+			self.destroy();
+		}
+	}
+	
+	States
+	{
+		Spawn :
+			PIST C 1;
+			Loop;
+	}
+}
+
+Class ShotgunPickup : WeaponPickup
+{
+	Default
+	{
+		Inventory.PickupMessage "Seized a Shotgun!";
+		Inventory.pickupsound "misc/w_pkup";
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		bool result = super.TryPickup(toucher);
+	
+		if (result)
+		{
+			if (toucher.countInv("GHAGShotgun") == 0)
+			{
+				toucher.giveInventory("GHAGShotgun", 1);
+				toucher.A_SelectWeapon("GHAGShotgun");
+			}
+			toucher.giveInventory("GHAGShotgunOverlay", 1);
+			toucher.giveInventory("Shell", 8);
+		}
+		touched = result;
+		return false;
+	}
+	
+	override void Tick()
+	{
+		super.Tick();
+		
+		if (players[consoleplayer].mo.countInv("GHAGShotgun") > 0 && !touched)
+		{
+			self.spawn("ShellBox", self.pos);
+			self.destroy();
+		}
+	}
+
+	States
+	{
+		Spawn :
+			SHOT A 1;
+			Loop;
+	}
+}
+
+Class PlasmaPickup : WeaponPickup
+{
+	Default
+	{
+		Inventory.PickupMessage "Seized a Plasma Rifle!";
+		Inventory.pickupsound "misc/w_pkup";
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		bool result = super.TryPickup(toucher);
+	
+		if (result)
+		{
+			if (toucher.countInv("GHAGPlasmaRifle") == 0)
+			{
+				toucher.giveInventory("GHAGPlasmaRifle", 1);
+				toucher.A_SelectWeapon("GHAGPlasmaRifle");
+			}
+			toucher.giveInventory("GHAGPlasmaOverlay", 1);
+			toucher.giveInventory("Cell", 40);
+		}
+		touched = result;
+		return false;
+	}
+	
+	override void Tick()
+	{
+		super.Tick();
+		
+		if (players[consoleplayer].mo.countInv("GHAGPlasmaRifle") > 0 && !touched)
+		{
+			self.spawn("CellPack", self.pos);
+			self.destroy();
+		}
+	}
+
+	States
+	{
+		Spawn :
+			PLAS A 1;
+			Loop;
+	}
+}

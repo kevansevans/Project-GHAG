@@ -21,11 +21,7 @@ version "4.6"
 #include "ZSCRIPT/pickups/HealEssence.txt"
 #include "ZSCRIPT/pickups/SecretItems.txt"
 #include "ZSCRIPT/pickups/powerupTweaks.txt"
-#include "ZSCRIPT/pickups/ammo/Shells.txt"
-#include "ZSCRIPT/pickups/ammo/Bullets.txt"
-#include "ZSCRIPT/pickups/ammo/Nails.txt"
-#include "ZSCRIPT/pickups/ammo/Rockets.txt"
-#include "ZSCRIPT/pickups/ammo/Cells.txt"
+#include "ZScript/pickups/WeaponPickupReplacements.txt"
 
 //Guns, guns, and more guns. Moves too.
 #include "ZSCRIPT/weapons/GHAGWeaponBase.txt"

@@ -35,8 +35,8 @@ Class MagicBullets : MagicMunitions
 {
 	override void BeginPlay()
 	{
-		type = "GHAGBulletBox";
-		munitions = GHAGMag(Spawn(type));
+		type = "ClipBox";
+		munitions = ClipBox(Spawn(type));
 		munitions.setOrigin(self.pos, false);
 	}
 }
@@ -45,8 +45,8 @@ Class MagicShells : MagicMunitions
 {
 	override void BeginPlay()
 	{
-		type = "GHAGShellBox";
-		munitions = GHAGShellBox(Spawn(type));
+		type = "ShellBox";
+		munitions = ShellBox(Spawn(type));
 		munitions.setOrigin(self.pos, false);
 	}
 }
@@ -65,8 +65,25 @@ Class MagicPlasma : MagicMunitions
 {
 	override void BeginPlay()
 	{
-		type = "GHAGCellPack";
-		munitions = GHAGCellPack(Spawn(type));
+		type = "CellPack";
+		munitions = CellPack(Spawn(type));
 		munitions.setOrigin(self.pos, false);
+	}
+}
+
+Class QuickieBarrel : ExplosiveBarrel
+{
+	States
+	{
+		Death:
+			BEXP A 5 Bright;
+			BEXP B 5 Bright A_Scream();
+			BEXP C 5 Bright;
+			BEXP D 5 Bright A_Explode();
+			BEXP E 10 Bright;
+			TNT1 A 0 {
+				A_SetRoll(0);
+				A_Respawn();
+			}
 	}
 }

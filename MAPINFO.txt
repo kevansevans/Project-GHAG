@@ -14,10 +14,14 @@ DoomEdNums
   11003 = MagicShells
   11004 = MagicRockets
   11005 = MagicPlasma
-  11006 = ExtraPistol
-  11007 = ExtraShotgun
-  11008 = ExtraPlasma
+  11006 = PistolPickup
+  11016 = SecretPistol
+  11007 = ShotgunPickup
+  11017 = SecretShotgun
+  11008 = PlasmaPickup
+  11018 = SecretPlasma
   11009 = RageCandyBar
+  11010 = QuickieBarrel
 }	
 
 episode TUT01

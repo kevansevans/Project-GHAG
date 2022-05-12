@@ -235,23 +235,21 @@ mixin class BlackHoleAttacks
 {
 	action bool IgnoreMe(actor victim)
 	{
-		if (
-		//Doom and general
-		victim is "Blood" ||
-		victim is "Gardevoir" || victim is "weapon" || victim is "PowerupGiver" ||
-		victim is "BlackHoleProjectile" || victim is "lightningfizzle" || victim is "GHAGPsychoProjectile" ||
-		victim is "Key" || (victim is "Inventory" && Inventory(victim).owner is "PlayerPawn") ||
-		victim is "BossTarget" || victim is "BossEye" || (victim is "Rocket" && !(victim.target)) ||
-		victim is "TeleportDest" ||
-		//Heretic
-		victim is "SoundSequence" || victim is "SoundWaterfall" || victim is "SoundWind" ||
-		victim is "WallTorch" ||
-		victim is "TeleGlitterGenerator1" || victim is "TeleGlitterGenerator2" || victim is "TeleGlitter1"
-		)
+	
+		if (victim.bIsMonster)
 		{
-			return true;
+			return false;
 		}
-		return false;
+		
+		if (victim is "Inventory")
+		{
+			if (Inventory(victim).owner is "PlayerPawn") return true;
+			else if (victim is "Key" || victim is "PowerupGiver") return true;
+			return false;
+		}
+		
+		return true;
+
 	}
 
 	action double A_BlackHoleRadialAttack(double radius = 255)
@@ -269,7 +267,7 @@ mixin class BlackHoleAttacks
 			if (ignoreMe(mo)) continue;
 			
 			//special code for icon of sin
-			if (mo is "BossBrain" && Distance3D(mo) < radius * 2)
+			if (mo is "BossBrain" && Distance3D(mo) < radius * 2 && isVisible(mo, true))
 			{
 				mo.A_DamageSelf(2, "none", flags);
 				continue;

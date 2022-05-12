@@ -22,6 +22,7 @@ DoomEdNums
   11018 = SecretPlasma
   11009 = RageCandyBar
   11010 = QuickieBarrel
+  11011 = MagicBerserk
 }	
 
 episode TUT01

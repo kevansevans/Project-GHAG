@@ -71,6 +71,17 @@ Class MagicPlasma : MagicMunitions
 	}
 }
 
+Class MagicBerserk : MagicMunitions
+{
+	override void BeginPlay()
+	{
+		type = "GHAGBerserk";
+		munitions = GHAGBerserk(Spawn(type));
+		munitions.setOrigin(self.pos, false);
+	}
+}
+
+
 Class QuickieBarrel : ExplosiveBarrel
 {
 	States

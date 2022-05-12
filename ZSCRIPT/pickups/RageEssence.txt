@@ -8,6 +8,14 @@ Class RageEssence : CustomInventory
 		speed 5;
 	}
 	
+	States {
+		Spawn :
+			WILL A 4 NoDelay A_SetTics(random(1, 16));
+		Spawn.Loop :
+			WILL BCDA 4 Bright A_MoveCloser();
+			loop;
+	}
+	
 	override bool TryPickup(Actor toucher)
 	{
 		let gardie = Gardevoir(Players[consoleplayer].mo);
@@ -19,14 +27,6 @@ Class RageEssence : CustomInventory
 		}
 		
 		return false;
-	}
-	
-	States {
-		Spawn :
-			WILL A 4 NoDelay A_SetTics(random(1, 16));
-		Spawn.Loop :
-			WILL BCDA 4 Bright A_MoveCloser();
-			loop;
 	}
 	
 	action void A_MoveCloser()

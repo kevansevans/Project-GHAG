@@ -1,7 +1,6 @@
 Class BlackHole : Weapon
 {
 	mixin BlackHoleAttacks;
-	mixin IcePunch;
 
 	Default
 	{
@@ -240,7 +239,7 @@ mixin class BlackHoleAttacks
 		//Doom and general
 		victim is "Blood" ||
 		victim is "Gardevoir" || victim is "weapon" || victim is "PowerupGiver" ||
-		victim is "BlackHoleProjectile" || victim is "lightningfizzle" ||
+		victim is "BlackHoleProjectile" || victim is "lightningfizzle" || victim is "GHAGPsychoProjectile" ||
 		victim is "Key" || (victim is "Inventory" && Inventory(victim).owner is "PlayerPawn") ||
 		victim is "BossTarget" || victim is "BossEye" || (victim is "Rocket" && !(victim.target)) ||
 		victim is "TeleportDest" ||

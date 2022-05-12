@@ -410,17 +410,6 @@ Class GHAGEventHandler : EventHandler
 	
 		Gardie = Gardevoir(players[player.PlayerNumber].mo);
 		
-		/*int rnd = random(0, 1);
-		
-		switch (rnd) {
-		
-			case 0 :
-				console.printf("Don't let the dress fool you, I'm a boy, and you'll be calling it a kilt when I'm done with you");
-				break;
-			case 1 :
-				console.printf("Get ready, wake your psyche up! Get ready, dig your anger up!");
-				break;
-		}*/
 	}
 	
 	override void WorldLinePreActivated (WorldEvent event) 

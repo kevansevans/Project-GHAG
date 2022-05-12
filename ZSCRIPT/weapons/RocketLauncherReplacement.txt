@@ -330,7 +330,8 @@ Class NameClass : Actor
 		"Jimmy", "You let me complicate you", "Excuse me", "Ultimate Cup of Coffee", "Try Haxe!", "Bosh", "Bish", "Chaz", "Bailey",
 		"Coco", "Finn", "Perkele", "No niin", "Pee is stored in the rocket", "Rockets are stored in the balls",
 		"Here's lookin' at you", "Rocket Launcher", "Wake your psyche up", "Dig your anger up", "Delete This",
-		"Exterminate", "EXTERMINATUS", "TNT was a mistake", "BFG Division is overrated", "TOTTFISY is Overrated"
+		"Exterminate", "EXTERMINATUS", "TNT was a mistake", "BFG Division is overrated", "TOTTFISY is Overrated",
+		"Shannon Cannon", "BOOCH", "This is a stroberry!"
 		
 	};
 

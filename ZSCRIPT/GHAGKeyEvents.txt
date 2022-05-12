@@ -131,6 +131,7 @@ Class KinesisBlast : Actor
 				
 				if (victim is "ExplosiveBarrel" || victim is "pod")
 				{
+				
 					if (!victim.InStateSequence(victim.CurState, victim.ResolveState("Death")))
 					{
 						if (!victim.tracer)

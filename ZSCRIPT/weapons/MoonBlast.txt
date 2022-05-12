@@ -79,7 +79,7 @@ Class MoonBlastGun : GHAGWeapon
 			Self.Spawn('MoonBlastKaboom', blast.HitLocation);
 			
 			A_QuakeEx(4, 4, 4, 25, 0, 64, "", QF_SCALEDOWN);
-			A_RailAttack(0, 0, false, "FF00FF", "FFFFFF", RGF_SILENT | RGF_NOPIERCING | RGF_FULLBRIGHT, 0, "", 0, 0, 0, 20);
+			A_RailAttack(0, 0, false, "D56671", "BADBB2", RGF_SILENT | RGF_NOPIERCING | RGF_FULLBRIGHT, 0, "", 0, 0, 0, 20);
 			A_AlertMonsters();
 			
 			gardie.subtractAnger(100);

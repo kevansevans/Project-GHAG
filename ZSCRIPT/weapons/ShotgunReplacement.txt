@@ -28,14 +28,30 @@ Class GHAGShotgun : GHAGWeapon
 	states
 	{
 		Select:
+			TNT1 A 0 A_JumpIf(invoker.batmode, "Select.batmode");
 			HAND A 1
 			{
 				A_OverlayShotguns();
 				A_Raise();
 			}
 			Loop;
+		Select.BatMode:
+			GSHT I 1
+			{
+				A_OverlayShotguns();
+				A_Raise();
+			}
+			Loop;
 		Deselect:
+			TNT1 A 0 A_JumpIf(invoker.batmode, "Deselect.batmode");
 			HAND A 1
+			{
+				A_OverlayShotguns();
+				A_Lower();
+			}
+			Loop;
+		Deselect.BatMode:
+			GSHT I 1
 			{
 				A_OverlayShotguns();
 				A_Lower();

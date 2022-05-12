@@ -170,8 +170,8 @@ Class Gardevoir : PlayerPawn
 	
 	void GetLivid()
 	{
-		if (!overTheEdge) RageValue += 750;
-		else RageValue += 250;
+		if (!OverTheEdge) RageValue = RageConstant;
+		RageValue += 750;
 		RageBonus += 0.34;
 	}
 	
@@ -323,7 +323,7 @@ Class Gardevoir : PlayerPawn
 				A_StopSound(CHAN_BODY);
 			}
 			
-			if (!player.onGround && jumped && buttons & BT_Jump)
+			if (!player.onGround && buttons & BT_Jump)
 			{
 				if (!v_dashed && self.vel.z <= 0)
 				{

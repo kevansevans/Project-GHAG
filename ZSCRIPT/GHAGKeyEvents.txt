@@ -99,7 +99,7 @@ Class KinesisBlast : Actor
 			
 			if (Gardie.distance2D(mo) <= 64) continue; //ignore items within single step distance
 			
-			if (distance3D(mo) <= radial && isVisible(mo, true)) {
+			if (distance3D(mo) <= radial && isVisible(mo, true) && Gardie.isVisible(mo, false)) {
 			
 				if (radial == 64) 
 				{	
@@ -146,7 +146,7 @@ Class KinesisBlast : Actor
 							KinesisPing(Actor.spawn('KinesisPing', victim.pos));
 							if (victim.tracer)
 							{
-								victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
+								victim.A_SeekerMissile(0, 360, SMF_LOOK | SMF_PRECISE);
 								victim.A_SetRoll(victim.roll + 25, SPF_INTERPOLATE);
 							} 
 							else
@@ -161,6 +161,7 @@ Class KinesisBlast : Actor
 						{
 							victim.Vel3DFromAngle(40, victim.angleTo(victim.tracer), 0);
 							victim.A_SetRoll(victim.roll + 25, SPF_INTERPOLATE);
+							victim.damageMobj(victim, victim, 1, '');
 						}
 					}
 					else

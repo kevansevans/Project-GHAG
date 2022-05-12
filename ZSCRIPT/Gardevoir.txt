@@ -533,7 +533,7 @@ Class Gardevoir : PlayerPawn
 			GiveInventory("GHAGPistol", 1);
 			GiveInventory("GHAGPsychocutter", 1);
 			GiveInventory("GHAGShotgun", 1);
-			GiveInventory("GHAGNailgun", 1);
+			//GiveInventory("GHAGNailgun", 1);
 			GiveInventory("GHAGRocketLauncher", 1);
 			GiveInventory("GHAGPlasmarifle", 1);
 			GiveInventory("MoonBlastGun", 1);
@@ -542,7 +542,7 @@ Class Gardevoir : PlayerPawn
 			{
 				GiveInventory("GHAGPistolOverlay", 1);
 				GiveInventory("GHAGShotgunOverlay", 1);
-				GiveInventory("GHAGNailgunOverlay", 1);
+				//GiveInventory("GHAGNailgunOverlay", 1);
 				GiveInventory("GHAGPlasmaOverlay", 1);
 				GiveInventory("GHAGPsychocutterOverlay", 1);
 				GiveInventory("GHAGBackpack", 10);

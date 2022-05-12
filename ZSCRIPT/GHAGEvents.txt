@@ -338,7 +338,7 @@ Class GHAGEventHandler : EventHandler
 		int angerBonus = Max(int(thing.spawnHealth() / 5), 1);
 		int willBonus = int(AngerBonus / 10);
 		
-		if (gardie.player.ReadyWeapon is "MoonBlastGun") 
+		if (gardie.player.ReadyWeapon is "Swift" || gardie.player.ReadyWeapon is "MoonBlastGun") 
 		{ } else {
 		
 			if (WolfensteinSS(thing)) angerbonus = 3000;
@@ -525,7 +525,7 @@ Class GHAGEventHandler : EventHandler
 						pistolBonus = -1;
 						shottyBonus -= 1;
 						plasmaBonus -= 1;
-						nailygBonus -= 1;
+						//nailygBonus -= 1;
 					}
 					
 					if (gardie.countInv('GHAGShotgun')) 
@@ -534,7 +534,7 @@ Class GHAGEventHandler : EventHandler
 						{
 							shottyBonus = -1;
 							plasmaBonus -= 1;
-							nailygBonus -= 1;
+							//nailygBonus -= 1;
 						} else {
 							mod += 1;
 						}
@@ -545,13 +545,13 @@ Class GHAGEventHandler : EventHandler
 						if (gardie.countInv('GHAGPlasmaOverlay') == limit)
 						{
 							plasmaBonus = -1;
-							nailygBonus -= 1;
+							//nailygBonus -= 1;
 						} else {
 							mod += 1;
 						}
 					}
 					
-					if (gardie.countInv('GHAGNailgun')) 
+					/*if (gardie.countInv('GHAGNailgun')) 
 					{
 						if (gardie.countInv('GHAGNailGun') == limit)
 						{
@@ -559,7 +559,7 @@ Class GHAGEventHandler : EventHandler
 						} else {
 							mod += 1;
 						}
-					}
+					}*/
 					
 					weaponspawned = level.levelNum;
 					if (pistolBonus == -1 && shottyBonus == -1 && plasmaBonus == -1 && nailygBonus == -1)
@@ -577,12 +577,12 @@ Class GHAGEventHandler : EventHandler
 							return;
 						}
 					
-						if (!gardie.countInv("GHAGNailGun"))
+						/*if (!gardie.countInv("GHAGNailGun"))
 						{
 							int chance = random(0, 1);
 							if (chance) Actor.spawn('ExtraNailgun', (_x, _y, _z));
 							return;
-						}
+						}*/
 					
 						int bonus = (level.levelNum + tries) % mod;
 						
@@ -598,10 +598,10 @@ Class GHAGEventHandler : EventHandler
 							Actor.spawn('SecretPlasma', (_x, _y, _z));
 							return;
 						}
-						if (bonus == nailygBonus) {
+						/*if (bonus == nailygBonus) {
 							Actor.spawn('ExtraNailgun', (_x, _y, _z));
 							return;
-						}
+						}*/
 						++tries;
 					}			
 				}

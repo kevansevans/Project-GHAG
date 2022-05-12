@@ -213,6 +213,7 @@ Class GHAGStatus : BaseStatusBar
 			if (locks[0] && locks[3]) image = "STKEYS8";
 			else if (locks[0]) image = "STKEYS2";
 			else if (locks[3]) image = "STKEYS5";
+			else image = "";
 			drawPos.x -= 15;
 		}
 		else if (gameinfo.gametype == 2)

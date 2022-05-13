@@ -338,7 +338,8 @@ Class NameClass : Actor
 		"Coco", "Finn", "Perkele", "No niin", "Pee is stored in the rocket", "Rockets are stored in the balls",
 		"Here's lookin' at you", "Rocket Launcher", "Wake your psyche up", "Dig your anger up", "Delete This",
 		"Exterminate", "EXTERMINATUS", "TNT was a mistake", "BFG Division is overrated", "TOTTFISY is Overrated",
-		"Shannon Cannon", "BOOCH", "This is a stroberry!", "Spine breaker"
+		"Shannon Cannon", "BOOCH", "This is a stroberry!", "Spine breaker", "The Negotiator", "Kitanai yasai",
+		"Nan da kore!?", "Prepare for trouble!"
 		
 	};
 
@@ -362,6 +363,10 @@ Class NameClass : Actor
 		"me greatly", "with your", 'arrogance and contempt,', "a flood of accusations", "born from the poison", "of envy", "and smite", "of disrespect."
 	};
 	
+	static const string teamrocket[] = {
+		"And make it double!", "To protect the world from devastation!", "To unite all peoples within our nation!", "To denounce the evils of truth and love!", "To extend our reach to the stars above!", "Jessie!", "James!", "Team Rocket blasts off at the speed of light!", "Surrender now, or prepare to fight!", "Meowth! That's right!"
+	};
+	
 	string GetName() {
 		
 		string rng_name = '[I am error]';
@@ -378,6 +383,7 @@ Class NameClass : Actor
 				if (rng_name == "I like shorts!") getMode = 3;
 				if (rng_name == "That's great") getMode = 4;
 				if (rng_name == "You humour") getMode = 5;
+				if (rng_name == "Prepare for trouble!") getMode = 6;
 				break;
 			case 1:
 				rng_name = NameClass.navyseal[wordtracker];
@@ -415,6 +421,14 @@ Class NameClass : Actor
 				rng_name = NameClass.contempt[wordtracker];
 				wordtracker += 1;
 				if (rng_name == "of disrespect.") {
+					getMode = 0;
+					wordTracker = 0;
+				}
+				break;
+			case 6:
+				rng_name = NameClass.teamrocket[wordtracker];
+				wordtracker += 1;
+				if (rng_name == "Meowth! That's right!") {
 					getMode = 0;
 					wordTracker = 0;
 				}

@@ -32,7 +32,6 @@ Class PistolPickup : WeaponPickup
 	override bool TryPickup(in out Actor toucher)
 	{
 		bool result = super.TryPickup(toucher);
-		console.printf('' .. result);
 		if (result)
 		{
 			if (toucher.countInv("GHAGPistol") == 0)
@@ -40,7 +39,6 @@ Class PistolPickup : WeaponPickup
 				toucher.giveInventory("GHAGPistol", 1);
 				toucher.A_SelectWeapon("GHAGPistol");
 			}
-			console.printf("HURGUS");
 			toucher.giveInventory("GHAGPistolOverlay", 1);
 			toucher.giveInventory("Clip", 40);
 		}

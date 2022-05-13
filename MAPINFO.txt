@@ -30,4 +30,6 @@ episode TUT01
 	name = "GHAG Tutorial"
 }
 map TUT01 "GHAG Tutorial"
-{}
+{
+	next = "EndGame1"
+}

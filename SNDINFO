@@ -28,10 +28,11 @@ dash/AirLoop "Sounds/WOOSHLP.ogg"
 psychic/Ping "Sounds/Ping.ogg"
 gardie/Pain "Sounds/GARDPAIN.ogg"
 gardie/Noway "Sounds/NOWAY.ogg"
+gardie/Bite "Sounds/BITE.ogg"
 
-//ripped audio for cross wad support
+//ripped/fixed audio for cross wad support
 skeleton/swing "Sounds/rips/DSSKESWG.wav"
-plasma/fire "Sounds/rips/DSPLASMA.wav"
+//weapons/plasmaf DSPLASMA
 
 $playersound player male *usefail NOWAY
 $playersound player female *usefail NOWAY

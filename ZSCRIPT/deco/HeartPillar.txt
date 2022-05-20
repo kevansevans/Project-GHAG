@@ -1,0 +1,27 @@
+//Tribute to Omeger Rubyer
+Class EatableHeartPillar : HeartColumn replaces HeartColumn
+{
+	Default
+	{
+		+DontCorpse;
+	}
+
+	override bool Used(Actor User)
+	{
+		if (self.bDontCorpse)
+		{
+			A_StartSound("Gardie/Bite", CHAN_AUTO);
+			SetStateLabel("EatenLoop");
+			User.GiveBody(15, 350);
+			self.bDontCorpse = false;
+		}
+		return false;
+	}
+	
+	States
+	{
+		EatenLoop:
+			COL5 C -1;
+			loop;
+	}
+}

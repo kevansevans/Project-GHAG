@@ -1,0 +1,36 @@
+Class StringObject : BoxObject
+{
+	String msg;
+	
+	HudFont ObjectFont;
+	Int FontTranslation;
+
+	Static StringObject Create(String _msg, Vector2 _position = (0, 0), Vector2 _scale = (1, 1), BaseStatusBar _HudClass = null)
+	{
+		let ret = new();
+		
+		ret.Children.clear();
+		ret.position = _position;
+		ret.scale = _scale;
+		ret.visible = true;
+		ret.msg = _msg;
+		ret.FontTranslation = Font.CR_UNTRANSLATED;
+		if (_HudClass) ret.HudClass = _HudClass;
+		
+		return ret;
+	}
+	
+	override void Draw(Vector2 _pos, Vector2 _scale)
+	{
+		if (!HudClass) return;
+		if (!visible) return;
+	
+		if (!ObjectFont) ObjectFont = HUDFont.create(smallfont);
+		
+		CalculateRelativeValues(_pos, _scale);
+		
+		HudClass.DrawString(ObjectFont, msg, r_pos, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, FontTranslation, 1, -1, 4, r_scale);
+			
+		self.drawChildren(r_pos, r_scale);
+	}
+}

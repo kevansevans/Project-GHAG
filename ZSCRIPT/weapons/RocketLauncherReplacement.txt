@@ -321,7 +321,7 @@ Class NameClass : Actor
 		"Ok I Love You Bye Bye", "Not funny, didn't laugh", "Frag out", "Fire in the hole!", "50 Shades of Explode",
 		"50 Shades of you're dead", "50 shades of gibitude", "50 shades of death", "ZoomyPop", "Zoomie Boomies",
 		"Congrats! You've won!", "NOT THE BEES!", '"Dildo Joke Here"', "Help I'm trapped in a rocket factory!",
-		"Sit down, That means you Billy!", "Lil' smokey", "Ayy Pappie!", "Sparky", "Charging Charlie",
+		"Sit down, That means you Billy!", "Lil' smokey", "Ayy Pappie!", "Sparky", "Charging Charlie", "Gloverfield",
 		"Mister Roger's Middle Finger", "Fandango", "The Rectifier", "Buelah", "Chumlee", "Butterface", "Gone Fission",
 		"Not your dad's colonoscopy", "Bitch Slap", "The Dreaded CONE", "Bloop", "Muzzle Maggot", "Track Trolls",
 		"Breach Creature", "Bore Baby", "Novacaine", "Karma", "Karma Bringer", "Wake Up Call", "Hey! Listen!",

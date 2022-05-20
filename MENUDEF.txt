@@ -2,6 +2,9 @@ OptionMenu "GHAGOptions"
 {
 	Title "GHAG Options"
 	
+	Slider "GHAG HUD Scale", "ghaghudscale", 0.1, 2.0, 0.1, 1
+	StaticText ""
+	StaticText "Name your arsenal"
 	TextField "Chainsaw name", "ChainsawName"
 	TextField "Pistol name", "PistolName"
 	TextField "Shotgun name", "ShotgunName"

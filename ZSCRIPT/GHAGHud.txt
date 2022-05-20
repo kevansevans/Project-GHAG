@@ -1,276 +1,320 @@
 Class GHAGStatus : BaseStatusBar
 {
-
-	double v_width;
-	double v_height;
-	double textscale_reg;
-	vector2 scale;
+	BoxObject rootscene;
+	BoxObject battlehud;
+	ImageObject battleborder;
+	BoxObject weapons;
 	
-	bool lowHealth;
+	meterobject healthbar_grn;
+	meterobject healthbar_orn;
+	meterobject healthbar_red;
+	meterobject armorbar;
+	meterobject angerbar;
 	
-	string wtfString;
+	stringobject healthamount;
+	stringobject armoramount;
+	stringobject angeramount;
+	stringobject angeramountEcho;
+	stringobject ragedisplay;
+	stringobject ragedisplayEcho;
+	stringobject gunname;
+	stringobject ammocount;
+	
+	Array<ImageObject> weapitems;
 	
 	Font fnt_white;
 	HUDFont pokefont;
 	
-	override void Init() {
+	vector2 battlehudscale;
+	vector2 scale;
+	vector2 size;
+	Vector2 ragepos;
+	Vector2 angerpos;
+	
+	string wtfString;
+	double userscale;
+	
+	override void Init()
+	{
 		Super.Init();
-		
-		scale = getHUDScale();
-		SetSize(0, 320, 200);
-		
-		wtfString = wtf();
 		
 		fnt_white = "PKMNWHITE";
 		pokefont = HUDFont.Create(fnt_white);
+		
+		weapitems.clear();
+		weapitems.reserve(3);
+		
+		battlehudscale = (0.75, 0.75);
+		ragepos = (6, 18);
+		angerpos = (140, 120);
+		
+		rootscene = BoxObject.create((0, 0), (1, 1), self);
+		battlehud = BoxObject.create((0, 0), (1, 1));
+		battleborder = ImageObject.create("BATTLHUD", (0, 0), battlehudscale);
+		
+		double bar_x = 81;
+		
+		healthbar_grn = MeterObject.create("HPBAR", (bar_x, 6));
+		healthbar_grn.current = 350;
+		healthbar_grn.max = 350;
+		healthbar_orn = MeterObject.create("HPBARHLF", (bar_x, 6));
+		healthbar_orn.visible = false;
+		healthbar_orn.current = 350;
+		healthbar_orn.max = 350;
+		healthbar_red = MeterObject.create("ANGBAR", (bar_x, 6));
+		healthbar_red.visible = false;
+		healthbar_red.current = 350;
+		healthbar_red.max = 350;
+		
+		healthamount = StringObject.create("", (140, 3), (0.55, 0.55));
+		healthamount.ObjectFont = pokefont;
+		
+		armorbar = MeterObject.create("ARMBAR", (bar_x, 28));
+		armorbar.current = 0;
+		armorbar.max = 200;
+		
+		armoramount = StringObject.create("", (140, 35), (0.55, 0.55));
+		armoramount.ObjectFont = pokefont;
+		
+		angerbar = MeterObject.create("ANGBAR", (bar_x, 91));
+		angeramount = StringObject.create("", angerpos, (0.55, 0.55));
+		angeramount.ObjectFont = pokefont;
+		angeramountEcho = StringObject.create("", angerpos, (0.55, 0.55));
+		angeramountEcho.ObjectFont = pokefont;
+		angeramountEcho.visible = false;
+		
+		ragedisplay = StringObject.create("", ragepos, (1.75, 1.75));
+		ragedisplay.ObjectFont = pokefont;
+		ragedisplay.FontTranslation = Font.CR_DARKRED;
+		ragedisplayEcho = StringObject.create("", ragepos, (1.75, 1.75));
+		ragedisplayEcho.ObjectFont = pokefont;
+		ragedisplayEcho.FontTranslation = Font.CR_DARKRED;
+		ragedisplayEcho.visible = false;
+		
+		gunname = StringObject.create("", (15, -35), (0.75, 0.75));
+		gunname.ObjectFont = pokefont;
+		ammocount = StringObject.create("", (15, -18), (0.75, 0.75));
+		ammocount.ObjectFont = pokefont;
+		
+		rootscene.addChild(battlehud);
+		battlehud.addChild(battleborder);
+		
+		battleborder.addchild(healthbar_grn);
+		battleborder.addchild(healthbar_orn);
+		battleborder.addchild(healthbar_red);
+		battleborder.addchild(armorbar);
+		battleborder.addchild(angerbar);
+		
+		battlehud.addchild(healthamount);
+		battlehud.addchild(armoramount);
+		battlehud.addchild(angeramountEcho);
+		battlehud.addchild(angeramount);
+		
+		battlehud.addChild(ragedisplayEcho);
+		battlehud.addChild(ragedisplay);
+		
+		battlehud.addChild(gunname);
+		battlehud.addChild(ammocount);
+		
+		weapons = BoxObject.Create();
+		rootscene.addChild(weapons);
 	}
 	
-	String activeMessage;
-	int messageTimer;
-	
-	void hudMessageBox(String _msg = "", int _seconds = -1)
+	void updateScale()
 	{
-		if (_msg != '') activemessage == _msg;
-		if (_seconds != -1) messageTimer = _seconds;
+		size = (Screen.getWidth(), Screen.getHeight());
+		scale = getHUDScale();
 		
-		if (messageTimer > 0)
+		size.x /= scale.x;
+		size.y /= scale.y;
+		
+		userscale = CVAR.FindCvar("ghaghudscale").GetFloat();
+	}
+	
+	override void Tick()
+	{
+		Super.tick();
+		
+		if (gametic % 10 == 0) wtfString = wtf();
+		
+		updateScale();
+		
+		if (CPlayer.ReadyWeapon)
 		{
-			DrawImage("Dialog", (290, v_height - 75),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
-			DrawString(pokefont, activeMessage, (300, v_height - 65), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, Font.CR_BLACK, 1, 140, 4, (1.25, 1.25)); 
+			gunname.msg = CPlayer.ReadyWeapon.getTag();
+			ammocount.msg = "";
+			if (CPlayer.ReadyWeapon is "GHAGPsychoCutter")
+			{
+				ammocount.msg = CPlayer.mo.countInv('GHAGPsychoCutterOverlay') .. '/4 Lacerators';
+			}
+			else if (CPlayer.ReadyWeapon.Ammo1)
+			{
+				ammocount.msg = 'Ammo: ' .. CPlayer.ReadyWeapon.Ammo1.Amount .. '/' .. CPlayer.ReadyWeapon.Ammo1.MaxAmount;
+			}
+		}
+		
+		healthbar_grn.current = CPlayer.mo.health;
+		healthbar_orn.current = CPlayer.mo.health;
+		healthbar_red.current = CPlayer.mo.health;
+		
+		if (CPlayer.mo.health > 175)
+		{
+			healthbar_grn.visible = true;
+			healthbar_orn.visible = false;
+			healthbar_red.visible = false;
+		}
+		else if (CPlayer.mo.health <= 175 && CPlayer.mo.health > 70)
+		{
+			healthbar_grn.visible = false;
+			healthbar_orn.visible = true;
+			healthbar_red.visible = false;
+		}
+		else
+		{
+			healthbar_grn.visible = false;
+			healthbar_orn.visible = false;
+			healthbar_red.visible = true;
+		}
+		healthamount.msg = CPlayer.mo.health .. '/350 HP';
+		
+		armorbar.current = GetArmorAmount();
+		armoramount.msg = GetArmorAmount() .. ' Armor';
+		
+		angerbar.current = Min(Gardevoir(CPlayer.mo).rageValue, Gardevoir(CPlayer.mo).rageConstant);
+		angerbar.max = Gardevoir(CPlayer.mo).rageConstant;
+			
+		string angy_percent = String.Format("%.1f", (Float(Gardevoir(CPlayer.mo).RageValue) / 10));
+		string angry_cap = String.format("%.1f", (Float(Gardevoir(CPlayer.mo).RageConstant) / 10));
+		
+		if (Gardevoir(CPlayer.mo).ragevalue <= Gardevoir(CPlayer.mo).rageConstant)
+		{
+			angeramount.msg = angy_percent .. '/' .. angry_cap;
+			ragedisplayEcho.visible = false;
+			angeramountEcho.visible = false;
+		}
+		else
+		{
+			angeramount.msg = wtfString;
+			angeramountEcho.msg = wtfString;
+			angeramountEcho.visible = true;
+			angeramountEcho.position = angerpos + (random(-5, 5), random(-5, 5));
+			ragedisplayEcho.msg = GetAngerString();
+			ragedisplayEcho.visible = true;
+			ragedisplayEcho.position = ragepos + (random(-10, 10), random(-10, 10));
+		}
+		
+		ragedisplay.msg = GetAngerString();
+		
+		int weaponcount = 0;
+		for (int i = 0; i < 10; ++i)
+		{
+			for (int j = 0; j < CPlayer.weapons.SlotSize(i); ++j)
+			{
+				let gun = Weapon(CPlayer.mo.FindInventory(CPlayer.weapons.GetWeapon(i, j)));			
+				ImageObject selected;
+				ImageObject notSelected;
+				ImageObject empty;
+				
+				if (gun)
+				{
+					if (!weapitems[weaponcount])
+					{
+						let selected = ImageObject.create("WEPACTIV", (0, 0), (1.5, 1.5));
+						let notSelected = ImageObject.create("WEPINNAC", (0, 0), (1.5, 1.5));
+						let empty = ImageObject.create("WEPEMPTY", (0, 0), (1.5, 1.5));
+						
+						weapons.addChild(selected);
+						weapons.addChild(notSelected);
+						weapons.addChild(empty);
+						
+						weapitems.insert(weaponcount, selected);
+						weapitems.insert(weaponcount + 1, notSelected);
+						weapitems.insert(weaponcount + 2, empty);
+						
+						weapitems.grow(3);
+					}
+				
+					selected = weapitems[weaponcount];
+					notSelected = weapitems[weaponcount + 1];
+					empty = weapitems[weaponcount + 2];
+				
+					Vector2 pos = (8 * gun.slotNumber, -10 * j);
+				
+					selected.position = pos;
+					notSelected.position = pos;
+					empty.position = pos;
+					
+					if (CPlayer.ReadyWeapon == gun)
+					{
+						notSelected.visible = false;
+						
+						if (gun.ammo1)
+						{
+							if (gun.ammo1.amount == 0)
+							{
+								selected.visible = false;
+								empty.visible = true;
+							} 
+							else
+							{
+								selected.visible = true;
+								empty.visible = false;
+							}
+						} 
+						else
+						{
+							selected.visible = true;
+							empty.visible = false;
+						}
+						
+					}
+					else
+					{
+						selected.visible = false;
+						
+						if (gun.ammo1)
+						{
+							if (gun.ammo1.amount == 0)
+							{
+								notSelected.visible = false;
+								empty.visible = true;
+							} 
+							else
+							{
+								notSelected.visible = true;
+								empty.visible = false;
+							}
+						} 
+						else
+						{
+							notSelected.visible = true;
+							empty.visible = false;
+						}
+					}
+					
+					weaponcount += 3;
+				}
+			}
 		}
 	}
-	
-	override void Draw(int state, double tic) {
+
+	override void Draw(int state, double tic) 
+	{
 		
 		Super.Draw(state, tic);
 		
 		BeginHUD();
 		
-		scale = getHUDScale();
+		updateScale();
 		
-		if (scale.x == 0) return;
+		//console.printf('' .. size);
+		battlehud.position = (10, (size.y / userscale) - 85);
+		weapons.position = ((size.x / userscale) - 110, (size.y / userscale) - 15);
 		
-		v_width = Screen.getWidth() / (scale.x);
-		v_height = Screen.getHeight() / (scale.y);
-		
-		let gardie = Gardevoir(CPlayer.mo);
-		if (!gardie) return;
-		
-		float xy_scale = 0.85;
-		
-		if (Gardie.health >= 175) {
-			DrawBar("hpbar", "hparmbg", Min(Gardie.health, 350), 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-			if (gardie.health > 350) {
-				DrawBar("armbar", "hparmbg", Gardie.health - 350, 500 - 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-			}
-			lowHealth = false;
-		} else if (gardie.health > 70) {
-			DrawBar("hpbarhlf", "hparmbg", Min(Gardie.health, 350), 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-			lowHealth = false;
-		} else {
-			DrawBar("angbar", "hparmbg", Min(Gardie.health, 350), 350, (86, v_height - 103), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-			if (!lowHealth)
-			{
-				S_StartSound("ambient/LOWHEALTH", CHAN_BODY);
-				lowHealth = true;
-			}
-		}
-		DrawBar("armbar", "hparmbg", GetArmorAmount(), 200, (86, v_height - 82), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		DrawBar("angbar", "hparmbg", Gardie.RageValue, Gardie.RageConstant, (86, v_height - 19), 0, 0, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		DrawImage("BATTLHUD", (5, v_height - 110), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-		
-		if (Gardie.player.ReadyWeapon) {
-		
-			DrawString(pokefont, Gardie.player.ReadyWeapon.GetTag(), (30, v_height - 145),  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, Font.CR_UNTRANSLATED, 1, -1, 4, (xy_scale, xy_scale));
-			if (Gardie.player.ReadyWeapon.Ammo1) {
-				DrawString(pokefont, 
-							"Ammo: " .. Gardie.player.ReadyWeapon.Ammo1.amount .. "/" .. Gardie.player.ReadyWeapon.Ammo1.maxamount, 
-							(30, v_height - 130), 
-							DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
-							Font.CR_UNTRANSLATED, 1, -1, 4, 
-							(xy_scale, xy_scale));
-			} else if (GHAGPsychoCutter(Gardie.player.ReadyWeapon)) {
-				int laceratorLimit = GameInfo.GameType == 1 ? 4 : 2;
-				DrawString(pokefont, 
-							Gardie.countInv('GHAGPsychoCutterOverlay') .. '/' .. laceratorLimit .. ' Lacerators', 
-							(30, v_height - 130), 
-							DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
-							Font.CR_UNTRANSLATED, 1, -1, 4, 
-							(xy_scale, xy_scale));
-			}
-			
-		}
-		DrawString(pokefont,
-					Gardie.health .. "/350 HP ",
-					(120, v_height - 106), 
-					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
-					Font.CR_UNTRANSLATED, 1, -1, 4,
-					(0.75, 0.75));
-					
-		DrawString(pokefont,
-					GetArmorAmount() .. " Armor",
-					(120, v_height - 86), 
-					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
-					Font.CR_UNTRANSLATED, 1, -1, 4,
-					(0.75, 0.75));
-					
-			
-		if (gametic % 10 == 0) wtfString = wtf();
-			
-		if (Gardie.OverTheEdge) {
-		
-			DrawString(pokefont,
-					wtfString,
-					(110 + random(-10, 10), v_height - 25 + random(-10, 10)), 
-					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
-					Font.CR_UNTRANSLATED, 1, -1, 4,
-					(0.75, 0.75));
-		
-			DrawString(pokefont,
-					GetAngerString(),
-					(23 + random(-10, 10), v_height - 60 + random(-10, 10)), 
-					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
-					Font.CR_DARKRED, 1, -1, 4, 
-					(2.2, 2.2));
-		}
+		battlehud.scale = (userscale, userscale);
+		weapons.scale = (userscale, userscale);
 	
-		DrawString(pokefont,
-					GetAngerString(),
-					(23, v_height - 65), 
-					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
-					Font.CR_DARKRED, 1, -1, 4, 
-					(2.2, 2.2));
-					
-		string angy_percent = String.Format("%.1f", (Float(Gardie.RageValue) / 10));
-		string angry_cap = String.format("%.1f", (Float(Gardie.RageConstant) / 10));
-		DrawString(pokefont,
-					Gardie.RageValue > Gardie.RageConstant ? wtfString : angy_percent .. '/' .. angry_cap,
-					(Gardie.RageValue > Gardie.RageConstant ? 110 : 120, v_height - 24), 
-					DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 
-					Font.CR_UNTRANSLATED, 1, -1, 4,
-					(0.75, 0.75));
-		
-		int x_tracker = v_width - 1;
-		for (let inv = gardie.inv; inv; inv = inv.inv)
-		{
-			string wep = '';
-			if (inv is "weapon") {
-				let gun = Weapon(inv);
-				if (gun == Gardie.player.ReadyWeapon) {
-					wep = "wepactiv";
-				} else {
-					wep = "wepinnac";
-					if (gun.Ammo1) {
-						if (gun.Ammo1.amount == 0) wep = "wepempty";
-					}
-				}
-				
-				drawImage(wep, (x_tracker -= 20, v_height - 20), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (2.5, 2.5));
-			}
-		}
-		
-		bool locks[6];
-		String image;
-		vector2 drawPos = (v_width, v_height - 35);
-		for (int i = 0; i < 6; i++) {
-			locks[i] = CPlayer.mo.CheckKeys(i + 1, false, true);
-		}
-		// key 1
-		if (gameinfo.gametype == 1)
-		{
-			if (locks[1] && locks[4]) image = "STKEYS6";
-			else if (locks[1]) image = "STKEYS0";
-			else if (locks[4]) image = "STKEYS3";
-			else image = "";
-			drawPos.x -= 20;
-		} 
-		else if (gameinfo.gametype == 2)
-		{
-			if (locks[1]) image = "BKEYICON";
-			else image = "";
-			drawPos.x -= 20;
-		}
-		DrawImage(image, drawPos,  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
-		// key 2
-		if (gameinfo.gametype == 1)
-		{
-			if (locks[2] && locks[5]) image = "STKEYS7";
-			else if (locks[2]) image = "STKEYS1";
-			else if (locks[5]) image = "STKEYS4";
-			else image = "";
-			drawPos.x -= 15;
-		}
-		else if (gameinfo.gametype == 2)
-		{
-			if (locks[0]) image = "GKEYICON";
-			else image = "";
-			drawPos.x -= 25;
-		}
-		DrawImage(image, drawPos,  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
-		// key 3
-		if (gameinfo.gametype == 1)
-		{
-			if (locks[0] && locks[3]) image = "STKEYS8";
-			else if (locks[0]) image = "STKEYS2";
-			else if (locks[3]) image = "STKEYS5";
-			else image = "";
-			drawPos.x -= 15;
-		}
-		else if (gameinfo.gametype == 2)
-		{
-			if (locks[2]) image = "YKEYICON";
-			else image = "";
-			drawPos.x -= 25;
-		}
-		DrawImage(image, drawPos,  DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1.5, 1.5));
-		
-		DrawGHAGInventory();
-		
-	}
-	
-	void DrawGHAGInventory()
-	{
-		TextureID ItemSprite;
-		Vector2 Scale;
-		if (!isInventoryBarVisible())
-		{
-			let InvItem = CPlayer.mo.InvSel;
-			[ItemSprite, Scale] = GetIcon(InvItem, 0, false);
-			if (ItemSprite.isValid())
-			{
-				DrawImage("INVBOT", (20, v_height - 150), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
-				DrawImage("INVMID", (20, v_height - 185), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
-				DrawImage("INVTOP", (20, v_height - 188), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
-				
-				DrawTexture(ItemSprite, (40, v_height - 165), DI_ITEM_CENTER, 1, (32, 32), (1, 1));
-				DrawString(pokefont, "x" .. CPlayer.mo.InvSel.Amount, (115, v_height - 175), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-			}
-		}
-		else
-		{
-			CPlayer.mo.InvFirst = ValidateInvFirst(10);
-			if (CPlayer.mo.InvFirst == null) return;
-			
-			int h_offset = v_height - 185;
-			DrawImage("INVBOT", (20, v_height - 150), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
-			
-			Inventory item = CPlayer.mo.InvFirst;
-			while (item != NULL)
-			{
-				DrawImage("INVMID", (20, h_offset), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
-				[ItemSprite, Scale] = GetIcon(item, 0, false);
-				DrawTexture(ItemSprite, (40, h_offset + 20), DI_ITEM_CENTER, 1, (28, 28), (1, 1));
-				DrawString(pokefont, "x" .. CPlayer.mo.InvSel.Amount, (115, h_offset + 10), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
-				if (item == CPlayer.mo.InvSel)
-				{
-					DrawImage("ARROW", (70, h_offset + 20), DI_MIRROR | DI_ITEM_CENTER, 1, (-1, -1), (2.5, 2.5));
-				}
-				item = item.nextInv();
-				if (item != null) h_offset -= 35;
-			}
-			
-			DrawImage("INVTOP", (20, h_offset - 3), DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), (1, 1));
-		}
+		rootscene.draw();
 	}
 	
 	string wtf()

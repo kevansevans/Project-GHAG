@@ -1,0 +1,31 @@
+Class TextureObject : BoxObject
+{
+	TextureID TexID;
+	
+	Static TextureObject Create(TextureID _TexID, Vector2 _position = (0, 0), Vector2 _scale = (1, 1), BaseStatusBar _HudClass = null)
+	{
+		let ret = new();
+		
+		ret.Children.clear();
+		ret.position = _position;
+		ret.scale = _scale;
+		ret.TexID = _TexID;
+		ret.texture = TexMan.getName(_TexID);
+		ret.visible = true;
+		if (_HudClass) ret.HudClass = _HudClass;
+		
+		return ret;
+	}
+	
+	override void Draw(Vector2 _pos, Vector2 _scale)
+	{
+		if (!HudClass) return;
+		if (!visible) return;
+	
+		CalculateRelativeValues(_pos, _scale);
+		
+		HudClass.DrawTexture(TexID, r_pos, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), r_scale);
+		
+		self.drawChildren(r_pos, r_scale);
+	}
+}

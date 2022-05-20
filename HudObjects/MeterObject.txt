@@ -1,0 +1,85 @@
+Class MeterObject : BoxObject
+{
+	double current;
+	double max;
+	FillStyle fill;
+
+	Static MeterObject Create(String _TextureName, Vector2 _position = (0, 0), Vector2 _scale = (1, 1), BaseStatusBar _HudClass = null)
+	{
+		let ret = new();
+		
+		ret.Children.clear();
+		ret.position = _position;
+		ret.scale = _scale;
+		ret.visible = true;
+		ret.texture = _texturename;
+		ret.current = 50;
+		ret.max = 100;
+		ret.fill = LEFT_TO_RIGHT;
+		
+		return ret;
+	}
+	
+	override void Draw(Vector2 _pos, Vector2 _scale)
+	{
+		if (!HudClass) return;
+		if (!visible) return;
+		
+		CalculateRelativeValues(_pos, _scale);
+		
+		int left, top, right, bottom;
+		[left, top, right, bottom] = screen.GetClipRect();
+		
+		double ratio = clamp(current / max, 0, 1);
+		
+		let activetexture = TexMan.CheckForTexture(texture);
+		if (!activetexture) return;
+		
+		Vector2 size = TexMan.getScaledSize(activetexture);
+		size.x *= r_scale.x;
+		size.y *= r_scale.y;
+		double limitx;
+		double limity;
+		switch (fill)
+		{
+			case LEFT_TO_RIGHT:
+				limitx = size.x * (1 - ratio);
+				HudClass.SetClipRect(r_pos.x, r_pos.y, size.x - limitx, size.y, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+				break;
+			case RIGHT_TO_LEFT:
+				limitx = size.x * (1 - ratio);
+				HudClass.SetClipRect(r_pos.x + limitx, r_pos.y, size.x, size.y, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+				break;
+			case TOP_TO_BOTTOM:
+				limity = size.y * (1 - ratio);
+				HudClass.SetClipRect(r_pos.x, r_pos.y, size.x, size.y - limity, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+				break;
+			case BOTTOM_TO_TOP:
+				limity = size.y * (1 - ratio);
+				HudClass.SetClipRect(r_pos.x, r_pos.y + limity, size.x, size.y, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+				break;
+			case GROW_SHRINK:
+				limitx = size.x * (1 - ratio) / 2;
+				limity = size.y * (1 - ratio) / 2;
+				HudClass.SetClipRect(r_pos.x + limitx, r_pos.y + limity, size.x - limitx * 2, size.y - limity * 2, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP);
+				break;
+			default:
+				return;
+		}
+		
+		HudClass.DrawTexture(activetexture, r_pos, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, 1, (-1, -1), r_scale);
+		HudClass.SetClipRect(left, top, right, bottom);
+		
+		self.drawChildren(r_pos, r_scale);
+	}
+	
+}
+
+Enum FillStyle
+{
+	LEFT_TO_RIGHT = 0,
+	RIGHT_TO_LEFT = 1,
+	TOP_TO_BOTTOM = 2,
+	BOTTOM_TO_TOP = 4,
+	GROW_SHRINK = 8,
+}

@@ -8,6 +8,7 @@ version "4.6"
 #include "ZSCRIPT/GHAGKeyEvents.txt"
 #include "ZSCRIPT/weapons/FloatingGun.txt"
 #include "ZSCRIPT/GHAGHud.txt"
+#include "HudObjects/HudObjects.txt"
 
 //Tutorial map stuff
 #include "ZSCRIPT/tutorial/Substitute.txt"
@@ -22,6 +23,9 @@ version "4.6"
 #include "ZSCRIPT/pickups/SecretItems.txt"
 #include "ZSCRIPT/pickups/powerupTweaks.txt"
 #include "ZScript/pickups/WeaponPickupReplacements.txt"
+
+//Decoration objects and replacements
+#include "ZSCRIPT/deco/HeartPillar.txt"
 
 //Guns, guns, and more guns. Moves too.
 #include "ZSCRIPT/weapons/GHAGWeaponBase.txt"

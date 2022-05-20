@@ -1,0 +1,29 @@
+Class ImageObject : BoxObject
+{
+	Static ImageObject Create(String _texturename, Vector2 _position = (0, 0), Vector2 _scale = (1, 1), BaseStatusBar _HudClass = null)
+	{
+		let ret = new();
+		
+		ret.Children.clear();
+		ret.position = _position;
+		ret.scale = _scale;
+		ret.visible = true;
+		ret.alpha = true;
+		ret.texture = _texturename;
+		if (_HudClass) ret.HudClass = _HudClass;
+		
+		return ret;
+	}
+	
+	override void Draw(Vector2 _pos, Vector2 _scale)
+	{
+		if (!HudClass) return;
+		if (!visible) return;
+		
+		CalculateRelativeValues(_pos, _scale);
+		
+		HudClass.DrawImage(texture, r_pos, DI_ITEM_LEFT_TOP | DI_SCREEN_LEFT_TOP, self.alpha, (-1, -1), r_scale);
+		
+		self.drawChildren(r_pos, r_scale);
+	}
+}

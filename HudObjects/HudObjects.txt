@@ -1,0 +1,7 @@
+#include "HudObjects/BoxObject.txt"
+#include "HudObjects/MaskObject.txt"
+#include "HudObjects/MeterObject.txt"
+#include "HudObjects/ImageObject.txt"
+#include "HudObjects/StringObject.txt"
+#include "HudObjects/TextureObject.txt"
+#include "HudObjects/WeapSlotObject.txt"

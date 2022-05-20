@@ -1,0 +1,82 @@
+Class BoxObject : StatusBarCore
+{
+	BoxObject Parent;
+	Array<BoxObject> Children;
+	
+	Vector2 position;
+	Vector2 scale;
+	
+	Vector2 r_pos;
+	Vector2 a_pos;
+	Vector2 r_scale;
+	
+	bool visible;
+	
+	double alpha;
+	
+	String Texture;
+	BaseStatusBar HudClass;
+	
+	Actor AnchorClass;
+
+	Static BoxObject Create(Vector2 _position = (0, 0), Vector2 _scale = (1, 1), BaseStatusBar _HudClass = null)
+	{
+		let ret = new();
+		
+		ret.Children.clear();
+		ret.position = _position;
+		ret.scale = _scale;
+		ret.visible = true;
+		if (_HudClass) ret.HudClass = _HudClass;
+		
+		return ret;
+	}
+	
+	void CalculateRelativeValues(Vector2 _pos, Vector2 _scale)
+	{
+		r_scale = (scale.x * _scale.x, scale.y * _scale.y);
+		r_pos = ((position.x * r_scale.x) + _pos.x, (position.y * r_scale.y) + _pos.y);
+	}
+	
+	virtual ui void draw(Vector2 _pos = (0, 0), Vector2 _scale = (1, 1))
+	{
+		if (!HudClass) return;
+		if (!visible) return;
+	
+		CalculateRelativeValues(_pos, _scale);
+	
+		self.drawChildren(r_pos, r_scale);
+	}
+	
+	ui void drawChildren(Vector2 _pos = (0, 0), Vector2 _scale = (1, 1))
+	{
+		int items = Children.Size();
+		
+		for (int i = 0; i < items; ++i)
+		{
+			Children[i].draw(_pos, _scale);
+		}
+	}
+	
+	void addchild(BoxObject _item)
+	{
+		children.push(_item);
+		_item.parent = self;
+		if (HudClass) _item.HudClass = hudClass;
+	}
+	
+	void removeChild(BoxObject _item)
+	{
+		int index = Children.find(_item);
+		if (index != children.size())
+		{
+			children.delete(index);
+			children.ShrinkToFit();
+		}
+	}
+	
+	Vector2 localToGlobal(Vector2 _point)
+	{
+		return r_pos + _point;
+	}
+}

@@ -116,7 +116,11 @@ Class GHAGEventHandler : EventHandler
 				}
 				if (gun is "Chaingun")
 				{
-					gun.spawn("ClipBox", gun.pos);
+					if (gardie.countinv("GHAGNailgun") == 0) {
+						gun.spawn("NailgunPickup", gun.pos);
+					} else {
+						gun.spawn("Clipbox", gun.pos);
+					}
 					gun.destroy();
 				}
 				if (gun is "PlasmaRifle" || gun is "BFG9000")

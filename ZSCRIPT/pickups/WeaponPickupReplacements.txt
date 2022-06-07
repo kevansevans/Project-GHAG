@@ -110,6 +110,51 @@ Class ShotgunPickup : WeaponPickup
 	}
 }
 
+Class NailgunPickup : WeaponPickup
+{
+	Default
+	{
+		Inventory.PickupMessage "Seized a nailgun!";
+		Inventory.pickupsound "misc/w_pkup";
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		bool result = super.TryPickup(toucher);
+	
+		if (result)
+		{
+			if (toucher.countInv("GHAGNailgun") == 0)
+			{
+				toucher.giveInventory("GHAGNailgun", 1);
+				toucher.A_SelectWeapon("GHAGNailgun");
+			}
+			toucher.giveInventory("GHAGNailgunOverlay", 1);
+			toucher.giveInventory("Clip", 20);
+		}
+		touched = result;
+		return false;
+	}
+	
+	override void Tick()
+	{
+		super.Tick();
+		
+		if (players[consoleplayer].mo.countInv("GHAGNailgun") > 0 && !touched)
+		{
+			self.spawn("ShellBox", self.pos);
+			self.destroy();
+		}
+	}
+
+	States
+	{
+		Spawn :
+			SHOT A 1;
+			Loop;
+	}
+}
+
 Class PlasmaPickup : WeaponPickup
 {
 	Default

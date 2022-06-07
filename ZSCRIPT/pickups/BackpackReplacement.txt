@@ -1,37 +1,33 @@
-Class GHAGBackpack : Backpack replaces Backpack
+Class GHAGBackpack : Inventory replaces Backpack
 {
-	override bool HandlePickup (Inventory item)
+	Default
 	{
-		if (item is 'BackpackItem')
+		Inventory.MaxAmount 10;
+		+Inventory.AlwaysPickup;
+	}
+	
+	override bool TryPickup(in out Actor toucher)
+	{
+		for (let probe = toucher.Inv; probe != NULL; probe = probe.Inv)
 		{
-			for (let probe = Owner.Inv; probe != NULL; probe = probe.Inv)
+			let ammoitem = Ammo(probe);
+			if (ammoitem && ammoitem.GetParentAmmo() == ammoitem.GetClass())
 			{
-				let ammoitem = Ammo(probe);
-
-				if (ammoitem && ammoitem.GetParentAmmo() == ammoitem.GetClass())
+				if (toucher.countInv("GHAGBackpack") < self.MaxAmount)
 				{
-					if (ammoItem.maxAmount <= ammoItem.BackpackMaxAmount * 20) {
-						ammoItem.MaxAmount = ammoitem.MaxAmount * 1.5;
-						if (ammoItem.MaxAmount >= (ammoItem.BackpackMaxAmount * 20)) ammoItem.MaxAmount = ammoItem.BackpackMaxAmount * 20;
-						if (ammoitem.Amount < ammoitem.MaxAmount || sv_unlimited_pickup)
-						{
-							int amount = ammoitem.Default.BackpackAmount;
-							if (!bIgnoreSkill)
-							{
-								amount = int(amount * G_SkillPropertyFloat(SKILLP_AmmoFactor));
-							}
-							ammoitem.Amount += amount;
-							if (ammoitem.Amount > ammoitem.MaxAmount && !sv_unlimited_pickup)
-							{
-								ammoitem.Amount = ammoitem.MaxAmount;
-							}
-						}
-					}
+					toucher.setAmmoCapacity(ammoitem.getClassName(), int(double(toucher.getAmmoCapacity(ammoitem.getClassName())) * 1.2));
 				}
+				toucher.giveInventory(ammoitem.GetClassName(), int(double(toucher.getAmmoCapacity(ammoitem.getClassName())) * 0.1));
 			}
-			item.bPickupGood = true;
-			return true;
 		}
-		return false;
+		
+		return Super.TryPickup(toucher);
+	}
+	
+	States
+	{
+		Spawn:
+			BPAK A -1;
+			Stop;
 	}
 }

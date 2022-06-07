@@ -59,3 +59,6 @@ Class GHAGWeapon : Weapon
 			stop;
 	}
 }
+
+Class PokemonMove : GHAGWeapon
+{}

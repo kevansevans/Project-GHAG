@@ -1,4 +1,4 @@
-Class MoonBlastGun : GHAGWeapon
+Class MoonBlastGun : PokemonMove
 {
 	Default
 	{

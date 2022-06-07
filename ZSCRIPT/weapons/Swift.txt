@@ -1,4 +1,4 @@
-Class Swift : GHAGWeapon
+Class Swift : PokemonMove
 {
 	Default
 	{

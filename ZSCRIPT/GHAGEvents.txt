@@ -338,11 +338,17 @@ Class GHAGEventHandler : EventHandler
 		int angerBonus = Max(int(thing.spawnHealth() / 5), 1);
 		int willBonus = int(AngerBonus / 10);
 		
-		if (gardie.player.ReadyWeapon is "Swift" || gardie.player.ReadyWeapon is "MoonBlastGun") 
-		{ } else {
 		
 			if (WolfensteinSS(thing)) angerbonus = 3000;
 			
+		if (gardie.player.ReadyWeapon is "PokemonMove")
+		{
+		}
+		
+		else 
+		
+		{
+		
 			while (true) 
 			{
 				let rageitem = RageEssence(thing.A_DropItem("RageEssence", 1));

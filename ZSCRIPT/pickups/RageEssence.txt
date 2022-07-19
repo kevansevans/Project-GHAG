@@ -12,7 +12,7 @@ Class RageEssence : CustomInventory
 		Spawn :
 			WILL A 4 NoDelay A_SetTics(random(1, 16));
 		Spawn.Loop :
-			WILL BCDA 4 Bright A_MoveCloser();
+			WILL BCDA 4 Bright;
 			loop;
 	}
 	
@@ -27,20 +27,5 @@ Class RageEssence : CustomInventory
 		}
 		
 		return false;
-	}
-	
-	action void A_MoveCloser()
-	{
-		int rage = Gardevoir(players[consoleplayer].mo).GetRageValue();
-		if (rage >= Gardevoir(players[consoleplayer].mo).rageconstant) self.bSpecial = false;
-		else {
-			self.bSpecial = true;
-			target = players[consoleplayer].mo;
-			if (Distance2D(players[consoleplayer].mo) <= 128) {
-				A_FaceTarget();
-				A_Weave(5, 5, 5, 5);
-				Thrust();
-			}
-		}
 	}
 }

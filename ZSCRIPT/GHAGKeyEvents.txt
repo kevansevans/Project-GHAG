@@ -144,24 +144,33 @@ Class KinesisBlast : Actor
 							victim.bRollCenter = true;
 							for (int i = 0; i < 10; ++ i) victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
 							KinesisPing(Actor.spawn('KinesisPing', victim.pos));
-							if (victim.tracer)
-							{
-								victim.A_SeekerMissile(0, 360, SMF_LOOK | SMF_PRECISE);
-								victim.A_SetRoll(victim.roll + 25, SPF_INTERPOLATE);
-							} 
-							else
+						}
+						if (victim.tracer)
+						{
+							double spring = 0.8;
+							double dampening = 0.8;
+					
+							double velx = DampedSpring(victim.pos.x, victim.tracer.pos.x, victim.vel.x, spring, dampening);
+							double vely = DampedSpring(victim.pos.y, victim.tracer.pos.y, victim.vel.y, spring, dampening);
+							double velz = DampedSpring(victim.pos.z, victim.tracer.pos.z, victim.vel.z, spring, dampening);
+							
+							victim.vel = (velx, vely, velz);
+							
+							victim.A_SetRoll(victim.roll + 25, SPF_INTERPOLATE);
+							
+							double speed = sqrt((victim.vel.x * victim.vel.x) + (victim.vel.y * victim.vel.y) + (victim.vel.z * victim.vel.z));
+							if (speed <= 12)
 							{
 								victim.bMissile = false;
 								victim.damageMobj(victim, victim, 9999999, '');
 								list.delete(i--);
 								list.shrinkToFit();
 							}
-						}
-						else
-						{
-							victim.Vel3DFromAngle(40, victim.angleTo(victim.tracer), 0);
-							victim.A_SetRoll(victim.roll + 25, SPF_INTERPOLATE);
-							victim.damageMobj(victim, victim, 1, '');
+						} else {
+							victim.bMissile = false;
+							victim.damageMobj(victim, victim, 9999999, '');
+							list.delete(i--);
+							list.shrinkToFit();
 						}
 					}
 					else
@@ -181,10 +190,17 @@ Class KinesisBlast : Actor
 				{
 					double angle = gardie.AngleTo(victim);
 					Vector2 move = gardie.AngleToVector(angle, -32);
-					victim.Vel.XY = move;
-					victim.Vel.Z = 64. / victim.Mass;
 					
-					if (gardie.distance2D(victim) <= 64)
+					double spring = 0.2;
+					double dampening = 0.2;
+					
+					double velx = DampedSpring(victim.pos.x, gardie.pos.x, victim.vel.x, spring, dampening);
+					double vely = DampedSpring(victim.pos.y, gardie.pos.y, victim.vel.y, spring, dampening);
+					double velz = DampedSpring(victim.pos.z, gardie.pos.z, victim.vel.z, spring, dampening);
+					
+					victim.vel = (velx, vely, velz);
+					
+					if (gardie.distance3D(victim) <= 64)
 					{
 						if (Inventory(victim))
 						{
@@ -211,6 +227,11 @@ Class KinesisBlast : Actor
 				}
 			}
 		}
+	}
+	
+	//Thank you Cali
+	double DampedSpring(double p, double r, double v, double k, double d) {
+		return -(d * v) - (k * (p - r));
 	}
 	
 	default

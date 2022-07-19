@@ -5,6 +5,25 @@ Class GHAGWeapon : Weapon
 	{
 		+BloodSplatter;
 	}
+	
+	override bool TryPickup (in out Actor toucher)
+	{
+		bool result;
+		State ReadyState = FindState('Ready');
+		if (ReadyState != NULL && ReadyState.ValidateSpriteFrame())
+		{
+			result = Super.TryPickup (toucher);
+			
+			if (result && Gardevoir(Toucher))
+			{
+				Gardevoir(toucher).updateWeapons = true;
+			}
+			
+			return result;
+		}
+		
+		return false;
+	}
 
 	mixin IcePunch;
 

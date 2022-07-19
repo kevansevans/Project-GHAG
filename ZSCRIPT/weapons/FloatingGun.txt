@@ -1,0 +1,57 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//This class serves purely for an aesthetic purpose and contains zero code
+//That performs any attacks. Please look elsewhere.
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//weapons/shotpm "Sounds/ALTPUMP.ogg"
+//weapons/shotpl "Sounds/ALTPULL.ogg"
+
+Class GHAGFloatingGun : Actor
+{
+	Gardevoir parent;
+
+	default
+	{
+		+NoGravity;
+		+NoClip;
+	}
+	
+	states
+	{
+		Spawn:
+			MODL A 1;
+			Loop;
+		PistolFire:
+			GPST B 3 Bright;
+		PistolIdle:
+			GPST A 3;
+			loop;
+		ShotgunFire:
+			GSHT B 8 Bright;
+			GSHT B 0;
+			GSHT D 0 A_StartSound("weapons/shotpl", CHAN_AUTO);
+			GSHT DEF 2;
+			GSHT F 0 A_StartSound("weapons/shotpm", CHAN_AUTO);
+			GSHT ED 2;
+		ShotgunIdle:
+			GSHT A 1;
+			loop;
+		Hidden:
+			TNT1 A 1;
+			Loop;
+	}
+}
+
+Class GHAGGunTarget : Actor
+{
+	Default
+	{
+		Radius 1;
+	}
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			Stop;
+	}
+}

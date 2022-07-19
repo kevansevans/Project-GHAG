@@ -98,30 +98,7 @@ Class GHAGPlasmaRifle : GHAGWeapon
 	
 	Action void A_PlasmaOverlay(bool _primary = false, bool _bfg = false)
 	{
-		for (int i = 0; i < invoker.getPlasmaCount(); ++ i)
-		{
-			int layer = -1 * (i + 1);
-			if (_bfg) A_Overlay(layer, "PlasmaBFG.Overlay", false);
-			else if (_primary) A_Overlay(layer, "PlasmaFire.Overlay", false);
-			else A_Overlay(layer, "Plasma.Overlay", false);
-			A_OverlayFlags(layer, PSPF_ADDBOB, false);
-			if ((i + 1) % 2 == 0) A_OverlayFlags(layer, PSPF_FLIP | PSPF_MIRROR, true);
-			A_OverlayOffset(layer, (sin(gametic + (72 * i))) + (45 * (i / 2)) + 30, (cos(gametic + (72 * i))) - (55 * (i / 2)) + (i < 2 ? 5 : 0), WOF_INTERPOLATE);
-			
-			if (invoker.owner.countInv("PowerWeaponLevel2") >= 1)
-			{
-				int realCount = int(invoker.getPlasmaCount() / 2);
-				if (i + 1 > realcount)
-				{
-					A_OverlayFlags(layer, PSPF_RENDERSTYLE, true);
-					A_OverlayRenderstyle(layer, STYLE_SoulTrans);
-					A_OverlayAlpha (layer, 0.25);
-				}
-			}
-		}
 		
-		int layerStart = invoker.getPlasmaCount() * -1;
-		A_ClearOverlays(-10, layerStart - 1);
 	}
 	
 	Action void A_PsychicPlasma() {

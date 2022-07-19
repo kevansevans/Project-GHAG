@@ -10,3 +10,38 @@ Sprite MGUNA0, 28, 16
 	Patch AMMOA0, 0, 0
 }
 
+//dummy sprites
+
+Sprite GPSTA0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GPSTB0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+
+Sprite GSHTA0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GSHTB0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GSHTC0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GSHTD0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GSHTE0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GSHTF0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}

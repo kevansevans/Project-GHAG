@@ -1,0 +1,32 @@
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "Pistol.md3"
+	SurfaceSkin 0 0 "PISTTEXT.png"
+    Scale 1.000000 1.000000 1.2
+	Offset 3 0 0
+    USEACTORPITCH
+    USEACTORROLL
+	NOINTERPOLATION
+
+    FrameIndex GPST A 0 0
+    FrameIndex GPST B 0 1
+}
+
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "Shotgun.md3"
+	SurfaceSkin 0 0 "shottext.png"
+    Scale 1.000000 1.000000 1.2
+	Offset 14 0 0
+    USEACTORPITCH
+    USEACTORROLL
+
+    FrameIndex GSHT A 0 0
+	FrameIndex GSHT B 0 1
+	FrameIndex GSHT C 0 2
+	FrameIndex GSHT D 0 3
+	FrameIndex GSHT E 0 4
+	FrameIndex GSHT F 0 5
+}

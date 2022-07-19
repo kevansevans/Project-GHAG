@@ -4,6 +4,14 @@ enum BaseIwad
 	IWAD_HERETIC = 1,
 }
 
+enum GunPos
+{
+	WEAP_BR = 0,
+	WEAP_BL = 1,
+	WEAP_TR = 2,
+	WEAP_TL = 3,
+}
+
 Class Gardevoir : PlayerPawn
 {
 	BaseIwad iwadClass;
@@ -20,13 +28,12 @@ Class Gardevoir : PlayerPawn
 	//property charonmode: charonmode;
 	
 	PointLight glowy;
-	
-	Weapon ActiveGun;
-	Weapon PreviousGun;
+	Name prevWeap;
 	Array<Actor> FloatGuns;
 	
 	Actor IcePunchTarget;
 	
+	bool updateWeapons;
 	default {
 		Health 350;
 		PainChance 255;
@@ -116,6 +123,15 @@ Class Gardevoir : PlayerPawn
 		} else {
 			A_SetRenderStyle(1, STYLE_Normal);
 			return true;
+		}
+	}
+	
+	void initFloatWeapons()
+	{
+		FloatGuns.clear();
+		for (int i = 0; i < 4; ++i)
+		{
+			FloatGuns.push(Actor.spawn('GHAGFloatingGun', self.pos));
 		}
 	}
 	
@@ -229,6 +245,8 @@ Class Gardevoir : PlayerPawn
 		
 		return Super.DamageMobj(inflictor, source, _locDamage, mod, _locFlags, angle);
 	}
+	
+	double p_height;
 	
 	override void Tick()
 	{
@@ -448,6 +466,132 @@ Class Gardevoir : PlayerPawn
 		
 		Super.Tick();
 		
+		for (int i = 0; i < 4; ++i)
+		{
+			Double p_angle = self.angle;
+			Double p_pitch = self.pitch;
+			double p_height= (player.viewz - pos.z) - 3;
+			
+			switch (i)
+			{
+				case WEAP_BR:
+					p_angle -= 35;
+					break;
+				case WEAP_BL:
+					p_angle += 35;
+					break;
+				case WEAP_TR:
+					p_angle -= 45;
+					p_pitch += 20;
+					p_height += 10;
+					break;
+				case WEAP_TL:
+					p_angle += 45;
+					p_pitch += 20;
+					p_height += 10;
+					break;
+				default:
+					break;
+			}
+			if (player.ReadyWeapon)
+			{
+				if (player.readyWeapon.InStateSequence(player.readyWeapon.CurState, player.readyWeapon.ResolveState('Deselect')))
+				{
+					p_angle = self.angle - 180;
+					console.printf('yarp');
+				}
+			}
+			
+			FLineTraceData ray;
+			Self.LineTrace(p_angle, 18, (p_pitch / 2), TRF_THRUBLOCK | TRF_THRUHITSCAN | TRF_NOSKY | TRF_SOLIDACTORS, p_height, 0, 0, ray);
+			
+			let activefloat = FloatGuns[i];
+			
+			double spring = 0.7;
+			double dampening = 1.0;
+			
+			double velx = DampedSpring(activefloat.pos.x, ray.hitlocation.x, activefloat.vel.x, spring, dampening);
+			double vely = DampedSpring(activefloat.pos.y, ray.hitlocation.y, activefloat.vel.y, spring, dampening);
+			double velz = DampedSpring(activefloat.pos.z, ray.hitlocation.z, activefloat.vel.z, spring, dampening);
+			
+			activefloat.vel += (velx, vely, velz);
+		}
+		
+		if (player.ReadyWeapon)
+		{
+			FLineTraceData PlayerAim;
+			Self.LineTrace(self.angle, 2048, self.pitch, TRF_THRUBLOCK | TRF_THRUHITSCAN | TRF_NOSKY | TRF_SOLIDACTORS, 41, 0, 0, PlayerAim);
+			let GunTarget = Actor.spawn('GHAGGunTarget', PlayerAim.HitLocation);
+			
+			for (int i = 0; i < 4; ++i)
+			{
+				FloatGuns[i].A_Face(GunTarget, 0, 270, 0, 0, FAF_MIDDLE);
+				
+				Vector3 dirTo = FloatGuns[i].vec3To(GunTarget).unit();
+				FloatGuns[i].pitch = -asin(dirTo.z);
+			}
+		
+			Name wepname = player.ReadyWeapon.getClassName();
+			
+			if (prevWeap != wepname || updateWeapons)
+			{
+				updateWeapons = false;
+			
+				prevWeap = wepname;
+				int count = 0;
+			
+				StateLabel wepstate = 'Hidden';
+		
+				if (player.readyWeapon is "PokemonMove")
+				{
+					count = -1;
+				}
+				else
+				{
+					switch (wepname)
+					{
+						case 'GHAGPsychoCutter' :
+							count = self.CountInv("GHAGPsychoCutterOverlay");
+							break;
+						case 'GHAGPistol':
+							count = self.CountInv("GHAGPistolOverlay");
+							wepstate = 'PistolIdle';
+							break;
+						case 'GHAGShotgun' :
+							count = self.CountInv("GHAGShotgunOverlay");
+							wepstate = 'ShotgunIdle';
+							break;
+						case 'GHAGPlasmaRifle' :
+							count = self.CountInv("GHAGPlasmaOverlay");
+							break;
+						case 'GHAGRocketLauncher' :
+							count = -1;
+							break;
+						Default:
+							break;
+					}
+				}
+			
+				for (int i = 0; i < 4; ++i)
+				{
+					if (i < count) 
+					{
+						FloatGuns[i].SetStateLabel(wepstate);
+						if (player.readyweapon is 'GHAGShotgun')
+						{
+							if (GHAGShotgun(player.readyWeapon).batmode && i == 0) FloatGuns[i].SetStateLabel('Hidden');
+						}
+					}
+					else FloatGuns[i].SetStateLabel('Hidden');
+				}
+			}
+		}
+		
+	}
+	
+	//Thank you Cali
+	double DampedSpring(double p, double r, double v, double k, double d) {
+		return -(d * v) - (k * (p - r));
 	}
 	
 	//From GZDoom.pk3, just removes the check to see if the level turns of jumping

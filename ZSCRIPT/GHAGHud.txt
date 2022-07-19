@@ -21,6 +21,12 @@ Class GHAGStatus : BaseStatusBar
 	stringobject ammocount;
 	
 	Array<ImageObject> weapitems;
+	ImageObject weapslot_zero;
+	
+	BoxObject keybox;
+	imageobject keyslot_a;
+	imageobject keyslot_b;
+	imageobject keyslot_c;
 	
 	Font fnt_white;
 	HUDFont pokefont;
@@ -118,6 +124,15 @@ Class GHAGStatus : BaseStatusBar
 		
 		weapons = BoxObject.Create();
 		rootscene.addChild(weapons);
+		
+		keybox = BoxObject.create((-25, 0), (1.5, 1.5));
+		weapons.addChild(keybox);
+		keyslot_a = ImageObject.create("");
+		keyslot_b = ImageObject.create("", (10, 0));
+		keyslot_c = ImageObject.create("", (20, 0));
+		keybox.addChild(keyslot_a);
+		keybox.addChild(keyslot_b);
+		keybox.addChild(keyslot_c);
 	}
 	
 	void updateScale()
@@ -204,6 +219,10 @@ Class GHAGStatus : BaseStatusBar
 		}
 		
 		ragedisplay.msg = GetAngerString();
+		
+		weapitems.clear();
+		weapitems.reserve(3);
+		weapons.children.clear();
 		
 		int weaponcount = 0;
 		for (int i = 0; i < 10; ++i)
@@ -296,6 +315,48 @@ Class GHAGStatus : BaseStatusBar
 				}
 			}
 		}
+		
+		bool locks[6];
+		for (int i = 0; i < 6; i++) {
+			locks[i] = CPlayer.mo.CheckKeys(i + 1, false, true);
+		}
+		
+		if (locks[1] || locks[4])
+		{
+			keyslot_a.visible = true;
+			if (locks[1] && locks[4]) keyslot_a.texture = "STKEYS6";
+			else if (locks[1]) keyslot_a.texture = "STKEYS0";
+			else if (locks[4]) keyslot_a.texture = "STKEYS3";
+		}
+		else
+		{
+			keyslot_a.visible = false;
+		}
+		
+		if (locks[2] || locks[5])
+		{
+			keyslot_b.visible = true;
+			if (locks[2] && locks[5]) keyslot_b.texture = "STKEYS7";
+			else if (locks[2]) keyslot_b.texture = "STKEYS1";
+			else if (locks[5]) keyslot_b.texture = "STKEYS4";
+		}
+		else
+		{
+			keyslot_b.visible = false;
+		}
+		
+		if (locks[0] || locks[3])
+		{
+			keyslot_c.visible = true;
+			if (locks[0] && locks[3]) keyslot_c.texture = "STKEYS8";
+			else if (locks[0]) keyslot_c.texture = "STKEYS2";
+			else if (locks[3]) keyslot_c.texture = "STKEYS5";
+		}
+		else
+		{
+			keyslot_c.visible = false;
+		}
+		
 	}
 
 	override void Draw(int state, double tic) 

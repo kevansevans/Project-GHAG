@@ -105,7 +105,7 @@ Class GHAGShotgun : GHAGWeapon
 			}
 			HAND B 2 Bright {
 				int pellets = floor(14 * Gardevoir(Self).GetRageModifier()) * (Gardevoir(self).rageValue > Gardevoir(self).rageConstant ? 2 : 1);
-				A_FireBullets(4, 4, 10 + pellets, 5, "BulletPuff");
+				A_FireBullets(4, 4, 10 + pellets, 5, invoker.pufftype);
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_SetTics(Gardevoir(self).GetTicModifier(2));
 				bool powered = invoker.owner.CountInv("PowerWeaponLevel2") >= 1;
@@ -150,7 +150,7 @@ Class GHAGShotgun : GHAGWeapon
 			HAND A 3 A_OverlayShotguns();
 			HAND B 1 Bright {
 				invoker.AmmoUse2 = invoker.getShotgunCount();
-				A_FireBullets(6, 6, (15 * invoker.getShotgunCount()) + (15 * Gardevoir(Self).GetRageModifier()), 5, "BulletPuff");
+				A_FireBullets(6, 6, (15 * invoker.getShotgunCount()) + (15 * Gardevoir(Self).GetRageModifier()), 5, invoker.pufftype);
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_OverlayShotguns(true, true);
 			}
@@ -165,7 +165,7 @@ Class GHAGShotgun : GHAGWeapon
 			GSHT I 3 A_OverlayShotguns();
 			GSHT I 1 Bright {
 				int pellets = floor(14 * Gardevoir(Self).GetRageModifier()) * (Gardevoir(self).rageValue > Gardevoir(self).rageConstant ? 2 : 1);
-				A_FireBullets(4, 4, 10 + pellets, 5, "BulletPuff");
+				A_FireBullets(4, 4, 10 + pellets, 5, invoker.pufftype);
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_SetTics(Gardevoir(self).GetTicModifier(2));
 				bool powered = invoker.owner.CountInv("PowerWeaponLevel2") >= 1;
@@ -212,7 +212,25 @@ Class GHAGShotgun : GHAGWeapon
 			stop;
 	}
 	
-	int lastRNG;
+	override void SetBulletPuff(int firemode)
+	{
+		pufftype = 'BulletPuff';
+		int bullets = 0;
+		
+		switch (firemode)
+		{
+			case 0:
+				bullets = floor(14 * Gardevoir(owner).GetRageModifier()) * (Gardevoir(owner).rageValue > Gardevoir(owner).rageConstant ? 2 : 1);
+				break;
+			case 1:
+				bullets = (15 * getShotgunCount()) + (15 * Gardevoir(owner).GetRageModifier());
+				break;
+			default:
+				break;
+		}
+		
+		if (bullets > 30) pufftype = 'GHAGBulletPuff';
+	}
 	
 	Action void A_OverlayShotguns(bool RollForFire = false, bool AltFire = false)
 	{

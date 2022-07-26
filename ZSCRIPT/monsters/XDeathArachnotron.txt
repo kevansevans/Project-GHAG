@@ -1,0 +1,19 @@
+Class XDeathArachnotron : Arachnotron replaces Arachnotron
+{
+	Default
+	{
+		GibHealth 30;
+	}
+	States
+	{
+		XDeath:
+			BSPI Q 10 A_StartSound("Arachnotron/Death2");
+			BSPI R 8 A_NoBlocking;
+			BSPI S 6;
+			BSPI TU 6 Bright;
+			BSPI V 5 Bright;
+			BSPI WX 4 Bright;
+			BSPI Y -1 A_BossDeath;
+			Stop;
+	}
+}

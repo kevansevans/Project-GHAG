@@ -6,6 +6,15 @@ Class GHAGWeapon : Weapon
 		+BloodSplatter;
 	}
 	
+	Name pufftype;
+	
+	override void BeginPlay()
+	{
+		Super.BeginPlay();
+		
+		pufftype = 'BulletPuff';
+	}
+	
 	override bool TryPickup (in out Actor toucher)
 	{
 		bool result;
@@ -23,6 +32,32 @@ Class GHAGWeapon : Weapon
 		}
 		
 		return false;
+	}
+	
+	int lastRNG;
+	
+	override bool CheckAmmo(int fireMode, bool autoSwitch, bool requireAmmo, int ammocount)
+	{
+		bool result = Super.CheckAmmo(fireMode, autoSwitch, requireAmmo, ammocount);
+		
+		SetBulletPuff(firemode);
+		
+		return result;
+	}
+	
+	virtual void SetBulletPuff(int firemode)
+	{
+	
+	}
+	
+	void A_FireFloatGuns(StateLabel _state, bool _altFire = false)
+	{
+		
+	}
+	
+	int getGunCount()
+	{
+		return 0;
 	}
 
 	mixin IcePunch;
@@ -81,3 +116,11 @@ Class GHAGWeapon : Weapon
 
 Class PokemonMove : GHAGWeapon
 {}
+
+Class GHAGBulletPuff : BulletPuff
+{
+	Default
+	{
+		+ExtremeDeath;
+	}
+}

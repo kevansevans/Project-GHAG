@@ -6,6 +6,7 @@ attack/CONTACT "Sounds/ATKHIT.ogg"
 attack/SWFTDEAT "Sounds/SWFTDEAT.ogg"
 attack/SWFTATTK "Sounds/SWFTATTK.ogg"
 attack/MOONBOOM "Sounds/MOONBOOM.ogg"
+attack/Thunder "Sounds/THUNDER.ogg"
 pokeball/Shake "Sounds/BALLBUMP.wav"
 pokeball/Latch "Sounds/BALLLTCH.wav"
 MISSINGNO/Creepy "Sounds/LAVENDER.ogg"
@@ -29,6 +30,8 @@ psychic/Ping "Sounds/Ping.ogg"
 gardie/Pain "Sounds/GARDPAIN.ogg"
 gardie/Noway "Sounds/NOWAY.ogg"
 gardie/Bite "Sounds/BITE.ogg"
+
+Arachnotron/Death2 "Sounds/ATRNDTH2.ogg"
 
 //ripped/fixed audio for cross wad support
 skeleton/swing "Sounds/rips/DSSKESWG.wav"

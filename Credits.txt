@@ -14,14 +14,24 @@ Thanks you to the ZDoom Forum Discord, and those who were there to answer my que
 	
 (In order the help came to me)
 
+
+XDeath sprites
+Found here: https://www.realm667.com/index.php/en/sfx-shoppe-mainmenu-139-58855/95-other/1250-alternate-gib-deaths
+	Eriance
+		Demon, Hell Knight
+	Blox
+		Arachnotron
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-//Tools
+//Tools used
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Slade
 Adobe Animate 2020 (Will call it flash in this file from here on)
 My phone
 Gimp
+Ultimate Doom Builder
+Blender
 Unicode Doom Font Creator
 Lots of googling
 
@@ -36,21 +46,10 @@ fingered creature is actually pretty hard.
 Gardevoir player sprites were done the old school method. Bought a gardevoir
 model, took photos of it at various poses, then traced over them in Flash.
 
-Chainsaw is traced over Doom Eternal's "Bucktooth Dopesaw"
-
-Pistol is currently based off of Team Fortress 2's pistol, using the same traced
-over method as the hands. Would like something different.
-
 Pistol pickup is (formerly) unreleased original pistol sprite for the Doom Beta by John Romero.
 
 Shotgun is based off of a Real Winchester 1912. This was my late Great Grandfather's
 shotgun, which eventually ended up in my Father's possesion.
-
-Rocket Launcher is just Doom's rocket upscaled and animated to be spinning.
-
-Plasma Rifle is based off of a watergun I bought at a hardware store.
-
-Nailgun sprites: https://forum.zdoom.org/viewtopic.php?f=37&t=45524
 
 Gen 2 move sprites, for elemental punches:
 https://www.spriters-resource.com/game_boy_gbc/pokemongoldsilver/sheet/9087/
@@ -59,11 +58,6 @@ Fists were done in Flash, just added a glow with appropriate color
 Moon Blast "Moon" from Gen 3 Fire Red Leaf Green
 Will-o-wisp fire sprites from Gen 3 FRLG, for Rage Essence pickup
 https://www.spriters-resource.com/fullview/3860/
-
-Pokeball projectiles:
-https://www.spriters-resource.com/ds_dsi/pokemondiamondpearl/sheet/32113/
-
-Item sprites, very thankfully, found at https://msikma.github.io/pokesprite/overview/inventory.html
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //Sounds

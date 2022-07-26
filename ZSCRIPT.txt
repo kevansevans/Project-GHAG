@@ -40,8 +40,14 @@ version "4.8"
 #include "ZSCRIPT/weapons/Swift.txt"
 #include "ZSCRIPT/weapons/Moonblast.txt"
 #include "ZSCRIPT/weapons/BlackHole.txt"
+#include "ZSCRIPT/weapons/Thunderbolt.txt"
 #include "ZSCRIPT/weapons/black hole particles/BaseParticle.txt"
 #include "ZSCRIPT/effects/StatusEffects.txt"
+
+//XDeath demons, to really sell the damage you're doing
+#include "ZSCRIPT/monsters/XDeathDemon.txt"
+#include "ZSCRIPT/monsters/XDeathHellKnight.txt"
+#include "ZSCRIPT/monsters/XDeathArachnotron.txt"
 
 //Black hole includes
 //These were generated with a custom script I made in Haxe

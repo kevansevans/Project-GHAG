@@ -300,8 +300,7 @@ mixin class BlackHoleAttacks
 			if (Distance3D(mo) < radius * 2)
 			{
 				if (mo.bMissile) {
-					if (mo is "ArachnotronPlasma")
-					{
+					if (mo is "ArachnotronPlasma") {
 						mo.spawn("ArachnotronParticleProj", mo.pos);
 					} else if (mo is "BaronBall") {
 						mo.spawn("BruiserParticleProj", mo.pos);

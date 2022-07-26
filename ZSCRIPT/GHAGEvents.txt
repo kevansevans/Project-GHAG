@@ -343,10 +343,11 @@ Class GHAGEventHandler : EventHandler
 		int willBonus = int(AngerBonus / 10);
 		
 		
-			if (WolfensteinSS(thing)) angerbonus = 3000;
-			
+		if (WolfensteinSS(thing)) angerbonus = 3000;
+		
 		if (gardie.player.ReadyWeapon is "PokemonMove")
 		{
+			if (gardie.megaEvolved) gardie.addAnger(angerbonus);
 		}
 		
 		else 
@@ -358,7 +359,7 @@ Class GHAGEventHandler : EventHandler
 				let rageitem = RageEssence(thing.A_DropItem("RageEssence", 1));
 				rageitem.A_SetPitch(random(60, 80));
 				rageitem.A_SetAngle(random(1, 360));
-				
+			
 				if (WolfensteinSS(thing)) 
 				{
 					rageitem.amount = 100;
@@ -369,7 +370,7 @@ Class GHAGEventHandler : EventHandler
 					if (angerbonus <= 0) break;
 					else continue;
 				}
-				
+			
 				rageitem.A_ChangeVelocity(random(-2, 2), random(-2, 2), random(-2, 2), CVF_REPLACE);
 				
 				if (angerbonus >= 1000) 
@@ -409,7 +410,6 @@ Class GHAGEventHandler : EventHandler
 					break;
 				}
 			}
-			
 		}
 		
 		if (willBonus > 0) {
@@ -470,6 +470,8 @@ Class GHAGEventHandler : EventHandler
 	
 	override void WorldLoaded(WorldEvent event)
 	{
+		if (gardie) gardie.initFloatWeapons();
+	
 		numSecrets = 0;
 		mapHasMinimalSecrets = true;
 		for (int i = 0; i < level.Sectors.Size(); i++)

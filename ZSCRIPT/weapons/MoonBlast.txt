@@ -14,7 +14,8 @@ Class MoonBlastGun : PokemonMove
 	States
 	{
 		Select :
-			HAND A 1 {
+			HAND A 1 
+			{
 				A_Raise();
 				A_DrawMoonOverlay();
 			}

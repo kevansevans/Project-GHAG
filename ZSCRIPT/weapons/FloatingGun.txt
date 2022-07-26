@@ -22,7 +22,7 @@ Class GHAGFloatingGun : Actor
 			MODL A 1;
 			Loop;
 		PistolFire:
-			GPST B 3 Bright;
+			GPST B 2 Bright;
 		PistolIdle:
 			GPST A 3;
 			loop;

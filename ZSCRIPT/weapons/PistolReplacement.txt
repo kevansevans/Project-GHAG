@@ -24,7 +24,6 @@ Class GHAGPistol : GHAGWeapon
 		Tag "9mm Pistol";
 	}
 	
-	int lastRNG;
 	double spread;
 	
 	override void DoEffect()

@@ -16,11 +16,20 @@ Thanks you to the ZDoom Forum Discord, and those who were there to answer my que
 
 
 XDeath sprites
-Found here: https://www.realm667.com/index.php/en/sfx-shoppe-mainmenu-139-58855/95-other/1250-alternate-gib-deaths
+	Links
+		https://www.realm667.com/index.php/en/sfx-shoppe-mainmenu-139-58855/95-other/1250-alternate-gib-deaths
+		https://www.doomworld.com/idgames/combos/rdnd15
+		https://www.moddb.com/mods/sporadic-deaths-and-decorations/downloads/sporadic-deaths-and-decorations-version-10
 	Eriance
-		Demon, Hell Knight
+		Demon, Hell Knight, Revenant, Mancubus
 	Blox
-		Arachnotron
+		Arachnotron, Mancubus
+	Vader
+		Baron of Hell
+	PermaNoob
+		Cacodemon
+	Uncredited because could not find names:
+		Archvile
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //Tools used

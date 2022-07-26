@@ -1,0 +1,13 @@
+Class XDeathBaronOfHell : BaronOfHell replaces BaronOfHell
+{
+	States
+	{
+		Death: 
+			BS12 A 6;
+			BS12 B 6 A_Scream;
+			BS12 C 6 A_Fall;
+			BS12 DEF 6;
+			BS12 G -1;
+			Stop;
+	}
+}

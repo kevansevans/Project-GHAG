@@ -48,6 +48,10 @@ version "4.8"
 #include "ZSCRIPT/monsters/XDeathDemon.txt"
 #include "ZSCRIPT/monsters/XDeathHellKnight.txt"
 #include "ZSCRIPT/monsters/XDeathArachnotron.txt"
+#include "ZSCRIPT/monsters/XDeathRevenant.txt"
+#include "ZSCRIPT/monsters/XDeathBaronOfHell.txt"
+#include "ZSCRIPT/monsters/XDeathArchvile.txt"
+#include "ZSCRIPT/monsters/XDeathCacodemon.txt"
 
 //Black hole includes
 //These were generated with a custom script I made in Haxe

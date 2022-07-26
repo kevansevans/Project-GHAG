@@ -1,0 +1,13 @@
+XDeathMancubus : Fatso replaces Fatso
+{
+	States
+	{
+		XDeath:
+			FAT2 A 7;
+			FAT2 B 7 A_Scream;
+			FAT2 C 7 A_NoBlocking;
+			FAT2 DEFGHI 5;
+			FAT2 J -1 A_BossDeath;
+			Stop;
+	}
+}

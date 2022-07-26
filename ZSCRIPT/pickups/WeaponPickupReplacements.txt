@@ -14,6 +14,7 @@ Class WeaponPickup : Inventory
 		if (result)
 		{
 			A_StartSound("misc/w_pkup", CHAN_AUTO);
+			Gardevoir(toucher).updateWeapons = true;
 		}
 		return result;
 	}

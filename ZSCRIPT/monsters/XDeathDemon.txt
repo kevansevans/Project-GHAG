@@ -2,7 +2,7 @@ Class XDeathDemon : Demon replaces Demon
 {
 	Default
 	{
-		GibHealth 30;
+		GibHealth 35;
 	}
 	States
 	{

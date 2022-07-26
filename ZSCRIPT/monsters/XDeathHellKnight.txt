@@ -2,7 +2,7 @@ Class XDeathHellKnight : HellKnight replaces HellKnight
 {
 	Default
 	{
-		GibHealth 30;
+		GibHealth 125;
 	}
 	States
 	{

@@ -1,5 +1,9 @@
 Class XDeathBaronOfHell : BaronOfHell replaces BaronOfHell
 {
+	Default
+	{
+		GibHealth 250;
+	}
 	States
 	{
 		Death: 

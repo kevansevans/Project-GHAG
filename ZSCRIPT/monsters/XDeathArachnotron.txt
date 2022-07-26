@@ -2,7 +2,7 @@ Class XDeathArachnotron : Arachnotron replaces Arachnotron
 {
 	Default
 	{
-		GibHealth 30;
+		GibHealth 125;
 	}
 	States
 	{

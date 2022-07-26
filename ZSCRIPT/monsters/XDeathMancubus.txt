@@ -1,5 +1,10 @@
-XDeathMancubus : Fatso replaces Fatso
+Class XDeathMancubus : Fatso replaces Fatso
 {
+	Default
+	{
+		GibHealth 150;
+	}
+
 	States
 	{
 		XDeath:

@@ -2,7 +2,7 @@ Class XDeathRevenant : Revenant replaces Revenant
 {
 	Default
 	{
-		GibHealth 30;
+		GibHealth 75;
 	}
 	States
 	{

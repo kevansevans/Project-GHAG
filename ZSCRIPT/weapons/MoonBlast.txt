@@ -35,59 +35,51 @@ Class MoonBlastGun : PokemonMove
 			}
 			Loop;
 		Fire :
-			TNT1 A 0 A_DrawMoonOverlay();
-			HAND A 1 A_JumpIf(A_MoonBlast(), "Fire.Boom");
+			TNT1 A 0 
+			{
+				A_Overlay(-1, "Moon.Clear", true);
+				A_StartSound("attack/MOONCHARGE", CHAN_WEAPON);
+			}
+			HAND AAAAAAAAA 4 
+			{
+				A_DrawMoonOverlay(true);
+				A_SetTics(Gardevoir(self).GetTicModifier(4));
+			}
+			TNT1 A 0 A_MoonBlast();
+			HAND J 12 Offset(0, 5);
 			TNT1 A 0 A_Refire();
 			goto Ready;
-		Fire.Boom :
-			TNT1 A 0 A_DrawMoonOverlay();
-			HAND J 12 Offset(0, 5);
-			goto Ready;
-		Moon.Overlay:
-			MOON A 1;
-			Loop;
-		Moon.Clear:
-			TNT1 A 1;
-			Loop;
+		Moon.Charge:
+			MNBL IHGFEDCBA 1 A_SetTics(Gardevoir(self).GetTicModifier(4));
+			stop;
 	}
 	
-	Action void A_DrawMoonOverlay()
+	Action void A_DrawMoonOverlay(bool charge = false)
 	{
-		A_Overlay(-1, "Moon.Overlay", true);
+		if (!charge) A_ClearOverlays(-1, -1);
+		else if (charge) A_Overlay(-1, "Moon.Charge", true);
+		
 		A_OverlayFlags(-1, PSPF_ADDBOB, false);
+		A_OverlayOffset(-1, 300, 64);
 		A_OverlayOffset(-1, sin(gametic) * 0.05, cos(gametic) * 0.05, WOF_ADD | WOF_INTERPOLATE);
 	}
 	
-	Action bool A_MoonBlast()
+	Action void A_MoonBlast()
 	{
 		let gardie = Gardevoir(players[consoleplayer].mo);
 		
-		if (gardie.ragevalue <= 99  && invoker.charge <= 99) 
-		{
-			++invoker.charge;
-			int rngrange = 20 * invoker.charge / 1000;
-			A_ClearOverlays();
-			A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
-			return false;
-		}
-		else 
-		{
-			A_StartSound("attack/MOONBOOM", CHAN_WEAPON, CHANF_OVERLAP, 1);
-			A_ClearOverlays();
-			
-			FLineTraceData blast;
-			LineTrace(angle, 2048, pitch, 0, height - 12, 0, 0, blast);
-			Self.Spawn('MoonBlastKaboom', blast.HitLocation);
-			
-			A_QuakeEx(4, 4, 4, 25, 0, 64, "", QF_SCALEDOWN);
-			A_RailAttack(0, 0, false, "D56671", "BADBB2", RGF_SILENT | RGF_NOPIERCING | RGF_FULLBRIGHT, 0, "", 0, 0, 0, 20);
-			A_AlertMonsters();
-			
-			gardie.subtractAnger(100);
-			invoker.charge = 0;
-			return true;
-		}
-		return false;
+		A_StartSound("attack/MOONBOOM", CHAN_WEAPON, 0, 1);
+		A_ClearOverlays();
+		
+		FLineTraceData blast;
+		LineTrace(angle, 2048, pitch, 0, height - 12, 0, 0, blast);
+		Self.Spawn('MoonBlastKaboom', blast.HitLocation);
+		
+		A_QuakeEx(4, 4, 4, 25, 0, 64, "", QF_SCALEDOWN);
+		A_RailAttack(0, 0, false, "D56671", "BADBB2", RGF_SILENT | RGF_NOPIERCING | RGF_FULLBRIGHT, 0, "", 0, 0, 0, 20);
+		A_AlertMonsters();
+		
+		gardie.subtractAnger(100);
 	}
 }
 

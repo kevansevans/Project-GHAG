@@ -4,22 +4,39 @@
 
 - Replace hud sprites with floating actors that point wherever player is pointing
 	- Later update
-	- Look into Guncaster to see how this is accomplished
 	- Add CVARS that can adjust positioning of weapons for various monitor sizes.
-	
-- Finish sprite replacement for better Dehacked support
-
-- Psychic Charge
-	- Move is seen performed by Gardevoir in pokken tournament
-	- Does not have official/specified name
-	- Move shows Gardevoir performing a bow and arrow like motion
-	- Base attack should be powerful, but longer charges should get stronger
-	- Should replace switft
 	
 - Heretic Support!
 	- Do not work on Heretic weapons until floating gun system is done
 	- Rip sprites for cross iwad support
 		- Try best to investigate sprite replacements that aren't copyrighted
+		
+- Rocket alt
+	- "smash" rocket like a can, grenade/mine
+	- Reload to place, right click to detonate
+	- Snapping finger animation
+	- Guranteed big boom
+	
+- Context Ping
+	- Decorative items should be thrown
+		- Hanging legs
+		- Torches and torch pikes
+	
+- Mega Evolution
+	- Kills in this mode are only way to extend anger, no Rage drops
+		- Health / 10
+	- Move Black Hole, MoonBlast, Swift into this class
+	- No guns. These should operate better than guns
+	- Use pokemon moves that can't fit into the gun class
+		- Treat anger as if it's perpetually at 100 percent or higher
+		- Slot 1: "Psycho Decimator" Purely telekinesis based attack that shoves and throws enemies around
+		- Slot 2: Swift
+		- Slot 3: Thunder Bolt
+		- Slot 4: Psychic
+		- Slot 5: Focus Blast
+		- Slot 6: Will-O-Wisp
+		- Slot 7: Moon Blast
+		- Slot 8: Black Hole
 	
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,32 +47,4 @@
 - Better hand sprites for attacks
 - Make attacks "crunchier" (How?)
 - Player sprites
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// Brainstorming
-////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-pokeball
-
-	- Thing.GetClassName();
-	- Store in static array
-	- reload to cycle caught enemies
-	- Use actual formula catch...?
-	- spawn, add +friendly tag
-	- Finding secret grants random chance to find ball.
-	
-- Rocket alt
-	- "smash" rocket like a can, grenade/mine
-	- Reload to place, right click to detonate
-	- Snapping finger animation
-	- Guranteed big boom
-
-- Confusion
-	- 25 percent chance to temporarily make actor friendly, aka "confused"
-	- 25 percent chance to unconfuse
-
-- E to Melee option
-	- Activates lines of course
-	- If enemy is in range, leap towards it and punch
-		- Range increases with anger.
-		- Damage increases with anger

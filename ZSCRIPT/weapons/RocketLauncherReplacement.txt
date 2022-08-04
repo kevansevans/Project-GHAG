@@ -299,6 +299,8 @@ Class GrenadeRocket : Actor
 		+GrenadeTrail;
 		+RollCenter;
 		+RollSprite;
+		+SEEKERMISSILE;
+		+UseBounceState;
 		BounceType "Doom";
 		BounceSound "Grenade/Bounce";
 		DeathSound "weapons/rocklx";
@@ -312,6 +314,12 @@ Class GrenadeRocket : Actor
 		Spawn:
 			ROCK B 1 A_SetRoll(invoker.roll + 12, SPF_INTERPOLATE);
 			Loop;
+		Bounce:
+			ROCK B 0 {
+				A_SeekerMissile(0, 90, SMF_Look | SMF_PRECISE | SMF_CURSPEED, 256, 128);
+				Console.Printf('Boing!');
+			}
+			goto Spawn;
 		Death:
 			TNT1 A 0 {
 				A_SetRoll(0);

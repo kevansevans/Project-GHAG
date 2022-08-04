@@ -208,7 +208,16 @@ Mixin Class IcePunch
 				if (gardie.distance3d(shot.HitActor) > 128)
 				{
 					gardie.IcePunchTarget = shot.HitActor;
-					gardie.Vel3DFromAngle(20 + (40 * Min(2, gardie.GetRageModifier())), gardie.angle, gardie.pitch);
+					
+					double spring = Max(0.1, 0.3 * gardie.getRageModifier());
+					console.printf('' .. Max(0.01, 0.3 * (gardie.getRageValue() / 1000)));
+					double dampening = gardie.getRageValue() / 1000;
+			
+					double velx = DampedSpring(gardie.pos.x, shot.HitActor.pos.x, gardie.vel.x, spring, dampening);
+					double vely = DampedSpring(gardie.pos.y, shot.HitActor.pos.y, gardie.vel.y, spring, dampening);
+					double velz = DampedSpring(gardie.pos.z, shot.HitActor.pos.z, gardie.vel.z, spring, dampening);
+					
+					gardie.vel = (velx, vely, velz);
 					A_StartSound("dash/Start", CHAN_AUTO, 0, 1.2);
 				}
 			}
@@ -226,6 +235,11 @@ Mixin Class IcePunch
 	{
 		A_Overlay(3, "IcePunch.Overlay", true);
 		A_OverlayScale(3, 0.8, 0.8); 
+	}
+	
+	//Thank you Cali
+	Action double DampedSpring(double p, double r, double v, double k, double d) {
+		return -(d * v) - (k * (p - r));
 	}
 }
 

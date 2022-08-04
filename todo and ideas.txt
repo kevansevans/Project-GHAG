@@ -10,12 +10,6 @@
 	- Do not work on Heretic weapons until floating gun system is done
 	- Rip sprites for cross iwad support
 		- Try best to investigate sprite replacements that aren't copyrighted
-		
-- Rocket alt
-	- "smash" rocket like a can, grenade/mine
-	- Reload to place, right click to detonate
-	- Snapping finger animation
-	- Guranteed big boom
 	
 - Context Ping
 	- Decorative items should be thrown

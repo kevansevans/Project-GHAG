@@ -31,12 +31,13 @@ psychic/Ping "Sounds/Ping.ogg"
 gardie/Pain "Sounds/GARDPAIN.ogg"
 gardie/Noway "Sounds/NOWAY.ogg"
 gardie/Bite "Sounds/BITE.ogg"
+crush/can "Sounds/CANCRUSH.ogg"
 
 Arachnotron/Death2 "Sounds/ATRNDTH2.ogg"
 
 //ripped/fixed audio for cross wad support
 skeleton/swing "Sounds/rips/DSSKESWG.wav"
-//weapons/plasmaf DSPLASMA
+Grenade/Bounce "Sounds/rips/bounce.wav"
 
 $playersound player male *usefail NOWAY
 $playersound player female *usefail NOWAY

@@ -14,6 +14,18 @@ Class GHAGEventHandler : EventHandler
 			gardie = Gardevoir(event.thing);
 			return;
 		}
+		
+		if (event.thing is "Inventory")
+		{
+			let item = event.thing;
+		
+			switch(event.thing.getClassName())
+			{
+				default:
+					item.height = 32;
+			}
+		}
+		
 										//Nazis don't get to be shiny
 		if (Actor(event.thing).bIsMonster && !WolfensteinSS(event.thing) && !event.thing.bFriendly)
 		{

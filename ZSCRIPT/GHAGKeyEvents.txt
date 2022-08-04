@@ -19,12 +19,36 @@ class GHAGKeyEvents : EventHandler
 			[key1, key2] = Bindings.GetKeysForCommand("kinesis");
 			if ((key1 && key1 == e.Args[0]) || (key2 && key2 == e.Args[0]))
 			{
+				let blast = KinesisBlast(Actor.spawn('KinesisBlast', (0, 0, 0)));
+				Array<Actor> list;
 				FLineTraceData shot;
 				
 				//Prioritize walls and switches first
 				gardie.LineTrace(gardie.angle, 2048, gardie.pitch, TRF_THRUACTORS | TRF_THRUHITSCAN | TRF_THRUBLOCK | TRF_NOSKY, gardie.height - 12, 0, 0, shot);
+				
+				blast.setOrigin(shot.hitlocation, false);
+				
 				if (shot.HitLine)
 				{
+					if (shot.HitActor)
+					{
+						if (shot.HitActor is "Inventory")
+						{
+							blast.getRadialActors();
+							list.copy(blast.list);
+							
+							if (list.size() != 0)
+							{
+								blast.startpulling = true;
+								return;
+							}
+						}
+						else if (shot.hitactor is "ExplosiveBarrel" || shot.hitactor is "pod")
+						{
+							
+						}
+					}
+				
 					if (shot.hitline.special != 243 && shot.hitline.special != 244)
 					{
 						int orgSpeed = shot.HitLine.args[1];
@@ -42,16 +66,17 @@ class GHAGKeyEvents : EventHandler
 				
 				//Perform item pulls and barrel tossing
 				int kinesis_distance = 32;
-				Array<Actor> list;
 				int iterations = 0;
+				
 				while (kinesis_distance < 2048)
 				{
 					gardie.LineTrace(gardie.angle, kinesis_distance, gardie.pitch, TRF_THRUACTORS | TRF_THRUHITSCAN, gardie.height - 12, 0, 0, shot);
 					
-					let blast = KinesisBlast(Actor.spawn('KinesisBlast', shot.HitLocation));
+					blast.setOrigin(shot.Hitlocation, false);
+					
 					blast.getRadialActors();
 					list.copy(blast.list);
-					
+						
 					if (list.size() != 0)
 					{
 						blast.startpulling = true;
@@ -97,6 +122,8 @@ Class KinesisBlast : Actor
 				if (Inventory(mo) && Inventory(mo).owner is "PlayerPawn") continue;
 			}
 			
+			if ((mo is "ExplosiveBarrel" || mo is "pod") && distance3D(mo) > 32) continue;
+			
 			if (Gardie.distance2D(mo) <= 64) continue; //ignore items within single step distance
 			
 			if (distance3D(mo) <= radial && isVisible(mo, true) && Gardie.isVisible(mo, false)) {
@@ -107,7 +134,7 @@ Class KinesisBlast : Actor
 					list.clear();
 					radial = 256;
 				}
-
+			
 				list.push(mo);
 				KinesisPing(Actor.spawn('KinesisPing', mo.pos));
 			}

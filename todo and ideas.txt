@@ -16,21 +16,18 @@
 		- Hanging legs
 		- Torches and torch pikes
 	
-- Mega Evolution
-	- Kills in this mode are only way to extend anger, no Rage drops
-		- Health / 10
-	- Move Black Hole, MoonBlast, Swift into this class
-	- No guns. These should operate better than guns
-	- Use pokemon moves that can't fit into the gun class
-		- Treat anger as if it's perpetually at 100 percent or higher
-		- Slot 1: "Psycho Decimator" Purely telekinesis based attack that shoves and throws enemies around
-		- Slot 2: Swift
-		- Slot 3: Thunder Bolt
-		- Slot 4: Psychic
-		- Slot 5: Focus Blast
-		- Slot 6: Will-O-Wisp
-		- Slot 7: Moon Blast
-		- Slot 8: Black Hole
+- Unlock moves as you get angrier
+	(Automatically unlocked)
+	- Slot 1: "Psycho Decimator" Purely telekinesis based attack that shoves and throws enemies around
+	- Slot 2: Swift
+	(Unlocked at anger when it's equal to slot * 10)
+	- Slot 3: Thunder Bolt
+	- Slot 4: Psychic
+	- Slot 5: Focus Blast
+	- Slot 6: Will-O-Wisp
+	- Slot 7: Moon Blast
+	- Slot 8: Black Hole
+		
 	
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

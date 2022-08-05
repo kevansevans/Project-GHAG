@@ -6,12 +6,11 @@ Class GardevoirDoom : Gardevoir
 	
 		Player.StartItem "GHAGPistol";
 		Player.StartItem "GHAGPistolOverlay";
+		Player.StartItem "Swift";
 		Player.StartItem "Clip", 100;
 		Player.StartItem "Shell", 0;
 		Player.StartItem "RocketAmmo", 0;
 		Player.StartItem "Cell", 0;
-		Player.StartItem "Swift";
-		Player.StartItem "MoonBlastGun";
 	}
 	
 	override void BeginPlay()

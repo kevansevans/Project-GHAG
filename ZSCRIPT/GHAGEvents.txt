@@ -359,7 +359,7 @@ Class GHAGEventHandler : EventHandler
 		
 		if (gardie.player.ReadyWeapon is "PokemonMove")
 		{
-			if (gardie.megaEvolved) gardie.addAnger(angerbonus);
+			return;
 		}
 		
 		else 

@@ -30,3 +30,15 @@ Model GHAGFloatingGun
 	FrameIndex GSHT E 0 4
 	FrameIndex GSHT F 0 5
 }
+
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "NAILGUN.md3"
+	SurfaceSkin 0 0 "NAILGTEX.png"
+    Scale 1.000000 1.000000 1.2
+    USEACTORPITCH
+    USEACTORROLL
+	
+	FrameIndex GNAI A 0 0
+}

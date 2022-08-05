@@ -45,3 +45,8 @@ Sprite GSHTF0, 8, 8
 {
 	Patch MODLA0, 0, 0
 }
+
+Sprite GNAIA0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}

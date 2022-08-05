@@ -4,6 +4,7 @@ Class GHAGWeapon : Weapon
 	Default
 	{
 		+BloodSplatter;
+		Weapon.SlotPriority 2;
 	}
 	
 	Name pufftype;
@@ -115,7 +116,12 @@ Class GHAGWeapon : Weapon
 }
 
 Class PokemonMove : GHAGWeapon
-{}
+{
+	Default
+	{
+		Weapon.SlotPriority 1;
+	}
+}
 
 Class GHAGBulletPuff : BulletPuff
 {

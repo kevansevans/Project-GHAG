@@ -251,12 +251,6 @@ Class Gardevoir : PlayerPawn
 	
 	override void Tick()
 	{
-	
-		if (countInv("BlackHole") == 0 && RageConstant >= 500) {
-			giveInventory("BlackHole", 1);
-			A_SelectWeapon("BlackHole");
-		}
-	
 		if (self.glowy)
 		{
 			Vector3 lightpos = (self.pos.x, self.pos.y, self.pos.z + 50);
@@ -271,6 +265,15 @@ Class Gardevoir : PlayerPawn
 		if (rollCounterAnger > 0 && gametic % 2 == 0) {
 			RageConstant += 1;
 			rollCounterAnger -= 1;
+		}
+		
+		if (countInv("Thunderbolt") == 0 && RageConstant >= 300)
+		{
+			giveInventory("Thunderbolt", 1);
+		}
+		if (countInv("BlackHole") == 0 && RageConstant >= 500) 
+		{
+			giveInventory("BlackHole", 1);
 		}
 		
 		if (RageValue > RageConstant) OverTheEdge = true;

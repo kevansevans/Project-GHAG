@@ -315,10 +315,7 @@ Class GrenadeRocket : Actor
 			ROCK B 1 A_SetRoll(invoker.roll + 12, SPF_INTERPOLATE);
 			Loop;
 		Bounce:
-			ROCK B 0 {
-				A_SeekerMissile(0, 90, SMF_Look | SMF_PRECISE | SMF_CURSPEED, 256, 128);
-				Console.Printf('Boing!');
-			}
+			ROCK B 0 A_SeekerMissile(0, 90, SMF_Look | SMF_PRECISE | SMF_CURSPEED, 256, 128);
 			goto Spawn;
 		Death:
 			TNT1 A 0 {

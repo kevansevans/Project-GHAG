@@ -234,22 +234,25 @@ Class GHAGShotgun : GHAGWeapon
 	
 	Action void A_OverlayShotguns(bool RollForFire = false, bool AltFire = false)
 	{
-		int rng = random(invoker.batmode, (Min(invoker.getShotgunCount() - 1, 3)));
-		if (invoker.getShotgunCount() > 1 && rng == invoker.lastRNG) 
-		{
-			while (rng == invoker.lastRNG)
-			{
-				rng = random(invoker.batmode, (invoker.getShotgunCount() - 1));
-			}
-		}
-		
-		invoker.lastRNG = rng;
-		
 		let gardie = Gardevoir(invoker.owner);
 		if (gardie.FloatGuns.Size())
 		{
 			if (RollForFire)
 			{
+				int rng = random(invoker.batmode, (Min(invoker.getShotgunCount() - 1, 3)));
+				if (invoker.getShotgunCount() > 1 && rng == invoker.lastRNG) 
+				{
+					if (invoker.getShotgunCount() == 2 && invoker.batmode) rng = 1;
+					else
+					{
+						while (rng == invoker.lastRNG)
+						{
+							rng = random(invoker.batmode, (invoker.getShotgunCount() - 1));
+						}
+					}
+				}
+				invoker.lastRNG = rng;
+				
 				gardie.FloatGuns[rng].SetStateLabel('ShotgunFire');
 			}
 			if (AltFire)

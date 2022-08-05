@@ -482,7 +482,10 @@ Class GHAGEventHandler : EventHandler
 	
 	override void WorldLoaded(WorldEvent event)
 	{
-		if (gardie) gardie.initFloatWeapons();
+		if (gardie) {
+			gardie.initFloatWeapons();
+			gardie.updateWeapons = true;
+		}
 	
 		numSecrets = 0;
 		mapHasMinimalSecrets = true;

@@ -687,12 +687,6 @@ Class Gardevoir : PlayerPawn
 			return;
 		}
 		
-		if (_name == 'MegaEvolve')
-		{
-			Self.A_Morph("MegaGardevoir", -9999, 0, "ThunderboltSpawn");
-			return;
-		}
-		
 		super.CheatGive(_name, _amount);
 		
 	}

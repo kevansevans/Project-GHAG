@@ -65,7 +65,6 @@ Class GHAGPlasmaRifle : GHAGWeapon
 			loop;
 		Fire:
 			HAND A 1 Bright {
-				//A_StartSound(PlasmaBall.seeSound, CHAN_AUTO);
 				A_PsychicPlasma();
 				A_PlasmaOverlay(true);
 			}
@@ -113,7 +112,7 @@ Class GHAGPlasmaRifle : GHAGWeapon
 			if (gun == 2) x = -15;
 			else if (gun == 3) x = 20;
 			else if (gun == 4) x = -20;
-			if (i != 0) let _locPlasma = PlasmaBall(A_FireAimedProjectile("PlasmaBall", i == 0 ? true : false, x, gun > 2 ? 12 : 5));
+			if (i == 0) let _locPlasma = PlasmaBall(A_FireAimedProjectile("PlasmaBall", i == 0 ? true : false, x, gun > 2 ? 12 : 5));
 			else let _locPlasma = PlasmaBall(A_FireAimedProjectile("SilentPlasmaBall", i == 0 ? true : false, x, gun > 2 ? 12 : 5));
 		}
 	}

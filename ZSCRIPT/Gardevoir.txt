@@ -562,6 +562,10 @@ Class Gardevoir : PlayerPawn
 							count = self.CountInv("GHAGShotgunOverlay");
 							wepstate = 'ShotgunIdle';
 							break;
+						case 'GHAGNailgun' :
+							count = self.CountInv("GHAGNailgunOverlay");
+							wepstate = 'NailgunIdle';
+							break;
 						case 'GHAGPlasmaRifle' :
 							count = self.CountInv("GHAGPlasmaOverlay");
 							break;

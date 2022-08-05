@@ -36,6 +36,11 @@ Class GHAGFloatingGun : Actor
 		ShotgunIdle:
 			GSHT A 1;
 			loop;
+		NailgunFire:
+			GNAI A 1 A_StartSound("weapons/nailshot", CHAN_AUTO, CHANF_OVERLAP);
+		NailgunIdle:
+			GNAI A 1;
+			Loop;
 		Hidden:
 			TNT1 A 1;
 			Loop;

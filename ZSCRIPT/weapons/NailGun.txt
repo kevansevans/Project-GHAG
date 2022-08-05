@@ -51,7 +51,6 @@ Class GHAGNailGun : GHAGWeapon
 			HAND D 1
 			{
 				A_OverlayNailgun(true);
-				A_StartSound("weapons/nailshot", CHAN_WEAPON);
 			}
 			HAND EF 1;
 			HAND G 10 A_Refire();
@@ -61,7 +60,6 @@ Class GHAGNailGun : GHAGWeapon
 			HAND D 1
 			{
 				A_OverlayNailgun(false, true);
-				A_StartSound("weapons/nailshot", CHAN_WEAPON);
 			}
 			HAND EF 1;
 			HAND G 10 A_Refire();
@@ -85,24 +83,14 @@ Class GHAGNailGun : GHAGWeapon
 			int layer = -1 * (i + 1);
 			
 			if (i == rng && RollForFire) {
-				A_Overlay(layer, "Fire.Overlay", false);
 				A_FireNails(i);
 			}
 			else if (altFire)
 			{
-				A_Overlay(layer, "Fire.Overlay", false);
 				A_FireNails(i);
 			}
-			else A_Overlay(layer, "Ready.Overlay", false);
-			
-			A_OverlayOffset(layer, (sin(gametic + (72 * i))) + (45 * (i / 2)) + 30, (cos(gametic + (72 * i))) - (60 * (i / 2)), WOF_INTERPOLATE);
-			A_OverlayFlags(layer, PSPF_ADDBOB, false);
-			if ((i + 1) % 2 == 0) A_OverlayFlags(layer, PSPF_FLIP | PSPF_MIRROR, true);
 		}
-		
-		int layerStart = invoker.getNailgunCount() * -1;
-		A_ClearOverlays(-10, layerStart - 1);
-		
+
 		if (player == null)
 		{
 			return;

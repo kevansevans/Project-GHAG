@@ -2,7 +2,7 @@ Class Swift : PokemonMove
 {
 	Default
 	{
-		Weapon.slotNumber 4;
+		Weapon.slotNumber 2;
 		+Weapon.No_Auto_Switch;
 		Weapon.SelectionOrder 3000;
 	}

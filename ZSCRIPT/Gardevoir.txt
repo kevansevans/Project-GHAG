@@ -571,6 +571,7 @@ Class Gardevoir : PlayerPawn
 							break;
 						case 'GHAGPlasmaRifle' :
 							count = self.CountInv("GHAGPlasmaOverlay");
+							wepstate = 'PlasmaIdle';
 							break;
 						case 'GHAGRocketLauncher' :
 							count = -1;
@@ -592,6 +593,13 @@ Class Gardevoir : PlayerPawn
 					}
 					else FloatGuns[i].SetStateLabel('Hidden');
 				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < 4; ++i)
+			{
+				FloatGuns[i].SetStateLabel('Hidden');
 			}
 		}
 		

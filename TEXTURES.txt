@@ -50,3 +50,32 @@ Sprite GNAIA0, 8, 8
 {
 	Patch MODLA0, 0, 0
 }
+
+Sprite GPLSA0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GPLSB0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GPLSC0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GPLSD0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GPLSE0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GPLSF0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GPLSG0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}

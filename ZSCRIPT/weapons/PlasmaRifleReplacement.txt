@@ -47,33 +47,50 @@ Class GHAGPlasmaRifle : GHAGWeapon
 		Select:
 			HAND A 1 {	
 				A_Raise();
-				A_PlasmaOverlay();
 			}
 			loop;
 		Deselect:
 			HAND A 1 {
 				A_Lower();
-				A_PlasmaOverlay();
 			}
 			loop;
 		Ready:
 			HAND A 1 {
 				A_WeaponReady(WRF_ALLOWUSER1);
-				A_PlasmaOverlay();
 				return resolveState(null);
 			}
 			loop;
 		Fire:
+			TNT1 A 0
+			{
+				for (int i = 0; i < invoker.getPlasmaCount(); ++i)
+				{
+					Gardevoir(Invoker.owner).FloatGuns[i].SetStateLabel('PlasmaFire');
+				}
+			}
+		FireLoop:
 			HAND A 1 Bright {
 				A_PsychicPlasma();
-				A_PlasmaOverlay(true);
 			}
 			HAND BC 1 Bright;
-			HAND DE 1 A_Refire();
+			HAND DE 1 A_Refire('FireLoop');
+			TNT1 A 0
+			{
+				for (int i = 0; i < invoker.getPlasmaCount(); ++i)
+				{
+					Gardevoir(Invoker.owner).FloatGuns[i].SetStateLabel('PlasmaCooldown');
+				}
+			}
 			Goto Ready;
 		AltFire:
+			TNT1 A 0
+			{
+				for (int i = 0; i < invoker.getPlasmaCount(); ++i)
+				{
+					Gardevoir(Invoker.owner).FloatGuns[i].SetStateLabel('PlasmaFire');
+				}
+			}
 			HAND A 20 {
-				A_PlasmaOverlay(false, true);
 				A_BFGSound();
 				Invoker.AmmoUse2 = int(40 / invoker.getPlasmaCount());
 				A_SetTics(int(20 / invoker.getPlasmaCount()));
@@ -83,21 +100,14 @@ Class GHAGPlasmaRifle : GHAGWeapon
 			HAND BCDE 2;
 			HAND A 12;
 			HAND A 20 A_Refire();
+			TNT1 A 0
+			{
+				for (int i = 0; i < invoker.getPlasmaCount(); ++i)
+				{
+					Gardevoir(Invoker.owner).FloatGuns[i].SetStateLabel('PlasmaCooldown');
+				}
+			}
 			goto Ready;
-		Plasma.Overlay :
-			PLSM ABCDE 1;
-			loop;
-		PlasmaFire.Overlay:
-			PLSM PBCDE 1 Bright;
-			stop;
-		PlasmaBFG.Overlay :
-			PLSM FGHIJKLMNO 3 Bright A_SetTics(max(3 - invoker.getPlasmaCount(), 2));
-			goto Plasma.Overlay;
-	}
-	
-	Action void A_PlasmaOverlay(bool _primary = false, bool _bfg = false)
-	{
-		
 	}
 	
 	Action void A_PsychicPlasma() {

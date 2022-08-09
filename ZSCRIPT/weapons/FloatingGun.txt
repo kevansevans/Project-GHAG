@@ -41,6 +41,20 @@ Class GHAGFloatingGun : Actor
 		NailgunIdle:
 			GNAI A 1;
 			Loop;
+		PlasmaFire:
+			GPLS BCDEFGA 1 Bright;
+			Loop;
+		PlasmaCooldown:
+			GPLS A 2;
+			GPLS B 4;
+			GPLS C 6;
+			GPLS D 8;
+			GPLS E 10;
+			GPLS F 12;
+			GPLS G 14;
+		PlasmaIdle:
+			GPLS A 1;
+			Loop;
 		Hidden:
 			TNT1 A 1;
 			Loop;

@@ -42,3 +42,21 @@ Model GHAGFloatingGun
 	
 	FrameIndex GNAI A 0 0
 }
+
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "PLASMA.md3"
+	SurfaceSkin 0 0 "PLASMATX.png"
+    Scale 1.000000 1.000000 1.2
+    USEACTORPITCH
+    USEACTORROLL
+	
+	FrameIndex GPLS A 0 0
+	FrameIndex GPLS B 0 1
+	FrameIndex GPLS C 0 2
+	FrameIndex GPLS D 0 3
+	FrameIndex GPLS E 0 4
+	FrameIndex GPLS F 0 5
+	FrameIndex GPLS G 0 6
+}

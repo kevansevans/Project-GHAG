@@ -475,10 +475,11 @@ Class Gardevoir : PlayerPawn
 		
 		for (int i = 0; i < 4; ++i)
 		{
-		
+			double sinoffset = sin((gametic + (i * 250)) * 0.25);
+			double cosoffset = sin((gametic + (i * 250)) * 0.25);
 			Double p_angle = self.angle;
 			Double p_pitch = self.pitch;
-			double p_height= (player.viewz - pos.z) - 3;
+			double p_height= (player.viewz - pos.z) - 3 + sinoffset;
 			
 			double spring = 0.7;
 			double dampening = 1.0;
@@ -487,18 +488,18 @@ Class Gardevoir : PlayerPawn
 			switch (i)
 			{
 				case WEAP_BR:
-					p_angle -= 35;
+					p_angle -= 35 + cosoffset;
 					break;
 				case WEAP_BL:
-					p_angle += 35;
+					p_angle += 35 + cosoffset;
 					break;
 				case WEAP_TR:
-					p_angle -= 45;
+					p_angle -= 45 + cosoffset;
 					p_pitch += 20;
 					p_height += 10;
 					break;
 				case WEAP_TL:
-					p_angle += 45;
+					p_angle += 45 + cosoffset;
 					p_pitch += 20;
 					p_height += 10;
 					break;
@@ -526,6 +527,15 @@ Class Gardevoir : PlayerPawn
 			double velz = DampedSpring(activefloat.pos.z, ray.hitlocation.z, activefloat.vel.z, spring, dampening);
 			
 			activefloat.vel += (velx, vely, velz);
+			
+			if (countInv('PowerInvisibility'))
+			{
+				FloatGuns[i].A_SetRenderStyle(0.25, STYLE_Fuzzy);
+			} 
+			else
+			{
+				FloatGuns[i].A_SetRenderStyle(0.25, STYLE_Normal);
+			}
 		}
 		
 		if (player.ReadyWeapon)

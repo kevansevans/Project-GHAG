@@ -533,6 +533,16 @@ Class Gardevoir : PlayerPawn
 				
 				Vector3 dirTo = FloatGuns[i].vec3To(GunTarget).unit();
 				FloatGuns[i].pitch = -asin(dirTo.z);
+				
+				if (player.readyweapon is "GHAGRocketLauncher")
+				{
+					FloatGuns[i].pitch += (sin(gametic) * 4);
+					FloatGuns[i].roll += 4;
+				}
+				else 
+				{
+					FloatGuns[i].roll = 0;
+				}
 			}
 		
 			Name wepname = player.ReadyWeapon.getClassName();

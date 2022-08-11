@@ -42,192 +42,60 @@ Class GHAGRocketLauncher : GHAGWeapon
 
 	States {
 		Ready:
-			TNT1 A 0 {
-				invoker.queuedRockets = 0;
-				A_ResetTracker();
-				A_OverlaySpin();
-			}
-		Ready.Speen:
-			HAND I 3 {
-				invoker.queuedRockets = 0;
-				A_ResetTracker();
-				A_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER1);
-				A_OverlaySpin();
-			}
+			HAND A 3 A_WeaponReady(WRF_AllowReload);
 			Loop;
 		Deselect:
-			HAND I 1 {
-				A_Lower();
-				A_OverlaySpin();
-			}
+			HAND A 1 A_GHAGLower();
 			Loop;
 		Select:
-			HAND I 1 {
-				A_Raise();
-				A_OverlaySpin();
+			HAND A 1 {
+				A_GHAGRaise();
+				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
 			}
 			Loop;
 		Reload :
+			TNT1 A 0
+			{
+				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketSmash');
+			}
 			HAND AB 2 A_OverlayOffset(0, 0, -2, WOF_KEEPX | WOF_ADD);
 			TNT1 A 0 A_StartSound("crush/can", CHAN_AUTO);
-			HAND H 7 {
-				A_Overlay(2, "RocketSmash");
-				A_OverlayOffset(0, 0, -2, WOF_KEEPX | WOF_ADD);
+			HAND H 7;
+			TNT1 A 0 {
+				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('Hidden');
+				Gardevoir(invoker.owner).Hiding = true;
 			}
 			TNT1 A 0 A_FireProjectile("GrenadeRocket", 0, true, 0, 0, 0, -6.328125);
 			HAND ABCDE 2;
-			RCKF HIJKLM 1;
+			TNT1 A 0
+			{
+				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
+				Gardevoir(invoker.owner).Hiding = false;
+			}
+			HAND A 6;
 			TNT1 A 0 A_SetNewTagName();
 			goto Ready;
 		Fire:
+			HAND A 8 A_SetTics(Gardevoir(self).GetTicModifier(8));
 			TNT1 A 0 {
-				A_Overlay(2, "Clear");
-				A_AlertMonsters();
-			}
-			RCKF ABCD 2 A_SetTics(Gardevoir(self).GetTicModifier(2, false, 4));
-			RCKF E 2 {
+				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('Hidden');
+				Gardevoir(invoker.owner).Hiding = true;
 				A_PsychicMissile();
-				A_SetTics(Gardevoir(self).GetTicModifier(2, false, 3));
 			}
-			RCKF FG 2 A_SetTics(Gardevoir(self).GetTicModifier(2));
-			TNT1 A 0 A_JumpIf(!countinv("RocketAmmo"), 'Ready');
-			TNT1 A 0 A_SetNewTagName();
-			RCKF HIJKLM 1;
-			TNT1 A 0 A_ReFire();
-			goto Ready;
-		AltFire:
-			TNT1 A 0 A_JumpIf(!countinv('rocketammo'), 'Ready');
+			HAND ABCDE 2;
 			TNT1 A 0
 			{
-				if (Cvar.findCvar("sv_infiniteammo").GetBool() == false) 
-				{
-					if (invoker.queuedRockets < invoker.maxRockets && countInv("RocketAmmo") > 1)
-					{
-						A_TakeInventory("RocketAmmo", 1);
-						invoker.queuedRockets += 1;
-					}
-				} 
-				else 
-				{
-					if (invoker.queuedRockets < invoker.maxRockets)
-					{
-						invoker.queuedRockets += 1;
-					}
-				}
+				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
+				Gardevoir(invoker.owner).Hiding = false;
 			}
-			HAND IIIIIIIIII 1 {
-				A_OverlaySpin();
-				A_AnimateQueuedRockets();
-			}
+			HAND A 2;
 			TNT1 A 0 A_Refire();
-		AltFire.AirStrike:
-			TNT1 A 0 {
-				A_Overlay(2, "Clear");
-				A_AlertMonsters();
-			}
-			RCKF ABCDEFG 2;
-			RCKF G 4 {
-				A_PsychicMissile();
-				A_SetNewTagName();
-			}
-		AltFire.RocketLoop:
-			RCKF G 4 {
-				if (invoker.queuedRockets > 0)
-				{
-					if (countInv("RocketAmmo")) A_PsychicMissile();
-					A_SetNewTagName();
-					int layer = A_GetRandomLayer();
-					A_Overlay(layer, "Clear");
-				}
-			}
-			TNT1 A 0 
-			{
-				if (invoker.queuedRockets > 0)
-				{
-					invoker.queuedRockets -= 1;
-					return resolveState('AltFire.RocketLoop');
-				}
-				else 
-				{
-					A_ResetTracker();
-					if (countInv("RocketAmmo") && Cvar.findCvar("sv_infiniteammo").GetBool() == false) A_TakeInventory("RocketAmmo", 1);
-					if (countInv('RocketAmmo') == 0) {
-						A_Overlay(2, "Clear");
-						return resolveState('Ready');
-					}
-					return resolveState(null);
-				}
-			}
-			RCKF HIJKL 1;
 			goto Ready;
-		RocketQueue:
-			SPEN A 3;
-			stop;
-		Speeen:
-			SPEN A 3;
-			Loop;
-		RocketSmash:
-			RCKS AABCDDE 1;
-			Stop;
-		Clear:
-			stop;
 	}
 	
-	action void A_OverlaySpin()
+	action void A_OverlayRocket()
 	{
-		if (countInv("RocketAmmo")) {
-			A_Overlay(2, "Speeen", true);
-			A_OverlayScale(2, 0.8);
-			A_OverlayPivot(2);
-			A_OverlayRotate(2, 25, WOF_ADD);
-			A_OverlayFlags(2, PSPF_ADDBOB, false);
-			A_OverlayOffset(2, sin(gametic * 2) / 13, cos(gametic * 2) / 11, WOF_ADD | WOF_INTERPOLATE);
-		}
-	}
-	
-	action int A_GetRandomLayer()
-	{
-		int layer = 0;
-		while (true)
-		{
-			layer = random(0, invoker.maxRockets - 1);
-			if (invoker.rocketTracker[layer] != 0)
-			{
-				invoker.rocketTracker[layer] = 0;
-				return (3 + layer) * -1;
-			}
-		}
-		return -1;
-	}
-	
-	action void A_ResetTracker()
-	{
-		invoker.rocketTracker.resize(invoker.maxRockets);
-		for (int i = 0; i < invoker.maxRockets; ++i)
-		{
-			invoker.rocketTracker[i] = 0;
-		}
-	}
-	
-	action void A_AnimateQueuedRockets()
-	{
-		for (int i = 0; i < invoker.queuedRockets; ++i)
-		{
-			A_Overlay((3 + i) * -1, "Speeen");
-			int ypos = ++invoker.rocketTracker[i];
-			ypos = min(10, ypos);
-			A_OverlayFlags((3 + i) * -1, PSPF_ADDBOB, false);
-			A_OverlayPivot((3 + i));
-			A_OverlayRotate((3 + i), 25, WOF_ADD);
-			int xpos = i % 2 != 0 ? -160 : 20;
-			int order = int(i / 2);
-			if (order >= 1)
-			{
-				xpos += (order * 60) * (i % 2 == 0 ? 1 : -1);
-				ypos += 20 * order;
-			}
-			A_OverlayOffset((3 + i) * -1, xpos, 75 - ypos, WOF_ADD | WOF_INTERPOLATE);
-		}
+		Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
 	}
 	
 	action void A_SetNewTagName() 

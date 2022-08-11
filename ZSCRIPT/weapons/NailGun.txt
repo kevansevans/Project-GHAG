@@ -29,14 +29,14 @@ Class GHAGNailGun : GHAGWeapon
 		Select :
 			HAND A 1 
 			{	
-				A_Raise();
+				A_GHAGRaise();
 				A_OverlayNailgun();
 			}
 			Loop;
 		Deselect :
 			HAND A 1 
 			{
-				A_Lower();
+				A_GHAGLower();
 				A_OverlayNailgun();
 			}
 			Loop;

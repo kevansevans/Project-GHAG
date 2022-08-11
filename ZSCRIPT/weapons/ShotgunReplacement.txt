@@ -32,14 +32,14 @@ Class GHAGShotgun : GHAGWeapon
 			HAND A 1
 			{
 				A_OverlayShotguns();
-				A_Raise();
+				A_GHAGRaise();
 			}
 			Loop;
 		Select.BatMode:
 			GSHT I 1
 			{
 				A_OverlayShotguns();
-				A_Raise();
+				A_GHAGRaise();
 			}
 			Loop;
 		Deselect:
@@ -47,14 +47,14 @@ Class GHAGShotgun : GHAGWeapon
 			HAND A 1
 			{
 				A_OverlayShotguns();
-				A_Lower();
+				A_GHAGLower();
 			}
 			Loop;
 		Deselect.BatMode:
 			GSHT I 1
 			{
 				A_OverlayShotguns();
-				A_Lower();
+				A_GHAGLower();
 			}
 			Loop;
 		Ready:

@@ -16,13 +16,13 @@ Class MoonBlastGun : PokemonMove
 		Select :
 			HAND A 1 
 			{
-				A_Raise();
+				A_GHAGRaise();
 				A_DrawMoonOverlay();
 			}
 			Loop;
 		Deselect :
 			HAND A 1 {
-				A_Lower();
+				A_GHAGLower();
 				A_DrawMoonOverlay();
 			}
 			Loop;

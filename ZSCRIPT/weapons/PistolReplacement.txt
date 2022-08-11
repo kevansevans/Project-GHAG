@@ -57,19 +57,18 @@ Class GHAGPistol : GHAGWeapon
 			HAND A 1 {
 				Invoker.AmmoUse2 = invoker.getPistolCount();
 				A_WeaponReady(WRF_ALLOWUSER1);
-				A_OverlayPistols();
 				return resolveState(null);
 			}
 			Loop;
 		Deselect:
 			HAND A 1 {
-				A_Lower();
+				A_GHAGLower();
 				A_OverlayPistols();
 			}
 			Loop;
 		Select:
 			HAND A 1 {
-				A_Raise();
+				A_GHAGRaise();
 				A_OverlayPistols();
 			}
 			Loop;

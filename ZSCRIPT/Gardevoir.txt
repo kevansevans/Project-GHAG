@@ -26,6 +26,7 @@ Class Gardevoir : PlayerPawn
 	Bool MegaEvolved;
 	bool charonmode;
 	bool chargingBlackHole;
+	bool hiding;
 	//property charonmode: charonmode;
 	
 	PointLight glowy;
@@ -470,11 +471,18 @@ Class Gardevoir : PlayerPawn
 		
 		Super.Tick();
 		
+		if (FloatGuns.size() == 0) initFloatWeapons();
+		
 		for (int i = 0; i < 4; ++i)
 		{
+		
 			Double p_angle = self.angle;
 			Double p_pitch = self.pitch;
 			double p_height= (player.viewz - pos.z) - 3;
+			
+			double spring = 0.7;
+			double dampening = 1.0;
+			double distance = 18;
 			
 			switch (i)
 			{
@@ -497,22 +505,21 @@ Class Gardevoir : PlayerPawn
 				default:
 					break;
 			}
+			
 			if (player.ReadyWeapon)
 			{
-				if (player.readyWeapon.InStateSequence(player.readyWeapon.CurState, player.readyWeapon.ResolveState('Deselect')))
+				if (hiding)
 				{
 					p_angle = self.angle - 180;
-					console.printf('yarp');
+					spring = 0.1;
+					dampening = 1;
 				}
 			}
 			
 			FLineTraceData ray;
-			Self.LineTrace(p_angle, 18, (p_pitch / 2), TRF_THRUBLOCK | TRF_THRUHITSCAN | TRF_NOSKY | TRF_SOLIDACTORS, p_height, 0, 0, ray);
+			Self.LineTrace(p_angle, distance, (p_pitch / 2), TRF_THRUBLOCK | TRF_THRUHITSCAN | TRF_NOSKY | TRF_SOLIDACTORS, p_height, 0, 0, ray);
 			
 			let activefloat = FloatGuns[i];
-			
-			double spring = 0.7;
-			double dampening = 1.0;
 			
 			double velx = DampedSpring(activefloat.pos.x, ray.hitlocation.x, activefloat.vel.x, spring, dampening);
 			double vely = DampedSpring(activefloat.pos.y, ray.hitlocation.y, activefloat.vel.y, spring, dampening);

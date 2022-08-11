@@ -16,6 +16,20 @@ Class GHAGWeapon : Weapon
 		pufftype = 'BulletPuff';
 	}
 	
+	action void A_GHAGLower(int _lowerspeed = 6)
+	{
+		Gardevoir(invoker.owner).hiding = true;
+	
+		A_Lower(_lowerspeed);
+	}
+	
+	action void A_GHAGRaise(int _raisespeed = 6)
+	{
+		Gardevoir(invoker.owner).hiding = false;
+	
+		A_Raise(_raisespeed);
+	}
+	
 	override bool TryPickup (in out Actor toucher)
 	{
 		bool result;

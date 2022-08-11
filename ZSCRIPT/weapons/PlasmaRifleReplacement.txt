@@ -46,12 +46,12 @@ Class GHAGPlasmaRifle : GHAGWeapon
 	{
 		Select:
 			HAND A 1 {	
-				A_Raise();
+				A_GHAGRaise();
 			}
 			loop;
 		Deselect:
 			HAND A 1 {
-				A_Lower();
+				A_GHAGLower();
 			}
 			loop;
 		Ready:

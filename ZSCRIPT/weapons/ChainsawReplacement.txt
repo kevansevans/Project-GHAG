@@ -103,14 +103,14 @@ Class GHAGPsychoCutter : GHAGWeapon
 	{
 		Select:
 			HAND A 1 {
-				A_Raise();
+				A_GHAGRaise();
 				A_OverlayChainsaws();
 			}
 			Loop;
 		Deselect:
 			HAND A 1
 			{
-				A_Lower();
+				A_GHAGLower();
 				A_OverlayChainsaws();
 			}
 			Loop;

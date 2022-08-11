@@ -55,6 +55,12 @@ Class GHAGFloatingGun : Actor
 		PlasmaIdle:
 			GPLS A 1;
 			Loop;
+		RocketIdle:
+			GROC A 1;
+			Loop;
+		RocketSmash:
+			GROC ABCDE 2;
+			goto Hidden;
 		Hidden:
 			TNT1 A 1;
 			Loop;

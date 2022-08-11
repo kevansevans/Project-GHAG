@@ -79,3 +79,24 @@ Sprite GPLSG0, 8, 8
 {
 	Patch MODLA0, 0, 0
 }
+
+Sprite GROCA0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GROCB0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GROCC0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GROCD0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GROCE0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}

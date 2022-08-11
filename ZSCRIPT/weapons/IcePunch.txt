@@ -210,7 +210,6 @@ Mixin Class IcePunch
 					gardie.IcePunchTarget = shot.HitActor;
 					
 					double spring = Max(0.1, 0.3 * gardie.getRageModifier());
-					console.printf('' .. Max(0.01, 0.3 * (gardie.getRageValue() / 1000)));
 					double dampening = gardie.getRageValue() / 1000;
 			
 					double velx = DampedSpring(gardie.pos.x, shot.HitActor.pos.x, gardie.vel.x, spring, dampening);

@@ -60,3 +60,20 @@ Model GHAGFloatingGun
 	FrameIndex GPLS F 0 5
 	FrameIndex GPLS G 0 6
 }
+
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "Rocket.md3"
+	SurfaceSkin 0 0 "Rocket.png"
+    Scale 1.000000 1.000000 1.2
+    USEACTORPITCH
+    USEACTORROLL
+	Offset 2 0 0
+	
+	FrameIndex GROC A 0 0
+	FrameIndex GROC B 0 1
+	FrameIndex GROC C 0 2
+	FrameIndex GROC D 0 3
+	FrameIndex GROC E 0 4
+}

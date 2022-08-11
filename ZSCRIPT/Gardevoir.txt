@@ -485,6 +485,11 @@ Class Gardevoir : PlayerPawn
 			double dampening = 1.0;
 			double distance = 18;
 			
+			if (player.readyweapon is "GHAGRocketLauncher")
+			{
+				distance = 12;
+			}
+			
 			switch (i)
 			{
 				case WEAP_BR:
@@ -511,7 +516,7 @@ Class Gardevoir : PlayerPawn
 			{
 				if (hiding)
 				{
-					p_angle = self.angle - 180;
+					p_angle = self.angle - 180 + (i % 2 == 0 ? 20 : -20);
 					spring = 0.1;
 					dampening = 1;
 				}
@@ -553,7 +558,7 @@ Class Gardevoir : PlayerPawn
 				
 				if (player.readyweapon is "GHAGRocketLauncher")
 				{
-					FloatGuns[i].pitch += (sin(gametic) * 4);
+					FloatGuns[i].pitch += (gametic % 360) * 2;
 					FloatGuns[i].roll += 4;
 				}
 				else 

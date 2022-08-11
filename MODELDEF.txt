@@ -69,7 +69,6 @@ Model GHAGFloatingGun
     Scale 1.000000 1.000000 1.2
     USEACTORPITCH
     USEACTORROLL
-	Offset 2 0 0
 	
 	FrameIndex GROC A 0 0
 	FrameIndex GROC B 0 1

@@ -272,6 +272,10 @@ Class Gardevoir : PlayerPawn
 		{
 			giveInventory("Thunderbolt", 1);
 		}
+		if (countInv("MoonBlastGun") == 0 && RageConstant >= 700) 
+		{
+			giveInventory("MoonBlastGun", 1);
+		}
 		if (countInv("BlackHole") == 0 && RageConstant >= 800) 
 		{
 			giveInventory("BlackHole", 1);

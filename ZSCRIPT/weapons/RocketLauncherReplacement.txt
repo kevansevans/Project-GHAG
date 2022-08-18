@@ -295,7 +295,7 @@ Class NameClass : Actor
 		"Here's lookin' at you", "Rocket Launcher", "Wake your psyche up", "Dig your anger up", "Delete This",
 		"Exterminate", "EXTERMINATUS", "TNT was a mistake", "BFG Division is overrated", "TOTTFISY is Overrated",
 		"Shannon Cannon", "BOOCH", "This is a stroberry!", "Spine breaker", "The Negotiator", "Kitanai yasai",
-		"Nan da kore!?", "Prepare for trouble!", "Banana Man"
+		"Nan da kore!?", "Prepare for trouble!", "Banana Man", "BIMSNESS!"
 		
 	};
 

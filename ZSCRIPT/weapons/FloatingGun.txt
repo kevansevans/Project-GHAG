@@ -61,6 +61,9 @@ Class GHAGFloatingGun : Actor
 		RocketSmash:
 			GROC ABCDE 2;
 			goto Hidden;
+		ChainsawIdle:
+			GCHA A 1;
+			Loop;
 		Hidden:
 			TNT1 A 1;
 			Loop;

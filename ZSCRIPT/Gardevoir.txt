@@ -484,27 +484,37 @@ Class Gardevoir : PlayerPawn
 			double spring = 0.7;
 			double dampening = 1.0;
 			double distance = 18;
+			double spread = 35;
 			
 			if (player.readyweapon is "GHAGRocketLauncher")
 			{
 				distance = 12;
 			}
+			else if (player.ReadyWeapon is 'GHAGPsychoCutter')
+			{
+				let cutter = GHAGPsychoCutter(player.readyweapon);
+				if (cutter.firing)
+				{
+					distance = 30;
+					spread = 15 + (i < 2 ? -7 : 0);
+				}
+			}
 			
 			switch (i)
 			{
 				case WEAP_BR:
-					p_angle -= 35 + cosoffset;
+					p_angle -= spread + cosoffset;
 					break;
 				case WEAP_BL:
-					p_angle += 35 + cosoffset;
+					p_angle += spread + cosoffset;
 					break;
 				case WEAP_TR:
-					p_angle -= 45 + cosoffset;
+					p_angle -= spread + 10 + cosoffset;
 					p_pitch += 20;
 					p_height += 10;
 					break;
 				case WEAP_TL:
-					p_angle += 45 + cosoffset;
+					p_angle += spread + 10 + cosoffset;
 					p_pitch += 20;
 					p_height += 10;
 					break;
@@ -546,7 +556,8 @@ Class Gardevoir : PlayerPawn
 		if (player.ReadyWeapon)
 		{
 			FLineTraceData PlayerAim;
-			Self.LineTrace(self.angle, 2048, self.pitch, TRF_THRUBLOCK | TRF_THRUHITSCAN | TRF_NOSKY | TRF_SOLIDACTORS, 41, 0, 0, PlayerAim);
+			Self.LineTrace(self.angle, 128, self.pitch, TRF_THRUACTORS | TRF_THRUBLOCK | TRF_THRUHITSCAN | TRF_NOSKY | TRF_SOLIDACTORS, 41, 0, 0, PlayerAim);
+			
 			let GunTarget = Actor.spawn('GHAGGunTarget', PlayerAim.HitLocation);
 			
 			for (int i = 0; i < 4; ++i)
@@ -560,6 +571,18 @@ Class Gardevoir : PlayerPawn
 				{
 					FloatGuns[i].pitch += (gametic % 360) * 2;
 					FloatGuns[i].roll += 4;
+				}
+				else if (player.readyweapon is 'GHAGPsychoCutter')
+				{
+					let cutter = GHAGPsychoCutter(player.readyweapon);
+					if (cutter.firing)
+					{
+						FloatGuns[i].roll = (i % 2 == 0 ? 20 : -20);
+					} 
+					else 
+					{
+						FloatGuns[i].roll = 0;
+					}
 				}
 				else 
 				{
@@ -607,6 +630,10 @@ Class Gardevoir : PlayerPawn
 							break;
 						case 'GHAGRocketLauncher' :
 							count = -1;
+							break;
+						case 'GHAGPsychoCutter' :
+							count = self.CountInv("GHAGPsychoCutterOverlay");
+							wepstate = 'ChainsawIdle';
 							break;
 						Default:
 							break;

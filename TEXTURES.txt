@@ -100,3 +100,8 @@ Sprite GROCE0, 8, 8
 {
 	Patch MODLA0, 0, 0
 }
+
+Sprite GCHAA0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}

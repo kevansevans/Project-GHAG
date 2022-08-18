@@ -76,3 +76,15 @@ Model GHAGFloatingGun
 	FrameIndex GROC D 0 3
 	FrameIndex GROC E 0 4
 }
+
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "Chainsaw.md3"
+	SurfaceSkin 0 0 "NOTEX.png"
+    Scale 1.000000 1.000000 1.2
+    USEACTORPITCH
+    USEACTORROLL
+	
+	FrameIndex GCHA A 0 0
+}

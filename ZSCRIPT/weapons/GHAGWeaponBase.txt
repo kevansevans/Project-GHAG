@@ -37,12 +37,7 @@ Class GHAGWeapon : Weapon
 		if (ReadyState != NULL && ReadyState.ValidateSpriteFrame())
 		{
 			result = Super.TryPickup (toucher);
-			
-			if (result && Gardevoir(Toucher))
-			{
-				Gardevoir(toucher).updateWeapons = true;
-			}
-			
+			Gardevoir(toucher).updateWeapons = true;
 			return result;
 		}
 		

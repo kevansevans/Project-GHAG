@@ -81,7 +81,7 @@ Model GHAGFloatingGun
 {
 	Path "MODELS"
     Model 0 "Chainsaw.md3"
-	SurfaceSkin 0 0 "NOTEX.png"
+	SurfaceSkin 0 0 "Chaintex.png"
     Scale 1.000000 1.000000 1.2
     USEACTORPITCH
     USEACTORROLL

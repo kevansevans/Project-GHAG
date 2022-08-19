@@ -501,6 +501,7 @@ Class Gardevoir : PlayerPawn
 				{
 					distance = 30;
 					spread = 15 + (i < 2 ? -7 : 0);
+					p_pitch += 20;
 				}
 			}
 			

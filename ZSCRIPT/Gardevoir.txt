@@ -748,6 +748,7 @@ Class Gardevoir : PlayerPawn
 				GiveInventory("GHAGNailgunOverlay", 1);
 				GiveInventory("GHAGPlasmaOverlay", 1);
 				GiveInventory("GHAGPsychocutterOverlay", 1);
+				GiveInventory("GHAGSuperRailgunOverlay", 1);
 			}
 			
 			if (_name == "Backpack")

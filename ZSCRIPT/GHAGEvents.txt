@@ -100,59 +100,54 @@ Class GHAGEventHandler : EventHandler
 			}
 			
 			//Agnostic weapon type check
-			if (!gun.bTossed)
+			if (gun is "Pistol")
 			{
-				if (gun is "Pistol")
-				{
-					if (gardie.countinv("GHAGPistol") == 0) {
-						gun.spawn("PistolPickup", gun.pos);
-					} else {
-						gun.spawn("Clipbox", gun.pos);
-					}
-					gun.destroy();
+				if (gardie.countinv("GHAGPistol") == 0) {
+					gun.spawn("PistolPickup", gun.pos);
+				} else {
+					gun.spawn("Clipbox", gun.pos);
 				}
-				if (gun is "Shotgun" || gun is "SuperShotgun")
-				{
-					if (gardie.countinv("GHAGShotgun") == 0) {
-						gun.spawn("ShotgunPickup", gun.pos);
-					} else {
-						gun.spawn("Shellbox", gun.pos);
-					}
-					gun.destroy();
-				}
-				if (gun is "RocketLauncher")
-				{
-					gun.spawn("GHAGRocketBox", gun.pos);
-					gun.destroy();
-					return;
-				}
-				if (gun is "Chaingun")
-				{
-					if (gardie.countinv("GHAGNailgun") == 0) {
-						gun.spawn("NailgunPickup", gun.pos);
-					} else {
-						gun.spawn("Clipbox", gun.pos);
-					}
-					gun.destroy();
-				}
-				if (gun is "PlasmaRifle" || gun is "BFG9000")
-				{
-					if (gardie.countinv("GHAGPlasmaRifle") == 0) {
-						gun.spawn("PlasmaPickup", gun.pos);
-					} else {
-						gun.spawn("CellPack", gun.pos);
-					}
-					gun.destroy();
-				}
-			} 
-			else
+				gun.destroy();
+			}
+			if (gun is "Shotgun")
 			{
-				if (gun.AmmoType1)
-				{
-					if (gun.AmmoType1.getClassName() == "Shell") gun.spawn("ShellBox", gun.pos);
-					if (gun.AmmoType1.getClassName() == "Clip") gun.spawn("ClipBox", gun.pos);
-					if (gun.AmmoType1.getClassName() == "RocketAmmo") gun.spawn("RocketBox", gun.pos);
-					if (gun.AmmoType1.getClassName() == "Cell") gun.spawn("CellPack", gun.pos);
+				if (gardie.countinv("GHAGShotgun") == 0) {
+					gun.spawn("ShotgunPickup", gun.pos);
+				} else {
+					gun.spawn("Shellbox", gun.pos);
+				}
+				gun.destroy();
+			}
+			if (gun is "SuperShotgun")
+			{
+				if (gardie.countinv("GHAGSuperRailgun") == 0) {
+					gun.spawn("GHAGSuperRailgun", gun.pos);
+				} else {
+					gun.spawn("Shellbox", gun.pos);
+				}
+				gun.destroy();
+			}
+			if (gun is "Chaingun")
+			{
+				if (gardie.countinv("GHAGNailgun") == 0) {
+					gun.spawn("NailgunPickup", gun.pos);
+				} else {
+					gun.spawn("Clipbox", gun.pos);
+				}
+				gun.destroy();
+			}
+			if (gun is "RocketLauncher")
+			{
+				gun.spawn("GHAGRocketBox", gun.pos);
+				gun.destroy();
+				return;
+			}
+			if (gun is "PlasmaRifle" || gun is "BFG9000")
+			{
+				if (gardie.countinv("GHAGPlasmaRifle") == 0) {
+					gun.spawn("PlasmaPickup", gun.pos);
+				} else {
+					gun.spawn("CellPack", gun.pos);
 				}
 				gun.destroy();
 			}
@@ -339,7 +334,11 @@ Class GHAGEventHandler : EventHandler
 	{
 		if (!gardie) return;
 		if (ExplosiveBarrel(event.thing)) return;
-		if (Gardevoir(event.thing.target) || ExplosiveBarrel(event.thing.target)) {
+		if (event.thing.target is 'PlayerPawn' ||
+			event.thing.target is 'ExplosiveBarrel' ||
+			event.thing.target is 'Pod' ||
+			event.thing.target is 'GHAGChainRailMarker'
+			) {
 			CatharsisBonus(event.thing);
 		}
 	}

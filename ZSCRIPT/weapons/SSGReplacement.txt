@@ -1,0 +1,223 @@
+Class GHAGSuperRailgun : GHAGWeapon
+{
+	Default
+	{
+		Weapon.SlotNumber 7;
+		Weapon.AmmoType1 "Shell";
+		Weapon.AmmoType2 "Shell";
+		Weapon.AmmoUse1 2;
+		Weapon.AmmoUse2 2;
+		Tag "Super Railgun";
+	}
+	
+	int getSSRGCount()
+	{
+		return owner.countInv('GHAGSuperRailgunOverlay') * (owner.CountInv("PowerWeaponLevel2") >= 1 ? 2 : 1);
+	}
+	
+	States
+	{
+		Spawn:
+			SHTG A 1;
+			Loop;
+		Select:
+			HAND A 1 A_GHAGRaise();
+			Loop;
+		Deselect:
+			HAND A 1 A_GHAGLower();
+			Loop;
+		Ready:
+			HAND A 1 A_WeaponReady();
+			Loop;
+		Fire:
+			HAND A 3;
+			HAND A 2
+			{
+				A_StartSound("weapons/sshotf", CHAN_WEAPON);
+				A_SuperRailgun(false);
+			}
+			HAND BCDE 2;
+			HAND A 7;
+			TNT1 A 0 A_CheckReload();
+			HAND AAAA 7;
+			HAND AA 6;
+			HAND A 5;
+			goto ready;
+		AltFire:
+			TNT1 A 0 A_SuperRailgun(true);
+			HAND ABCDE 2;
+			goto Ready;
+	}
+	
+	Action void A_SuperRailgun(bool _altFire)
+	{
+		int count = invoker.getSSRGCount();
+		if (!_altFire)
+		{
+			int rng = random(0, count - 1);
+			PreFireRailBeam(rng);
+		}
+		else
+		{
+			for (int i = 0; i < count; ++i)
+			{
+				PreFireRailBeam(i);
+			}
+		}
+	}
+	
+	Action void PreFireRailBeam(int _selection)
+	{
+		int damage = int(random(50.0, 150.0) / 2.0);
+		int depth = int(10 * Gardevoir(self).getRageModifier()) + 1;
+		switch(_selection)
+		{
+			case 0:
+				FireRailBeam(depth, 20, 0, 3, damage);
+				break;
+			case 1:
+				FireRailBeam(depth, -20, 0, -3, damage);
+				break;
+			case 2:
+				FireRailBeam(depth, 30, 15, 3, damage);
+				break;
+			case 3:
+				FireRailBeam(depth, -30, 15, -3, damage);
+				break;
+			default:
+				 FireRailBeam(0, 0, 0, 3, damage);
+		}
+	}
+	
+	Action void FireRailBeam(int _chain, double _x, double _y, double _xModifier, int _damage)
+	{
+		if (Gardevoir(self))
+		{
+			FLineTraceData target;
+			Gardevoir(self).LineTrace(Gardevoir(self).angle, 2048, Gardevoir(self).pitch, 0, 41, 0, 0, target);
+			
+			let lookera = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', target.HitLocation));
+			let lookerb = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', target.HitLocation));
+			
+			if (target.HitActor) {
+				lookera.toIgnore = target.hitActor;
+				lookerb.toIgnore = target.hitActor;
+				lookera.depth = _chain - 1;
+				lookerb.depth = _chain - 1;
+				lookera.chainDamage = _damage * 0.8;
+				lookerb.chainDamage = _damage * 0.8;
+			}
+		}
+	
+		A_RailAttack(_damage, _x, true, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', 0, 0, 0, 0, 0, 1.0, "None", _y);
+		A_RailAttack(_damage, _x + _xModifier, false, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', 0, 0, 0, 0, 0, 1.0, "None", _y);
+	}
+	
+	static Vector2 AnglePitchBetween(Vector3 posA, Vector3 posB) {
+		Vector3 delta = (posA.x - posB.x, posA.y - posB.y, posA.z - posB.z);
+		double to_angle = atan2(delta.y, delta.x);
+		double to_pitch = -(atan2(sqrt((delta.y * delta.y) + (delta.x * delta.x)), delta.z) - 90);
+		return (to_angle, to_pitch);
+	}
+}
+
+Class GHAGChainRailMarker : Actor
+{
+	Actor toIgnore;
+	int depth;
+	double chainDamage;
+	
+	Default
+	{
+		+SeekerMissile;
+		+Friendly;
+		+NoGravity;
+	}
+	
+	States
+	{
+		Spawn:
+			PING ABCD 1 Bright;
+		Attack:
+			TNT1 A 0
+			{
+				if (invoker.depth > 0)
+				{
+					ThinkerIterator it = ThinkerIterator.Create("Actor");
+					Actor mo;
+		
+					double addedmass = 0;
+		
+					int flags = DMSS_FOILINVUL | DMSS_FOILBUDDHA | DMSS_NOPROTECT | DMSS_NOFACTOR;
+					
+					int dist = 0x7fffffFF;
+					Actor newTarget;
+		
+					while ( (mo = Actor(it.Next ())) )
+					{
+						if (!mo.bIsMonster) continue;
+						if (mo.health <= 0) continue;
+						if (mo == toIgnore) continue;
+						if (!isVisible(mo, true)) continue;
+						if (mo is 'Gardevoir') continue;
+						if (mo is 'GHAGChainRailMarker') continue;
+						
+						if (distance3D(mo) < dist)
+						{
+							newTarget = mo;
+							dist = distance3D(mo);
+						}
+					}
+				
+					if (!newTarget)
+					{
+						console.printf('Failed');
+					}
+					else
+					{
+						self.target = newTarget;
+						A_FaceTarget();
+						FireRailBeam(invoker.depth, invoker.chainDamage, dist * 4);
+					}
+				}
+				return resolveState(null);
+			}
+			PING EFGHIJKLMN 1 Bright;
+			stop;
+	}
+	
+	Action void FireRailBeam(int _chain, int _damage, double _distance)
+	{
+		FLineTraceData target;
+		Self.LineTrace(Self.angle, 8192, Self.pitch, 0, 0, 0, 0, target);
+		
+		if (target.hitActor)
+		{
+			if (target.hitActor is 'PlayerPawn' || target.hitActor is 'Gardevoir') return;
+		}
+	
+		A_CustomRailgun(_damage, 0, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 1, 0, 'BulletPuff', 0, 0, _distance, 0, 0, 1.0, "None");
+		A_CustomRailgun(_damage, 0, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 1, 0, 'BulletPuff', 0, 0, _distance, 0, 0, 1.0, "None");
+		
+		let looker = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', target.HitLocation));
+		if (target.HitActor) looker.toIgnore = target.hitActor;
+		looker.depth = _chain - 1;
+		looker.chainDamage = invoker.chainDamage * 0.8;
+	}
+}
+
+Class GHAGSuperRailgunOverlay : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 4;
+		Inventory.pickupMessage "Found an extra Super Railgun!";
+	}
+	
+	override void beginplay()
+	{
+		super.beginPlay();
+		
+		if (GameInfo.GameType == 2) Self.MaxAmount = 2;
+	}
+}

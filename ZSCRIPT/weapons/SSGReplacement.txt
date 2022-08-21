@@ -96,17 +96,16 @@ Class GHAGSuperRailgun : GHAGWeapon
 			FLineTraceData target;
 			Gardevoir(self).LineTrace(Gardevoir(self).angle, 2048, Gardevoir(self).pitch, 0, 41, 0, 0, target);
 			
-			let lookera = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', target.HitLocation));
-			let lookerb = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', target.HitLocation));
+			FLineTraceData offset;
+			Gardevoir(self).LineTrace(Gardevoir(self).angle, target.distance - 16, Gardevoir(self).pitch, 0, 41, 0, 0, offset);
 			
-			if (target.HitActor) {
-				lookera.toIgnore = target.hitActor;
-				lookerb.toIgnore = target.hitActor;
-				lookera.depth = _chain - 1;
-				lookerb.depth = _chain - 1;
-				lookera.chainDamage = _damage * 0.8;
-				lookerb.chainDamage = _damage * 0.8;
-			}
+			let lookera = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', offset.HitLocation));
+			let lookerb = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', offset.HitLocation));
+			
+			lookera.depth = _chain - 1;
+			lookerb.depth = _chain - 1;
+			lookera.chainDamage = _damage * 0.8;
+			lookerb.chainDamage = _damage * 0.8;
 		}
 	
 		A_RailAttack(_damage, _x, true, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', 0, 0, 0, 0, 0, 1.0, "None", _y);
@@ -137,7 +136,7 @@ Class GHAGChainRailMarker : Actor
 	States
 	{
 		Spawn:
-			PING ABCD 1 Bright;
+			TNT1 A 6;
 		Attack:
 			TNT1 A 0
 			{
@@ -145,20 +144,17 @@ Class GHAGChainRailMarker : Actor
 				{
 					ThinkerIterator it = ThinkerIterator.Create("Actor");
 					Actor mo;
-		
-					double addedmass = 0;
-		
-					int flags = DMSS_FOILINVUL | DMSS_FOILBUDDHA | DMSS_NOPROTECT | DMSS_NOFACTOR;
 					
-					int dist = 0x7fffffFF;
+					double dist = 2048.0;
 					Actor newTarget;
 		
 					while ( (mo = Actor(it.Next ())) )
 					{
 						if (!mo.bIsMonster) continue;
 						if (mo.health <= 0) continue;
-						if (mo == toIgnore) continue;
 						if (!isVisible(mo, true)) continue;
+						if (distance3D(mo) > 2048) continue;
+						if (distance3D(mo) < 16) continue;
 						if (mo is 'Gardevoir') continue;
 						if (mo is 'GHAGChainRailMarker') continue;
 						
@@ -169,27 +165,26 @@ Class GHAGChainRailMarker : Actor
 						}
 					}
 				
-					if (!newTarget)
-					{
-						console.printf('Failed');
-					}
-					else
+					if (newTarget)
 					{
 						self.target = newTarget;
 						A_FaceTarget();
 						FireRailBeam(invoker.depth, invoker.chainDamage, dist * 4);
+					} 
+					else
+					{
+						self.destroy();
 					}
 				}
 				return resolveState(null);
 			}
-			PING EFGHIJKLMN 1 Bright;
 			stop;
 	}
 	
 	Action void FireRailBeam(int _chain, int _damage, double _distance)
 	{
 		FLineTraceData target;
-		Self.LineTrace(Self.angle, 8192, Self.pitch, 0, 0, 0, 0, target);
+		Self.LineTrace(Self.angle, 8192, Self.pitch, 0, 23, 0, 0, target);
 		
 		if (target.hitActor)
 		{

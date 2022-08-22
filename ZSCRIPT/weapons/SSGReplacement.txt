@@ -55,61 +55,52 @@ Class GHAGSuperRailgun : GHAGWeapon
 		if (!_altFire)
 		{
 			int rng = random(0, count - 1);
-			PreFireRailBeam(rng);
+			FireRailBeam(max(0, rng));
 		}
 		else
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				PreFireRailBeam(i);
+				FireRailBeam(i);
 			}
 		}
 	}
 	
-	Action void PreFireRailBeam(int _selection)
+	Action void FireRailBeam(int _selection)
 	{
 		int damage = int(random(50.0, 150.0) / 2.0);
 		int depth = int(10 * Gardevoir(self).getRageModifier()) + 1;
-		switch(_selection)
-		{
-			case 0:
-				FireRailBeam(depth, 20, 0, 3, damage);
-				break;
-			case 1:
-				FireRailBeam(depth, -20, 0, -3, damage);
-				break;
-			case 2:
-				FireRailBeam(depth, 30, 15, 3, damage);
-				break;
-			case 3:
-				FireRailBeam(depth, -30, 15, -3, damage);
-				break;
-			default:
-				 FireRailBeam(0, 0, 0, 3, damage);
-		}
-	}
-	
-	Action void FireRailBeam(int _chain, double _x, double _y, double _xModifier, int _damage)
-	{
-		if (Gardevoir(self))
-		{
-			FLineTraceData target;
-			Gardevoir(self).LineTrace(Gardevoir(self).angle, 2048, Gardevoir(self).pitch, 0, 41, 0, 0, target);
+		
+		let gun = Gardevoir(self).FloatGuns[_selection];
+		
+		double distx = self.distance2D(gun) * (_selection % 2 == 0 ? 1 : -1);
+		double disty = gun.pos.z - self.pos.z - 41;
+		
+		FLineTraceData target;
+		
+		Gardevoir(self).LineTrace(Gardevoir(self).angle, 2048, Gardevoir(self).pitch, 0, 41, 0, 0, target);
 			
-			FLineTraceData offset;
-			Gardevoir(self).LineTrace(Gardevoir(self).angle, target.distance - 16, Gardevoir(self).pitch, 0, 41, 0, 0, offset);
+		FLineTraceData offset;
+		Gardevoir(self).LineTrace(Gardevoir(self).angle, target.distance - 16, Gardevoir(self).pitch, 0, 41, 0, 0, offset);
 			
-			let lookera = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', offset.HitLocation));
-			let lookerb = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', offset.HitLocation));
-			
-			lookera.depth = _chain - 1;
-			lookerb.depth = _chain - 1;
-			lookera.chainDamage = _damage * 0.8;
-			lookerb.chainDamage = _damage * 0.8;
-		}
-	
-		A_RailAttack(_damage, _x, true, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', 0, 0, 0, 0, 0, 1.0, "None", _y);
-		A_RailAttack(_damage, _x + _xModifier, false, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', 0, 0, 0, 0, 0, 1.0, "None", _y);
+		let lookera = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', offset.HitLocation));
+		let lookerb = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', offset.HitLocation));
+		
+		lookera.depth = depth - 1;
+		lookerb.depth = depth - 1;
+		lookera.chainDamage = damage;
+		lookerb.chainDamage = damage;
+		
+		int xModifier = (_selection % 2 == 0 ? 3 : -3);
+		
+		vector2 gunVector = AnglePitchBetween(target.hitlocation, gun.pos);
+		if (gunVector.x < 0) gunVector.x += 360;
+		double selfangle = self.angle;
+		if (selfangle < 0) selfangle += 360;
+		double offsetAngle = gunVector.x - selfangle;
+		
+		A_RailAttack(damage, distx - xModifier, true, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', offsetAngle, 0, 0, 0, 0, 1.0, "None", disty);
+		A_RailAttack(damage, distx + xModifier, false, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', offsetAngle, 0, 0, 0, 0, 1.0, "None", disty);
 	}
 	
 	static Vector2 AnglePitchBetween(Vector3 posA, Vector3 posB) {
@@ -131,38 +122,40 @@ Class GHAGChainRailMarker : Actor
 		+SeekerMissile;
 		+Friendly;
 		+NoGravity;
+		+NoBlockmap;
 	}
 	
 	States
 	{
 		Spawn:
-			TNT1 A 6;
+			TNT1 A 4 A_SetTics(random(3, 5));
 		Attack:
-			TNT1 A 0
+			TNT1 A 1
 			{
 				if (invoker.depth > 0)
 				{
 					ThinkerIterator it = ThinkerIterator.Create("Actor");
 					Actor mo;
 					
-					double dist = 2048.0;
+					double dist = 256;
 					Actor newTarget;
 		
 					while ( (mo = Actor(it.Next ())) )
 					{
 						if (!mo.bIsMonster) continue;
-						if (mo.health <= 0) continue;
-						if (!isVisible(mo, true)) continue;
 						if (distance3D(mo) > 2048) continue;
-						if (distance3D(mo) < 16) continue;
+						if (distance3D(mo) < 32) continue;
+						if (!isVisible(mo, true)) continue;
+						if (mo.bCorpse) continue;
 						if (mo is 'Gardevoir') continue;
 						if (mo is 'GHAGChainRailMarker') continue;
 						
-						if (distance3D(mo) < dist)
+						if (distance2D(mo) <= dist)
 						{
 							newTarget = mo;
-							dist = distance3D(mo);
+							dist = distance2D(mo);
 						}
+						
 					}
 				
 					if (newTarget)
@@ -171,33 +164,19 @@ Class GHAGChainRailMarker : Actor
 						A_FaceTarget();
 						FireRailBeam(invoker.depth, invoker.chainDamage, dist * 4);
 					} 
-					else
-					{
-						self.destroy();
-					}
 				}
-				return resolveState(null);
 			}
+			TNT1 A 0;
 			stop;
 	}
 	
 	Action void FireRailBeam(int _chain, int _damage, double _distance)
 	{
-		FLineTraceData target;
-		Self.LineTrace(Self.angle, 8192, Self.pitch, 0, 23, 0, 0, target);
+		A_CustomRailgun(_damage, 0, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 1, 0, 'BulletPuff', 0, 0, 0, 0, 0, 1.0, "None");
 		
-		if (target.hitActor)
-		{
-			if (target.hitActor is 'PlayerPawn' || target.hitActor is 'Gardevoir') return;
-		}
-	
-		A_CustomRailgun(_damage, 0, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 1, 0, 'BulletPuff', 0, 0, _distance, 0, 0, 1.0, "None");
-		A_CustomRailgun(_damage, 0, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 1, 0, 'BulletPuff', 0, 0, _distance, 0, 0, 1.0, "None");
-		
-		let looker = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', target.HitLocation));
-		if (target.HitActor) looker.toIgnore = target.hitActor;
+		let looker = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', self.target.pos));
 		looker.depth = _chain - 1;
-		looker.chainDamage = invoker.chainDamage * 0.8;
+		looker.chainDamage = invoker.chainDamage;
 	}
 }
 

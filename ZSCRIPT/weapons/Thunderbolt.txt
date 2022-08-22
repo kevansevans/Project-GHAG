@@ -52,7 +52,7 @@ Class ThunderboltSpawn : Actor
 			{
 				A_StartSound("Attack/Thunder", CHAN_AUTO);
 			}
-			THUN ABCDE 4 A_ThunderBlast(BF_AFFECTBOSSES | BF_NOIMPACTDAMAGE | BF_ONLYVISIBLETHINGS, 128, 128, 32);
+			THUN ABCDE 2 A_ThunderBlast(BF_AFFECTBOSSES | BF_NOIMPACTDAMAGE | BF_ONLYVISIBLETHINGS, 128, 128, 32);
 			stop;
 	}
 	

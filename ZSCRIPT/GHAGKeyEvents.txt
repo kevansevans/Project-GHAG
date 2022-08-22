@@ -283,6 +283,7 @@ Class KinesisPing : Actor
 	default
 	{
 		+NoGravity;
+		Gravity 0.0;
 	}
 	States
 	{

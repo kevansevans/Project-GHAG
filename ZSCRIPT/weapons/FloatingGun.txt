@@ -65,15 +65,14 @@ Class GHAGFloatingGun : Actor
 			GCHA A 1;
 			Loop;
 		RailgunFire:
-			GSRG A 3;
-			GSRG A 3;
-			GSRG B 3;
+			GSRG A 6;
+			GSRG B 3 A_StartSound("weapons/sshoto", CHAN_WEAPON, CHANF_OVERLAP);
 			GSRG C 3;
 			GSRG D 3;
-			GSRG E 3;
+			GSRG E 3 A_StartSound("weapons/sshotl", CHAN_WEAPON, CHANF_OVERLAP);
 			GSRG F 7;
 			GSRG G 3;
-			GSRG H 3;
+			GSRG H 3 A_StartSound("weapons/sshotc", CHAN_WEAPON, CHANF_OVERLAP);
 		RailgunIdle:
 			GSRG A 1;
 			Loop;

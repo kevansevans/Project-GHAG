@@ -27,7 +27,7 @@ Class GHAGSuperRailgun : GHAGWeapon
 			HAND A 1 A_GHAGLower();
 			Loop;
 		Ready:
-			HAND A 1 A_WeaponReady();
+			HAND A 1 A_WeaponReady(WRF_ALLOWUSER1);
 			Loop;
 		Fire:
 			HAND A 3;
@@ -39,23 +39,19 @@ Class GHAGSuperRailgun : GHAGWeapon
 			HAND BCDE 2;
 			HAND A 7;
 			TNT1 A 0 A_CheckReload();
-			HAND AAAA 7;
-			HAND AA 6;
-			HAND A 5;
+			HAND AAAA 1;
 			goto ready;
 		AltFire:
 			HAND A 3;
 			HAND A 2
 			{
-				for (int i = 0; i < 4; ++ i) A_StartSound("weapons/sshotf", CHAN_WEAPON, CHANF_OVERLAP);
+				for (int i = 0; i < invoker.getSSRGCount(); ++ i) A_StartSound("weapons/sshotf", CHAN_WEAPON, CHANF_OVERLAP);
 				A_SuperRailgun(true);
 			}
 			HAND BCDE 2;
 			HAND A 7;
 			TNT1 A 0 A_CheckReload();
-			HAND AAAA 7;
-			HAND AA 6;
-			HAND A 5;
+			HAND AAAA 1;
 			goto Ready;
 	}
 	
@@ -93,14 +89,13 @@ Class GHAGSuperRailgun : GHAGWeapon
 			
 		FLineTraceData offset;
 		Gardevoir(self).LineTrace(Gardevoir(self).angle, target.distance - 16, Gardevoir(self).pitch, 0, 41, 0, 0, offset);
-			
-		let lookera = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', offset.HitLocation));
-		let lookerb = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', offset.HitLocation));
 		
-		lookera.depth = depth - 1;
-		lookerb.depth = depth - 1;
-		lookera.chainDamage = damage;
-		lookerb.chainDamage = damage;
+		for (int i = 0; i < 2; ++i)
+		{
+			let looker = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', offset.HitLocation));
+			looker.depth = depth - 1;
+			looker.chainDamage = damage;
+		}
 		
 		int xModifier = (_selection % 2 == 0 ? 3 : -3);
 		
@@ -139,7 +134,7 @@ Class GHAGChainRailMarker : Actor
 	States
 	{
 		Spawn:
-			TNT1 A 4 A_SetTics(random(3, 5));
+			TNT1 A 5 A_SetTics(random(5, 7));
 		Attack:
 			TNT1 A 1
 			{

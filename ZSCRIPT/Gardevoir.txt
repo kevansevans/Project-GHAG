@@ -640,6 +640,10 @@ Class Gardevoir : PlayerPawn
 							count = self.CountInv("GHAGPsychoCutterOverlay");
 							wepstate = 'ChainsawIdle';
 							break;
+						case 'GHAGSuperRailgun' :
+							count = self.CountInv("GHAGSuperRailgunOverlay");
+							wepstate = 'RailgunIdle';
+							break;
 						Default:
 							break;
 					}

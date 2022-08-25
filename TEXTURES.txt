@@ -105,3 +105,36 @@ Sprite GCHAA0, 8, 8
 {
 	Patch MODLA0, 0, 0
 }
+
+Sprite GSRGA0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GSRGB0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GSRGC0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GSRGD0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GSRGE0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GSRGF0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GSRGG0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}
+Sprite GSRGH0, 8, 8
+{
+	Patch MODLA0, 0, 0
+}

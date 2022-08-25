@@ -64,6 +64,19 @@ Class GHAGFloatingGun : Actor
 		ChainsawIdle:
 			GCHA A 1;
 			Loop;
+		RailgunFire:
+			GSRG A 3;
+			GSRG A 3;
+			GSRG B 3;
+			GSRG C 3;
+			GSRG D 3;
+			GSRG E 3;
+			GSRG F 7;
+			GSRG G 3;
+			GSRG H 3;
+		RailgunIdle:
+			GSRG A 1;
+			Loop;
 		Hidden:
 			TNT1 A 1;
 			Loop;

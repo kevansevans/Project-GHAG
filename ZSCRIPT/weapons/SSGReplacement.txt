@@ -44,8 +44,18 @@ Class GHAGSuperRailgun : GHAGWeapon
 			HAND A 5;
 			goto ready;
 		AltFire:
-			TNT1 A 0 A_SuperRailgun(true);
-			HAND ABCDE 2;
+			HAND A 3;
+			HAND A 2
+			{
+				for (int i = 0; i < 4; ++ i) A_StartSound("weapons/sshotf", CHAN_WEAPON, CHANF_OVERLAP);
+				A_SuperRailgun(true);
+			}
+			HAND BCDE 2;
+			HAND A 7;
+			TNT1 A 0 A_CheckReload();
+			HAND AAAA 7;
+			HAND AA 6;
+			HAND A 5;
 			goto Ready;
 	}
 	
@@ -72,9 +82,10 @@ Class GHAGSuperRailgun : GHAGWeapon
 		int depth = int(10 * Gardevoir(self).getRageModifier()) + 1;
 		
 		let gun = Gardevoir(self).FloatGuns[_selection];
+		gun.SetStateLabel('RailgunFire');
 		
 		double distx = self.distance2D(gun) * (_selection % 2 == 0 ? 1 : -1);
-		double disty = gun.pos.z - self.pos.z - 41;
+		double disty = 7 + gun.pos.z - self.pos.z - 41 + (_selection >= 2 ? 3 : 0);
 		
 		FLineTraceData target;
 		
@@ -137,8 +148,10 @@ Class GHAGChainRailMarker : Actor
 					ThinkerIterator it = ThinkerIterator.Create("Actor");
 					Actor mo;
 					
-					double dist = 256;
-					Actor newTarget;
+					int limit = 2048;
+					
+					Array<Actor> targets;
+					targets.clear();
 		
 					while ( (mo = Actor(it.Next ())) )
 					{
@@ -150,19 +163,26 @@ Class GHAGChainRailMarker : Actor
 						if (mo is 'Gardevoir') continue;
 						if (mo is 'GHAGChainRailMarker') continue;
 						
-						if (distance2D(mo) <= dist)
+						int distance = int(distance3D(mo));
+						
+						if (distance < limit)
 						{
-							newTarget = mo;
-							dist = distance2D(mo);
+							limit = distance;
+							targets.clear();
+							targets.push(mo);
+						} 
+						else if (distance == limit)
+						{
+							targets.push(mo);
 						}
 						
 					}
 				
-					if (newTarget)
+					if (targets.size() != 0)
 					{
-						self.target = newTarget;
+						self.target = targets[random(0, targets.size() - 1)];
 						A_FaceTarget();
-						FireRailBeam(invoker.depth, invoker.chainDamage, dist * 4);
+						FireRailBeam(invoker.depth, invoker.chainDamage, limit * 4);
 					} 
 				}
 			}

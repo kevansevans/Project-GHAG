@@ -39,6 +39,7 @@ Class ExtraPsychoCutter : CustomInventory replaces Chainsaw
 			TNT1 A 0
 			{
 				let player = Gardevoir(players[consoleplayer].mo);
+				player.updateWeapons = true;
 				player.giveInventory("GHAGPsychoCutterOverlay", 1);
 				if (player.countinv("GHAGPsychoCutter") == 0) {
 					player.giveInventory("GHAGPsychoCutter", 1);

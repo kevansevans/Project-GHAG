@@ -526,88 +526,38 @@ Class GHAGEventHandler : EventHandler
 		if (!_gun) Actor.spawn('RageCandyBar', (_x, _y, _z));
 		else
 		{
-			int mod = 1;
+			Array<name> gunlist;
+			gunlist.clear();
 			
-			int pistolBonus = 0;
-			int shottyBonus = 1;
-			int plasmaBonus = 2;
-			int nailygBonus = 3;
+			name winner = 'RageCandyBar';
 			
-			if (gardie.countInv('GHAGPistolOverlay') == limit)
+			if (gardie.countInv('GHAGPistol'))
 			{
-				pistolBonus = -1;
-				shottyBonus -= 1;
-				plasmaBonus -= 1;
-				nailygBonus -= 1;
+				if (gardie.countInv('GHAGPistolOverlay') < 4) gunlist.push(Int('SecretPistol'));
 			}
 			
-			if (gardie.countInv('GHAGShotgun')) 
+			if (gardie.countInv('GHAGShotgun'))
 			{
-				if (gardie.countInv('GHAGShotgunOverlay') == limit)
-				{
-					shottyBonus = -1;
-					plasmaBonus -= 1;
-					nailygBonus -= 1;
-				} else {
-					mod += 1;
-				}
+				if (gardie.countInv('GHAGShotgunOverlay') < 4) gunlist.push(Int('SecretShotgun'));
 			}
 			
-			if (gardie.countInv('GHAGPlasmaRifle')) 
+			if (gardie.countInv('GHAGNailgun'))
 			{
-				if (gardie.countInv('GHAGPlasmaOverlay') == limit)
-				{
-					plasmaBonus = -1;
-					nailygBonus -= 1;
-				} else {
-					mod += 1;
-				}
+				if (gardie.countInv('GHAGNailgunOverlay') < 4) gunlist.push(Int('SecretNailgun'));
 			}
 			
-			if (gardie.countInv('GHAGNailgun')) 
+			if (gardie.countInv('GHAGPlasmaRifle'))
 			{
-				if (gardie.countInv('GHAGNailGun') == limit)
-				{
-					nailygBonus -= 1;
-				} else {
-					mod += 1;
-				}
-			}
-					
-			if (pistolBonus == -1 && shottyBonus == -1 && plasmaBonus == -1 && nailygBonus == -1)
-			{
-				return;
+				if (gardie.countInv('GHAGPlasmaOverlay') < 4) gunlist.push(Int('SecretPlasma'));
 			}
 			
-			console.printf('Odds calculated');
-			
-			int tries = 0;
-			while (tries < mod)
+			if (gardie.countInv('GHAGSuperRailgun'))
 			{
-				console.printf('' .. tries);
-					
-				int bonus = (level.levelNum + tries) % mod;
-				
-				if (bonus == pistolBonus) {
-					Actor.spawn('SecretPistol', (_x, _y, _z));
-					return;
-				}
-				if (bonus == shottyBonus) {
-					Actor.spawn('SecretShotgun', (_x, _y, _z));
-					return;
-				}
-				if (bonus == nailygBonus) {
-					Actor.spawn('SecretNailgun', (_x, _y, _z));
-					return;
-				}
-				if (bonus == plasmaBonus) {
-					Actor.spawn('SecretPlasma', (_x, _y, _z));
-					return;
-				}
-				++tries;
+				if (gardie.countInv('GHAGSuperRailgunOverlay') < 4) gunlist.push(Int('SecretRailgun'));
 			}
 			
-			Actor.spawn('RageCandyBar', (_x, _y, _z));
+			winner = Name(gunlist[random(0, gunlist.size() - 1)]);
+			Actor.spawn(winner, (_x, _y, _z));
 		}
 	}
 }

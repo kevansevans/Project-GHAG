@@ -121,7 +121,7 @@ Class GHAGEventHandler : EventHandler
 			if (gun is "SuperShotgun")
 			{
 				if (gardie.countinv("GHAGSuperRailgun") == 0) {
-					gun.spawn("GHAGSuperRailgun", gun.pos);
+					gun.spawn("SuperRailgunPickup", gun.pos);
 				} else {
 					gun.spawn("Shellbox", gun.pos);
 				}

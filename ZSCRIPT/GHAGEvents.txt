@@ -556,7 +556,7 @@ Class GHAGEventHandler : EventHandler
 				if (gardie.countInv('GHAGSuperRailgunOverlay') < 4) gunlist.push(Int('SecretRailgun'));
 			}
 			
-			winner = Name(gunlist[random(0, gunlist.size() - 1)]);
+			if (gunlist.size()) winner = Name(gunlist[random(0, gunlist.size() - 1)]);
 			Actor.spawn(winner, (_x, _y, _z));
 		}
 	}

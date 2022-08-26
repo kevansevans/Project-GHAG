@@ -1,9 +1,10 @@
 user noarchive cheat int ghagrage = -1;
-user noarchive cheat int ghagpunchodds = -1;
 server noarchive latch cheat int shinyodds = -1;
 user noarchive cheat bool ghagcharon = false;
 user string ChainsawName = "Psycho Cutter";
 user string PistolName = "9mm Pistol";
 user string ShotgunName = "1912 Shotgun";
+user string NailgunName = "Nailgun";
+user string RailgunName = "Super Railgun";
 user string PlasmaName = "Generic Energy Weapon";
 user float ghaghudscale = 1;

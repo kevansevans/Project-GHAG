@@ -15,6 +15,13 @@ Class GHAGNailGun : GHAGWeapon
 	{
 		Super.beginPlay();
 	}
+	
+	override void Tick()
+	{
+		Super.tick();
+		
+		setTag(Cvar.findCvar("NailgunName").getString());
+	}	
 
 	int getNailgunCount()
 	{

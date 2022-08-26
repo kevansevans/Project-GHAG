@@ -15,6 +15,13 @@ Class GHAGSuperRailgun : GHAGWeapon
 		return owner.countInv('GHAGSuperRailgunOverlay') * (owner.CountInv("PowerWeaponLevel2") >= 1 ? 2 : 1);
 	}
 	
+	override void Tick()
+	{
+		Super.tick();
+		
+		setTag(Cvar.findCvar("RailgunName").getString());
+	}
+	
 	States
 	{
 		Spawn:

@@ -101,6 +101,15 @@ Class Gardevoir : PlayerPawn
 			{
 				A_SetRenderStyle(1, STYLE_Stencil);
 				SetShade("FF0000");
+				
+				for (int i = 0; i < 4; ++i)
+				{
+					floatGuns[i].bNoGravity = false;
+					floatGuns[i].roll = 90;
+					floatGuns[i].angle = random(0, 360);
+					floatGuns[i].Thrust(5);
+				}
+				
 			}
 		Death.Shrink:
 			GARD A 4 A_JumpIf(A_Shrink(), "Death.Loop");
@@ -537,28 +546,31 @@ Class Gardevoir : PlayerPawn
 				}
 			}
 			
-			FLineTraceData ray;
-			Self.LineTrace(p_angle, distance, (p_pitch / 2), TRF_THRUBLOCK | TRF_THRUHITSCAN | TRF_NOSKY | TRF_SOLIDACTORS, p_height, 0, 0, ray);
-			
-			let activefloat = FloatGuns[i];
-			
-			double velx = DampedSpring(activefloat.pos.x, ray.hitlocation.x, activefloat.vel.x, spring, dampening);
-			double vely = DampedSpring(activefloat.pos.y, ray.hitlocation.y, activefloat.vel.y, spring, dampening);
-			double velz = DampedSpring(activefloat.pos.z, ray.hitlocation.z, activefloat.vel.z, spring, dampening);
-			
-			activefloat.vel += (velx, vely, velz);
-			
-			if (countInv('PowerInvisibility'))
+			if (self.health > 0)
 			{
-				FloatGuns[i].A_SetRenderStyle(0.25, STYLE_Fuzzy);
-			} 
-			else
-			{
-				FloatGuns[i].A_SetRenderStyle(0.25, STYLE_Normal);
+				FLineTraceData ray;
+				Self.LineTrace(p_angle, distance, (p_pitch / 2), TRF_THRUBLOCK | TRF_THRUHITSCAN | TRF_NOSKY | TRF_SOLIDACTORS, p_height, 0, 0, ray);
+				
+				let activefloat = FloatGuns[i];
+			
+				double velx = DampedSpring(activefloat.pos.x, ray.hitlocation.x, activefloat.vel.x, spring, dampening);
+				double vely = DampedSpring(activefloat.pos.y, ray.hitlocation.y, activefloat.vel.y, spring, dampening);
+				double velz = DampedSpring(activefloat.pos.z, ray.hitlocation.z, activefloat.vel.z, spring, dampening);
+			
+				activefloat.vel += (velx, vely, velz);
+				
+				if (countInv('PowerInvisibility'))
+				{
+					FloatGuns[i].A_SetRenderStyle(0.25, STYLE_Fuzzy);
+				} 
+				else
+				{
+					FloatGuns[i].A_SetRenderStyle(0.25, STYLE_Normal);
+				}
 			}
 		}
 		
-		if (player.ReadyWeapon)
+		if (player.ReadyWeapon && self.health > 0)
 		{
 			FLineTraceData PlayerAim;
 			Self.LineTrace(self.angle, 128, self.pitch, TRF_THRUACTORS | TRF_THRUBLOCK | TRF_THRUHITSCAN | TRF_NOSKY | TRF_SOLIDACTORS, 41, 0, 0, PlayerAim);
@@ -663,7 +675,7 @@ Class Gardevoir : PlayerPawn
 				}
 			}
 		}
-		else
+		else if (self.health > 0)
 		{
 			for (int i = 0; i < 4; ++i)
 			{

@@ -1,0 +1,109 @@
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "Pistol.md3"
+	SurfaceSkin 0 0 "PISTTEXT.png"
+    Scale 1.000000 1.000000 1.2
+	Offset 3 0 0
+    USEACTORPITCH
+    USEACTORROLL
+	NOINTERPOLATION
+
+    FrameIndex GPST A 0 0
+    FrameIndex GPST B 0 1
+}
+
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "Shotgun.md3"
+	SurfaceSkin 0 0 "shottext.png"
+    Scale 1.000000 1.000000 1.2
+	Offset 14 0 0
+    USEACTORPITCH
+    USEACTORROLL
+
+    FrameIndex GSHT A 0 0
+	FrameIndex GSHT B 0 1
+	FrameIndex GSHT C 0 2
+	FrameIndex GSHT D 0 3
+	FrameIndex GSHT E 0 4
+	FrameIndex GSHT F 0 5
+}
+
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "NAILGUN.md3"
+	SurfaceSkin 0 0 "NAILGTEX.png"
+    Scale 1.000000 1.000000 1.2
+    USEACTORPITCH
+    USEACTORROLL
+	
+	FrameIndex GNAI A 0 0
+}
+
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "PLASMA.md3"
+	SurfaceSkin 0 0 "PLASMATX.png"
+    Scale 1.000000 1.000000 1.2
+    USEACTORPITCH
+    USEACTORROLL
+	
+	FrameIndex GPLS A 0 0
+	FrameIndex GPLS B 0 1
+	FrameIndex GPLS C 0 2
+	FrameIndex GPLS D 0 3
+	FrameIndex GPLS E 0 4
+	FrameIndex GPLS F 0 5
+	FrameIndex GPLS G 0 6
+}
+
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "Rocket.md3"
+	SurfaceSkin 0 0 "Rocket.png"
+    Scale 1.000000 1.000000 1.2
+    USEACTORPITCH
+    USEACTORROLL
+	
+	FrameIndex GROC A 0 0
+	FrameIndex GROC B 0 1
+	FrameIndex GROC C 0 2
+	FrameIndex GROC D 0 3
+	FrameIndex GROC E 0 4
+}
+
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "Chainsaw.md3"
+	SurfaceSkin 0 0 "Chaintex.png"
+    Scale 1.000000 1.000000 1.2
+    USEACTORPITCH
+    USEACTORROLL
+	
+	FrameIndex GCHA A 0 0
+}
+
+Model GHAGFloatingGun
+{
+	Path "MODELS"
+    Model 0 "Railgun.md3"
+	SurfaceSkin 0 0 "Railgun.png"
+    Scale 1.000000 1.000000 1.2
+    USEACTORPITCH
+    USEACTORROLL
+	
+	FrameIndex GSRG A 0 0
+	FrameIndex GSRG B 0 15
+	FrameIndex GSRG C 0 20
+	FrameIndex GSRG D 0 25
+	FrameIndex GSRG E 0 30
+	FrameIndex GSRG F 0 33
+	FrameIndex GSRG G 0 50
+	FrameIndex GSRG H 0 61
+}

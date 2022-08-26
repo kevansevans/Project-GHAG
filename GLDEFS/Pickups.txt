@@ -1,0 +1,27 @@
+Model PistolPickup
+{
+	Path "MODELS"
+    Model 0 "Pistol.md3"
+	SurfaceSkin 0 0 "PISTTEXT.png"
+    Scale 1.000000 1.000000 1.2
+	Offset 0 0 16
+    USEACTORPITCH
+    USEACTORROLL
+	NOINTERPOLATION
+
+    FrameIndex PIST C 0 0
+}
+
+Model SecretPistol
+{
+	Path "MODELS"
+    Model 0 "Pistol.md3"
+	SurfaceSkin 0 0 "PISTTEXT.png"
+    Scale 1.000000 1.000000 1.2
+	Offset 0 0 16
+    USEACTORPITCH
+    USEACTORROLL
+	NOINTERPOLATION
+
+    FrameIndex PIST C 0 0
+}

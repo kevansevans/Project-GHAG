@@ -5,6 +5,6 @@ user string ChainsawName = "Psycho Cutter";
 user string PistolName = "9mm Pistol";
 user string ShotgunName = "1912 Shotgun";
 user string NailgunName = "Nailgun";
-user string RailgunName = "Super Railgun";
+user string RailgunName = "PSY-BP12";
 user string PlasmaName = "Generic Energy Weapon";
 user float ghaghudscale = 1;

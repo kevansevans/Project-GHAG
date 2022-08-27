@@ -7,7 +7,7 @@ Class GHAGSuperRailgun : GHAGWeapon
 		Weapon.AmmoType2 "Shell";
 		Weapon.AmmoUse1 2;
 		Weapon.AmmoUse2 2;
-		Tag "Super Railgun";
+		Tag "PSY-BP12";
 	}
 	
 	int getSSRGCount()

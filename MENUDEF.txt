@@ -10,7 +10,7 @@ OptionMenu "GHAGOptions"
 	TextField "Nailgun name", "NailgunName"
 	TextField "Shotgun name", "ShotgunName"
 	TextField "Plasma name", "PlasmaName"
-	TextField "Super Railgun name", "RailgunName"
+	TextField "PSY-BP12 Name", "RailgunName"
 }
 
 AddOptionMenu "OptionsMenu" after "PlayerMenu"

@@ -34,7 +34,7 @@ Model ExtraPsychoCutter
     Model 0 "Chainsaw.md3"
 	SurfaceSkin 0 0 "Chaintex.png"
     Scale 2.000000 2.000000 2.2
-	Offset 0 0 16
+	Offset 10 0 16
     USEACTORPITCH
     USEACTORROLL
 	NOINTERPOLATION
@@ -50,7 +50,7 @@ Model ShotgunPickup
     Model 0 "Shotgun.md3"
 	SurfaceSkin 0 0 "Shottext.png"
     Scale 2.000000 2.000000 2.2
-	Offset 0 0 16
+	Offset 10 0 16
     USEACTORPITCH
     USEACTORROLL
 	NOINTERPOLATION
@@ -65,7 +65,7 @@ Model SecretShotgun
     Model 0 "Shotgun.md3"
 	SurfaceSkin 0 0 "Shottext.png"
     Scale 2.000000 2.000000 2.2
-	Offset 0 0 16
+	Offset 10 0 16
     USEACTORPITCH
     USEACTORROLL
 	NOINTERPOLATION
@@ -80,7 +80,7 @@ Model SuperRailgunPickup
     Model 0 "Railgun.md3"
 	SurfaceSkin 0 0 "Railgun.png"
     Scale 2.000000 2.000000 2.2
-	Offset 0 0 16
+	Offset 10 0 16
     USEACTORPITCH
     USEACTORROLL
 	NOINTERPOLATION
@@ -95,7 +95,7 @@ Model SecretRailgun
     Model 0 "Railgun.md3"
 	SurfaceSkin 0 0 "Railgun.png"
     Scale 2.000000 2.000000 2.2
-	Offset 0 0 16
+	Offset 10 0 16
     USEACTORPITCH
     USEACTORROLL
 	NOINTERPOLATION
@@ -110,7 +110,7 @@ Model NailgunPickup
     Model 0 "Nailgun.md3"
 	SurfaceSkin 0 0 "Nailgtex.png"
     Scale 2.000000 2.000000 2.2
-	Offset 0 0 16
+	Offset 5 0 16
     USEACTORPITCH
     USEACTORROLL
 	NOINTERPOLATION
@@ -125,7 +125,7 @@ Model SecretNailgun
     Model 0 "Nailgun.md3"
 	SurfaceSkin 0 0 "Nailgtex.png"
     Scale 2.000000 2.000000 2.2
-	Offset 0 0 16
+	Offset 5 0 16
     USEACTORPITCH
     USEACTORROLL
 	NOINTERPOLATION

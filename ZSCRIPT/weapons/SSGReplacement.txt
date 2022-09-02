@@ -112,8 +112,8 @@ Class GHAGSuperRailgun : GHAGWeapon
 		if (selfangle < 0) selfangle += 360;
 		double offsetAngle = gunVector.x - selfangle;
 		
-		A_RailAttack(damage, distx - xModifier, true, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', offsetAngle, 0, 0, 0, 0, 1.0, "None", disty);
-		A_RailAttack(damage, distx + xModifier, false, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', offsetAngle, 0, 0, 0, 0, 1.0, "None", disty);
+		A_RailAttack(damage, distx - xModifier, true, "", "9933FF", RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', offsetAngle, 0, 0, 0, 0, 1.0, "None", disty);
+		A_RailAttack(damage, distx + xModifier, false, "", "9933FF", RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', offsetAngle, 0, 0, 0, 0, 1.0, "None", disty);
 	}
 	
 	static Vector2 AnglePitchBetween(Vector3 posA, Vector3 posB) {
@@ -194,7 +194,7 @@ Class GHAGChainRailMarker : Actor
 	
 	Action void FireRailBeam(int _chain, int _damage, double _distance)
 	{
-		A_CustomRailgun(_damage, 0, "", 0, RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 1, 0, 'BulletPuff', 0, 0, 0, 0, 0, 1.0, "None");
+		A_CustomRailgun(_damage, 0, "", "9933FF", RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 1, 0, 'BulletPuff', 0, 0, 0, 0, 0, 1.0, "None");
 		
 		let looker = GHAGChainRailMarker(Actor.spawn('GHAGChainRailMarker', self.target.pos));
 		looker.depth = _chain - 1;

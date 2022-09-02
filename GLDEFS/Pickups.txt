@@ -8,7 +8,6 @@ Model PistolPickup
     USEACTORPITCH
     USEACTORROLL
 	NOINTERPOLATION
-	ROTATING
 
     FrameIndex PIST C 0 0
 }
@@ -38,7 +37,6 @@ Model ExtraPsychoCutter
     USEACTORPITCH
     USEACTORROLL
 	NOINTERPOLATION
-	ROTATING
 
     FrameIndex CSAW A 0 0
 	FrameIndex CSAW B 0 0
@@ -54,7 +52,6 @@ Model ShotgunPickup
     USEACTORPITCH
     USEACTORROLL
 	NOINTERPOLATION
-	ROTATING
 
     FrameIndex SHOT A 0 0
 }
@@ -84,7 +81,6 @@ Model SuperRailgunPickup
     USEACTORPITCH
     USEACTORROLL
 	NOINTERPOLATION
-	ROTATING
 
     FrameIndex SGN2 A 0 0
 }
@@ -114,7 +110,6 @@ Model NailgunPickup
     USEACTORPITCH
     USEACTORROLL
 	NOINTERPOLATION
-	ROTATING
 
     FrameIndex MGUN A 0 0
 }
@@ -132,5 +127,34 @@ Model SecretNailgun
 	ROTATING
 
     FrameIndex MGUN A 0 0
+}
+
+Model PlasmaPickup
+{
+	Path "MODELS"
+    Model 0 "Plasma.md3"
+	SurfaceSkin 0 0 "Plasmatx.png"
+    Scale 2.000000 2.000000 2.2
+	Offset 10 0 16
+    USEACTORPITCH
+    USEACTORROLL
+	NOINTERPOLATION
+
+    FrameIndex PLAS A 0 0
+}
+
+Model SecretPlasma
+{
+	Path "MODELS"
+    Model 0 "Plasma.md3"
+	SurfaceSkin 0 0 "Plasmatx.png"
+    Scale 2.000000 2.000000 2.2
+	Offset 10 0 16
+    USEACTORPITCH
+    USEACTORROLL
+	NOINTERPOLATION
+	ROTATING
+
+    FrameIndex PLAS A 0 0
 }
 

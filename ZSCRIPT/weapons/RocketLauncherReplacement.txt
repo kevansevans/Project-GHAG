@@ -49,7 +49,10 @@ Class GHAGRocketLauncher : GHAGWeapon
 		Select:
 			HAND A 1 {
 				A_GHAGRaise();
-				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
+				if (Gardevoir(invoker.owner).FloatGuns[0])
+				{
+					Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
+				}
 			}
 			Loop;
 		Reload :

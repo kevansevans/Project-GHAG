@@ -18,6 +18,7 @@ Class Gardevoir : PlayerPawn
 	BaseIwad iwadGame;
 
 	int RageTimer;
+	int killInterupt;
 	int RageConstant;
 	int RageValue;
 	double RageBonus;
@@ -233,7 +234,6 @@ Class Gardevoir : PlayerPawn
 		return min(max(1, accuracy * (1 - GetRageModifier())), 20);
 	}
 	
-	int restore_kaboom;
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		int _locDamage = damage;
@@ -256,8 +256,6 @@ Class Gardevoir : PlayerPawn
 		
 		return Super.DamageMobj(inflictor, source, _locDamage, mod, _locFlags, angle);
 	}
-	
-	double p_height;
 	
 	override void Tick()
 	{
@@ -297,18 +295,25 @@ Class Gardevoir : PlayerPawn
 		{
 			if (!overTheEdge)
 			{
-				int draintic = int(100 / (rageValue / 10. / 2.)) * 2;
+				int draintic = int(100 / (rageValue / 10. / 2.));
 				int drainrate = 1;
 				if (ragevalue > 1000 && !overTheEdge)
 				{
 					int rate = int((ragevalue - 1000) / 100 / 2);
 					drainrate += rate;
 				}
-				if (RageTimer >= (draintic + int(RageBonus))) {
+				if (killInterupt > 0)
+				{
+					--killInterupt;
+				}
+				else if (RageTimer >= (draintic + int(RageBonus))) 
+				{
 					ragevalue -= drainrate;
 					RageTimer = 0;
 				}
-			} else if (overTheEdge) {
+			} 
+			else if (overTheEdge) 
+			{
 				if (RageTimer >= (10 + int(RageBonus))) {
 					ragevalue -= 3;
 					RageTimer = 0;

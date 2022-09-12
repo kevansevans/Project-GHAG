@@ -20,6 +20,10 @@ DoomEdNums
   11017 = SecretShotgun
   11008 = PlasmaPickup
   11018 = SecretPlasma
+  11022 = NailgunPickup
+  11023 = SecretNailgun
+  11020 = SuperRailgunPickup
+  11021 = SecretRailgun
   11009 = RageCandyBar
   11010 = QuickieBarrel
   11011 = MagicBerserk

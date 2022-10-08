@@ -350,7 +350,7 @@ Class GHAGEventHandler : EventHandler
 		let gardie = Gardevoir(players[consoleplayer].mo);
 		if (!gardie) return;
 		
-		gardie.killInterupt = 35 + int(35 * Gardie.RageBonus);
+		gardie.killInterupt = 35 + (35 * gardie.getRageModifier());
 		
 		int angerBonus = Max(int(thing.spawnHealth() / 5), 1);
 		int willBonus = int(AngerBonus / 10);

@@ -99,7 +99,8 @@ Class GHAGRocketLauncher : GHAGWeapon
 			HAND A 8;
 			TNT1 A 0
 			{
-				if (invoker.queuedRockets < invoker.maxRockets)
+				
+				if (invoker.queuedRockets < invoker.maxRockets && invoker.queuedRockets < (CountInv("RocketAmmo") - 1))
 				{
 					++invoker.queuedRockets;
 					Gardevoir(invoker.owner).FloatGuns[invoker.queuedRockets].SetStateLabel('RocketIdle');

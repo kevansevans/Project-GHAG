@@ -21,7 +21,6 @@ Class Gardevoir : PlayerPawn
 	int killInterupt;
 	int RageConstant;
 	int RageValue;
-	double RageBonus;
 	
 	bool OverTheEdge;
 	Bool MegaEvolved;
@@ -168,7 +167,6 @@ Class Gardevoir : PlayerPawn
 		RageValue = 0;
 		Ragetimer = 0;
 		RageConstant = 200;
-		RageBonus = 0;
 		
 		OverTheEdge = false;
 		charonmode = false;
@@ -200,7 +198,6 @@ Class Gardevoir : PlayerPawn
 	{
 		if (!OverTheEdge) RageValue = RageConstant;
 		RageValue += 750;
-		RageBonus += 0.34;
 	}
 	
 	int GetRageValue() {
@@ -306,7 +303,7 @@ Class Gardevoir : PlayerPawn
 				{
 					--killInterupt;
 				}
-				else if (RageTimer >= (draintic + int(RageBonus))) 
+				else if (RageTimer >= draintic) 
 				{
 					ragevalue -= drainrate;
 					RageTimer = 0;
@@ -314,24 +311,11 @@ Class Gardevoir : PlayerPawn
 			} 
 			else if (overTheEdge) 
 			{
-				if (RageTimer >= (10 + int(RageBonus))) {
+				if (RageTimer >= 10) {
 					ragevalue -= 3;
 					RageTimer = 0;
 				}
 			}
-		}
-		
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		//Incorrect inventory handler
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		if (self.countinv("Pistol") >= 1)
-		{
-			self.clearInventory();
-			
-			self.giveInventory("GHAGPistol", 1);
-			self.giveInventory("GHAGPistolOverlay", 1);
-			self.giveInventory("MoonBlastGun", 1);
-			self.giveInventory("BlackHole", 1);
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -584,7 +568,10 @@ Class Gardevoir : PlayerPawn
 			
 			for (int i = 0; i < 4; ++i)
 			{
-				FloatGuns[i].A_Face(GunTarget, 0, 270, 0, 0, FAF_MIDDLE);
+				let gun = GHAGFloatingGun(FloatGuns[i]);
+			
+				if (gun.targetOverride) gun.A_Face(gun.targetOverride, 0, 270, 0, 0, FAF_MIDDLE);
+				else FloatGuns[i].A_Face(guntarget, 0, 270, 0, 0, FAF_MIDDLE);
 				
 				Vector3 dirTo = FloatGuns[i].vec3To(GunTarget).unit();
 				FloatGuns[i].pitch = -asin(dirTo.z);

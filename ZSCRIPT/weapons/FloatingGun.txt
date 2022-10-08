@@ -16,6 +16,8 @@ Class GHAGFloatingGun : Actor
 		+NoClip;
 	}
 	
+	Actor targetOverride;
+	
 	states
 	{
 		Spawn:
@@ -80,6 +82,22 @@ Class GHAGFloatingGun : Actor
 			TNT1 A 1;
 			Loop;
 	}
+	
+	Action void A_NullTarget()
+	{
+		invoker.targetOverride = null;
+	}
+	
+	static double PitchTo( Actor a, Actor b, double hfact = 1. )
+    {
+        if ( !a || !b ) return 0;
+        Vector3 thispos = a.player?a.Vec2OffsetZ(0,0,a.player.viewz):a.Vec3Offset(0,0,a.missileheight);
+        Vector3 otherpos = b.Vec3Offset(0,0,b.height*hfact);
+        Vector3 diff = level.Vec3Diff(thispos,otherpos);
+        double dist = diff.length();
+        if ( dist > 0 ) return -asin(diff.z/dist);
+        return 0;
+    }
 }
 
 Class GHAGGunTarget : Actor

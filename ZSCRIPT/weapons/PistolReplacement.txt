@@ -24,7 +24,7 @@ Class GHAGPistol : GHAGWeapon
 		Tag "9mm Pistol";
 	}
 	
-	double spread;
+	Array<Actor> targets;
 	
 	override void DoEffect()
 	{
@@ -35,8 +35,6 @@ Class GHAGPistol : GHAGWeapon
 	override void BeginPlay()
 	{
 		Super.BeginPlay();
-		
-		spread = 0;
 	}
 	
 	override void tick()
@@ -57,11 +55,12 @@ Class GHAGPistol : GHAGWeapon
 			HAND A 1 {
 				Invoker.AmmoUse2 = invoker.getPistolCount();
 				A_WeaponReady(WRF_ALLOWUSER1);
-				return resolveState(null);
+				A_NullTargets();
 			}
 			Loop;
 		Deselect:
 			HAND A 1 {
+				A_NullTargets();
 				A_GHAGLower();
 				A_OverlayPistols();
 			}
@@ -93,24 +92,25 @@ Class GHAGPistol : GHAGWeapon
 			}
 			Goto Ready;
 		AltFire:
-			HAND ABC 1;
-			HAND D 1 
+			HAND A 1 {
+				if(A_AutoTarget()) return resolveState('AltFire.Shoot'); //A_Jump wouldn't work?
+				return resolveState(null);
+			}
+			HAND A 3 A_StartSound("weapons/dryfire", CHAN_AUTO);
+			goto Ready;
+		AltFire.Shoot:
+			HAND BC 3 A_SetTics(Gardevoir(self).GetTicModifier(3) * 2);
+			HAND D 3
 			{
-				A_FireBullets(3.4 + invoker.spread, 3.4 + (invoker.spread / 2), Min(4, invoker.getPistolCount()), 8, "BulletPuff");
-				A_OverlayPistols(true, true);
-				A_StartSound("weapons/pistol", CHAN_WEAPON);
-				invoker.spread += 0.2;
-				invoker.spread = min(10, invoker.spread);
+				A_SetTics(Gardevoir(self).GetTicModifier(3) * 2);
+				A_FireTargets();
 			}
 			TNT1 A 0
 			{
 				A_Refire();
 			}
 			HAND EFG 1;
-			TNT1 A 0 
-			{
-				invoker.spread = 0;
-			}
+			TNT1 A 0 A_NullTargets();
 			Goto Ready;
 		Fire.Overlay:
 			PIST B 2 Bright A_SetTics(Gardevoir(self).GetTicModifier(2));
@@ -149,13 +149,94 @@ Class GHAGPistol : GHAGWeapon
 			{
 				gardie.FloatGuns[rng].SetStateLabel('PistolFire');
 			}
-			if (AltFire)
-			{
-				for (int i = 0; i < invoker.getPistolCount(); ++i)
-				{
-					gardie.FloatGuns[i].SetStateLabel('PistolFire');
-				}
+		}
+	}
+	
+	Action bool A_AutoTarget()
+	{
+		let gardie = Gardevoir(self);
+		invoker.targets.clear();
+		
+		if (!countInv("Clip"))
+		{
+			if (!GetCVar("sv_infiniteammo")) return false;
+		}
+		
+		ThinkerIterator it = ThinkerIterator.Create("Actor");
+		Actor mo;
+		while ( (mo = Actor(it.Next ())) )
+		{
+			console.printf('Enemy check');
+			if (!mo.bIsMonster) {
+				if (CommanderKeen(mo)) console.printf('Fails at monster');
+				continue;
 			}
+			if (mo.health <= 0) {
+				if (CommanderKeen(mo)) console.printf('Fails at health');
+				continue;
+			}
+			if (!mo.isVisible(self, true)) {
+				if (CommanderKeen(mo)) console.printf('Fails at sight');
+				continue;
+			}
+			if (invoker.targets.find(mo) != invoker.targets.size()) {
+				if (CommanderKeen(mo)) console.printf('Fails at list check');
+				continue;
+			}
+			
+			double angle = (Gardevoir(invoker.owner).angleTo(mo) + self.angle) % 360;
+			double anglebonus = 135 * Gardevoir(self).getRageModifier();
+			if (angle < (self.angle % 360) - (45 + anglebonus) || angle > (self.angle % 360) + (45 + anglebonus)) continue;
+			
+			invoker.targets.push(mo);
+		
+			if (invoker.targets.size() >= invoker.getPistolCount())
+			{
+				console.printf('' .. invoker.targets.size() .. ":" .. invoker.getPistolCount());
+				console.printf('fails at cap');
+				break;
+			}
+		}
+		
+		if (invoker.targets.size() == 0) 
+		{	
+			console.printf('I am empty!');
+			A_NullTargets();
+			return false;
+		}
+		console.printf('Success!');
+		return false;
+	}
+	
+	Action void A_FireTargets()
+	{
+		let gardie = Gardevoir(self);
+	
+		int prevIndex = 0;
+		for (int i = 0; i < invoker.getPistolCount(); ++i)
+		{
+			let gun = GHAGFloatingGun(gardie.floatGuns[i]);
+			if (i < invoker.targets.size()) {
+				prevIndex = i;
+			}
+			gun.targetOverride = invoker.targets[prevIndex];
+			gun.SetStateLabel('PistolFire');
+			double pitch = GHAGFloatingGun.PitchTo(self, invoker.targets[prevIndex], 0.75);
+			double accuracy = Gardevoir(self).GetAccuracyModifier(4.3);
+			LineAttack(angleTo(invoker.targets[prevIndex]) + random(-accuracy, accuracy), 4096, pitch + random(-accuracy, accuracy), 8, 'Melee', 'BulletPuff', LAF_ISMELEEATTACK);
+			if (!GetCVar("sv_infiniteammo")) A_TakeInventory('Clip', 1);
+			A_StartSound("weapons/pistol", CHAN_WEAPON);
+		}
+	}
+	
+	Action void A_NullTargets()
+	{
+		let gardie = Gardevoir(self);
+	
+		for (int i = 0; i < invoker.getPistolCount(); ++i)
+		{
+			let gun = GHAGFloatingGun(gardie.floatGuns[i]);
+			gun.A_NullTarget();
 		}
 	}
 }

@@ -12,7 +12,7 @@ Class GHAGMegasphere : Megasphere replaces Megasphere
 	Default
 	{
 		+FloatBob;
-		Inventory.PickupMessage "Used a Full Restore!";
+		Inventory.PickupMessage "Megasphere!";
 	}
 	states 
 	{

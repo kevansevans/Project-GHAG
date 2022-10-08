@@ -4,6 +4,7 @@ Class WeaponPickup : Inventory
 	{
 		+Bright;
 		+FloatBob;
+		+DontGib;
 		+Inventory.AlwaysPickup;
 		Inventory.MaxAmount 4;
 	}

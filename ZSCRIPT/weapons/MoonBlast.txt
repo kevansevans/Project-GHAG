@@ -86,7 +86,7 @@ Class MoonBlastGun : PokemonMove
 		A_RailAttack(512 + (512 * modifier), 0, false, "D56671", "BADBB2", RGF_SILENT | RGF_NOPIERCING | RGF_FULLBRIGHT, 0, "", 0, 0, 0, 20);
 		A_AlertMonsters();
 		
-		gardie.subtractAnger(100);
+		gardie.subtractAnger(200);
 	}
 }
 

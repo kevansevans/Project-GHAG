@@ -73,25 +73,29 @@ Class Thunderbolt : PokemonMove
 			{
 				let bolt = ThunderboltSpawn(Actor.spawn("ThunderboltSpawn", shot.hitLocation));
 			}
-			Gardevoir(self).subtractAnger(300);
+			Gardevoir(self).subtractAnger(150);
 		}
 	}
 }
 
 Class ThunderboltSpawn : Actor
 {
+	int frame;
+
 	States
 	{
 		Spawn:
 			TNT1 A 0 NoDelay
 			{
 				A_StartSound("Attack/Thunder", CHAN_AUTO);
+				invoker.frame = 0;
 			}
 			THUN ABCDE 2 
 			{
 				let gardie = Gardevoir(players[consoleplayer].mo);
 				double modifier = gardie.getRageModifier();
-				A_ThunderBlast(BF_AFFECTBOSSES | BF_NOIMPACTDAMAGE | BF_ONLYVISIBLETHINGS, Max(255 * modifier, 25), Max(255 * modifier, 64), Max(64 * modifier, 8));
+				A_ThunderBlast(BF_AFFECTBOSSES | BF_NOIMPACTDAMAGE | BF_ONLYVISIBLETHINGS, Max(255 * modifier, 25), (64 + (512 * modifier)) * (double(invoker.frame) / 5), Max(64 * modifier, 8));
+				++invoker.frame;
 			}
 			stop;
 	}

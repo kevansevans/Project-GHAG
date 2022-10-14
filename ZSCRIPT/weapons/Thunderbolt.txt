@@ -3,12 +3,18 @@ Class Thunderbolt : PokemonMove
 	Default
 	{
 		Weapon.Slotnumber 3;
+		
+		Tag "Thunderbolt";
+		Inventory.PickupMessage "Tada! Gardevoir learned \ckThunderbolt!"; // and thankfully didn't forget anything!
 	}
 	
 	int charge;
 	
 	States
 	{
+		Spawn:
+			TMEL A -1;
+			stop;
 		Select:
 			HAND A 1 A_Raise();
 			Loop;

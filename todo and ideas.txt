@@ -3,8 +3,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 - Replace hud sprites with floating actors that point wherever player is pointing
-	- Later update
-	- Add CVARS that can adjust positioning of weapons for various monitor sizes.
 	
 - Heretic Support!
 	- Do not work on Heretic weapons until floating gun system is done
@@ -18,18 +16,22 @@
 	
 - Unlock moves as you get angrier
 	(Automatically unlocked)
-	- Slot 1: "Psycho Decimator" Purely telekinesis based attack that shoves and throws enemies around
+	- Slot 1: Megapunch
 	- Slot 2: Swift
 	(Unlocked at anger when it's equal to slot * 10)
 	- Slot 3: Thunder Bolt
 	- Slot 4: Psychic
-	- Slot 5: Focus Blast
+	- Slot 5: Icy Wind
 	- Slot 6: Will-O-Wisp
 	- Slot 7: Moon Blast
 	- Slot 8: Black Hole
-		
 	
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Bugs!
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
+- Fix teleporting rage
+	
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Polishing
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -8,6 +8,17 @@ Class GHAGEventHandler : EventHandler
 	
 	bool plasmaspawned;
 	
+	bool dropThunderbolt;
+	bool dropPsychic;
+	bool dropIcyWind;
+	
+	override void PlayerEntered(PlayerEvent event)
+	{
+		dropThunderbolt = players[event.PlayerNumber].mo.countInv('thunderbolt') == 0 ? false : true;
+		dropPsychic = players[event.PlayerNumber].mo.countInv('psychic') == 0 ? false : true;
+		dropIcyWind = players[event.PlayerNumber].mo.countInv('icywind') == 0 ? false : true;
+	}
+	
 	override void WorldThingSpawned(WorldEvent event)
 	{
 		if (Gardevoir(event.thing)) {
@@ -339,6 +350,31 @@ Class GHAGEventHandler : EventHandler
 			event.thing.target is 'Pod' ||
 			event.thing.target is 'GHAGChainRailMarker'
 			) {
+			
+			if (gardie.rageValue >= 300 && !dropThunderBolt && gardie.countInv("Thunderbolt") == 0)
+			{
+				let wep = event.thing.spawn('Thunderbolt', event.thing.pos);
+				wep.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
+				wep.A_SetPitch(random(80, 120));
+				dropThunderbolt = true;
+			}
+			
+			if (gardie.rageValue >= 400 && !dropPsychic && gardie.countInv("Psychic") == 0)
+			{
+				let wep = event.thing.spawn('Psychic', event.thing.pos);
+				wep.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
+				wep.A_SetPitch(random(80, 120));
+				dropPsychic = true;
+			}
+			
+			if (gardie.rageValue >= 600 && !dropIcyWind && gardie.countInv("IcyWind") == 0)
+			{
+				let wep = event.thing.spawn('IcyWind', event.thing.pos);
+				wep.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
+				wep.A_SetPitch(random(80, 120));
+				dropIcyWind = true;
+			}
+			
 			CatharsisBonus(event.thing);
 		}
 	}

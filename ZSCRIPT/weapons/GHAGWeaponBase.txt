@@ -129,6 +129,8 @@ Class PokemonMove : GHAGWeapon
 	Default
 	{
 		Weapon.SlotPriority 1;
+		Inventory.PickupSound "attack/LEARNED";
+		+FloatBob;
 	}
 }
 

@@ -206,7 +206,7 @@ Class SuperRailgunPickup : WeaponPickup
 {
 	Default
 	{
-		Inventory.PickupMessage "Seized a Super Railgun!";
+		Inventory.PickupMessage "Seized a PSY-BP12!";
 		Inventory.pickupsound "misc/w_pkup";
 	}
 

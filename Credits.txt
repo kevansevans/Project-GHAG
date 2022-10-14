@@ -11,9 +11,9 @@ Thanks you to the ZDoom Forum Discord, and those who were there to answer my que
 	weasel
 	Xaser
 	Agent_Ash
+	James "Jimmy" Paddock (for those brief play sessions you did)
 	
 (In order the help came to me)
-
 
 XDeath sprites
 	Links
@@ -54,11 +54,6 @@ fingered creature is actually pretty hard.
 
 Gardevoir player sprites were done the old school method. Bought a gardevoir
 model, took photos of it at various poses, then traced over them in Flash.
-
-Pistol pickup is (formerly) unreleased original pistol sprite for the Doom Beta by John Romero.
-
-Shotgun is based off of a Real Winchester 1912. This was my late Great Grandfather's
-shotgun, which eventually ended up in my Father's possesion.
 
 Gen 2 move sprites, for elemental punches:
 https://www.spriters-resource.com/game_boy_gbc/pokemongoldsilver/sheet/9087/

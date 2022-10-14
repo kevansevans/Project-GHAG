@@ -351,7 +351,7 @@ Class GHAGEventHandler : EventHandler
 			event.thing.target is 'GHAGChainRailMarker'
 			) {
 			
-			if (gardie.rageValue >= 300 && !dropThunderBolt && gardie.countInv("Thunderbolt") == 0)
+			if (gardie.rageLimit >= 300 && !dropThunderBolt && gardie.countInv("Thunderbolt") == 0)
 			{
 				let wep = event.thing.spawn('Thunderbolt', event.thing.pos);
 				wep.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
@@ -359,7 +359,7 @@ Class GHAGEventHandler : EventHandler
 				dropThunderbolt = true;
 			}
 			
-			if (gardie.rageValue >= 400 && !dropPsychic && gardie.countInv("Psychic") == 0)
+			if (gardie.rageLimit >= 400 && !dropPsychic && gardie.countInv("Psychic") == 0)
 			{
 				let wep = event.thing.spawn('Psychic', event.thing.pos);
 				wep.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
@@ -367,7 +367,7 @@ Class GHAGEventHandler : EventHandler
 				dropPsychic = true;
 			}
 			
-			if (gardie.rageValue >= 600 && !dropIcyWind && gardie.countInv("IcyWind") == 0)
+			if (gardie.rageLimit >= 600 && !dropIcyWind && gardie.countInv("IcyWind") == 0)
 			{
 				let wep = event.thing.spawn('IcyWind', event.thing.pos);
 				wep.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);

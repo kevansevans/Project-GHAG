@@ -328,6 +328,10 @@ Class Gardevoir : PlayerPawn
 				v_dashed = false;
 			} else if (buttons & BT_Jump) {
 				self.bNoGravity = true;
+				if (self.vel.z <= 1.0)
+				{
+					self.bFly = true;
+				}
 			}
 			
 			if (!(buttons & BT_Speed) && !(buttons & BT_Jump))
@@ -637,7 +641,7 @@ Class Gardevoir : PlayerPawn
 			}
 			else if (bNoGravity)
 			{
-				Vel.Z = 3.;
+				//Vel.Z = 3.;
 			}
 			else if (player.onground && player.jumpTics == 0)
 			{

@@ -3,10 +3,11 @@ Class GardevoirDoom : Gardevoir
 	default {
 	
 		Player.DisplayName "Doom";
-	
+		
 		Player.StartItem "GHAGPistol";
 		Player.StartItem "GHAGPistolOverlay";
 		Player.StartItem "Swift";
+		Player.StartItem "MegaPunch";
 		Player.StartItem "Clip", 100;
 		Player.StartItem "Shell", 0;
 		Player.StartItem "RocketAmmo", 0;

@@ -6,17 +6,31 @@ Class GHAGEventHandler : EventHandler
 	
 	bool mapHasMinimalSecrets;
 	
-	bool plasmaspawned;
+	bool bonus_one;
+	bool bonus_two;
+	bool bonus_three;
+	bool bonus_gun;
 	
+	bool dropShotgun;
+	bool dropChaingun;
 	bool dropThunderbolt;
 	bool dropPsychic;
 	bool dropIcyWind;
+	bool dropMoonblast;
 	
 	override void PlayerEntered(PlayerEvent event)
 	{
+		gardie = Gardevoir(players[event.playernumber].mo);
+	
+		bonus_one = false;
+		bonus_two = false;
+		bonus_three = false;
+		bonus_gun = false;
+	
 		dropThunderbolt = players[event.PlayerNumber].mo.countInv('thunderbolt') == 0 ? false : true;
 		dropPsychic = players[event.PlayerNumber].mo.countInv('psychic') == 0 ? false : true;
 		dropIcyWind = players[event.PlayerNumber].mo.countInv('icywind') == 0 ? false : true;
+		dropMoonblast = players[event.PlayerNumber].mo.countInv('MoonBlastGun') == 0 ? false : true;
 	}
 	
 	override void WorldThingSpawned(WorldEvent event)
@@ -122,8 +136,9 @@ Class GHAGEventHandler : EventHandler
 			}
 			if (gun is "Shotgun")
 			{
-				if (gardie.countinv("GHAGShotgun") == 0) {
+				if (gardie.countinv("GHAGShotgun") == 0 && !dropShotgun) {
 					gun.spawn("ShotgunPickup", gun.pos);
+					dropShotgun = true;
 				} else {
 					gun.spawn("Shellbox", gun.pos);
 				}
@@ -140,8 +155,9 @@ Class GHAGEventHandler : EventHandler
 			}
 			if (gun is "Chaingun")
 			{
-				if (gardie.countinv("GHAGNailgun") == 0) {
+				if (gardie.countinv("GHAGNailgun") == 0 && !dropChaingun) {
 					gun.spawn("NailgunPickup", gun.pos);
+					dropChaingun = true;
 				} else {
 					gun.spawn("Clipbox", gun.pos);
 				}
@@ -351,39 +367,72 @@ Class GHAGEventHandler : EventHandler
 			event.thing.target is 'GHAGChainRailMarker'
 			) {
 			
-			if (gardie.rageLimit >= 300 && !dropThunderBolt && gardie.countInv("Thunderbolt") == 0)
+			if (gardie.RageConstant >= 300 && !dropThunderBolt && gardie.countInv("Thunderbolt") == 0)
 			{
-				let wep = event.thing.spawn('Thunderbolt', event.thing.pos);
-				wep.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
-				wep.A_SetPitch(random(80, 120));
+				spawnPokemonMove('Thunderbolt', event);
 				dropThunderbolt = true;
 			}
 			
-			if (gardie.rageLimit >= 400 && !dropPsychic && gardie.countInv("Psychic") == 0)
+			if (gardie.RageConstant >= 400 && !dropPsychic && gardie.countInv("Psychic") == 0)
 			{
-				let wep = event.thing.spawn('Psychic', event.thing.pos);
-				wep.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
-				wep.A_SetPitch(random(80, 120));
+				spawnPokemonMove('Psychic', event);
 				dropPsychic = true;
 			}
 			
-			if (gardie.rageLimit >= 600 && !dropIcyWind && gardie.countInv("IcyWind") == 0)
+			if (gardie.RageConstant >= 500 && !dropIcyWind && gardie.countInv("IcyWind") == 0)
 			{
-				let wep = event.thing.spawn('IcyWind', event.thing.pos);
-				wep.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
-				wep.A_SetPitch(random(80, 120));
+				spawnPokemonMove('IcyWind', event);
 				dropIcyWind = true;
+			}
+			
+			if (gardie.RageConstant >= 700 && !dropMoonblast && gardie.countInv("MoonBlastGun") == 0)
+			{
+				spawnPokemonMove('MoonBlastGun', event);
+				dropMoonblast = true;
+			}
+			
+			int killed = level.killed_monsters + 1;
+			double ratio = double(killed) / double(level.total_monsters);
+			
+			if (killed >= level.total_monsters && !bonus_gun)
+			{
+				SpawnBonusItem(event.thing.pos, true);
+				bonus_gun = true;
+			}
+			
+			if (ratio >= 0.25 && !bonus_one)
+			{
+				SpawnBonusItem(event.thing.pos);
+				bonus_one = true;
+			}
+			
+			if (ratio >= 0.5 && !bonus_two)
+			{
+				SpawnBonusItem(event.thing.pos);
+				bonus_two = true;
+			}
+			
+			if (ratio >= 0.75 && !bonus_three)
+			{
+				SpawnBonusItem(event.thing.pos);
+				bonus_three = true;
 			}
 			
 			CatharsisBonus(event.thing);
 		}
 	}
 	
+	void spawnPokemonMove(Name _move, WorldEvent event)
+	{
+		let wep = event.thing.spawn(_move, event.thing.pos);
+		wep.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
+		wep.A_SetPitch(random(80, 120));
+	}
+	
 	void CatharsisBonus(Actor thing) 
 	{
 		if (!thing) return;
 		
-		let gardie = Gardevoir(players[consoleplayer].mo);
 		if (!gardie) return;
 		
 		gardie.killInterupt = 35 + (35 * gardie.getRageModifier());
@@ -502,10 +551,9 @@ Class GHAGEventHandler : EventHandler
 		}
 	}
 	
-	override void PlayerSpawned(PlayerEvent player) {
-	
+	override void PlayerSpawned(PlayerEvent player) 
+	{
 		Gardie = Gardevoir(players[player.PlayerNumber].mo);
-		
 	}
 	
 	override void WorldLinePreActivated (WorldEvent event) 
@@ -518,46 +566,22 @@ Class GHAGEventHandler : EventHandler
 	
 	override void WorldLoaded(WorldEvent event)
 	{
+		gardie = Gardevoir(players[consoleplayer].mo);
+	
 		if (gardie) {
 			gardie.initFloatWeapons();
 			gardie.updateWeapons = true;
 		}
-	
-		numSecrets = 0;
-		mapHasMinimalSecrets = true;
-		for (int i = 0; i < level.Sectors.Size(); i++)
-		{
-			if (level.sectors[i].isSecret())
-			{
-				++numSecrets;
-			}
-		}
-		
-		if (numSecrets == 0)
-		{
-			//Free candybar to make sure anger scales with custom maps
-			RageCandyBar(Actor.spawn('RageCandyBar')).touch(gardie);
-		}
-		else
-		{
-			int secCount = 0;
-			for (int i = 0; i < level.Sectors.Size(); i++)
-			{
-				if (level.sectors[i].isSecret())
-				{
-					let c = level.Sectors[i].centerspot;
-					if (level.IsPointInLevel((c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c))))
-					{
-						SpawnBonusItem(c.x, c.y, level.Sectors[i].floorplane.ZAtPoint(c), secCount == 1);
-					}
-					if (level.levelnum != 1) ++secCount;
-				}
-			}
-		}
 	}
 	
-	void SpawnBonusItem(double _x, double _y, double _z, bool _gun)
+	void SpawnBonusItem(Vector3 _pos, bool _gun = false)
 	{
+		double _x = _pos.x;
+		double _y = _pos.y;
+		double _z = _pos.z;
+		
+		if (!gardie) console.printf('Player is undefined!');
+	
 		int limit = GameInfo.GameType == 1 ? 4 : 2;
 		if (!_gun) Actor.spawn('RageCandyBar', (_x, _y, _z));
 		else
@@ -593,7 +617,8 @@ Class GHAGEventHandler : EventHandler
 			}
 			
 			if (gunlist.size()) winner = Name(gunlist[random(0, gunlist.size() - 1)]);
-			Actor.spawn(winner, (_x, _y, _z));
+			let item = Actor.spawn(winner, (_x, _y, _z));
+			item.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
 		}
 	}
 }

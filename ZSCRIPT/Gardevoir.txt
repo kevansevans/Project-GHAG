@@ -706,35 +706,6 @@ Class Gardevoir : PlayerPawn
 		
 	}
 	
-	override bool OnGiveSecret(bool print, bool playsound)
-	{
-		bool rtn = super.OnGiveSecret(print, playsound);
-		
-		//In the situation a sector fails to spawn a secret,
-		//we grant a rage candybar to compensate
-		if (self.curSector)
-		{
-			bool bonus = false;
-			Actor mo = self.curSector.thinglist;
-			while (mo)
-			{
-				let c = self.curSector.centerspot;
-				if (level.IsPointInLevel((c.x, c.y, self.curSector.floorplane.ZAtPoint(c))))
-				{
-					bonus = true;
-					break;
-				}
-				mo = mo.snext;
-			}
-			if (!bonus)
-			{
-				RageCandyBar(Actor.Spawn('RageCandyBar', self.pos)).touch(self);
-			}
-		}
-		
-		return rtn;
-	}
-	
 	//ty Cali: https://gist.github.com/caligari87/ca20c1547c76fb6f1999a2bfa952463f
 	bool KeyCheck(int toCheck, int checkType, PlayerPawn pointer) {
 	int b = pointer.player.cmd.buttons; int ob = pointer.player.oldbuttons;

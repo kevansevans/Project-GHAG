@@ -164,48 +164,53 @@ Class GHAGPistol : GHAGWeapon
 		
 		ThinkerIterator it = ThinkerIterator.Create("Actor");
 		Actor mo;
+		
 		while ( (mo = Actor(it.Next ())) )
 		{
-			console.printf('Enemy check');
-			if (!mo.bIsMonster) {
-				if (CommanderKeen(mo)) console.printf('Fails at monster');
-				continue;
-			}
-			if (mo.health <= 0) {
-				if (CommanderKeen(mo)) console.printf('Fails at health');
-				continue;
-			}
-			if (!mo.isVisible(self, true)) {
-				if (CommanderKeen(mo)) console.printf('Fails at sight');
-				continue;
-			}
-			if (invoker.targets.find(mo) != invoker.targets.size()) {
-				if (CommanderKeen(mo)) console.printf('Fails at list check');
-				continue;
-			}
+			if (!mo.bIsMonster) continue;
+			if (mo.health <= 0)continue;
+			if (!mo.isVisible(self, true)) continue;
+			if (invoker.targets.find(mo) != invoker.targets.size()) continue;
 			
-			double angle = (Gardevoir(invoker.owner).angleTo(mo) + self.angle) % 360;
-			double anglebonus = 135 * Gardevoir(self).getRageModifier();
-			if (angle < (self.angle % 360) - (45 + anglebonus) || angle > (self.angle % 360) + (45 + anglebonus)) continue;
+			double difference = AbsAngle(self.angle, angleTo(mo));
 			
-			invoker.targets.push(mo);
-		
-			if (invoker.targets.size() >= invoker.getPistolCount())
+			if (difference >= 45 + (135 * Gardevoir(self).getRageModifier())) continue;
+			
+			if (invoker.targets.size() != 0)
 			{
-				console.printf('' .. invoker.targets.size() .. ":" .. invoker.getPistolCount());
-				console.printf('fails at cap');
-				break;
+				for (int i = 0; i < invoker.getPistolCount(); ++i)
+				{
+					if (i >= invoker.targets.size()) 
+					{
+						invoker.targets.push(mo);
+						break;
+					}
+					
+					double distA = distance3D(invoker.targets[i]);
+					double distB = distance3D(mo);
+					
+					if (distB <= distA)
+					{
+						invoker.targets.insert(i, mo);
+						break;
+					}
+				}
+			} 
+			else 
+			{
+				invoker.targets.push(mo);
 			}
+			
+			if (invoker.targets.Size() > 4) invoker.targets.resize(4);
 		}
 		
 		if (invoker.targets.size() == 0) 
 		{	
-			console.printf('I am empty!');
 			A_NullTargets();
 			return false;
 		}
-		console.printf('Success!');
-		return false;
+		
+		return true;
 	}
 	
 	Action void A_FireTargets()

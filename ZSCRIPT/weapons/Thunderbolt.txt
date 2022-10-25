@@ -16,10 +16,10 @@ Class Thunderbolt : PokemonMove
 			TMEL A -1;
 			stop;
 		Select:
-			HAND A 1 A_Raise();
+			HAND A 1 A_GHAGRaise();
 			Loop;
 		Deselect:
-			HAND A 1 A_Lower();
+			HAND A 1 A_GHAGLower();
 			Loop;
 		Ready:
 			HAND A 1 {

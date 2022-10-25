@@ -7,12 +7,17 @@ Class MoonBlastGun : PokemonMove
 		+Weapon.NoAlert;
 		+Weapon.No_Auto_Switch;
 		Weapon.SelectionOrder 4000;
+		
+		Inventory.PickupMessage "Tada! Gardevoir learned \c[Pink]Moon Blast!"; // and thankfully didn't forget anything!
 	}
 	
 	int charge;
 	
 	States
 	{
+		Spawn:
+			TMFY A -1;
+			stop;
 		Select :
 			HAND A 1 
 			{

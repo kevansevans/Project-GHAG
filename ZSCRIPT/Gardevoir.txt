@@ -323,22 +323,15 @@ Class Gardevoir : PlayerPawn
 				shift_tic = -1;
 			}
 			
-			if (!(buttons & BT_Jump)) {
-				if (v_dashed) player.cheats &= ~CF_FROZEN;
-				v_dashed = false;
-			} else if (buttons & BT_Jump) {
+			if (buttons & BT_Jump) {
 				self.bNoGravity = true;
-				if (self.vel.z <= 1.0)
-				{
-					self.bFly = true;
-				}
+				self.bFly = true;
 			}
 			
-			if (!(buttons & BT_Speed) && !(buttons & BT_Jump))
+			else if (!(buttons & BT_Jump))
 			{
 				self.bFly = false;
 				self.bNoGravity = false;
-				self.forwardMove1 = 2;
 			}
 			
 			if (player.onGround && buttons & BT_Jump) jumped = true;
@@ -351,8 +344,7 @@ Class Gardevoir : PlayerPawn
 			if (shift_tic == -1) dash_timer = 0;
 			else
 			{
-				++dash_timer;
-				if (dash_timer >= 5 && dashed == false)
+				if (!dashed)
 				{
 					dashed = true;
 				
@@ -379,17 +371,13 @@ Class Gardevoir : PlayerPawn
 						
 						double thrust_x = speed * cos(theta);
 						double thrust_y = speed * sin(theta);
-						double thrust_z = speed * sin(self.pitch) * -1;
+						double thrust_z = speed * sin(self.pitch) * (buttons & BT_Back ? 1 : -1);
 						
 						self.vel.x = thrust_x;
 						self.vel.y = thrust_y;
 						self.vel.z = thrust_z;
 						
 						A_StartSound("dash/Start", CHAN_AUTO);
-						
-						self.bFly = true;
-						self.bNoGravity = true;
-						self.forwardMove1 = min(2 + (getRageModifier() * 2), 5);
 					}
 				} 
 			}

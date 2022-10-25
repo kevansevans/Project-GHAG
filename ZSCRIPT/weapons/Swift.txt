@@ -29,7 +29,7 @@ Class Swift : PokemonMove
 			Loop;
 		Ready :
 			SWFT ABCD 3 {
-				A_WeaponReady(WRF_ALLOWUSER1);
+				A_WeaponReady();
 			}
 			Loop;
 		Fire :

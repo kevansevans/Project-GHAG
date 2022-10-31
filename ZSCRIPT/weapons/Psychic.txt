@@ -20,7 +20,11 @@ Class Psychic : Pokemonmove
 			MPUN A 1 A_GHAGLower();
 			Loop;
 		Ready:
-			MPUN A 1 A_WeaponReady();
+			MPUN A 1 
+			{
+				A_WeaponReady();
+				A_Overlay(-1, "Ready.NoOverlay");
+			}
 			Loop;
 		Fire:
 			TNT1 A 0 A_StartSound("attack/PsychicCharge", CHAN_AUTO);
@@ -28,19 +32,40 @@ Class Psychic : Pokemonmove
 			{
 				double rngrange = 2;
 				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
+				A_Overlay(-1, "Fire.OverlayCharge");
+				A_OverlayFlags(-1, PSPF_FLIP | PSPF_MIRROR, true);
+				A_OverlayOffset(-1, -35 - random(-rngrange, rngrange), random(-rngrange, rngrange), WOF_INTERPOLATE);
 			}
 		Fire.Loop:
-			HAND J 1
+			HAND K 1
 			{
 				A_FireProjectile('PsychicMissile');
 				double rngrange = 2;
 				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
+				A_Overlay(-1, "Fire.OverlayMirror");
+				A_OverlayFlags(-1, PSPF_FLIP | PSPF_MIRROR, true);
+				A_OverlayOffset(-1, -35 - random(-rngrange, rngrange), random(-rngrange, rngrange), WOF_INTERPOLATE);
 				A_SetTics(Gardevoir(self).GetTicModifier(8, true));
 				Gardevoir(self).subtractanger(5);
 			}
-			HAND J 1;
+			HAND K 1
+			{
+				double rngrange = 2;
+				A_Overlay(-1, "Fire.OverlayMirror");
+				A_OverlayFlags(-1, PSPF_FLIP | PSPF_MIRROR, true);
+				A_OverlayOffset(-1, -35 - random(-rngrange, rngrange), random(-rngrange, rngrange), WOF_INTERPOLATE);
+			}
 			TNT1 A 0 A_Refire('Fire.Loop');
 			Goto Ready;
+		Fire.OverlayCharge:
+			HAND H 1;
+			stop;
+		Fire.OverlayMirror:
+			HAND K 1;
+			loop;
+		Ready.NoOverlay:
+			TNT1 A 1;
+			stop;
 	}
 }
 

@@ -20,13 +20,35 @@ Class IcyWind : PokemonMove
 			HAND A 1 A_GHAGLower();
 			Loop;
 		Ready:
-			HAND A 1 A_WeaponReady();
+			HAND A 1 
+			{
+				A_WeaponReady();
+				A_OverlayIce();
+			}
 			Loop;
 		Fire:
+			HAND H 10;
+			TNT1 A 0 A_ClearOverlays(-10, -1, false);
+		Fire.Loop:
 			TNT1 A 0 A_IcyWind();
-			HAND ABCDE 1;
-			TNT1 A 0 A_Refire();
+			HAND K 5;
+			TNT1 A 0 A_Refire('Fire.Loop');
 			goto Ready;
+		Ice.Overlay:
+			ICYW ABCB 3 A_SetTics(random(10, 20));
+			stop;
+	}
+	
+	Action Void A_OverlayIce()
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			int layer = (i + 1) * -1;
+			A_Overlay(layer, "Ice.Overlay", true);
+			A_OverlayPivot(layer);
+			A_OverlayOffset(layer, 210 + (15 * cos((120 * i) + gametic)), 100 + (15 * sin((120 * i) + gametic)));
+			A_OverlayScale(layer, 2, 2);
+		}
 	}
 	
 	Action void A_IcyWind()
@@ -37,7 +59,7 @@ Class IcyWind : PokemonMove
 		double range = 4;
 		for (int i = 0; i < count; ++i)
 		{
-			let crystal = A_FireProjectile('IcyWindProjectile');
+			let crystal = A_FireProjectile('IcyWindProjectile', 0, false, 5, 10);
 			crystal.Vel3DFromAngle(5 + (15 * modifier), self.angle + random(-range, range), self.pitch + random(-range, range));
 		}
 		Gardevoir(self).subtractAnger(10);

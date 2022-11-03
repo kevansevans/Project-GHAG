@@ -110,7 +110,14 @@ Class GHAGPlasmaRifle : GHAGWeapon
 			goto Ready;
 	}
 	
-	Action void A_PsychicPlasma() {
+	Action void A_PsychicPlasma() 
+	{
+	
+		bool consume = true;
+		double odds = Min(0.75 * Gardevoir(self).getRageModifier(), 0.75);
+		double rng = random(0, 100) / 100.0;
+		if (rng < odds) consume = false;
+	
 		for (int i = 0; i < invoker.getPlasmaCount(); ++i)
 		{
 			if (player == null)
@@ -122,8 +129,9 @@ Class GHAGPlasmaRifle : GHAGWeapon
 			if (gun == 2) x = -15;
 			else if (gun == 3) x = 20;
 			else if (gun == 4) x = -20;
-			if (i == 0) let _locPlasma = PlasmaBall(A_FireAimedProjectile("PlasmaBall", i == 0 ? true : false, x, gun > 2 ? 12 : 5));
-			else let _locPlasma = PlasmaBall(A_FireAimedProjectile("SilentPlasmaBall", i == 0 ? true : false, x, gun > 2 ? 12 : 5));
+			
+			if (i == 0) let _locPlasma = PlasmaBall(A_FireAimedProjectile("PlasmaBall", consume, x, gun > 2 ? 12 : 5));
+			else let _locPlasma = PlasmaBall(A_FireAimedProjectile("SilentPlasmaBall", false, x, gun > 2 ? 12 : 5));
 		}
 	}
 	

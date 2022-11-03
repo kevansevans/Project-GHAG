@@ -20,10 +20,12 @@ Class Psychic : Pokemonmove
 			MPUN A 1 A_GHAGLower();
 			Loop;
 		Ready:
+			TNT1 A 0 A_Overlay(-1, "Ready.NoOverlay");
+		Ready.Loop:
 			MPUN A 1 
 			{
 				A_WeaponReady();
-				A_Overlay(-1, "Ready.NoOverlay");
+				A_DrawPsychic();
 			}
 			Loop;
 		Fire:
@@ -31,6 +33,7 @@ Class Psychic : Pokemonmove
 			HAND HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH 1
 			{
 				double rngrange = 2;
+				A_DrawPsychic();
 				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
 				A_Overlay(-1, "Fire.OverlayCharge");
 				A_OverlayFlags(-1, PSPF_FLIP | PSPF_MIRROR, true);
@@ -47,10 +50,12 @@ Class Psychic : Pokemonmove
 				A_OverlayOffset(-1, -35 - random(-rngrange, rngrange), random(-rngrange, rngrange), WOF_INTERPOLATE);
 				A_SetTics(Gardevoir(self).GetTicModifier(8, true));
 				Gardevoir(self).subtractanger(5);
+				A_DrawPsychic();
 			}
 			HAND K 1
 			{
 				double rngrange = 2;
+				A_DrawPsychic();
 				A_Overlay(-1, "Fire.OverlayMirror");
 				A_OverlayFlags(-1, PSPF_FLIP | PSPF_MIRROR, true);
 				A_OverlayOffset(-1, -35 - random(-rngrange, rngrange), random(-rngrange, rngrange), WOF_INTERPOLATE);
@@ -66,6 +71,18 @@ Class Psychic : Pokemonmove
 		Ready.NoOverlay:
 			TNT1 A 1;
 			stop;
+		Ready.FloatLayer:
+			PSYC ABCDEFGHI 4 Bright;
+			Stop;
+	}
+	
+	Action Void A_DrawPsychic()
+	{
+		A_Overlay(-2, "Ready.FloatLayer", true);
+		A_OverlayOffset(-2, 160, 120);
+		A_OverlayPivot(-2);
+		A_OverlayScale(-2, 2, 2);
+		A_OverlayRotate(-2, 360 * sin(gametic));
 	}
 }
 

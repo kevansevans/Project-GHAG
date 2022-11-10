@@ -435,7 +435,7 @@ Class GHAGEventHandler : EventHandler
 		
 		if (!gardie) return;
 		
-		gardie.killInterupt = 35 + (35 * gardie.getRageModifier());
+		gardie.killInterupt = 35 + Int(35 * gardie.getRageModifier());
 		
 		int angerBonus = Max(int(thing.spawnHealth() / 5), 1);
 		int willBonus = int(AngerBonus / 10);

@@ -209,7 +209,7 @@ Class Gardevoir : PlayerPawn
 		return GetRageValue() * 0.001 * (v_dashed ? 3 : 1);
 	}
 	
-	double GetTicModifier(int tic, bool allowZero = false, int weight = -1) 
+	int GetTicModifier(int tic, bool allowZero = false, int weight = -1) 
 	{
 		int tics = weight == -1 ? tic : weight;
 		double value = tics * (1 - GetRageModifier());
@@ -218,7 +218,7 @@ Class Gardevoir : PlayerPawn
 		}
 		value = round(value);
 		if (weight != -1) value = min(tic, value);
-		return Max(value, 0);
+		return int(Max(value, 0));
 	}
 	
 	double GetDamageModifier(double damage)
@@ -244,7 +244,7 @@ Class Gardevoir : PlayerPawn
 			if (RageValue > RageConstant) RageValue = RageConstant;
 		}
 		
-		if (Gardevoir(source)) _locDamage *= 0.25;
+		if (Gardevoir(source)) _locDamage = Int(_locDamage * 0.25);
 		
 		if (_locDamage >= 5)
 		{

@@ -50,7 +50,7 @@ Class MoonBlastGun : PokemonMove
 				A_DrawMoonOverlay(true);
 				A_SetTics(Gardevoir(self).GetTicModifier(6));
 				++invoker.charge;
-				double rngrange = Max(20 * Max(invoker.charge / 1000, 0.01), 2);
+				int rngrange = Int(Max(20 * Max(invoker.charge / 1000, 0.01), 2));
 				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
 			}
 			TNT1 A 0 {
@@ -88,7 +88,7 @@ Class MoonBlastGun : PokemonMove
 		
 		A_QuakeEx(4, 4, 4, 25, 0, 64, "", QF_SCALEDOWN);
 		double modifier = Gardevoir(players[consoleplayer].mo).getRageModifier();
-		A_RailAttack(512 + (512 * modifier), 0, false, "D56671", "BADBB2", RGF_SILENT | RGF_NOPIERCING | RGF_FULLBRIGHT, 0, "", 0, 0, 0, 20);
+		A_RailAttack(512 + Int(512 * modifier), 0, false, "D56671", "BADBB2", RGF_SILENT | RGF_NOPIERCING | RGF_FULLBRIGHT, 0, "", 0, 0, 0, 20);
 		A_AlertMonsters();
 		
 		gardie.subtractAnger(200);

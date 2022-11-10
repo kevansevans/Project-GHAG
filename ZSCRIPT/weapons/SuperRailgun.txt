@@ -112,8 +112,8 @@ Class GHAGSuperRailgun : GHAGWeapon
 		if (selfangle < 0) selfangle += 360;
 		double offsetAngle = gunVector.x - selfangle;
 		
-		A_RailAttack(damage, distx - xModifier, true, "", "9933FF", RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', offsetAngle, 0, 0, 0, 0, 1.0, "None", disty);
-		A_RailAttack(damage, distx + xModifier, false, "", "9933FF", RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', offsetAngle, 0, 0, 0, 0, 1.0, "None", disty);
+		A_RailAttack(damage, Int(distx) - xModifier, true, "", "9933FF", RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', offsetAngle, 0, 0, 0, 0, 1.0, "None", Int(disty));
+		A_RailAttack(damage, Int(distx) + xModifier, false, "", "9933FF", RGF_EXPLICITANGLE | RGF_SILENT | RGF_NOPIERCING, 0, 'BulletPuff', offsetAngle, 0, 0, 0, 0, 1.0, "None", Int(disty));
 	}
 	
 	static Vector2 AnglePitchBetween(Vector3 posA, Vector3 posB) {
@@ -184,7 +184,7 @@ Class GHAGChainRailMarker : Actor
 					{
 						self.target = targets[random(0, targets.size() - 1)];
 						A_FaceTarget();
-						FireRailBeam(invoker.depth, invoker.chainDamage, limit * 4);
+						FireRailBeam(invoker.depth, int(invoker.chainDamage), limit * 4);
 					} 
 				}
 			}

@@ -35,7 +35,7 @@ Class Swift : PokemonMove
 		Fire :
 			TNT1 A 0 
 			{
-				int count = Min(50, 10 * Gardevoir(self).getRageModifier());
+				int count = Int(Min(50, 10 * Gardevoir(self).getRageModifier()));
 				
 				A_StartSound("attack/SWFTATTK", CHAN_WEAPON);
 				A_FireProjectile("SwiftProjectile");
@@ -72,7 +72,7 @@ Class SwiftProjectile : Actor
 	{
 		super.BeginPlay();
 		
-		Self.setDamage(10 + (40 * Gardevoir(players[consoleplayer].mo).getRageModifier()));
+		Self.setDamage(10 + Int(40 * Gardevoir(players[consoleplayer].mo).getRageModifier()));
 	}
 	
 	States 

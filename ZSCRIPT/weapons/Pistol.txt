@@ -228,7 +228,7 @@ Class GHAGPistol : GHAGWeapon
 			gun.SetStateLabel('PistolFire');
 			double pitch = GHAGFloatingGun.PitchTo(self, invoker.targets[prevIndex], 0.75);
 			double accuracy = Gardevoir(self).GetAccuracyModifier(4.3);
-			LineAttack(angleTo(invoker.targets[prevIndex]) + random(-accuracy, accuracy), 4096, pitch + random(-accuracy, accuracy), 8, 'Melee', 'BulletPuff', LAF_ISMELEEATTACK);
+			LineAttack(angleTo(invoker.targets[prevIndex]) + random(Int(-accuracy), Int(accuracy)), 4096, pitch + random(Int(-accuracy), Int(accuracy)), 8, 'Melee', 'BulletPuff', LAF_ISMELEEATTACK);
 			if (!GetCVar("sv_infiniteammo")) A_TakeInventory('Clip', 1);
 			A_StartSound("weapons/pistol", CHAN_WEAPON);
 		}

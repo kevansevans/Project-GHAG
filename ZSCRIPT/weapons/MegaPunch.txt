@@ -84,7 +84,7 @@ Class MegaPunch : PokemonMove
 		else
 		{
 			A_BlastLOS(BF_AFFECTBOSSES | BF_DONTWARN | 16, 255, 256 * Gardevoir(self).GetRageModifier(), 20 * Gardevoir(self).GetRageModifier(), pufftype, damage);
-			Self.A_Quake(32 + (Gardevoir(self).getRageModifier() * 64), max(3, 15 * Gardevoir(self).getRageModifier()), 0, 32, "");
+			Self.A_Quake(32 + Int(Gardevoir(self).getRageModifier() * 64), max(3, 15 * Int(Gardevoir(self).getRageModifier())), 0, 32, "");
 			if (lifesteal > 0 && !(t.linetarget.bDontDrain))
 			{
 				if (flags & CPF_STEALARMOR)
@@ -226,8 +226,8 @@ Class MegaPunch : PokemonMove
 	
 	Action void A_MegaPunch() 
 	{
-		Invoker.kickback = 150 + (500 * Gardevoir(self).GetRageModifier());
-		A_ExplosivePunch(80 + (160 * Gardevoir(self).GetRageModifier()), true, CPF_NOTURN, "MegaPuff", 64 + (64 * Gardevoir(self).GetRageModifier()), 0, 0, "", "attack/CONTACT");
+		Invoker.kickback = 150 + Int(500 * Gardevoir(self).GetRageModifier());
+		A_ExplosivePunch(80 + Int(160 * Gardevoir(self).GetRageModifier()), true, CPF_NOTURN, "MegaPuff", 64 + Int(64 * Gardevoir(self).GetRageModifier()), 0, 0, "", "attack/CONTACT");
 	}
 }
 

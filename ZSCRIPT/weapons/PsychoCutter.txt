@@ -212,7 +212,7 @@ Class GHAGPsychoProjectile : Actor
 	{
 		Super.BeginPlay();
 		A_SetRoll(random(0, 360));
-		bloodscale = lifespan = 5 + (10 * Gardevoir(players[consoleplayer].mo).GetRageModifier());
+		bloodscale = lifespan = 5 + Int(10 * Gardevoir(players[consoleplayer].mo).GetRageModifier());
 		Self.speed = 20 + (20 * Gardevoir(players[consoleplayer].mo).getRageModifier());
 	}
 	states
@@ -225,9 +225,9 @@ Class GHAGPsychoProjectile : Actor
 				if (Invoker.target)
 				{
 					if (Invoker.target.bIsMonster) {
-						pos_x = random(-(Invoker.target.radius / 2), Invoker.target.radius / 2);
-						pos_y = random(-(Invoker.target.radius / 2), Invoker.target.radius / 2);
-						pos_z = random(10, Invoker.target.height);
+						pos_x = random(int(-(Invoker.target.radius / 2)), int(Invoker.target.radius / 2));
+						pos_y = random(int(-(Invoker.target.radius / 2)), int(Invoker.target.radius / 2));
+						pos_z = random(10, int(Invoker.target.height));
 						return resolveState('Lacerate');
 					}
 				}

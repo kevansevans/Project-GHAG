@@ -166,9 +166,9 @@ Class BlackHoleProjectile : Actor
 		}
 		
 		if (glowy) {
-			glowy.args[0] -= (1 / (double(0x6A * 3 * 16)));
-			glowy.args[1] -= (1 / (double(0x6A * 3 * 16)));
-			glowy.args[2] -= (1 / (double(0x6A * 3 * 16)));
+			glowy.args[0] -= Int(1 / (double(0x6A * 3 * 16)));
+			glowy.args[1] -= Int(1 / (double(0x6A * 3 * 16)));
+			glowy.args[2] -= Int(1 / (double(0x6A * 3 * 16)));
 			glowy.SetOrigin(self.pos, true);
 			glowy.args[3] = charge * 4;
 		}
@@ -279,7 +279,7 @@ mixin class BlackHoleAttacks
 				if (mo.bIsMonster && mo.health > 0) {
 					mo.bNoFear = false;
 					mo.bFrightened = true;
-					mo.A_DamageSelf(abs((radius) - (distance3D(mo))), "none", flags);
+					mo.A_DamageSelf(Int(abs((radius) - (distance3D(mo)))), "none", flags);
 					if (gametic % 2 == 0 && mo.health > 0) mo.setStateLabel("Pain");
 				}
 				
@@ -326,7 +326,7 @@ mixin class BlackHoleAttacks
 				if (mo.bIsMonster) {
 					if (mo.bCorpse && distance3D(mo) <= 16) mo.destroy();
 					else if (mo.health > 0) {
-						mo.A_DamageSelf(50 * ((radius * 2) - distance3D(mo)), "none", flags);
+						mo.A_DamageSelf(50 * Int((radius * 2) - distance3D(mo)), "none", flags);
 						if (gametic % 2 == 0 && mo.health > 0) mo.setStateLabel("Pain");
 					} else {
 						if (mo.tics <= 0) {

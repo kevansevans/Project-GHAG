@@ -130,7 +130,10 @@ Class GHAGNailGun : GHAGWeapon
 		}
 	
 		let _locNails = GHAGNailProjectile(A_FireAimedProjectile("GHAGNailProjectile", true, pos.x, pos.y));
-		if (_locNails) _locNails.Vel3DFromAngle(60 + (40 * Min(2, Gardevoir(self).GetRageModifier())), _locNails.angle, _locNails.pitch);
+		if (_locNails) {
+			_locNails.Vel3DFromAngle(60 + (40 * Min(2, Gardevoir(self).GetRageModifier())), _locNails.angle, _locNails.pitch);
+			_locNails.BounceCount = Int(10 * Gardevoir(self).GetRageModifier()); 
+		}
 	}
 	
 	action Actor A_FireAimedProjectile(class<Actor> missiletype, bool useammo = true, double spawnofs_xy = 0, double spawnheight = 0, int flags = 0)
@@ -191,6 +194,12 @@ Class GHAGNailProjectile : Actor
 		Radius 3;
 		Height 3;
 		SeeSound "weapons/nailshot";
+		+ScreenSeeker;
+		+BounceOnWalls;
+		+BounceOnFloors;
+		+BounceOnCeilings;
+		BounceFactor 1;
+		WallBounceFactor 1;
 	}
 	
 	States

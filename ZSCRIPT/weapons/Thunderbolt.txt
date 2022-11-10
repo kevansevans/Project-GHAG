@@ -39,7 +39,7 @@ Class Thunderbolt : PokemonMove
 			THUN FGH 2
 			{
 				--invoker.charge;
-				double rngrange = 2;
+				int rngrange = 2;
 				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
 			}
 			TNT1 A 0 A_JumpIf(invoker.charge > 1, 'Fire.Loop');
@@ -201,7 +201,7 @@ Class ThunderboltSpawn : Actor
 			victim.bArmed = false; // Disarm
 			victim.DamageMobj(self, self, victim.health, 'Melee', DMG_FORCED|DMG_EXPLOSION);
 		} else {
-			victim.DamageMobj(self, Gardevoir(players[consoleplayer].mo), 128 + strength, "Explosive");
+			victim.DamageMobj(self, Gardevoir(players[consoleplayer].mo), 128 + Int(strength), "Explosive");
 			if (victim.health > 0) victim.SetStateLabel('Pain');
 		}
 	}

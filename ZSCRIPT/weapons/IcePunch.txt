@@ -226,7 +226,7 @@ Mixin Class IcePunch
 	Action void A_IcePunch() 
 	{
 		let gardie = Gardevoir(players[consoleplayer].mo);
-		A_ExplosivePunch(15 + (60 * gardie.GetRageModifier()), 0, true, "IcePuff", 32 + (16 * gardie.GetRageModifier()), 0, 0, "", "");
+		A_ExplosivePunch(15 + Int(60 * gardie.GetRageModifier()), 0, true, "IcePuff", 32 + Int(16 * gardie.GetRageModifier()), 0, 0, "", "");
 		invoker.hitline = null;
 	}
 	

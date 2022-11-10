@@ -32,7 +32,7 @@ Class Psychic : Pokemonmove
 			TNT1 A 0 A_StartSound("attack/PsychicCharge", CHAN_AUTO);
 			HAND HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH 1
 			{
-				double rngrange = 2;
+				int rngrange = 2;
 				A_DrawPsychic();
 				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
 				A_Overlay(-1, "Fire.OverlayCharge");
@@ -43,7 +43,7 @@ Class Psychic : Pokemonmove
 			HAND K 1
 			{
 				A_FireProjectile('PsychicMissile');
-				double rngrange = 2;
+				int rngrange = 2;
 				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
 				A_Overlay(-1, "Fire.OverlayMirror");
 				A_OverlayFlags(-1, PSPF_FLIP | PSPF_MIRROR, true);
@@ -54,7 +54,7 @@ Class Psychic : Pokemonmove
 			}
 			HAND K 1
 			{
-				double rngrange = 2;
+				int rngrange = 2;
 				A_DrawPsychic();
 				A_Overlay(-1, "Fire.OverlayMirror");
 				A_OverlayFlags(-1, PSPF_FLIP | PSPF_MIRROR, true);

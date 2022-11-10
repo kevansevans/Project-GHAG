@@ -1,0 +1,125 @@
+Class WillOWisp : PokemonMove
+{
+	Default
+	{
+		Weapon.SlotNumber 6;
+		
+		Tag "Will-O-Wisp";
+		Inventory.PickupMessage "Tada! Gardevoir learned \cxWill-O-Wisp!"; // and thankfully didn't forget anything!
+	}
+	
+	States
+	{
+		Spawn:
+			TMFR A -1;
+			Stop;
+		Select:
+			HAND I 1 A_GHAGRaise();
+			Loop;
+		Deselect:
+			HAND I 1 A_GHAGLower();
+			Loop;
+		Ready:
+			HAND I 1 {
+				A_WeaponReady();
+				A_Overlay(2, 'Fire.Overlay', true);
+				A_OverlayScale(2, 2.2, 2.2);
+				A_OverlayOffset(2, 250, 90);
+			}
+			Loop;
+		Fire:
+			TNT1 A 0 A_ClearOverlays(2, 3, false);
+			HAND H 10;
+		Fire.Loop:
+			HAND K 5 {
+				A_SetTics(int(max(Gardevoir(self).getTicModifier(10), 5)));
+				int rngrange = 2;
+				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
+			}
+			TNT1 A 0 A_WispAttack();
+			TNT1 A 0 A_Refire('Fire.Loop');
+			goto Ready;
+		Fire.Overlay:
+			WILL ABCD 4;
+			Loop;
+	}
+	
+	Action Void A_WispAttack()
+	{
+		int amount = int(10 + (20 * Gardevoir(self).getRageModifier()));
+		bool spawned;
+		A_StartSound("attack/WispSpawn", CHAN_AUTO);
+		for (int i = 0; i < amount; ++i)
+		{
+			let fire = WispSpinner(A_FireProjectile('WispSpinner', 0, false, 0, -40));
+			if (fire)
+			{
+				fire.gardie = Gardevoir(self);
+				fire.angleoffset = ((360.0 / double(amount)) * i) + ((i + 1) * random(10, 20));
+				fire.counter = (i % 2 == 0);
+				spawned = true;
+			}
+		}
+		
+		if (spawned) Gardevoir(self).subtractAnger(10);
+	}
+}
+
+Class WispSpinner : Actor
+{
+	Default
+	{
+		Projectile;
+		+NoGravity;
+		+Ripper;
+		Damage (3);
+		radius 8;
+		height 12;
+		Alpha 0.75;
+		RenderStyle "Translucent";
+	}
+	
+	Gardevoir gardie;
+	Double angleoffset;
+	Double startheight;
+	int distance;
+	bool counter;
+	
+	override void BeginPlay()
+	{
+		Super.BeginPlay();
+		distance = 64;
+		startheight = self.pos.z;
+	}
+	
+	override void Tick()
+	{
+		Super.tick();
+		
+		A_Spin();
+	}	
+	
+	States
+	{
+		Spawn:
+			WILL ABCD 2;
+			Loop;
+	}
+	
+	Action Void A_Spin()
+	{
+		let gardie = invoker.gardie;
+		int dist = (invoker.distance += 5);
+		
+		double newX = (dist * cos(invoker.angleoffset + (gametic * (invoker.counter == true ? -2 : 2)))) + gardie.pos.x;
+		double newY = (dist * sin(invoker.angleoffset + (gametic * (invoker.counter == true ? -2 : 2)))) + gardie.pos.y;
+		double newZ = invoker.startheight + (32 * abs(sin(invoker.angleoffset + (gametic * (invoker.counter == true ? -2 : 2)))));
+		
+		self.setOrigin((newX, newY, newZ), true);
+	}
+	
+	//Thank you Cali
+	Action double DampedSpring(double p, double r, double v, double k, double d) {
+		return -(d * v) - (k * (p - r));
+	}
+}

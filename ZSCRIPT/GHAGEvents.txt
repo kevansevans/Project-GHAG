@@ -16,6 +16,7 @@ Class GHAGEventHandler : EventHandler
 	bool dropThunderbolt;
 	bool dropPsychic;
 	bool dropIcyWind;
+	bool dropWillOWisp;
 	bool dropMoonblast;
 	
 	override void PlayerEntered(PlayerEvent event)
@@ -30,6 +31,7 @@ Class GHAGEventHandler : EventHandler
 		dropThunderbolt = players[event.PlayerNumber].mo.countInv('thunderbolt') == 0 ? false : true;
 		dropPsychic = players[event.PlayerNumber].mo.countInv('psychic') == 0 ? false : true;
 		dropIcyWind = players[event.PlayerNumber].mo.countInv('icywind') == 0 ? false : true;
+		dropWillOWisp = players[event.PlayerNumber].mo.countInv('WillOWisp') == 0 ? false : true;
 		dropMoonblast = players[event.PlayerNumber].mo.countInv('MoonBlastGun') == 0 ? false : true;
 	}
 	
@@ -383,6 +385,12 @@ Class GHAGEventHandler : EventHandler
 			{
 				spawnPokemonMove('IcyWind', event);
 				dropIcyWind = true;
+			}
+			
+			if (gardie.RageConstant >= 600 && !dropWillOWisp && gardie.countInv("WillOWisp") == 0)
+			{
+				spawnPokemonMove('WillOWisp', event);
+				dropWillOWisp = true;
 			}
 			
 			if (gardie.RageConstant >= 700 && !dropMoonblast && gardie.countInv("MoonBlastGun") == 0)

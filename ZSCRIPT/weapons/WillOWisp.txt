@@ -38,6 +38,7 @@ Class WillOWisp : PokemonMove
 			}
 			TNT1 A 0 A_WispAttack();
 			TNT1 A 0 A_Refire('Fire.Loop');
+			HAND H 10;
 			goto Ready;
 		Fire.Overlay:
 			WILL ABCD 4;
@@ -54,7 +55,6 @@ Class WillOWisp : PokemonMove
 			let fire = WispSpinner(A_FireProjectile('WispSpinner', 0, false, 0, -40));
 			if (fire)
 			{
-				fire.gardie = Gardevoir(self);
 				fire.angleoffset = ((360.0 / double(amount)) * i) + ((i + 1) * random(10, 20));
 				fire.counter = (i % 2 == 0);
 				spawned = true;
@@ -77,19 +77,21 @@ Class WispSpinner : Actor
 		height 12;
 		Alpha 0.75;
 		RenderStyle "Translucent";
+		DamageType "Fire";
 	}
 	
-	Gardevoir gardie;
+	Vector3 startpos;
 	Double angleoffset;
-	Double startheight;
 	int distance;
 	bool counter;
+	double startangle;
 	
 	override void BeginPlay()
 	{
 		Super.BeginPlay();
+		startpos = pos;
 		distance = 64;
-		startheight = self.pos.z;
+		startangle = players[consoleplayer].mo.angle;
 	}
 	
 	override void Tick()
@@ -97,6 +99,7 @@ Class WispSpinner : Actor
 		Super.tick();
 		
 		A_Spin();
+		angleoffset += 1;
 	}	
 	
 	States
@@ -108,18 +111,14 @@ Class WispSpinner : Actor
 	
 	Action Void A_Spin()
 	{
-		let gardie = invoker.gardie;
-		int dist = (invoker.distance += 5);
+		int dist = -32 + (invoker.distance += 5);
 		
-		double newX = (dist * cos(invoker.angleoffset + (gametic * (invoker.counter == true ? -2 : 2)))) + gardie.pos.x;
-		double newY = (dist * sin(invoker.angleoffset + (gametic * (invoker.counter == true ? -2 : 2)))) + gardie.pos.y;
-		double newZ = invoker.startheight + (32 * abs(sin(invoker.angleoffset + (gametic * (invoker.counter == true ? -2 : 2)))));
+		double newX = (dist * cos((invoker.angleoffset - invoker.startangle) * (invoker.counter == true ? -1 : 1))) + invoker.startpos.x;
+		double newY = (dist * sin((invoker.angleoffset - invoker.startangle) * (invoker.counter == true ? -1 : 1))) + invoker.startpos.y;
+		double newZ = invoker.startpos.z + (32 * abs(sin(invoker.angleoffset + (gametic * (invoker.counter == true ? -4 : 4)))));
 		
 		self.setOrigin((newX, newY, newZ), true);
-	}
-	
-	//Thank you Cali
-	Action double DampedSpring(double p, double r, double v, double k, double d) {
-		return -(d * v) - (k * (p - r));
+		
+		if (dist > 1024) A_FadeOut();
 	}
 }

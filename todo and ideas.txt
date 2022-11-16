@@ -2,17 +2,10 @@
 // To Do
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-- Replace hud sprites with floating actors that point wherever player is pointing
-	
 - Heretic Support!
 	- Do not work on Heretic weapons until floating gun system is done
 	- Rip sprites for cross iwad support
 		- Try best to investigate sprite replacements that aren't copyrighted
-	
-- Context Ping
-	- Decorative items should be thrown
-		- Hanging legs
-		- Torches and torch pikes
 	
 - Unlock moves as you get angrier
 	(Automatically unlocked)
@@ -24,7 +17,7 @@
 	- Slot 5: Icy Wind
 	- Slot 6: Will-O-Wisp
 	- Slot 7: Moon Blast
-	- Slot 8: Black Hole
+	- Slot 8: Black Hole <- WORK ON PICKUP!
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Bugs!
@@ -39,5 +32,5 @@
 - Better sounds (Like what?)
 - Better hand sprites for attacks
 - Make attacks "crunchier" (How?)
-- Player sprites
+
 	

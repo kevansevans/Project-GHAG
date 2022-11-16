@@ -34,8 +34,8 @@ Class Psychic : Pokemonmove
 			{
 				int rngrange = 2;
 				A_DrawPsychic();
-				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
 				A_Overlay(-1, "Fire.OverlayCharge");
+				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
 				A_OverlayFlags(-1, PSPF_FLIP | PSPF_MIRROR, true);
 				A_OverlayOffset(-1, -35 - random(-rngrange, rngrange), random(-rngrange, rngrange), WOF_INTERPOLATE);
 			}
@@ -44,8 +44,8 @@ Class Psychic : Pokemonmove
 			{
 				A_FireProjectile('PsychicMissile');
 				int rngrange = 2;
-				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
 				A_Overlay(-1, "Fire.OverlayMirror");
+				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
 				A_OverlayFlags(-1, PSPF_FLIP | PSPF_MIRROR, true);
 				A_OverlayOffset(-1, -35 - random(-rngrange, rngrange), random(-rngrange, rngrange), WOF_INTERPOLATE);
 				A_SetTics(Gardevoir(self).GetTicModifier(8, true));

@@ -1,20 +1,21 @@
-Class BlackHole : Weapon
+Class BlackHole : PokemonMove
 {
-	mixin BlackHoleAttacks;
-
 	Default
 	{
-		Tag "Black Hole";
 		Weapon.slotNumber 8;
 		+Weapon.Ammo_Optional;
 		+Weapon.No_Auto_Switch;
 		Weapon.SelectionOrder 5000;
+		+FloatBob;
+		
+		Tag "Black Hole";
+		Inventory.PickupMessage "\cmBlack Hole.\c- The Demonlitionist learned this from me.";
 	}
 	
 	int charge;
 	double zoom;
-	
 	PointLight glowy;
+	LightningFizzle fizzy;
 	
 	override void BeginPlay()
 	{
@@ -26,359 +27,357 @@ Class BlackHole : Weapon
 	
 	states
 	{
+		Spawn:
+			TMBH ABCDEDCB 5;
+			Loop;
 		Select:
-			MPUN A 1 A_Raise();
+			MPUN A 1 A_GHAGRaise();
 			Loop;
 		Deselect:
-			MPUN A 1 A_Lower();
+			MPUN A 1 A_GHAGLower();
 			Loop;
 		Ready:
 			MPUN A 1 A_WeaponReady();
 			Loop;
 		Fire:
-			MPUN A 1 
+			TNT1 A 0 A_StartSound("blackhole/POWERON", CHAN_WEAPON);
+		Fire.BlackHoleCharge:
+			HAND H 1;
+			HAND H 0 A_ChargeBlackHole();
+		Fire.release:
+			TNT1 A 0 A_ZoomFactor(1);
+			HAND K 48
 			{
-				if (Gardevoir(self).ragevalue <= 0 && invoker.charge <= 0)
-				{
-					return resolveState("Ready");
-				}
-				return resolveState(null);
+				A_Overlay(-1, "Fire.OverlayMirror");
+				A_OverlayFlags(-1, PSPF_FLIP | PSPF_MIRROR, true);
 			}
-			TNT1 A 0
-			{	
-				Gardevoir(self).chargingBlackHole = true;
-				if (invoker.charge <= 0) A_StartSound("blackhole/POWERON", CHAN_WEAPON);
-				if (!invoker.glowy) {
-					invoker.glowy = Pointlight(self.spawn("PointLight", self.pos));
-					invoker.glowy.bSubtractive = true;
-					invoker.glowy.bDontLightSelf = true;
-					invoker.glowy.bNoShadowMap = true;
-					invoker.glowy.args[0] = 0x6A * 3;
-					invoker.glowy.args[1] = 0x06 * 3;
-					invoker.glowy.args[2] = 0xAD * 3;
-					
-					A_Overlay(-1, "BlackHoleOverlay", false);
-					A_OverlayOffset(-1, 160, 140);
-					A_OverlayPivot(-1);
-				}
-				invoker.glowy.SetOrigin(self.pos, true);
-				invoker.glowy.args[3] = invoker.charge * 4;
-				
-				Self.bShootable = false;
-				if (!A_BlackHole()) {
-					double intensity = 10 * (double(invoker.charge) / 125);
-					double scale = round((0.1 + (intensity * 0.1) * 80)) / 100;
-					A_OverlayScale(-1, scale, scale);
-					A_OverlayOffset(-1, 160, 140);
-					A_QuakeEx(int(intensity), int(intensity), int(intensity), 25, 0, invoker.charge, "", QF_SCALEDOWN);
-					A_ZoomFactor(invoker.zoom -= 0.0025);
-					if (invoker.charge < 125) A_Refire();
-				}
-			}
-		Fire.Launch:
-			TNT1 A 0 {
-				A_StopSound(CHAN_WEAPON);
-				A_FireBlackHole();
-				A_Overlay(-1, "Clear");
-				invoker.glowy.destroy();
-				Self.bShootable = true;
-				Gardevoir(self).chargingBlackHole = false;
-			}
-			MPUN A 48 A_ZoomFactor(1);
 			goto Ready;
-		BlackHoleOverlay:
-			BKHL ABCDEFGHIJKLMN 4 Bright;
-			loop;
-		ClearOverlay:
+		Fire.HandOverlay:
+			HAND H 1;
+			stop;
+		Fire.ChargeBlackHole:
+			BLKH ABCDEFGHIJ 2 Bright;
+			Stop;
+		Fire.OverlayMirror:
+			HAND K 48;
 			stop;
 		
 	}
-
-	Action bool A_BlackHole()
-	{
-		if (Gardevoir(self).rageValue > 0)
-		{
-			invoker.charge += 1;
-			Gardevoir(self).subtractAnger(8);
-			A_BlackHoleRadialAttack(invoker.charge * 4);
-			return false;
-		} 
-		else if (Gardevoir(self).rageValue == 0 && invoker.charge > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
 	
-	Action void A_FireBlackHole()
+	Action State A_ChargeBlackHole()
 	{
-		let _locBlackHole = BlackHoleProjectile(SpawnPlayerMissile("BlackHoleProjectile"));
-		_locBlackHole.charge = invoker.charge;
-		_locBlackHole.suckRange = invoker.charge * 4;
+		invoker.charge += 10;
+	
+		int intensity = Int(10 * (double(invoker.charge) / 125));
+		double scale = round((0.1 + (intensity * 0.1) * 80)) / 1000;
+	
+		if (Gardevoir(self).getRageValue() > 0 && invoker.charge < 1000)
+		{
+			Gardevoir(self).subtractAnger(10);
+			
+			int rngrange = 2;
+			A_Overlay(-1, "Fire.HandOverlay");
+			A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
+			A_OverlayFlags(-1, PSPF_FLIP | PSPF_MIRROR, true);
+			A_OverlayOffset(-1, random(-rngrange, rngrange), random(-rngrange, rngrange), WOF_INTERPOLATE);
+			
+			A_ZoomFactor(invoker.zoom -= 0.0025);
+			
+			A_Overlay(-2, "Fire.ChargeBlackHole", true);
+			A_OverlayScale(-2, scale, scale);
+			A_OverlayOffset(-2, 160, 140);
+			A_OverlayPivot(-2);
+			A_QuakeEx(intensity, intensity, intensity, 25, 0, invoker.charge, "", QF_SCALEDOWN);
+			
+			if (!invoker.glowy) {
+				invoker.glowy = Pointlight(self.spawn("PointLight", self.pos));
+				invoker.glowy.bSubtractive = true;
+				invoker.glowy.bDontLightSelf = true;
+				invoker.glowy.bNoShadowMap = true;
+				invoker.glowy.args[0] = 0x6A * 3;
+				invoker.glowy.args[1] = 0x06 * 3;
+				invoker.glowy.args[2] = 0xAD * 3;
+			}
+			invoker.glowy.SetOrigin(self.pos, true);
+			invoker.glowy.args[3] = Int(invoker.charge * 0.25);
+			
+			if (!invoker.fizzy)
+			{
+				invoker.fizzy = LightningFizzle(Self.spawn('LightningFizzle', self.pos));
+			}
+			
+			return resolveState("Fire.BlackHoleCharge");
+		}
 		
 		invoker.charge = 0;
 		invoker.zoom = 1;
+		
+		let proj = SpawnPlayerMissile('BlackHoleProjectile', self.angle);
+		if (proj)
+		{
+			proj.A_SetScale(scale * 4);
+			BlackHoleProjectile(proj).glowy = invoker.glowy;
+			BlackHoleProjectile(proj).fizzy = invoker.fizzy;
+		}
+	
+		return resolveState(null);
 	}
 }
 
 Class BlackHoleProjectile : Actor
 {
-	mixin BlackHoleAttacks;
-
-	int charge;
-	double extra;
-	double suckRange;
-	double alpha;
-	PointLight glowy;
-	LightningFizzle fizzyA;
-	LightningFizzle fizzyB;
-	LightningFizzle fizzyC;
-	
-	default
+	Default
 	{
 		Radius 5;
 		Height 5;
-		Speed 10;
+		Speed 45;
 		Projectile;
 		+ThruActors;
+		RenderStyle "Translucent";
+		Alpha 0.9;
 	}
 	
-	override void Tick()
-	{
-		super.tick();
-		
-		if (self.vel.x == 0 && self.vel.y == 0) 
-		{
-			double decay = (1 / double(charge * 16));
-		
-			self.vel.z = 0;
-			A_SetRenderStyle(self.alpha, STYLE_Translucent);
-			self.alpha -= decay;
-			
-			if (self.alpha <= 0) 
-			{
-				glowy.destroy();
-				fizzyA.destroy();
-				fizzyB.destroy();
-				fizzyC.destroy();
-				self.destroy();
-			}
-		}
-		
-		if (glowy) {
-			glowy.args[0] -= Int(1 / (double(0x6A * 3 * 16)));
-			glowy.args[1] -= Int(1 / (double(0x6A * 3 * 16)));
-			glowy.args[2] -= Int(1 / (double(0x6A * 3 * 16)));
-			glowy.SetOrigin(self.pos, true);
-			glowy.args[3] = charge * 4;
-		}
-			
-		if (fizzyA && fizzyB && fizzyC)
-		{
-			fizzyA.setOrigin(self.pos, true);
-			fizzyB.setOrigin(self.pos, true);
-			fizzyC.setOrigin(self.pos, true);
-		}
-			
-	}
+	int life;
+	double strength;
+	double speed;
+	double range;
+	PointLight glowy;
+	LightningFizzle fizzy;
 	
 	override void BeginPlay()
 	{
-		super.BeginPlay();
-		
-		charge = 0;
-		suckRange = 0;
-		alpha = 1;
-		
-		glowy = Pointlight(self.spawn("PointLight", self.pos));
-		glowy.bSubtractive = true;
-		glowy.bDontLightSelf = true;
-		glowy.bNoShadowMap = true;
-		glowy.args[0] = 0x6A * 3;
-		glowy.args[1] = 0x06 * 3;
-		glowy.args[2] = 0xAD * 3;
-		
-		fizzyA = LightningFizzle(self.spawn("LightningFizzle", self.pos));
-		fizzyB = LightningFizzle(self.spawn("LightningFizzle", self.pos));
-		fizzyC = LightningFizzle(self.spawn("LightningFizzle", self.pos));
+		Super.BeginPlay();
+		life = 4096;
+		strength = -256;
+		speed = 256;
+		range = 1024;
 		
 		A_StartSound("blackhole/MACHAMB", CHAN_AUTO, CHANF_LOOPING);
 		A_StartSound("blackhole/ELECSUCK", CHAN_AUTO, CHANF_LOOPING);
 	}
 	
-	States 
+	override void Tick()
 	{
+		Super.tick();
+		
+		if (glowy)
+		{
+			glowy.SetOrigin(self.pos, true);
+		}
+		
+		if (fizzy)
+		{
+			fizzy.SetOrigin(self.pos, true);
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			BLKH ABCDEFGHIJ 1 Bright A_BlackHoleDamage;
+			Loop;
 		Death:
-		Spawn :
-			BKHL AABBCCDDEEFFGGHHIIJJKKLLMMNN 2 Bright {
-				A_SetScale(double(invoker.charge) / double(125), double(invoker.charge) / double(125));
-				double munch = A_BlackHoleRadialAttack((invoker.charge * 4) + invoker.extra);
-				if (munch > 0) {
-					invoker.extra += munch;
-					A_ResetBlackHole();
-				}
-			}
-		loop;
+			TNT1 A 0 A_QuakeEx(32, 32, 32, 35, 0, 4096);
+		DeathLoop:
+			BLKH ABCDEFGHIJ 1 Bright A_ImpactSuck();
+			loop;
+		ActualDeath:
+			BLKH ABCDEFGHIJ 1 Bright A_FadeOut();
+			loop;
 	}
 	
-	action void A_ResetBlackHole()
-	{
-		invoker.glowy.args[0] = 0x6A * 3;
-		invoker.glowy.args[1] = 0x06 * 3;
-		invoker.glowy.args[2] = 0xAD * 3;
-		invoker.alpha = 1;
-		A_SetRenderStyle(1.0, STYLE_Translucent);
-	}
-}
-
-mixin class BlackHoleAttacks
-{
-	action bool IgnoreMe(actor victim)
-	{
-	
-		if (victim.bIsMonster)
-		{
-			return false;
-		}
-		
-		if (victim is "Inventory")
-		{
-			if (Inventory(victim).owner is "PlayerPawn") return true;
-			else if (victim is "Key" || victim is "PowerupGiver") return true;
-			return false;
-		}
-		
-		return true;
-
-	}
-
-	action double A_BlackHoleRadialAttack(double radius = 255)
+	Action void A_BlackHoleDamage()
 	{
 		ThinkerIterator it = ThinkerIterator.Create("Actor");
 		Actor mo;
 		
-		double addedmass = 0;
+		while ( (mo = Actor(it.Next ())) )
+		{
+			if (distance3D(mo) > 256) continue;
+			if (mo.bIsMonster || mo.bMissile)
+			{
+				mo.A_DamageSelf(25);
+			}
+		}
 		
-		int flags = DMSS_FOILINVUL | DMSS_FOILBUDDHA | DMSS_NOPROTECT | DMSS_NOFACTOR;
+		let ball = self.spawn('BlackHoleTrail', self.pos);
+		ball.A_SetScale(self.scale.x);
+	}
+	
+	Action State A_ImpactSuck()
+	{
+		ThinkerIterator it = ThinkerIterator.Create("Actor");
+		Actor mo;
 		
 		while ( (mo = Actor(it.Next ())) )
 		{
-			//ignore critical classes.
-			if (ignoreMe(mo)) continue;
-			
-			//special code for icon of sin
-			if (mo is "BossBrain" && Distance3D(mo) < radius * 2 && isVisible(mo, true))
+			if (distance3D(mo) > invoker.range) continue;
+			if (mo is 'BlackHoleProjectile') continue;
+			if (mo is "LightningFizzle" || mo is "Fizzle") continue;
+			if (mo is "BaseParticle")
 			{
-				mo.A_DamageSelf(2, "none", flags);
-				continue;
+				A_BlackHoleSuck(mo, invoker.strength, invoker.speed); 
 			}
-			
-			if (Distance3D(mo) < radius * 4)
+			if (mo.bIsMonster || mo.bMissile)
 			{
-				A_BlackHoleSuck(mo, 64, -32);
-				if (mo.bIsMonster && mo.health > 0) {
-					mo.bNoFear = false;
-					mo.bFrightened = true;
-					mo.A_DamageSelf(Int(abs((radius) - (distance3D(mo)))), "none", flags);
-					if (gametic % 2 == 0 && mo.health > 0) mo.setStateLabel("Pain");
-				}
+				A_BlackHoleSuck(mo, invoker.strength, invoker.speed); 
 				
-				if (mo.bSolid && isVisible(mo, true) && !mo.bIsMonster) continue;
-			}
-			
-			if (Distance3D(mo) < radius * 3.5)
-			{
-				//This statement here helps improve performance among actors who are very likely to die
-				//Enemies here are extremely close to the event horizon AND WILL DIE, so to save on
-				//performance and ensure they don't hitch on each other, these flags are set to true
-				if (mo.bIsMonster && isVisible(mo, true)) {
-					mo.bThruActors = true;
-					mo.A_ChangeLinkFlags(false);
-				}
-			}
-			
-			if (Distance3D(mo) < radius * 2)
-			{
-				if (mo.bMissile) {
-					if (mo is "ArachnotronPlasma") {
-						mo.spawn("ArachnotronParticleProj", mo.pos);
-					} else if (mo is "BaronBall") {
-						mo.spawn("BruiserParticleProj", mo.pos);
-					} else if (mo is "CacodemonBall") {
-						mo.spawn("CacoParticleProj", mo.pos);
-					} else if (mo is "rocket") {
-						mo.spawn("RocketParticle", mo.pos);
-					} else if (mo is "FatShot") {
-						mo.spawn("FattyParticleProj", mo.pos);
-					} else if (mo is "RevenantTracer") {
-						mo.spawn("BonerParticleProj", mo.pos);
-					}
-					mo.destroy();
-					addedMass += 0.001;
-				}
-				if (Inventory(mo)) {
-					mo.touch(players[consoleplayer].mo);
-					if (mo) {
+				if (distance3D(mo) < invoker.range / 2)
+				{
+					if (mo.bMissile)
+					{
+						switch (mo.getClassName())
+						{
+							case 'ArachnotronPlasma':
+								mo.spawn("ArachnotronParticleProj", mo.pos);
+								break;
+							case 'BaronBall':
+								mo.spawn("BruiserParticleProj", mo.pos);
+								break;
+							case 'CacodemonBall':
+								mo.spawn("CacoParticleProj", mo.pos);
+								break;
+							case 'rocket':
+								mo.spawn("RocketParticle", mo.pos);
+								break;
+							case 'FatShot':
+								mo.spawn("FattyParticleProj", mo.pos);
+								break;
+							case 'RevenantTracer':
+								mo.spawn("BonerParticleProj", mo.pos);
+								break;
+						}
 						mo.destroy();
-						addedMass += 0.002;
+						invoker.life += 1;
 					}
-				}
-				if (mo.bIsMonster) {
-					if (mo.bCorpse && distance3D(mo) <= 16) mo.destroy();
-					else if (mo.health > 0) {
-						mo.A_DamageSelf(50 * Int((radius * 2) - distance3D(mo)), "none", flags);
-						if (gametic % 2 == 0 && mo.health > 0) mo.setStateLabel("Pain");
-					} else {
-						if (mo.tics <= 0) {
-							if (mo is "DoomImp")
+					else
+					{
+				
+						mo.A_DamageSelf(25);
+						if (invoker.speed < 0 && self.isVisible(mo, true))
+						{
+							if (!mo.bNoClip)
 							{
-								if (mo.health <= mo.gibhealth) mo.spawn("ImpParticleGib", mo.pos);
-								else mo.spawn("ImpParticle", mo.pos);
-							} else if (mo is "Arachnotron") {
-								mo.spawn("ArachnotronParticle", mo.pos);
-							} else if (mo is "Demon") {
-								mo.spawn("PinkyParticle", mo.pos);
-							} else if (mo is "HellKnight") {
-								mo.spawn("KnightParticle", mo.pos);
-							} else if (mo is "BaronOfHell") {
-								mo.spawn("BaronParticle", mo.pos);;
-							} else if (mo is "Cacodemon") {
-								mo.spawn("CacoParticle", mo.pos);
-							} else if (mo is "Cyberdemon") {
-								mo.spawn("CyberParticle", mo.pos);
-							} else if (mo is "ChaingunGuy") {
-								if (mo.health <= mo.gibhealth) mo.spawn("ChainParticleGib", mo.pos);
-								else mo.spawn("ChainParticle", mo.pos);
-							} else if (mo is "Fatso") {
-								mo.spawn("FattyParticle", mo.pos);
-							} else if (mo is "LostSoul") {
-								mo.spawn("SoulParticle", mo.pos);
-							} else if (mo is "PainElemental") {
-								mo.spawn("PainParticle", mo.pos);
-							} else if (mo is "Revenant") {
-								mo.spawn("BonerParticle", mo.pos);
-							} else if (mo is "ShotgunGuy") {
-								if (mo.health <= mo.gibhealth) mo.spawn("ShottyParticleGib", mo.pos);
-								else mo.spawn("ShottyParticle", mo.pos);
-							} else if (mo is "SpiderMastermind") {
-								mo.spawn("SpiderParticle", mo.pos);
-							} else if (mo is "WolfensteinSS") {
-								if (mo.health <= mo.gibhealth) mo.spawn("NaziParticleGib", mo.pos);
-								else mo.spawn("NaziParticle", mo.pos);
-							} else if (mo is "Zombieman") {
-								if (mo.health <= mo.gibhealth) mo.spawn("ZombieParticleGib", mo.pos);
-								else mo.spawn("ZombieParticle", mo.pos);
-							} else if (mo is "Archvile") {
-								mo.spawn("ArchvileParticle", mo.pos);
-							} 
-							addedmass += double(mo.mass) * 0.0002;
-							mo.destroy();
+								mo.bNoClip = true;
+								invoker.life += 10;
+							}
+						}
+					
+						if (mo.tics <= -1)
+						{
+							switch (mo.getClassName())
+							{
+								case 'DoomImp':
+									if (mo.health <= mo.gibhealth) mo.spawn("ImpParticleGib", mo.pos);
+									else mo.spawn("ImpParticle", mo.pos);
+									break;
+								case 'Arachnotron':
+									mo.spawn("ArachnotronParticle", mo.pos);
+									break;
+								case 'Demon':
+									mo.spawn("PinkyParticle", mo.pos);
+									break;
+								case 'HellKnight':
+									mo.spawn("KnightParticle", mo.pos);
+									break;
+								case 'BaronOfHell':
+									mo.spawn("BaronParticle", mo.pos);
+									break;
+								case 'Cacodemon':
+									mo.spawn("CacoParticle", mo.pos);
+									break;
+								case 'Cyberdemon':
+									mo.spawn("CyberParticle", mo.pos);
+									break;
+								case 'ChaingunGuy':
+									if (mo.health <= mo.gibhealth) mo.spawn("ChainParticleGib", mo.pos);
+									else mo.spawn("ChainParticle", mo.pos);
+									break;
+								case 'Fatso':
+									mo.spawn("FattyParticle", mo.pos);
+									break;
+								case 'LostSoul':
+									mo.spawn("SoulParticle", mo.pos);
+									break;
+								case 'PainElemental':
+									mo.spawn("PainParticle", mo.pos);
+									break;
+								case 'Revenant':
+									mo.spawn("BonerParticle", mo.pos);
+									break;
+								case 'ShotgunGuy':
+									if (mo.health <= mo.gibhealth) mo.spawn("ShottyParticleGib", mo.pos);
+									else mo.spawn("ShottyParticle", mo.pos);
+									break;
+								case 'SpiderMastermind':
+									mo.spawn("SpiderParticle", mo.pos);
+									break;
+								case 'WolfensteinSS':
+									if (mo.health <= mo.gibhealth) mo.spawn("NaziParticleGib", mo.pos);
+									else mo.spawn("NaziParticle", mo.pos);
+									break;
+								case 'Zombieman':
+									if (mo.health <= mo.gibhealth) mo.spawn("ZombieParticleGib", mo.pos);
+									else mo.spawn("ZombieParticle", mo.pos);
+									break;
+								case 'Archvile':
+									mo.spawn("ArchvileParticle", mo.pos);
+									break;
+							}
+							if (mo) mo.destroy();
 						}
 					}
 				}
 			}
+			
+			if (mo is "Inventory") {
+				if (mo is "Key") continue;
+				if (mo is "PowerUpGiver") continue;
+				
+				if (!mo.bNoClip && self.isVisible(mo, true))
+				{
+					mo.bNoClip = true;
+				}
+				
+				A_BlackHoleSuck(mo, invoker.strength, invoker.speed); 
+				
+				if (distance3D(mo) <= 64)
+				{
+					mo.touch(players[consoleplayer].mo);
+					if (mo) {
+						mo.destroy();
+					}
+				}
+			}
 		}
-		return addedmass;
+		
+		if (invoker.strength < 256)
+		{
+			invoker.strength += 1;
+		}
+			
+		if (invoker.speed > -96)
+		{
+			invoker.speed -= 8;
+		}
+		
+		if (invoker.range < 16384 && invoker.speed < 0.0)
+		{
+			invoker.range += 2;
+		}
+		
+		invoker.life -= 1;
+		
+		if (invoker.life > 1024) invoker.life = 1024;
+		
+		if (invoker.life <= 0)
+		{
+			if (invoker.glowy) invoker.glowy.destroy();
+			if (invoker.fizzy) invoker.fizzy.A_Clear();
+			return resolveState('ActualDeath');
+		}
+		
+		return resolveState(null);
 	}
 	
 	action Void A_BlackHoleSuck (Actor victim, double strength, double speed)
@@ -386,17 +385,71 @@ mixin class BlackHoleAttacks
 		double ang = AngleTo(victim);
 		Vector2 move = AngleToVector(ang, speed);
 		victim.Vel.XY = move;
-		victim.Vel.Z = 64. / victim.Mass;
+	}
+}
+
+Class BlackHoleTrail : Actor
+{
+	Default
+	{
+		+NoGravity;
+	}
+	
+	States
+	{
+		Spawn:
+			BLKH A 1 {
+				A_FadeOut();
+				A_SetScale(self.scale.x -= 0.1);
+			}
+			Loop;
 	}
 }
 
 Class LightningFizzle : Actor
+{
+	Array<Actor> fizzies;
+	
+	States
+	{
+		Spawn :
+			TNT1 A 1 NoDelay
+			{
+				invoker.fizzies.clear();
+				for (int i = 0; i < 5; ++i)
+				{
+					invoker.fizzies.push(self.spawn('Fizzle', self.pos));
+				}
+			}
+		SpawnLoop:
+			TNT1 A 1
+			{
+				for (int i = 0; i < invoker.fizzies.size(); ++i)
+				{
+						invoker.fizzies[i].setOrigin(self.pos, true);
+				}
+			}
+			loop;
+	}
+	
+	Action void A_Clear()
+	{
+		for (int i = 0; i < invoker.fizzies.size(); ++i)
+		{
+			invoker.fizzies[i].destroy();
+		}
+		self.destroy();
+	}
+}
+
+Class Fizzle : Actor
 {
 	default
 	{
 		+NoGravity;
 		+RollSprite;
 	}
+	
 	States
 	{
 		Spawn :
@@ -409,3 +462,4 @@ Class LightningFizzle : Actor
 			loop;
 	}
 }
+

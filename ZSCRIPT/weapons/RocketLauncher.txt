@@ -274,12 +274,12 @@ Class NameClass : Actor
 	static const string names[] =
 	{
 		"Joey", "Billy", "Kevy", "Kablooey", "Pill", "Martha", "Rachael", "Weasel", "Nash", "Emma",
-		"April", "Ghost", "Kekz", "Bob", "Jimmy", "Cali", "Kesha", "Gutawer", "Marisa", "Hugo",
+		"April", "Ghost", "Kekz", "Bob", "Jimmy-Bacon", "Cali", "Kesha", "Gutawer", "Marisa", "Hugo",
 		"Romero", "Carmack", "Adrian", "Tom", "Sandy", "American", "Kid Mystic", "Trouble", "Peace Keeper",
 		"Chocolate Thunder", "Vanilla Thunder", "Strawberry Thunder", "Pomegranate Fury", "Fuck you in particular",
 		"Death from above", "Oh shit, he", "ASSHAT", "ASSCLOWN", "ASSFART", "RED", "BLUE", "GREEN", "YELLOW", "GOLD", "SILVER",
 		"CRYSTAL", "Prof. Oak", "Prof. Elm", "Prof. Birch", "Prof. Rowan", "Prof. Juniper", "Prof. Sycamore", 
-		"Prof. Kukui", "Prof. Magnolia", "RUBY", "SAPPHIRE", "EMERALD", "DIAMOND", "PEARL", "PLATINUM", "BLACK", 
+		"Prof. Kukui", "Prof. Magnolia", "RUBY", "SAPPHIRE", "EMERALD", "DIAMOND", "PEARL", "PLATINUM", "BLACK", "SCARLET", "VIOLET",
 		"WHITE", "X", "Y", "SWORD", "SHIELD", "Explosive Diplomacy", "Diplomacy", "Zero Diplomacy", "Fuck you, Baltimore!",
 		"Zabivaka, no!", "BASTARD!", "I AM CALM!", "Crocket", "Screaming Eagles!", "The Original", "Stanley",
 		"Pikachu", "Shirely", "Surely", "Flynn", "Dacote", "Problem Solver", "Problem Causer", "9K38 Igla", "Bitterman",
@@ -306,13 +306,15 @@ Class NameClass : Actor
 		"Silence!", "Perfect IV", "Laser!", "Caution!", "Goodnight Everybody!", "Helloooooo Nurse!", "Love", "Heart",
 		"Brain", "Control", "CAFFEINATE!", "Wake up!", "Smack!", "That's great", "Fuck Hexen", "What is the time?",
 		"Archvile repellant", "Raw kit lawn chair", "Hydrate", "Posture check", "You humour", "Major Arlene", "Kaapeli", "Bridge Burner",
-		"Jimmy", "You let me complicate you", "Excuse me", "Ultimate Cup of Coffee", "Try Haxe!", "Bosh", "Bish", "Chaz", "Bailey",
+		"Jimmy Squared", "You let me complicate you", "Excuse me", "Ultimate Cup of Coffee", "Try Haxe!", "Bosh", "Bish", "Chaz", "Bailey",
 		"Coco", "Finn", "Perkele", "No niin", "Pee is stored in the rocket", "Rockets are stored in the balls",
 		"Here's lookin' at you", "Rocket Launcher", "Wake your psyche up", "Dig your anger up", "Delete This",
 		"Exterminate", "EXTERMINATUS", "TNT was a mistake", "BFG Division is overrated", "TOTTFISY is Overrated",
 		"Shannon Cannon", "BOOCH", "This is a stroberry!", "Spine breaker", "The Negotiator", "Kitanai yasai",
 		"Nan da kore!?", "Prepare for trouble!", "Banana Man", "BIMSNESS!", "TORNADO!", "Eyebrow plucker", "Beans",
-		"Give 'em the BEANS", "Vladimir Put-it-in", "Jolf", "Violence & Gore"
+		"Give 'em the BEANS", "Vladimir Put-it-in", "Jolf", "Violence & Gore", "Beef Whistler", "Harris", "Go chunt yourself",
+		"Alper", "Dunn", "Remmi", "Shakar", "Uncle Had", "The Double Duece", "Proverbial", "Spoon", "Sanya", "Velvetic", "Yugiboy",
+		"Large explosion hypothesis", "Blast Processing", "Missile toe", "boomshakalaka", "Energy egg"
 		
 	};
 

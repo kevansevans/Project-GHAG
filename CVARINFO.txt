@@ -1,11 +1,14 @@
 user noarchive cheat int ghagrage = -1;
 server noarchive latch cheat int shinyodds = -1;
-user noarchive cheat bool ghagcharon = false;
-user string ChainsawName = "Psycho Cutter";
-user string PistolName = "9mm Pistol";
-user string ShotgunName = "1912 Shotgun";
-user string NailgunName = "Nailgun";
-user bool sillyrocket = false;
-user string RailgunName = "PSY-BP12";
-user string PlasmaName = "Generic Energy Weapon";
+
+user string GHAGChainsawName = "Psycho Cutter";
+user string GHAGPistolName = "9mm Pistol";
+user string GHAGShotgunName = "1912 Shotgun";
+user string GHAGNailgunName = "Nailgun";
+user string GHAGRailgunName = "PSY-BP12";
+user string GHAGPlasmaName = "Generic Energy Weapon";
+
 user float ghaghudscale = 1;
+
+user bool GHAGtraditionalhud = false;
+user bool GHAGsillyrocket = false;

@@ -34,7 +34,7 @@ Class GHAGPlasmaRifle : GHAGWeapon
 	{
 		Super.tick();
 		
-		setTag(Cvar.findCvar("PlasmaName").getString());
+		setTag(Cvar.findCvar("GHAGPlasmaName").getString());
 	}	
 	
 	int getPlasmaCount()

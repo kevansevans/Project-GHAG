@@ -172,12 +172,12 @@ Class Gardevoir : PlayerPawn
 		charonmode = false;
 	}
 	
-	void subtractAnger(Int value)
+	void subtractAnger(Int value, bool drainage = false)
 	{
 		if (OverTheEdge) return;
 		
-		RageValue -= value;
-		if (RageValue < 0) RageValue = 0;
+		RageValue -= value * (rageValue < 0 ? 2 : 1);
+		if (RageValue < 0 && !drainage) RageValue = 0;
 	}
 	
 	void addAnger(Int value)
@@ -206,7 +206,7 @@ Class Gardevoir : PlayerPawn
 	
 	double GetRageModifier()
 	{
-		return GetRageValue() * 0.001 * (v_dashed ? 3 : 1);
+		return GetRageValue() * 0.001 * (v_dashed ? 3 : 1) * (rageValue < 0 ? 2 : 1);
 	}
 	
 	int GetTicModifier(int tic, bool allowZero = false, int weight = -1) 
@@ -281,19 +281,31 @@ Class Gardevoir : PlayerPawn
 			{
 				int draintic = int(100 / (rageValue / 10. / 2.));
 				int drainrate = 1;
-				if (ragevalue > 1000 && !overTheEdge)
+				
+				if (ragevalue < 0)
 				{
-					int rate = int((ragevalue - 1000) / 100 / 2);
-					drainrate += rate;
+					if (gametic % 3 == 0)
+					{
+						ragevalue += drainrate;
+						RageTimer = 0;
+					}
 				}
-				if (killInterupt > 0)
+				else
 				{
-					--killInterupt;
-				}
-				else if (RageTimer >= draintic) 
-				{
-					ragevalue -= drainrate;
-					RageTimer = 0;
+					if (ragevalue > 1000 && !overTheEdge)
+					{
+						int rate = int((ragevalue - 1000) / 100 / 2);
+						drainrate += rate;
+					}
+					if (killInterupt > 0)
+					{
+						--killInterupt;
+					}
+					else if (RageTimer >= draintic) 
+					{
+						ragevalue -= drainrate;
+						RageTimer = 0;
+					}
 				}
 			} 
 			else if (overTheEdge) 
@@ -315,6 +327,16 @@ Class Gardevoir : PlayerPawn
 			double theta = 0;
 			double speed = 45;
 			
+			if (buttons & BT_Crouch)
+			{
+				double velspeed = sqrt((vel.x * vel.x) + (vel.y * vel.y) + (vel.z * vel.z));
+				self.friction = 1 + (velspeed / 22 / 12);
+			}
+			else
+			{
+				self.friction = 1;
+			}
+			
 			if (buttons & BT_Speed && shift_tic == -1) {
 				shift_tic = gametic;
 				dashed = false;
@@ -324,6 +346,10 @@ Class Gardevoir : PlayerPawn
 			}
 			
 			if (buttons & BT_Jump) {
+				if (!self.bFly && buttons & BT_Crouch)
+				{
+					self.vel.z += 32;
+				}
 				self.bNoGravity = true;
 				self.bFly = true;
 			}
@@ -583,7 +609,7 @@ Class Gardevoir : PlayerPawn
 							break;
 					}
 				}
-			
+				
 				for (int i = 0; i < 4; ++i)
 				{
 					if (i < count) 
@@ -611,6 +637,53 @@ Class Gardevoir : PlayerPawn
 	//Thank you Cali
 	double DampedSpring(double p, double r, double v, double k, double d) {
 		return -(d * v) - (k * (p - r));
+	}
+	
+	
+	override void CheckCrouch(bool totallyfrozen)
+	{
+		let player = self.player;
+		UserCmd cmd = player.cmd;
+
+		if (cmd.buttons & BT_JUMP)
+		{
+			if (cmd.buttons & BT_Crouch && player.onground)
+			{
+				double velspeed = sqrt((vel.x * vel.x) + (vel.y * vel.y));
+				vel.z = velspeed;
+			}
+			cmd.buttons &= ~BT_CROUCH;
+		}
+		if (CanCrouch() && player.health > 0)
+		{
+			if (!totallyfrozen)
+			{
+				int crouchdir = player.crouching;
+
+				if (crouchdir == 0)
+				{
+					crouchdir = (cmd.buttons & BT_CROUCH) ? -1 : 1;
+				}
+				else if (cmd.buttons & BT_CROUCH)
+				{
+					player.crouching = 0;
+				}
+				if (crouchdir == 1 && player.crouchfactor < 1 && pos.Z + height < ceilingz)
+				{
+					CrouchMove(1);
+				}
+				else if (crouchdir == -1 && player.crouchfactor > 0.5)
+				{
+					CrouchMove(-1);
+				}
+			}
+		}
+		else
+		{
+			player.Uncrouch();
+		}
+
+		player.crouchoffset = -(ViewHeight) * (1 - player.crouchfactor);
 	}
 	
 	//From GZDoom.pk3, just removes the check to see if the level turns of jumping

@@ -21,18 +21,36 @@ Class GHAGEventHandler : EventHandler
 	
 	override void PlayerEntered(PlayerEvent event)
 	{
-		gardie = Gardevoir(players[event.playernumber].mo);
+		gardie = Gardevoir(players[consoleplayer].mo);
+		
+		if (level.levelNum == 999)
+		{
+			gardie.rageConstant = 940;
+			
+			bonus_one = true;
+			bonus_two = true;
+			bonus_three = true;
+			bonus_gun = true;
 	
-		bonus_one = false;
-		bonus_two = false;
-		bonus_three = false;
-		bonus_gun = false;
+			dropThunderbolt = true;
+			dropPsychic = true;
+			dropIcyWind = true;
+			dropWillOWisp = true;
+			dropMoonblast = true;
+		}
+		else
+		{
+			bonus_one = false;
+			bonus_two = false;
+			bonus_three = false;
+			bonus_gun = false;
 	
-		dropThunderbolt = players[event.PlayerNumber].mo.countInv('thunderbolt') == 0 ? false : true;
-		dropPsychic = players[event.PlayerNumber].mo.countInv('psychic') == 0 ? false : true;
-		dropIcyWind = players[event.PlayerNumber].mo.countInv('icywind') == 0 ? false : true;
-		dropWillOWisp = players[event.PlayerNumber].mo.countInv('WillOWisp') == 0 ? false : true;
-		dropMoonblast = players[event.PlayerNumber].mo.countInv('MoonBlastGun') == 0 ? false : true;
+			dropThunderbolt = players[consoleplayer].mo.countInv('thunderbolt') == 0 ? false : true;
+			dropPsychic = players[consoleplayer].mo.countInv('psychic') == 0 ? false : true;
+			dropIcyWind = players[consoleplayer].mo.countInv('icywind') == 0 ? false : true;
+			dropWillOWisp = players[consoleplayer].mo.countInv('WillOWisp') == 0 ? false : true;
+			dropMoonblast = players[consoleplayer].mo.countInv('MoonBlastGun') == 0 ? false : true;
+		}
 	}
 	
 	override void WorldThingSpawned(WorldEvent event)
@@ -361,7 +379,8 @@ Class GHAGEventHandler : EventHandler
 	//Killing an enemy will reset the anger delay timer.
 	override void WorldThingDied(WorldEvent event) 
 	{
-		if (!gardie) return;
+		gardie = Gardevoir(players[consoleplayer].mo);
+		
 		if (ExplosiveBarrel(event.thing)) return;
 		if (event.thing.target is 'PlayerPawn' ||
 			event.thing.target is 'ExplosiveBarrel' ||
@@ -441,7 +460,7 @@ Class GHAGEventHandler : EventHandler
 	{
 		if (!thing) return;
 		
-		if (!gardie) return;
+		gardie = Gardevoir(players[consoleplayer].mo);
 		
 		gardie.killInterupt = 35 + Int(35 * gardie.getRageModifier());
 		
@@ -564,11 +583,6 @@ Class GHAGEventHandler : EventHandler
 		Gardie = Gardevoir(players[player.PlayerNumber].mo);
 	}
 	
-	override void WorldLinePreActivated (WorldEvent event) 
-	{
-		if (!gardie) return;
-	}
-	
 	int numSecrets;
 	int weaponspawned;
 	
@@ -584,14 +598,12 @@ Class GHAGEventHandler : EventHandler
 	
 	void SpawnBonusItem(Vector3 _pos, bool _gun = false)
 	{
-		double _x = _pos.x;
-		double _y = _pos.y;
-		double _z = _pos.z;
+		gardie = Gardevoir(players[consoleplayer].mo);
 		
-		if (!gardie) console.printf('Player is undefined!');
+		console.printf(_gun == true ? 'true' : 'false');
 	
 		int limit = GameInfo.GameType == 1 ? 4 : 2;
-		if (!_gun) Actor.spawn('RageCandyBar', (_x, _y, _z));
+		if (!_gun) Actor.spawn('RageCandyBar', _pos);
 		else
 		{
 			Array<name> gunlist;
@@ -601,31 +613,50 @@ Class GHAGEventHandler : EventHandler
 			
 			if (gardie.countInv('GHAGPistol'))
 			{
-				if (gardie.countInv('GHAGPistolOverlay') < 4) gunlist.push(Int('SecretPistol'));
+				if (gardie.countInv('GHAGPistolOverlay') < 4) {
+					gunlist.push(Int('SecretPistol'));
+					console.printf('added pistol');
+				}
 			}
 			
 			if (gardie.countInv('GHAGShotgun'))
 			{
-				if (gardie.countInv('GHAGShotgunOverlay') < 4) gunlist.push(Int('SecretShotgun'));
+				if (gardie.countInv('GHAGShotgunOverlay') < 4) 
+				{
+					gunlist.push(Int('SecretShotgun'));
+					console.printf('added shotgun');
+				}
 			}
 			
 			if (gardie.countInv('GHAGNailgun'))
 			{
-				if (gardie.countInv('GHAGNailgunOverlay') < 4) gunlist.push(Int('SecretNailgun'));
+				if (gardie.countInv('GHAGNailgunOverlay') < 4)
+				{
+					gunlist.push(Int('SecretNailgun'));
+					console.printf('added pistol');
+				}
 			}
 			
 			if (gardie.countInv('GHAGPlasmaRifle'))
 			{
-				if (gardie.countInv('GHAGPlasmaOverlay') < 4) gunlist.push(Int('SecretPlasma'));
+				if (gardie.countInv('GHAGPlasmaOverlay') < 4) 
+				{
+					gunlist.push(Int('SecretPlasma'));
+					console.printf('added plasma');
+				}
 			}
 			
 			if (gardie.countInv('GHAGSuperRailgun'))
 			{
-				if (gardie.countInv('GHAGSuperRailgunOverlay') < 4) gunlist.push(Int('SecretRailgun'));
+				if (gardie.countInv('GHAGSuperRailgunOverlay') < 4) 
+				{
+					gunlist.push(Int('SecretRailgun'));
+					console.printf('added BP-12');
+				}
 			}
 			
-			if (gunlist.size()) winner = Name(gunlist[random(0, gunlist.size() - 1)]);
-			let item = Actor.spawn(winner, (_x, _y, _z));
+			if (gunlist.size() != 0) winner = Name(gunlist[random(0, gunlist.size() - 1)]);
+			let item = Actor.spawn(winner, _pos);
 			item.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
 		}
 	}

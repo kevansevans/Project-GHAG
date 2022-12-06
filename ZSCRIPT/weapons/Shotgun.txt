@@ -25,6 +25,14 @@ Class GHAGShotgun : GHAGWeapon
 		super.beginPlay();
 	}
 	
+	override void tick()
+	{
+		Super.tick();
+		
+		setTag(Cvar.findCvar("GHAGShotgunName").getString());
+		//setTag('Yar har har');
+	}
+	
 	states
 	{
 		Select:

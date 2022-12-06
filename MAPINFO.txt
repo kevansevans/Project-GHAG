@@ -27,13 +27,22 @@ DoomEdNums
   11009 = RageCandyBar
   11010 = QuickieBarrel
   11011 = MagicBerserk
+  
+  12001 = Thunderbolt
+  12002 = Psychic
+  12003 = IcyWind
+  12004 = WillOWisp
+  12005 = MoonblastGun
+  12006 = BlackHole
 }	
 
 episode TUT01
 {
 	name = "GHAG Tutorial"
+	NoSkillMenu
 }
 map TUT01 "GHAG Tutorial"
 {
 	next = "EndGame1"
+	LevelNum = 999
 }

@@ -396,7 +396,7 @@ Class GHAGStatus : BaseStatusBar
 		let gardie = Gardevoir(CPlayer.mo);
 		if (!gardie) return "I'm so angry, I simply do not exist!";
 		
-		if (Gardie.RageValue < 0) return "your turn will come....";
+		if (Gardie.RageValue < 0) return "Drained";
 		if (Gardie.overTheEdge) {
 			switch(GameInfo.GameType)
 			{

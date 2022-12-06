@@ -18,7 +18,7 @@ Class ExtraPsychoCutter : CustomInventory replaces Chainsaw
 	default
 	{
 		+Floatbob;
-		Inventory.PickupMessage "You want to make it personal, Mr. Wang?";
+		Inventory.PickupMessage "Gardevoir can't learn Psycho Cutter? Hahahahaha!";
 		Inventory.pickupsound "misc/w_pkup";
 	}
 	States
@@ -94,7 +94,7 @@ Class GHAGPsychoCutter : GHAGWeapon
 	{
 		Super.tick();
 		
-		setTag(Cvar.findCvar("ChainsawName").getString());
+		setTag(Cvar.findCvar("GHAGChainsawName").getString());
 	}
 	
 	int getChainsawCount()
@@ -198,7 +198,7 @@ Class GHAGPsychoProjectile : Actor
 		+SkyExplode;
 		+DontGib;
 		Projectile;
-		Speed 20;
+		Speed 40;
 		DropItem "ExtraPsychoCutterDrop";
 	}
 	

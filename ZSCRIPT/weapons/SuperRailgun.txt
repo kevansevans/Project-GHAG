@@ -19,7 +19,7 @@ Class GHAGSuperRailgun : GHAGWeapon
 	{
 		Super.tick();
 		
-		setTag(Cvar.findCvar("RailgunName").getString());
+		setTag(Cvar.findCvar("GHAGRailgunName").getString());
 	}
 	
 	States

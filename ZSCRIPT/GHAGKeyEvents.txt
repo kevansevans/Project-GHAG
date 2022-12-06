@@ -30,25 +30,6 @@ class GHAGKeyEvents : EventHandler
 				
 				if (shot.HitLine)
 				{
-					if (shot.HitActor)
-					{
-						if (shot.HitActor is "Inventory")
-						{
-							blast.getRadialActors();
-							list.copy(blast.list);
-							
-							if (list.size() != 0)
-							{
-								blast.startpulling = true;
-								return;
-							}
-						}
-						else if (shot.hitactor is "ExplosiveBarrel" || shot.hitactor is "pod")
-						{
-							
-						}
-					}
-				
 					if (shot.hitline.special != 243 && shot.hitline.special != 244)
 					{
 						int orgSpeed = shot.HitLine.args[1];
@@ -61,6 +42,18 @@ class GHAGKeyEvents : EventHandler
 						} else {
 							shot.HitLine.args[1] = orgSpeed;
 						}
+					}
+				}
+				
+				else if (shot.HitActor)
+				{
+					if (shot.hitActor is "ExplosiveBarrel" || shot.hitActor is "pod")
+					{
+						blast.list.clear();
+						blast.list.push(shot.HitActor);
+						blast.startPulling = true;
+						
+						return;
 					}
 				}
 				

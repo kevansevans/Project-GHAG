@@ -41,7 +41,7 @@ Class GHAGRocketLauncher : GHAGWeapon
 
 	States {
 		Ready:
-			HAND A 3 A_WeaponReady(WRF_AllowReload);
+			HAND A 3 A_WeaponReady(WRF_AllowReload | WRF_ALLOWUSER1);
 			Loop;
 		Deselect:
 			HAND A 1 A_GHAGLower();
@@ -160,7 +160,9 @@ Class GHAGRocketLauncher : GHAGWeapon
 		
 		let _locRocket = PsychicRocket(SpawnPlayerMissile("PsychicRocket"));
 		if (_locRocket) {
-			_locRocket.Vel3DFromAngle(20 + (40 * Min(2, Gardevoir(self).GetRageModifier())), Gardevoir(self).angle, Gardevoir(self).pitch); 
+			double _locSpeed = 20 + Max((40 * Min(2, Gardevoir(self).GetRageModifier())), 5);
+			if (_locSpeed < 10) _locRocket.bNoGravity = false;
+			_locRocket.Vel3DFromAngle(_locSpeed, Gardevoir(self).angle, Gardevoir(self).pitch); 
 			_locRocket.SetDamage(20 + Int(80 * Gardevoir(self).GetRageModifier()));
 			_locRocket.modifier = Gardevoir(self).GetRageModifier();
 			if (Gardevoir(self).CountInv("PowerWeaponLevel2")) {
@@ -314,7 +316,7 @@ Class NameClass : Actor
 		"Nan da kore!?", "Prepare for trouble!", "Banana Man", "BIMSNESS!", "TORNADO!", "Eyebrow plucker", "Beans",
 		"Give 'em the BEANS", "Vladimir Put-it-in", "Jolf", "Violence & Gore", "Beef Whistler", "Harris", "Go chunt yourself",
 		"Alper", "Dunn", "Remmi", "Shakar", "Uncle Had", "The Double Duece", "Proverbial", "Spoon", "Sanya", "Velvetic", "Yugiboy",
-		"Large explosion hypothesis", "Blast Processing", "Missile toe", "boomshakalaka", "Energy egg"
+		"Large explosion hypothesis", "Blast Processing", "Missile toe", "boomshakalaka", "Energy egg", "Your turn will come..."
 		
 	};
 
@@ -344,7 +346,7 @@ Class NameClass : Actor
 	
 	string GetName() {
 	
-		if(!Cvar.findCvar("sillyrocket").getBool()) return "Rockets";
+		if(!Cvar.findCvar("GHAGsillyrocket").getBool()) return "Rockets";
 		
 		string rng_name = '[I am error]';
 		

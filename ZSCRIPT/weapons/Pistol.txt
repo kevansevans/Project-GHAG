@@ -41,7 +41,7 @@ Class GHAGPistol : GHAGWeapon
 	{
 		Super.Tick();
 		
-		setTag(Cvar.findCvar("PistolName").getString());
+		setTag(Cvar.findCvar("GHAGPistolName").getString());
 	}
 	
 	int getPistolCount()

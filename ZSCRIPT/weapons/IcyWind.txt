@@ -48,6 +48,7 @@ Class IcyWind : PokemonMove
 			A_OverlayPivot(layer);
 			A_OverlayOffset(layer, 210 + (15 * cos((120 * i) + gametic)), 100 + (15 * sin((120 * i) + gametic)));
 			A_OverlayScale(layer, 2, 2);
+			A_OverlayFlags(layer, PSPF_ADDBOB, false);
 		}
 	}
 	

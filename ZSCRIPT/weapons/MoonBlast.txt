@@ -36,7 +36,6 @@ Class MoonBlastGun : PokemonMove
 				invoker.charge == 0;
 				A_WeaponReady();
 				A_DrawMoonOverlay();
-				return resolveState(null);
 			}
 			Loop;
 		Fire :
@@ -61,14 +60,24 @@ Class MoonBlastGun : PokemonMove
 			TNT1 A 0 A_Refire();
 			goto Ready;
 		Moon.Charge:
-			MNBL IHGFEDCBA 1 A_SetTics(Gardevoir(self).GetTicModifier(6));
+			MNBL IHGFEDCBAAA 1 Bright A_SetTics(Gardevoir(self).GetTicModifier(6));
+			stop;
+		Moon.Idle:
+			MNBL A 1 Bright;
 			stop;
 	}
 	
 	Action void A_DrawMoonOverlay(bool charge = false)
 	{
-		if (!charge) A_ClearOverlays(-1, -1);
-		else if (charge) A_Overlay(-1, "Moon.Charge", true);
+		A_OverlayPivot(-1);
+	
+		if (!charge) {
+			A_Overlay(-1, "Moon.Idle", true);
+		}
+		else if (charge) 
+		{
+			A_Overlay(-1, "Moon.Charge", true);
+		}
 		
 		A_OverlayFlags(-1, PSPF_ADDBOB, false);
 		A_OverlayOffset(-1, 300, 64);

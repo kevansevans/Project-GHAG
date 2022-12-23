@@ -599,8 +599,6 @@ Class GHAGEventHandler : EventHandler
 	void SpawnBonusItem(Vector3 _pos, bool _gun = false)
 	{
 		gardie = Gardevoir(players[consoleplayer].mo);
-		
-		console.printf(_gun == true ? 'true' : 'false');
 	
 		int limit = GameInfo.GameType == 1 ? 4 : 2;
 		if (!_gun) Actor.spawn('RageCandyBar', _pos);
@@ -615,7 +613,6 @@ Class GHAGEventHandler : EventHandler
 			{
 				if (gardie.countInv('GHAGPistolOverlay') < 4) {
 					gunlist.push(Int('SecretPistol'));
-					console.printf('added pistol');
 				}
 			}
 			
@@ -624,7 +621,6 @@ Class GHAGEventHandler : EventHandler
 				if (gardie.countInv('GHAGShotgunOverlay') < 4) 
 				{
 					gunlist.push(Int('SecretShotgun'));
-					console.printf('added shotgun');
 				}
 			}
 			
@@ -633,7 +629,6 @@ Class GHAGEventHandler : EventHandler
 				if (gardie.countInv('GHAGNailgunOverlay') < 4)
 				{
 					gunlist.push(Int('SecretNailgun'));
-					console.printf('added pistol');
 				}
 			}
 			
@@ -642,7 +637,6 @@ Class GHAGEventHandler : EventHandler
 				if (gardie.countInv('GHAGPlasmaOverlay') < 4) 
 				{
 					gunlist.push(Int('SecretPlasma'));
-					console.printf('added plasma');
 				}
 			}
 			
@@ -651,7 +645,6 @@ Class GHAGEventHandler : EventHandler
 				if (gardie.countInv('GHAGSuperRailgunOverlay') < 4) 
 				{
 					gunlist.push(Int('SecretRailgun'));
-					console.printf('added BP-12');
 				}
 			}
 			

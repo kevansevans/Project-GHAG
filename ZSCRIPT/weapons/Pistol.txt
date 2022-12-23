@@ -237,6 +237,8 @@ Class GHAGPistol : GHAGWeapon
 	Action void A_NullTargets()
 	{
 		let gardie = Gardevoir(self);
+		
+		if (!gardie.floatGuns.size()) return;
 	
 		for (int i = 0; i < invoker.getPistolCount(); ++i)
 		{

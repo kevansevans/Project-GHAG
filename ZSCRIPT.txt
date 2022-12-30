@@ -48,15 +48,8 @@ version "4.10"
 #include "ZSCRIPT/weapons/black hole particles/BaseParticle.txt"
 #include "ZSCRIPT/effects/StatusEffects.txt"
 
-//XDeath demons, to really sell the damage you're doing
-#include "ZSCRIPT/monsters/XDeathDemon.txt"
-#include "ZSCRIPT/monsters/XDeathHellKnight.txt"
-#include "ZSCRIPT/monsters/XDeathArachnotron.txt"
-#include "ZSCRIPT/monsters/XDeathRevenant.txt"
-#include "ZSCRIPT/monsters/XDeathBaronOfHell.txt"
-#include "ZSCRIPT/monsters/XDeathArchvile.txt"
-#include "ZSCRIPT/monsters/XDeathCacodemon.txt"
-#include "ZSCRIPT/monsters/XDeathMancubus.txt"
+//XDeath magic that adds gibs without replacing demons
+#include "ZSCRIPT/monsters/XDeathHandler.txt"
 
 //Black hole includes
 //These were generated with a custom script I made in Haxe

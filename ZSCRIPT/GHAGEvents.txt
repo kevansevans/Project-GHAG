@@ -447,6 +447,57 @@ Class GHAGEventHandler : EventHandler
 			
 			CatharsisBonus(event.thing);
 		}
+		
+		if (event.thing.bIsMonster)
+		{
+			//Original code by Marisa Kirisame, used with permission
+			int gibhealth = event.Thing.GetGibHealth();
+			console.printf('' .. gibhealth);
+			bool gotgibbed = (	!event.Thing.bDONTGIB && 
+								(	(event.Inflictor && event.Inflictor.bEXTREMEDEATH) || 
+									(event.DamageSource && event.DamageSource.bEXTREMEDEATH) || 
+									(event.DamageType == 'Extreme') 
+									|| (event.Thing.Health < gibhealth)
+									|| (event.Thing.health == (gibhealth * -1) && event.Thing.Health < int(gibhealth / 4))
+								) 
+								&& (!event.Inflictor || !event.Inflictor.bNOEXTREMEDEATH) 
+								&& (!event.DamageSource || !event.DamageSource.bNOEXTREMEDEATH));
+		
+			if (gotGibbed)
+			{
+				console.printf('yarhar');
+				switch (event.thing.getClassName())
+				{
+					case 'Arachnotron':
+						XDeathHandler.assignGibState(event.thing, 'XDeathArachnotron');
+						break;
+					case 'Archvile':
+						XDeathHandler.assignGibState(event.thing, 'XDeathArchvile');
+						break;
+					case 'BaronOfHell':
+						XDeathHandler.assignGibState(event.thing, 'XDeathBaronOfHell');
+						break;
+					case 'Cacodemon':
+						XDeathHandler.assignGibState(event.thing, 'XDeathCacodemon');
+						break;
+					case 'Demon':
+					case 'Spectre':
+						XDeathHandler.assignGibState(event.thing, 'XDeathDemon');
+						break;
+					case 'HellKnight':
+						XDeathHandler.assignGibState(event.thing, 'XDeathHellKnight');
+						break;
+					case 'Fatso':
+						XDeathHandler.assignGibState(event.thing, 'XDeathMancubus');
+						break;
+					case 'Revenant':
+						XDeathHandler.assignGibState(event.thing, 'XDeathRevenant');
+						break;
+					default:
+						break;
+				}
+			}
+		}
 	}
 	
 	void spawnPokemonMove(Name _move, WorldEvent event)

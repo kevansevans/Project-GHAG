@@ -1,0 +1,101 @@
+//This is based on Marisa Kirisame's Gib handler, used with permission
+//https://github.com/OrdinaryMagician/swwmgzlib_m/blob/master/zscript/swwm_blod.zsc#L811
+
+//Disclaimer: This is an unsupported trick, do not use this unless you know damn
+//well what you're doing, or they make an official feature that does the same thing.
+
+Class XDeathHandler : Actor
+{
+	StateLabel gibState;
+	
+	Default
+	{
+		+NOINTERACTION;
+		+NOBLOCKMAP;
+		+SYNCHRONIZED;
+		+DONTBLAST;
+		FloatBobPhase 0;
+		Radius .1;
+		Height 0;
+	}
+	
+	static void assignGibState(Actor _mo, StateLabel _gibState)
+	{
+		if (!_mo) return;
+		
+		let xdeath = XDeathHandler(Spawn("XDeathHandler"));
+		xdeath.master = _mo;
+		xdeath.gibstate = _gibstate;
+	}
+	
+	void A_DoGib()
+	{
+		if (!master) return;
+		master.setState(FindState(gibState));
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 1 NoDelay;
+			TNT1 A 1 A_DoGib();
+			Stop;
+		XDeathArachnotron:
+			BSPI Q 10;
+			BSPI R 8 A_NoBlocking;
+			BSPI S 6;
+			BSPI TU 6 Bright;
+			BSPI V 5 Bright;
+			BSPI WX 4 Bright;
+			BSPI Y -1 A_BossDeath;
+			Stop;
+		XDeathArchvile:
+			VILX A 5;
+			VILX B 5 A_Scream;
+			VILX C 5 A_NoBlocking;
+			VILX DEFGH 7;
+			VILX I -1;
+			Stop;
+		XDeathBaronOfHell:
+			BS12 A 6;
+			BS12 B 6 A_Scream;
+			BS12 C 6 A_Fall;
+			BS12 DEF 6;
+			BS12 G -1;
+			Stop;
+		XDeathCacodemon:
+			CACX A 5;
+			CACX B 5 A_XScream;
+			CACX C 5 A_NoBlocking;
+			CACX DEFGH 5;
+			CACX I -1;
+		XDeathDemon:
+			SARG O 5;
+			SARG P 5 A_XScream;
+			SARG Q 5 A_NoBlocking;
+			SARG RSTUV 5;
+			SARG W -1;
+			Stop;
+		XDeathHellKnight:
+			BOS2 P 5;
+			BOS2 Q 5 A_XScream;
+			BOS2 R 5 A_NoBlocking;
+			BOS2 STUVW 5;
+			BOS2 X -1;
+			Stop;
+		XDeathMancubus:
+			FAT2 A 7;
+			FAT2 B 7 A_Scream;
+			FAT2 C 7 A_NoBlocking;
+			FAT2 DEFGHI 5;
+			FAT2 J -1 A_BossDeath;
+			Stop;
+		XDeathRevenant:
+			SKEL R 5;
+			SKEL S 5 A_XScream;
+			SKEL T 5 A_NoBlocking;
+			SKEL UVWX 5;
+			SKEL Y -1;
+			Stop;
+	}
+}

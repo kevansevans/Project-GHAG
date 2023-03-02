@@ -40,6 +40,8 @@ Class GHAGStatus : BaseStatusBar
 	string wtfString;
 	double userscale;
 	
+	int lastAngerValue;
+	
 	override void Init()
 	{
 		Super.Init();
@@ -205,7 +207,17 @@ Class GHAGStatus : BaseStatusBar
 		{
 			angeramount.msg = angy_percent .. '/' .. angry_cap;
 			ragedisplayEcho.visible = false;
-			angeramountEcho.visible = false;
+			if (Gardevoir(CPlayer.mo).ragevalue > lastAngerValue)
+			{
+				angeramountEcho.visible = true;
+				angeramountEcho.msg = angy_percent .. '/' .. angry_cap;
+				angeramountEcho.position = angerpos + (random(-5, 5), random(-5, 5));
+			}
+			else
+			{
+				if (gametic % 5 == 0) angeramountEcho.visible = false;
+			}
+			
 		}
 		else
 		{
@@ -217,6 +229,8 @@ Class GHAGStatus : BaseStatusBar
 			ragedisplayEcho.visible = true;
 			ragedisplayEcho.position = ragepos + (random(-10, 10), random(-10, 10));
 		}
+		
+		lastAngerValue = Gardevoir(CPlayer.mo).ragevalue;
 		
 		ragedisplay.msg = GetAngerString();
 		

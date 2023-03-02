@@ -350,14 +350,6 @@ Class Gardevoir : PlayerPawn
 				{
 					self.vel.z += 32;
 				}
-				self.bNoGravity = true;
-				self.bFly = true;
-			}
-			
-			else if (!(buttons & BT_Jump))
-			{
-				self.bFly = false;
-				self.bNoGravity = false;
 			}
 			
 			if (player.onGround && buttons & BT_Jump) jumped = true;
@@ -699,10 +691,6 @@ Class Gardevoir : PlayerPawn
 			else if (waterlevel >= 2)
 			{
 				Vel.Z = 4 * Speed;
-			}
-			else if (bNoGravity)
-			{
-				//Vel.Z = 3.;
 			}
 			else if (player.onground && player.jumpTics == 0)
 			{

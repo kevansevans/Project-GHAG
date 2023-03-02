@@ -452,7 +452,6 @@ Class GHAGEventHandler : EventHandler
 		{
 			//Original code by Marisa Kirisame, used with permission
 			int gibhealth = event.Thing.GetGibHealth();
-			console.printf('' .. gibhealth);
 			bool gotgibbed = (	!event.Thing.bDONTGIB && 
 								(	(event.Inflictor && event.Inflictor.bEXTREMEDEATH) || 
 									(event.DamageSource && event.DamageSource.bEXTREMEDEATH) || 
@@ -465,7 +464,6 @@ Class GHAGEventHandler : EventHandler
 		
 			if (gotGibbed)
 			{
-				console.printf('yarhar');
 				switch (event.thing.getClassName())
 				{
 					case 'Arachnotron':

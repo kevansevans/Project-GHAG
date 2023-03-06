@@ -8,7 +8,5 @@ user string GHAGNailgunName = "Nailgun";
 user string GHAGRailgunName = "PSY-BP12";
 user string GHAGPlasmaName = "Generic Energy Weapon";
 
-user float ghaghudscale = 1;
-
 user bool GHAGtraditionalhud = false;
 user bool GHAGsillyrocket = false;

@@ -16,7 +16,6 @@ version "4.10"
 
 //Pickups and stuff that need to behave differently
 #include "ZSCRIPT/pickups/BerserkReplacement.txt"
-#include "ZSCRIPT/pickups/TomeReplacement.txt"
 #include "ZSCRIPT/pickups/BackpackReplacement.txt"
 #include "ZSCRIPT/pickups/RageEssence.txt"
 #include "ZSCRIPT/pickups/HealEssence.txt"

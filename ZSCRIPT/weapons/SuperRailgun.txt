@@ -81,7 +81,7 @@ Class GHAGSuperRailgun : GHAGWeapon
 	
 	Action void FireRailBeam(int _selection)
 	{
-		int damage = int(random(50.0, 150.0) / 2.0);
+		int damage = int(random(25.0, 50.0) / 2.0);
 		int depth = int(10 * Gardevoir(self).getRageModifier()) + 1;
 		
 		let gun = Gardevoir(self).FloatGuns[_selection];

@@ -41,7 +41,7 @@ Class WillOWisp : PokemonMove
 			HAND H 10;
 			goto Ready;
 		Fire.Overlay:
-			WILL ABCD 4;
+			WILL ABCD 4 Bright;
 			Loop;
 	}
 	
@@ -105,7 +105,7 @@ Class WispSpinner : Actor
 	States
 	{
 		Spawn:
-			WILL ABCD 2;
+			WILL ABCD 2 Bright;
 			Loop;
 	}
 	

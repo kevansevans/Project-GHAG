@@ -84,17 +84,17 @@ Class IcyWindProjectile : Actor
 	States
 	{
 		Spawn:
-			ICYW AAA 4;
-			ICYW BBB 5;
-			ICWC CCC 3;
-			TNT1 AAA 2;
-			ICWC CCC 2;
-			TNT1 AAA 2;
-			ICWC CCC 2;
-			TNT1 AAA 2;
-			ICWC CCC 2;
-			TNT1 AAA 2;
-			ICWC CCC 4;
+			ICYW AAA 4 Bright;
+			ICYW BBB 5 Bright;
+			ICWC CCC 3 Bright;
+			TNT1 AAA 2 Bright;
+			ICWC CCC 2 Bright;
+			TNT1 AAA 2 Bright;
+			ICWC CCC 2 Bright;
+			TNT1 AAA 2 Bright;
+			ICWC CCC 2 Bright;
+			TNT1 AAA 2 Bright;
+			ICWC CCC 4 Bright;
 		Death:
 			TNT1 A 1;
 			Stop;

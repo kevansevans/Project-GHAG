@@ -28,7 +28,7 @@ Class Swift : PokemonMove
 			SWFT A 1 A_Lower();
 			Loop;
 		Ready :
-			SWFT ABCD 3 {
+			SWFT ABCD 3 Bright {
 				A_WeaponReady();
 			}
 			Loop;

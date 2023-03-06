@@ -145,12 +145,15 @@ Class GHAGStatus : BaseStatusBar
 		size.x /= scale.x;
 		size.y /= scale.y;
 		
-		userscale = CVAR.FindCvar("ghaghudscale").GetFloat();
+		double hscale = CVar.GetCVar('hud_scale', CPlayer).GetFloat();
+		userscale = hscale > 0. ? hscale : 1;
 	}
 	
 	override void Tick()
 	{
 		Super.tick();
+		
+		
 		
 		if (gametic % 10 == 0) wtfString = wtf();
 		
@@ -378,6 +381,8 @@ Class GHAGStatus : BaseStatusBar
 	{
 		
 		Super.Draw(state, tic);
+		
+		if (state == HUD_None) return;
 		
 		BeginHUD();
 		

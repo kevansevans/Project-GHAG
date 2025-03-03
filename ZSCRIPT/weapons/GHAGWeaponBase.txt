@@ -18,13 +18,13 @@ Class GHAGWeapon : Weapon
 	
 	action void A_GHAGLower(int _lowerspeed = 6)
 	{
-		Gardevoir(invoker.owner).hiding = true;
+		GHAGGardevoir(invoker.owner).hiding = true;
 		A_Lower(_lowerspeed);
 	}
 	
 	action void A_GHAGRaise(int _raisespeed = 6)
 	{
-		Gardevoir(invoker.owner).hiding = false;
+		GHAGGardevoir(invoker.owner).hiding = false;
 		A_Raise(_raisespeed);
 	}
 	
@@ -35,7 +35,7 @@ Class GHAGWeapon : Weapon
 		if (ReadyState != NULL && ReadyState.ValidateSpriteFrame())
 		{
 			result = Super.TryPickup (toucher);
-			Gardevoir(toucher).updateWeapons = true;
+			GHAGGardevoir(toucher).updateWeapons = true;
 			return result;
 		}
 		
@@ -68,7 +68,7 @@ Class GHAGWeapon : Weapon
 		return 0;
 	}
 
-	mixin IcePunch;
+	mixin GHAGIcePunch;
 
 	States
 	{
@@ -92,7 +92,7 @@ Class GHAGWeapon : Weapon
 			#### A 1;
 			#### A 0
 			{
-				if (Gardevoir(self).IcePunchTarget && distance3d(Gardevoir(self).IcePunchTarget) > 128 && invoker.IcePunchGetSpeed() > 16.0)
+				if (GHAGGardevoir(self).IcePunchTarget && distance3d(GHAGGardevoir(self).IcePunchTarget) > 128 && invoker.IcePunchGetSpeed() > 16.0)
 				{
 					return resolveState("IcePunchSwing");
 				}
@@ -110,19 +110,19 @@ Class GHAGWeapon : Weapon
 			#### A 1
 			{
 				A_ClearOverlays(2, 2);
-				Gardevoir(self).IcePunchTarget = null;
+				GHAGGardevoir(self).IcePunchTarget = null;
 			}
 			#### A 0 A_Jump(256, "Ready");
 			stop;
 		IcePunch.Overlay:
-			IPUN AB 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
+			IPUN AB 3 A_SetTics(GHAGGardevoir(self).GetTicModifier(3));
 			IPUN C 4;
-			IPUN DEF 4 A_SetTics(Gardevoir(self).GetTicModifier(4));
+			IPUN DEF 4 A_SetTics(GHAGGardevoir(self).GetTicModifier(4));
 			stop;
 	}
 }
 
-Class PokemonMove : GHAGWeapon
+Class GHAGPokemonMove : GHAGWeapon
 {
 	Default
 	{

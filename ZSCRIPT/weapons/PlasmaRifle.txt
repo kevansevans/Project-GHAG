@@ -65,7 +65,7 @@ Class GHAGPlasmaRifle : GHAGWeapon
 			{
 				for (int i = 0; i < invoker.getPlasmaCount(); ++i)
 				{
-					Gardevoir(Invoker.owner).FloatGuns[i].SetStateLabel('PlasmaFire');
+					GHAGGardevoir(Invoker.owner).FloatGuns[i].SetStateLabel('PlasmaFire');
 				}
 			}
 		FireLoop:
@@ -78,7 +78,7 @@ Class GHAGPlasmaRifle : GHAGWeapon
 			{
 				for (int i = 0; i < invoker.getPlasmaCount(); ++i)
 				{
-					Gardevoir(Invoker.owner).FloatGuns[i].SetStateLabel('PlasmaCooldown');
+					GHAGGardevoir(Invoker.owner).FloatGuns[i].SetStateLabel('PlasmaCooldown');
 				}
 			}
 			Goto Ready;
@@ -87,7 +87,7 @@ Class GHAGPlasmaRifle : GHAGWeapon
 			{
 				for (int i = 0; i < invoker.getPlasmaCount(); ++i)
 				{
-					Gardevoir(Invoker.owner).FloatGuns[i].SetStateLabel('PlasmaFire');
+					GHAGGardevoir(Invoker.owner).FloatGuns[i].SetStateLabel('PlasmaFire');
 				}
 			}
 			HAND A 20 {
@@ -104,7 +104,7 @@ Class GHAGPlasmaRifle : GHAGWeapon
 			{
 				for (int i = 0; i < invoker.getPlasmaCount(); ++i)
 				{
-					Gardevoir(Invoker.owner).FloatGuns[i].SetStateLabel('PlasmaCooldown');
+					GHAGGardevoir(Invoker.owner).FloatGuns[i].SetStateLabel('PlasmaCooldown');
 				}
 			}
 			goto Ready;
@@ -114,7 +114,7 @@ Class GHAGPlasmaRifle : GHAGWeapon
 	{
 	
 		bool consume = true;
-		double odds = Min(0.75 * Gardevoir(self).getRageModifier(), 0.75);
+		double odds = Min(0.75 * GHAGGardevoir(self).getRageModifier(), 0.75);
 		double rng = random(0, 100) / 100.0;
 		if (rng < odds) consume = false;
 	
@@ -130,12 +130,12 @@ Class GHAGPlasmaRifle : GHAGWeapon
 			else if (gun == 3) x = 20;
 			else if (gun == 4) x = -20;
 			
-			if (i == 0) let _locPlasma = PlasmaBall(A_FireAimedProjectile("PlasmaBall", consume, x, gun > 2 ? 12 : 5));
-			else let _locPlasma = PlasmaBall(A_FireAimedProjectile("SilentPlasmaBall", false, x, gun > 2 ? 12 : 5));
+			if (i == 0) let _locPlasma = PlasmaBall(invoker.A_FireAimedProjectile("PlasmaBall", consume, x, gun > 2 ? 12 : 5));
+			else let _locPlasma = PlasmaBall(invoker.A_FireAimedProjectile("GHAGSilentPlasmaBall", false, x, gun > 2 ? 12 : 5));
 		}
 	}
 	
-	action Actor A_FireAimedProjectile(class<Actor> missiletype, bool useammo = true, double spawnofs_xy = 0, double spawnheight = 0, int flags = 0)
+	Actor A_FireAimedProjectile(class<Actor> missiletype, bool useammo = true, double spawnofs_xy = 0, double spawnheight = 0, int flags = 0)
 	{
 		let misl = A_FireProjectile(missiletype, 0, useammo, spawnofs_xy, spawnheight, flags, 0);
 		if (misl)
@@ -167,7 +167,7 @@ Class GHAGPlasmaRifle : GHAGWeapon
 	}
 }
 
-Class SilentPlasmaBall : PlasmaBall
+Class GHAGSilentPlasmaBall : PlasmaBall
 {
 	Default
 	{

@@ -12,7 +12,7 @@ Class GHAGRocketLauncher : GHAGWeapon
 		Weapon.AmmoUse2 1;
 	}
 	
-	NameClass names;
+	GHAGNameClass names;
 	
 	int maxRockets;
 	property maxRockets: maxRockets;
@@ -49,39 +49,39 @@ Class GHAGRocketLauncher : GHAGWeapon
 		Select:
 			HAND A 1 {
 				A_GHAGRaise();
-				if (Gardevoir(invoker.owner).FloatGuns[0])
+				if (GHAGGardevoir(invoker.owner).FloatGuns[0])
 				{
-					Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
+					GHAGGardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
 				}
 			}
 			Loop;
 		Reload :
 			TNT1 A 0
 			{
-				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketSmash');
+				GHAGGardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketSmash');
 			}
 			HAND AB 2 A_OverlayOffset(0, 0, -2, WOF_KEEPX | WOF_ADD);
 			TNT1 A 0 A_StartSound("crush/can", CHAN_AUTO);
 			HAND H 7;
 			TNT1 A 0 {
-				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('Hidden');
-				Gardevoir(invoker.owner).Hiding = true;
+				GHAGGardevoir(invoker.owner).FloatGuns[0].SetStateLabel('Hidden');
+				GHAGGardevoir(invoker.owner).Hiding = true;
 			}
-			TNT1 A 0 A_FireProjectile("GrenadeRocket", 0, true, 0, 0, 0, -6.328125);
+			TNT1 A 0 A_FireProjectile("GHAGGrenadeRocket", 0, true, 0, 0, 0, -6.328125);
 			HAND ABCDE 2;
 			TNT1 A 0
 			{
-				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
-				Gardevoir(invoker.owner).Hiding = false;
+				GHAGGardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
+				GHAGGardevoir(invoker.owner).Hiding = false;
 			}
 			HAND A 6;
 			TNT1 A 0 A_SetNewTagName();
 			goto Ready;
 		Fire:
-			HAND A 8 A_SetTics(Gardevoir(self).GetTicModifier(8));
+			HAND A 8 A_SetTics(GHAGGardevoir(self).GetTicModifier(8));
 			TNT1 A 0 {
-				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('Hidden');
-				Gardevoir(invoker.owner).Hiding = true;
+				GHAGGardevoir(invoker.owner).FloatGuns[0].SetStateLabel('Hidden');
+				GHAGGardevoir(invoker.owner).Hiding = true;
 				A_AlertMonsters();
 				A_PsychicMissile();
 			}
@@ -89,8 +89,8 @@ Class GHAGRocketLauncher : GHAGWeapon
 			TNT1 A 0 A_SetNewTagName();
 			TNT1 A 0
 			{
-				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
-				Gardevoir(invoker.owner).Hiding = false;
+				GHAGGardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
+				GHAGGardevoir(invoker.owner).Hiding = false;
 			}
 			HAND A 2;
 			TNT1 A 0 A_Refire();
@@ -103,7 +103,7 @@ Class GHAGRocketLauncher : GHAGWeapon
 				if (invoker.queuedRockets < invoker.maxRockets && invoker.queuedRockets < (CountInv("RocketAmmo") - 1))
 				{
 					++invoker.queuedRockets;
-					Gardevoir(invoker.owner).FloatGuns[invoker.queuedRockets].SetStateLabel('RocketIdle');
+					GHAGGardevoir(invoker.owner).FloatGuns[invoker.queuedRockets].SetStateLabel('RocketIdle');
 				}
 			}
 			TNT1 A 0 A_Refire();
@@ -114,34 +114,34 @@ Class GHAGRocketLauncher : GHAGWeapon
 			{
 				if (invoker.queuedRockets >= 0)
 				{
-					Gardevoir(invoker.owner).FloatGuns[invoker.queuedRockets].SetStateLabel('Hidden');
+					GHAGGardevoir(invoker.owner).FloatGuns[invoker.queuedRockets].SetStateLabel('Hidden');
 					A_PsychicMissile();
 					A_SetNewTagName();
 					--invoker.queuedRockets;
 					return ResolveState('AltFireRelease');
 				}
 				invoker.queuedRockets = 0;
-				Gardevoir(invoker.owner).Hiding = true;
+				GHAGGardevoir(invoker.owner).Hiding = true;
 				return ResolveState(null);
 			}
 			HAND A 10;
 			TNT1 A 0 A_CheckReload();
 			TNT1 A 0
 			{
-				Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
-				Gardevoir(invoker.owner).Hiding = false;
+				GHAGGardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
+				GHAGGardevoir(invoker.owner).Hiding = false;
 			}
 			goto Ready;
 	}
 	
 	action void A_OverlayRocket()
 	{
-		Gardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
+		GHAGGardevoir(invoker.owner).FloatGuns[0].SetStateLabel('RocketIdle');
 	}
 	
 	action void A_SetNewTagName() 
 	{
-		if (!Invoker.names) Invoker.names = NameClass(Spawn("NameClass"));
+		if (!Invoker.names) Invoker.names = GHAGNameClass(Spawn("GHAGNameClass"));
 		Invoker.setTag(Invoker.names.getName());
 	}
 	
@@ -158,14 +158,14 @@ Class GHAGRocketLauncher : GHAGWeapon
 				return;
 		}
 		
-		let _locRocket = PsychicRocket(SpawnPlayerMissile("PsychicRocket"));
+		let _locRocket = GHAGPsychicRocket(SpawnPlayerMissile("GHAGPsychicRocket"));
 		if (_locRocket) {
-			double _locSpeed = 20 + Max((40 * Min(2, Gardevoir(self).GetRageModifier())), 5);
+			double _locSpeed = 20 + Max((40 * Min(2, GHAGGardevoir(self).GetRageModifier())), 5);
 			if (_locSpeed < 10) _locRocket.bNoGravity = false;
-			_locRocket.Vel3DFromAngle(_locSpeed, Gardevoir(self).angle, Gardevoir(self).pitch); 
-			_locRocket.SetDamage(20 + Int(80 * Gardevoir(self).GetRageModifier()));
-			_locRocket.modifier = Gardevoir(self).GetRageModifier();
-			if (Gardevoir(self).CountInv("PowerWeaponLevel2")) {
+			_locRocket.Vel3DFromAngle(_locSpeed, GHAGGardevoir(self).angle, GHAGGardevoir(self).pitch); 
+			_locRocket.SetDamage(20 + Int(80 * GHAGGardevoir(self).GetRageModifier()));
+			_locRocket.modifier = GHAGGardevoir(self).GetRageModifier();
+			if (GHAGGardevoir(self).CountInv("PowerWeaponLevel2")) {
 				_locRocket.seeker = true;
 				_locRocket.bNoFriction = true;
 				_locRocket.bBounceOnWalls = true;
@@ -176,7 +176,7 @@ Class GHAGRocketLauncher : GHAGWeapon
 	}
 }
 
-Class PsychicRocket : Rocket
+Class GHAGPsychicRocket : Rocket
 {
 
 	double modifier;
@@ -195,7 +195,7 @@ Class PsychicRocket : Rocket
 	}
 }
 
-Class GrenadeRocket : Actor
+Class GHAGGrenadeRocket : Actor
 {
 	default
 	{
@@ -245,7 +245,7 @@ Class GrenadeRocket : Actor
 	}
 }
 
-Class NameClass : Actor
+Class GHAGNameClass : Actor
 {
 
 	int getMode;
@@ -262,9 +262,9 @@ Class NameClass : Actor
 	default 
 	{
 		
-		NameClass.getMode 0;
-		NameClass.wordTracker 0;
-		NameClass.index 0;
+		GHAGNameClass.getMode 0;
+		GHAGNameClass.wordTracker 0;
+		GHAGNameClass.index 0;
 	}
 	
 	override void tick()
@@ -276,7 +276,7 @@ Class NameClass : Actor
 	static const string names[] =
 	{
 		"Joey", "Billy", "Kevy", "Kablooey", "Pill", "Martha", "Rachael", "Weasel", "Nash", "Emma",
-		"April", "Ghost", "Kekz", "Bob", "Jimmy-Bacon", "Cali", "Kesha", "Gutawer", "Marisa", "Hugo",
+		"Ghost", "Kekz", "Bob", "Jimmy-Bacon", "Cali", "Kesha", "Gutawer", "Hugo", "Psycho", "Try GZChaos!",
 		"Romero", "Carmack", "Adrian", "Tom", "Sandy", "American", "Kid Mystic", "Trouble", "Peace Keeper",
 		"Chocolate Thunder", "Vanilla Thunder", "Strawberry Thunder", "Pomegranate Fury", "Fuck you in particular",
 		"Death from above", "Oh shit, he", "ASSHAT", "ASSCLOWN", "ASSFART", "RED", "BLUE", "GREEN", "YELLOW", "GOLD", "SILVER",
@@ -353,10 +353,10 @@ Class NameClass : Actor
 		switch (getMode)
 		{
 			case 0:
-				index += random(1, int(NameClass.names.size() / 2)) * (random(0, 100) % 4 == 0 ? 1 : -1);
-				index = index % NameClass.names.size();
-				if (index < 0) index += NameClass.names.size();
-				rng_name = NameClass.names[index];
+				index += random(1, int(GHAGNameClass.names.size() / 2)) * (random(0, 100) % 4 == 0 ? 1 : -1);
+				index = index % GHAGNameClass.names.size();
+				if (index < 0) index += GHAGNameClass.names.size();
+				rng_name = GHAGNameClass.names[index];
 				if (rng_name == "What") getMode = 1;
 				if (rng_name == "Creeper") getMode = 2;
 				if (rng_name == "I like shorts!") getMode = 3;
@@ -365,7 +365,7 @@ Class NameClass : Actor
 				if (rng_name == "Prepare for trouble!") getMode = 6;
 				break;
 			case 1:
-				rng_name = NameClass.navyseal[wordtracker];
+				rng_name = GHAGNameClass.navyseal[wordtracker];
 				wordtracker += 1;
 				if (rng_name == "bitch?") {
 					getMode = 0;
@@ -373,7 +373,7 @@ Class NameClass : Actor
 				}
 				break;
 			case 2:
-				rng_name = NameClass.awman[wordtracker];
+				rng_name = GHAGNameClass.awman[wordtracker];
 				wordtracker += 1;
 				if (rng_name == "side!") {
 					getMode = 0;
@@ -381,7 +381,7 @@ Class NameClass : Actor
 				}
 				break;
 			case 3:
-				rng_name = NameClass.shorts[wordtracker];
+				rng_name = GHAGNameClass.shorts[wordtracker];
 				wordtracker += 1;
 				if (rng_name == "And easy to wear!") {
 					getMode = 0;
@@ -389,7 +389,7 @@ Class NameClass : Actor
 				}
 				break;
 			case 4:
-				rng_name = NameClass.spacemonkey[wordtracker];
+				rng_name = GHAGNameClass.spacemonkey[wordtracker];
 				wordtracker += 1;
 				if (rng_name == "Is not afraid...") {
 					getMode = 0;
@@ -397,7 +397,7 @@ Class NameClass : Actor
 				}
 				break;
 			case 5:
-				rng_name = NameClass.contempt[wordtracker];
+				rng_name = GHAGNameClass.contempt[wordtracker];
 				wordtracker += 1;
 				if (rng_name == "of disrespect.") {
 					getMode = 0;
@@ -405,7 +405,7 @@ Class NameClass : Actor
 				}
 				break;
 			case 6:
-				rng_name = NameClass.teamrocket[wordtracker];
+				rng_name = GHAGNameClass.teamrocket[wordtracker];
 				wordtracker += 1;
 				if (rng_name == "Meowth! That's right!") {
 					getMode = 0;
@@ -426,9 +426,9 @@ Class GHAGRocketAmmo : CustomInventory replaces RocketAmmo
 		Inventory.amount 1;
 	}
 	
-	override bool TryPickup(Actor toucher)
+	override bool TryPickup(in out Actor toucher)
 	{
-		let gardie = Gardevoir(Players[consoleplayer].mo);
+		let gardie = GHAGGardevoir(Players[consoleplayer].mo);
 		
 		for (let probe = gardie.Inv; probe != NULL; probe = probe.Inv)
 		{

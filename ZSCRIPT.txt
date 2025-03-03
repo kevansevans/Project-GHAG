@@ -45,7 +45,6 @@ version "4.10"
 #include "ZSCRIPT/weapons/WillOWisp.txt"
 #include "ZSCRIPT/weapons/BlackHole.txt"
 #include "ZSCRIPT/weapons/black hole particles/BaseParticle.txt"
-#include "ZSCRIPT/effects/StatusEffects.txt"
 
 //XDeath magic that adds gibs without replacing demons
 #include "ZSCRIPT/monsters/XDeathHandler.txt"

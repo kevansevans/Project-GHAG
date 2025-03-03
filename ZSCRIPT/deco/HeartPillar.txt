@@ -1,19 +1,21 @@
 //Tribute to Omeger Rubyer
-Class EatableHeartPillar : HeartColumn replaces HeartColumn
+Class GHAGEatableHeartPillar : HeartColumn replaces HeartColumn
 {
 	Default
 	{
 		+DontCorpse;
 	}
+	
+	bool wasEaten;
 
 	override bool Used(Actor User)
 	{
-		if (self.bDontCorpse)
+		if (!wasEaten)
 		{
 			A_StartSound("Gardie/Bite", CHAN_AUTO);
 			SetStateLabel("EatenLoop");
 			User.GiveBody(15, 350);
-			self.bDontCorpse = false;
+			wasEaten = true;
 		}
 		return false;
 	}

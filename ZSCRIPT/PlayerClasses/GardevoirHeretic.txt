@@ -1,12 +1,12 @@
-Class GardevoirHeretic : Gardevoir
+Class GHAGGardevoirHeretic : GHAGGardevoir
 {
 	default {
 	
 		Player.DisplayName "Heretic";
 	
-		Player.StartItem "Swift";
-		Player.StartItem "MoonBlastGun";
-		Player.StartItem "BlackHole";
+		Player.StartItem "GHAGSwift";
+		Player.StartItem "GHAGMoonBlastGun";
+		Player.StartItem "GHAGBlackHole";
 	}
 	
 	override void BeginPlay()

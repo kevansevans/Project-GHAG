@@ -1,6 +1,6 @@
 Class GHAGEventHandler : EventHandler
 {
-	Gardevoir Gardie;
+	GHAGGardevoir Gardie;
 	
 	int shinyodds;
 	
@@ -21,7 +21,7 @@ Class GHAGEventHandler : EventHandler
 	
 	override void PlayerEntered(PlayerEvent event)
 	{
-		gardie = Gardevoir(players[consoleplayer].mo);
+		gardie = GHAGGardevoir(players[consoleplayer].mo);
 		
 		if (level.levelNum == 999)
 		{
@@ -45,18 +45,18 @@ Class GHAGEventHandler : EventHandler
 			bonus_three = false;
 			bonus_gun = false;
 	
-			dropThunderbolt = players[consoleplayer].mo.countInv('thunderbolt') == 0 ? false : true;
-			dropPsychic = players[consoleplayer].mo.countInv('psychic') == 0 ? false : true;
-			dropIcyWind = players[consoleplayer].mo.countInv('icywind') == 0 ? false : true;
-			dropWillOWisp = players[consoleplayer].mo.countInv('WillOWisp') == 0 ? false : true;
-			dropMoonblast = players[consoleplayer].mo.countInv('MoonBlastGun') == 0 ? false : true;
+			dropThunderbolt = players[consoleplayer].mo.countInv('GHAGthunderbolt') == 0 ? false : true;
+			dropPsychic = players[consoleplayer].mo.countInv('GHAGpsychic') == 0 ? false : true;
+			dropIcyWind = players[consoleplayer].mo.countInv('GHAGicywind') == 0 ? false : true;
+			dropWillOWisp = players[consoleplayer].mo.countInv('GHAGWillOWisp') == 0 ? false : true;
+			dropMoonblast = players[consoleplayer].mo.countInv('GHAGMoonBlastGun') == 0 ? false : true;
 		}
 	}
 	
 	override void WorldThingSpawned(WorldEvent event)
 	{
-		if (Gardevoir(event.thing)) {
-			gardie = Gardevoir(event.thing);
+		if (GHAGGardevoir(event.thing)) {
+			gardie = GHAGGardevoir(event.thing);
 			return;
 		}
 		
@@ -108,47 +108,11 @@ Class GHAGEventHandler : EventHandler
 				return;
 			}
 			
-			switch(gardie.iwadClass)
-			{
-				case 0:
-					if (gun is "Gauntlets") 
-					{
-						gun.spawn("ExtraPsychoCutter", gun.pos);
-						gun.destroy();
-						return;
-					}
-					if (gun is "CrossBow") 
-					{
-						gun.spawn("ShellBox", gun.pos);
-						gun.destroy();
-						return;
-					}
-					if (gun is "Blaster")
-					{
-						gun.spawn("ClipBox", gun.pos);
-						gun.destroy();
-						return;
-					}
-					if (gun is "Mace")
-					{
-						gun.spawn("RocketBox", gun.pos);
-						gun.destroy();
-						return;
-					}
-					if (gun is "PhoenixRod" || gun is "SkullRod")
-					{
-						gun.spawn("CellPack", gun.pos);
-						gun.destroy();
-						return;
-					}
-					break;
-			}
-			
 			//Agnostic weapon type check
 			if (gun is "Pistol")
 			{
 				if (gardie.countinv("GHAGPistol") == 0) {
-					gun.spawn("PistolPickup", gun.pos);
+					gun.spawn("GHAGPistolPickup", gun.pos);
 				} else {
 					gun.spawn("Clipbox", gun.pos);
 				}
@@ -157,7 +121,7 @@ Class GHAGEventHandler : EventHandler
 			if (gun is "Shotgun")
 			{
 				if (gardie.countinv("GHAGShotgun") == 0 && !dropShotgun) {
-					gun.spawn("ShotgunPickup", gun.pos);
+					gun.spawn("GHAGShotgunPickup", gun.pos);
 					dropShotgun = true;
 				} else {
 					gun.spawn("Shellbox", gun.pos);
@@ -167,7 +131,7 @@ Class GHAGEventHandler : EventHandler
 			if (gun is "SuperShotgun")
 			{
 				if (gardie.countinv("GHAGSuperRailgun") == 0) {
-					gun.spawn("SuperRailgunPickup", gun.pos);
+					gun.spawn("GHAGSuperRailgunPickup", gun.pos);
 				} else {
 					gun.spawn("Shellbox", gun.pos);
 				}
@@ -176,7 +140,7 @@ Class GHAGEventHandler : EventHandler
 			if (gun is "Chaingun")
 			{
 				if (gardie.countinv("GHAGNailgun") == 0 && !dropChaingun) {
-					gun.spawn("NailgunPickup", gun.pos);
+					gun.spawn("GHAGNailgunPickup", gun.pos);
 					dropChaingun = true;
 				} else {
 					gun.spawn("Clipbox", gun.pos);
@@ -192,70 +156,11 @@ Class GHAGEventHandler : EventHandler
 			if (gun is "PlasmaRifle" || gun is "BFG9000")
 			{
 				if (gardie.countinv("GHAGPlasmaRifle") == 0) {
-					gun.spawn("PlasmaPickup", gun.pos);
+					gun.spawn("GHAGPlasmaPickup", gun.pos);
 				} else {
 					gun.spawn("CellPack", gun.pos);
 				}
 				gun.destroy();
-			}
-		}
-		
-		if (Ammo(event.thing))
-		{
-			let bullets = Ammo(Event.Thing);
-			
-			switch (gardie.iwadClass)
-			{
-				case 0:
-					if (bullets is "GoldWandAmmo" || bullets is "BlasterAmmo")
-					{
-						bullets.spawn("Clip", bullets.pos);
-						bullets.destroy();
-						return;
-					}
-					if (bullets is "GoldWandHefty" || bullets is "BlasterHefty")
-					{
-						bullets.spawn("ClipBox", bullets.pos);
-						bullets.destroy();
-						return;
-					}
-					if (bullets is "CrossbowAmmo")
-					{
-						bullets.spawn("Shell", bullets.pos);
-						bullets.destroy();
-						return;
-					}
-					if (bullets is "CrossbowHefty")
-					{
-						bullets.spawn("ShellBox", bullets.pos);
-						bullets.destroy();
-						return;
-					}
-					if (bullets is "SkullRodAmmo")
-					{
-						bullets.spawn("GHAGRocketAmmo", bullets.pos);
-						bullets.destroy();
-						return;
-					}
-					if (bullets is "SkullRodHefty")
-					{
-						bullets.spawn("GHAGRocketBox", bullets.pos);
-						bullets.destroy();
-						return;
-					}
-					if (bullets is "PhoenixRodAmmo" || bullets is "MaceAmmo")
-					{
-						bullets.spawn("Cell", bullets.pos);
-						bullets.destroy();
-						return;
-					}
-					if (bullets is "PhoenixRodHefty" || bullets is "MaceHefty")
-					{
-						bullets.spawn("CellPack", bullets.pos);
-						bullets.destroy();
-						return;
-					}
-					break;
 			}
 		}
 	}
@@ -379,7 +284,7 @@ Class GHAGEventHandler : EventHandler
 	//Killing an enemy will reset the anger delay timer.
 	override void WorldThingDied(WorldEvent event) 
 	{
-		gardie = Gardevoir(players[consoleplayer].mo);
+		gardie = GHAGGardevoir(players[consoleplayer].mo);
 		
 		if (ExplosiveBarrel(event.thing)) return;
 		if (event.thing.target is 'PlayerPawn' ||
@@ -388,33 +293,33 @@ Class GHAGEventHandler : EventHandler
 			event.thing.target is 'GHAGChainRailMarker'
 			) {
 			
-			if (gardie.RageConstant >= 300 && !dropThunderBolt && gardie.countInv("Thunderbolt") == 0)
+			if (gardie.RageConstant >= 300 && !dropThunderBolt && gardie.countInv("GHAGThunderbolt") == 0)
 			{
-				spawnPokemonMove('Thunderbolt', event);
+				spawnPokemonMove('GHAGThunderbolt', event);
 				dropThunderbolt = true;
 			}
 			
-			if (gardie.RageConstant >= 400 && !dropPsychic && gardie.countInv("Psychic") == 0)
+			if (gardie.RageConstant >= 400 && !dropPsychic && gardie.countInv("GHAGPsychic") == 0)
 			{
-				spawnPokemonMove('Psychic', event);
+				spawnPokemonMove('GHAGPsychic', event);
 				dropPsychic = true;
 			}
 			
-			if (gardie.RageConstant >= 500 && !dropIcyWind && gardie.countInv("IcyWind") == 0)
+			if (gardie.RageConstant >= 500 && !dropIcyWind && gardie.countInv("GHAGIcyWind") == 0)
 			{
-				spawnPokemonMove('IcyWind', event);
+				spawnPokemonMove('GHAGIcyWind', event);
 				dropIcyWind = true;
 			}
 			
-			if (gardie.RageConstant >= 600 && !dropWillOWisp && gardie.countInv("WillOWisp") == 0)
+			if (gardie.RageConstant >= 600 && !dropWillOWisp && gardie.countInv("GHAGWillOWisp") == 0)
 			{
-				spawnPokemonMove('WillOWisp', event);
+				spawnPokemonMove('GHAGWillOWisp', event);
 				dropWillOWisp = true;
 			}
 			
-			if (gardie.RageConstant >= 700 && !dropMoonblast && gardie.countInv("MoonBlastGun") == 0)
+			if (gardie.RageConstant >= 700 && !dropMoonblast && gardie.countInv("GHAGMoonBlastGun") == 0)
 			{
-				spawnPokemonMove('MoonBlastGun', event);
+				spawnPokemonMove('GHAGMoonBlastGun', event);
 				dropMoonblast = true;
 			}
 			
@@ -509,7 +414,7 @@ Class GHAGEventHandler : EventHandler
 	{
 		if (!thing) return;
 		
-		gardie = Gardevoir(players[consoleplayer].mo);
+		gardie = GHAGGardevoir(players[consoleplayer].mo);
 		
 		gardie.killInterupt = 35 + Int(35 * gardie.getRageModifier());
 		
@@ -518,7 +423,7 @@ Class GHAGEventHandler : EventHandler
 		
 		if (WolfensteinSS(thing)) angerbonus = 3000;
 		
-		if (gardie.player.ReadyWeapon is "PokemonMove")
+		if (gardie.player.ReadyWeapon is "GHAGPokemonMove")
 		{
 			return;
 		}
@@ -529,7 +434,7 @@ Class GHAGEventHandler : EventHandler
 		
 			while (true) 
 			{
-				let rageitem = RageEssence(thing.A_DropItem("RageEssence", 1));
+				let rageitem = GHAGRageEssence(thing.A_DropItem("GHAGRageEssence", 1));
 				rageitem.A_SetPitch(random(60, 80));
 				rageitem.A_SetAngle(random(1, 360));
 			
@@ -586,7 +491,7 @@ Class GHAGEventHandler : EventHandler
 		}
 		
 		if (willBonus > 0) {
-			let healitem = HealEssence(thing.A_DropItem("HealEssence", 1));
+			let healitem = GHAGHealEssence(thing.A_DropItem("GHAGHealEssence", 1));
 			healitem.amount = willBonus;
 			if (WolfensteinSS(thing)) healitem.amount = 350;
 			healitem.A_ChangeVelocity(random(-2, 2), random(-2, 2), random(-2, 2), CVF_REPLACE);
@@ -629,7 +534,7 @@ Class GHAGEventHandler : EventHandler
 	
 	override void PlayerSpawned(PlayerEvent player) 
 	{
-		Gardie = Gardevoir(players[player.PlayerNumber].mo);
+		Gardie = GHAGGardevoir(players[player.PlayerNumber].mo);
 	}
 	
 	int numSecrets;
@@ -637,7 +542,7 @@ Class GHAGEventHandler : EventHandler
 	
 	override void WorldLoaded(WorldEvent event)
 	{
-		gardie = Gardevoir(players[consoleplayer].mo);
+		gardie = GHAGGardevoir(players[consoleplayer].mo);
 	
 		if (gardie) {
 			gardie.initFloatWeapons();
@@ -647,21 +552,21 @@ Class GHAGEventHandler : EventHandler
 	
 	void SpawnBonusItem(Vector3 _pos, bool _gun = false)
 	{
-		gardie = Gardevoir(players[consoleplayer].mo);
+		gardie = GHAGGardevoir(players[consoleplayer].mo);
 	
 		int limit = GameInfo.GameType == 1 ? 4 : 2;
-		if (!_gun) Actor.spawn('RageCandyBar', _pos);
+		if (!_gun) Actor.spawn('GHAGRageCandyBar', _pos);
 		else
 		{
 			Array<name> gunlist;
 			gunlist.clear();
 			
-			name winner = 'RageCandyBar';
+			name winner = 'GHAGRageCandyBar';
 			
 			if (gardie.countInv('GHAGPistol'))
 			{
 				if (gardie.countInv('GHAGPistolOverlay') < 4) {
-					gunlist.push(Int('SecretPistol'));
+					gunlist.push('GHAGSecretPistol');
 				}
 			}
 			
@@ -669,7 +574,7 @@ Class GHAGEventHandler : EventHandler
 			{
 				if (gardie.countInv('GHAGShotgunOverlay') < 4) 
 				{
-					gunlist.push(Int('SecretShotgun'));
+					gunlist.push('GHAGSecretShotgun');
 				}
 			}
 			
@@ -677,7 +582,7 @@ Class GHAGEventHandler : EventHandler
 			{
 				if (gardie.countInv('GHAGNailgunOverlay') < 4)
 				{
-					gunlist.push(Int('SecretNailgun'));
+					gunlist.push('GHAGSecretNailgun');
 				}
 			}
 			
@@ -685,7 +590,7 @@ Class GHAGEventHandler : EventHandler
 			{
 				if (gardie.countInv('GHAGPlasmaOverlay') < 4) 
 				{
-					gunlist.push(Int('SecretPlasma'));
+					gunlist.push('GHAGSecretPlasma');
 				}
 			}
 			
@@ -693,11 +598,11 @@ Class GHAGEventHandler : EventHandler
 			{
 				if (gardie.countInv('GHAGSuperRailgunOverlay') < 4) 
 				{
-					gunlist.push(Int('SecretRailgun'));
+					gunlist.push('GHAGSecretRailgun');
 				}
 			}
 			
-			if (gunlist.size() != 0) winner = Name(gunlist[random(0, gunlist.size() - 1)]);
+			if (gunlist.size() != 0) winner = gunlist[random(0, gunlist.size() - 1)];
 			let item = Actor.spawn(winner, _pos);
 			item.A_ChangeVelocity(random(-4, 4), random(-4, 4), random(-4, 4), CVF_REPLACE);
 		}

@@ -8,7 +8,7 @@
 
 Class GHAGFloatingGun : Actor
 {
-	Gardevoir parent;
+	GHAGGardevoir parent;
 
 	default
 	{

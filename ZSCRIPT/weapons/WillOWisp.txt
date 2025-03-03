@@ -1,4 +1,4 @@
-Class WillOWisp : PokemonMove
+Class GHAGWillOWisp : GHAGPokemonMove
 {
 	Default
 	{
@@ -32,7 +32,7 @@ Class WillOWisp : PokemonMove
 			HAND H 10;
 		Fire.Loop:
 			HAND K 5 {
-				A_SetTics(int(max(Gardevoir(self).getTicModifier(10), 5)));
+				A_SetTics(int(max(GHAGGardevoir(self).getTicModifier(10), 5)));
 				int rngrange = 2;
 				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
 			}
@@ -47,12 +47,12 @@ Class WillOWisp : PokemonMove
 	
 	Action Void A_WispAttack()
 	{
-		int amount = int(10 + (20 * Gardevoir(self).getRageModifier()));
+		int amount = int(10 + (20 * GHAGGardevoir(self).getRageModifier()));
 		bool spawned;
 		A_StartSound("attack/WispSpawn", CHAN_AUTO);
 		for (int i = 0; i < amount; ++i)
 		{
-			let fire = WispSpinner(A_FireProjectile('WispSpinner', 0, false, 0, -40));
+			let fire = GHAGWispSpinner(A_FireProjectile('GHAGWispSpinner', 0, false, 0, -40));
 			if (fire)
 			{
 				fire.angleoffset = ((360.0 / double(amount)) * i) + ((i + 1) * random(10, 20));
@@ -61,11 +61,11 @@ Class WillOWisp : PokemonMove
 			}
 		}
 		
-		if (spawned) Gardevoir(self).subtractAnger(10);
+		if (spawned) GHAGGardevoir(self).subtractAnger(10);
 	}
 }
 
-Class WispSpinner : Actor
+Class GHAGWispSpinner : Actor
 {
 	Default
 	{

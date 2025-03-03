@@ -1,4 +1,4 @@
-Class BlackHole : PokemonMove
+Class GHAGBlackHole : GHAGPokemonMove
 {
 	Default
 	{
@@ -15,7 +15,7 @@ Class BlackHole : PokemonMove
 	int charge;
 	double zoom;
 	PointLight glowy;
-	LightningFizzle fizzy;
+	GHAGLightningFizzle fizzy;
 	
 	override void BeginPlay()
 	{
@@ -44,7 +44,7 @@ Class BlackHole : PokemonMove
 		Fire:
 			TNT1 A 0
 			{
-				if (Gardevoir(self).rageValue < 0)
+				if (GHAGGardevoir(self).rageValue < 0)
 				{
 					A_StartSound("gardie/Pain", CHAN_AUTO, 0, 1, ATTN_NORM, 0.5);
 					return resolveState('Ready.Failure');
@@ -84,7 +84,7 @@ Class BlackHole : PokemonMove
 	
 		if (invoker.charge < 1000)
 		{
-			Gardevoir(self).subtractAnger(10, true);
+			GHAGGardevoir(self).subtractAnger(10, true);
 			
 			int rngrange = 2;
 			A_Overlay(-1, "Fire.HandOverlay");
@@ -114,7 +114,7 @@ Class BlackHole : PokemonMove
 			
 			if (!invoker.fizzy)
 			{
-				invoker.fizzy = LightningFizzle(Self.spawn('LightningFizzle', self.pos));
+				invoker.fizzy = GHAGLightningFizzle(Self.spawn('GHAGLightningFizzle', self.pos));
 			}
 			
 			return resolveState("Fire.BlackHoleCharge");
@@ -123,19 +123,19 @@ Class BlackHole : PokemonMove
 		invoker.charge = 0;
 		invoker.zoom = 1;
 		
-		let proj = SpawnPlayerMissile('BlackHoleProjectile', self.angle);
+		let proj = SpawnPlayerMissile('GHAGBlackHoleProjectile', self.angle);
 		if (proj)
 		{
 			proj.A_SetScale(scale * 2);
-			BlackHoleProjectile(proj).glowy = invoker.glowy;
-			BlackHoleProjectile(proj).fizzy = invoker.fizzy;
+			GHAGBlackHoleProjectile(proj).glowy = invoker.glowy;
+			GHAGBlackHoleProjectile(proj).fizzy = invoker.fizzy;
 		}
 	
 		return resolveState(null);
 	}
 }
 
-Class BlackHoleProjectile : Actor
+Class GHAGBlackHoleProjectile : Actor
 {
 	Default
 	{
@@ -153,7 +153,7 @@ Class BlackHoleProjectile : Actor
 	double speed;
 	double range;
 	PointLight glowy;
-	LightningFizzle fizzy;
+	GHAGLightningFizzle fizzy;
 	
 	override void BeginPlay()
 	{
@@ -212,7 +212,7 @@ Class BlackHoleProjectile : Actor
 			}
 		}
 		
-		let ball = self.spawn('BlackHoleTrail', self.pos);
+		let ball = self.spawn('GHAGBlackHoleTrail', self.pos);
 		ball.A_SetScale(self.scale.x);
 	}
 	
@@ -224,8 +224,8 @@ Class BlackHoleProjectile : Actor
 		while ( (mo = Actor(it.Next ())) )
 		{
 			if (distance3D(mo) > abs(invoker.range * (invoker.range < 0 ? 4 : 1))) continue;
-			if (mo is 'BlackHoleProjectile') continue;
-			if (mo is "LightningFizzle" || mo is "Fizzle") continue;
+			if (mo is 'GHAGBlackHoleProjectile') continue;
+			if (mo is "GHAGLightningFizzle" || mo is "GHAGFizzle") continue;
 			if (mo.bIsMonster || mo.bMissile)
 			{
 				A_BlackHoleSuck(mo, invoker.speed); 
@@ -405,7 +405,7 @@ Class BlackHoleProjectile : Actor
 	}
 }
 
-Class BlackHoleTrail : Actor
+Class GHAGBlackHoleTrail : Actor
 {
 	Default
 	{
@@ -423,7 +423,7 @@ Class BlackHoleTrail : Actor
 	}
 }
 
-Class LightningFizzle : Actor
+Class GHAGLightningFizzle : Actor
 {
 	Array<Actor> fizzies;
 	
@@ -435,7 +435,7 @@ Class LightningFizzle : Actor
 				invoker.fizzies.clear();
 				for (int i = 0; i < 5; ++i)
 				{
-					invoker.fizzies.push(self.spawn('Fizzle', self.pos));
+					invoker.fizzies.push(self.spawn('GHAGFizzle', self.pos));
 				}
 			}
 		SpawnLoop:
@@ -459,7 +459,7 @@ Class LightningFizzle : Actor
 	}
 }
 
-Class Fizzle : Actor
+Class GHAGFizzle : Actor
 {
 	default
 	{

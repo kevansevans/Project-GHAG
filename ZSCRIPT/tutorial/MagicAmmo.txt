@@ -1,4 +1,4 @@
-Class MagicMunitions : Actor
+Class GHAGMagicMunitions : Actor
 {
 	Actor munitions;
 	String type;
@@ -31,7 +31,7 @@ Class MagicMunitions : Actor
 	}
 }
 
-Class MagicBullets : MagicMunitions
+Class GHAGMagicBullets : GHAGMagicMunitions
 {
 	override void BeginPlay()
 	{
@@ -41,7 +41,7 @@ Class MagicBullets : MagicMunitions
 	}
 }
 
-Class MagicShells : MagicMunitions
+Class GHAGMagicShells : GHAGMagicMunitions
 {
 	override void BeginPlay()
 	{
@@ -51,7 +51,7 @@ Class MagicShells : MagicMunitions
 	}
 }
 
-Class MagicRockets : MagicMunitions
+Class GHAGMagicRockets : GHAGMagicMunitions
 {
 	override void BeginPlay()
 	{
@@ -61,7 +61,7 @@ Class MagicRockets : MagicMunitions
 	}
 }
 
-Class MagicPlasma : MagicMunitions
+Class GHAGMagicPlasma : GHAGMagicMunitions
 {
 	override void BeginPlay()
 	{
@@ -71,7 +71,7 @@ Class MagicPlasma : MagicMunitions
 	}
 }
 
-Class MagicBerserk : MagicMunitions
+Class GHAGMagicBerserk : GHAGMagicMunitions
 {
 	override void BeginPlay()
 	{
@@ -82,7 +82,7 @@ Class MagicBerserk : MagicMunitions
 }
 
 
-Class QuickieBarrel : ExplosiveBarrel
+Class GHAGQuickieBarrel : ExplosiveBarrel
 {
 	States
 	{

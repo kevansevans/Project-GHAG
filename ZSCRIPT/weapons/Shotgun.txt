@@ -90,7 +90,7 @@ Class GHAGShotgun : GHAGWeapon
 			TNT1 A 0
 			{
 				Invoker.batmode = false;
-				Gardevoir(invoker.owner).updateWeapons = true;
+				GHAGGardevoir(invoker.owner).updateWeapons = true;
 				A_OverlayShotguns();
 			}
 			goto Ready;
@@ -98,7 +98,7 @@ Class GHAGShotgun : GHAGWeapon
 			TNT1 A 0
 			{
 				Invoker.batmode = true;
-				Gardevoir(invoker.owner).updateWeapons = true;
+				GHAGGardevoir(invoker.owner).updateWeapons = true;
 				A_OverlayShotguns();
 			}
 			GSHT H 4;
@@ -108,20 +108,20 @@ Class GHAGShotgun : GHAGWeapon
 			TNT1 A 0 A_JumpIf(invoker.batmode, "Fire.Swing");
 			TNT1 A 0 A_JumpIf(invoker.countInv("shell") == 0, "DryFire");
 			HAND A 3 {
-				A_SetTics(Gardevoir(self).GetTicModifier(3));
+				A_SetTics(GHAGGardevoir(self).GetTicModifier(3));
 				A_OverlayShotguns();
 			}
 			HAND B 2 Bright {
-				int pellets = int(floor(14 * Gardevoir(Self).GetRageModifier()) * (Gardevoir(self).rageValue > Gardevoir(self).rageConstant ? 2 : 1));
+				int pellets = int(floor(14 * GHAGGardevoir(Self).GetRageModifier()) * (GHAGGardevoir(self).rageValue > GHAGGardevoir(self).rageConstant ? 2 : 1));
 				A_FireBullets(4, 4, 10 + pellets, 5, invoker.pufftype);
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
-				A_SetTics(Gardevoir(self).GetTicModifier(2));
+				A_SetTics(GHAGGardevoir(self).GetTicModifier(2));
 				bool powered = invoker.owner.CountInv("PowerWeaponLevel2") >= 1;
 				A_OverlayShotguns(true);
 			}
 			HAND CCDDD 1 Bright;
-			HAND E 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			HAND FGAAAAA 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
+			HAND E 3 A_SetTics(GHAGGardevoir(self).GetTicModifier(3));
+			HAND FGAAAAA 3 A_SetTics(GHAGGardevoir(self).GetTicModifier(3));
 			HAND A 7 A_ReFire();
 			Goto Ready;
 		Fire.Swing:
@@ -139,7 +139,7 @@ Class GHAGShotgun : GHAGWeapon
 				if (t.linetarget)
 				{
 					Actor target = t.linetarget;
-					float rage = Gardevoir(players[consoleplayer].mo).getRageModifier();
+					float rage = GHAGGardevoir(players[consoleplayer].mo).getRageModifier();
 					A_StartSound("fists/LPUNCH", CHAN_WEAPON);
 					ShottyThwackBlastActor(target, 64 + (64 * rage), 16 + (16 * rage), "", true);
 					if (target.health > 0) target.setStateLabel("Pain");
@@ -149,7 +149,7 @@ Class GHAGShotgun : GHAGWeapon
 			GSHT IIII 4 
 			{
 				A_OverlayRotate(0, -25, WOF_ADD);
-				A_SetTics(Gardevoir(self).GetTicModifier(4));
+				A_SetTics(GHAGGardevoir(self).GetTicModifier(4));
 			}
 			goto Ready;
 		AltFire:
@@ -158,7 +158,7 @@ Class GHAGShotgun : GHAGWeapon
 			HAND A 3 A_OverlayShotguns();
 			HAND B 1 Bright {
 				invoker.AmmoUse2 = invoker.getShotgunCount();
-				A_FireBullets(6, 6, int((15 * invoker.getShotgunCount()) + (15 * Gardevoir(Self).GetRageModifier())), 5, invoker.pufftype);
+				A_FireBullets(6, 6, int((15 * invoker.getShotgunCount()) + (15 * GHAGGardevoir(Self).GetRageModifier())), 5, invoker.pufftype);
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
 				A_OverlayShotguns(true, true);
 			}
@@ -172,10 +172,10 @@ Class GHAGShotgun : GHAGWeapon
 			TNT1 A 0 A_JumpIf(invoker.getShotgunCount() <= 1, "Ready");
 			GSHT I 3 A_OverlayShotguns();
 			GSHT I 1 Bright {
-				int pellets = int(floor(14 * Gardevoir(Self).GetRageModifier()) * (Gardevoir(self).rageValue > Gardevoir(self).rageConstant ? 2 : 1));
+				int pellets = int(floor(14 * GHAGGardevoir(Self).GetRageModifier()) * (GHAGGardevoir(self).rageValue > GHAGGardevoir(self).rageConstant ? 2 : 1));
 				A_FireBullets(4, 4, 10 + pellets, 5, invoker.pufftype);
 				A_StartSound("weapons/shotgf", CHAN_AUTO);
-				A_SetTics(Gardevoir(self).GetTicModifier(2));
+				A_SetTics(GHAGGardevoir(self).GetTicModifier(2));
 				bool powered = invoker.owner.CountInv("PowerWeaponLevel2") >= 1;
 				A_OverlayShotguns(true);
 			}
@@ -193,15 +193,15 @@ Class GHAGShotgun : GHAGWeapon
 		Fire.Overlay:
 			GSHT G 5 Bright;
 		Pump.Overlay :
-			GSHT A 3 A_SetTics(Gardevoir(self).GetTicModifier(3));
-			GSHT A 2 A_SetTics(Gardevoir(self).GetTicModifier(2));
-			GSHT A 5 A_SetTics(Gardevoir(self).GetTicModifier(5));
+			GSHT A 3 A_SetTics(GHAGGardevoir(self).GetTicModifier(3));
+			GSHT A 2 A_SetTics(GHAGGardevoir(self).GetTicModifier(2));
+			GSHT A 5 A_SetTics(GHAGGardevoir(self).GetTicModifier(5));
 			TNT1 A 0 A_StartSound("weapons/shotpm", CHAN_WEAPON);
-			GSHT C 5 A_SetTics(Gardevoir(self).GetTicModifier(5));
-			GSHT D 4 A_SetTics(Gardevoir(self).GetTicModifier(4));
+			GSHT C 5 A_SetTics(GHAGGardevoir(self).GetTicModifier(5));
+			GSHT D 4 A_SetTics(GHAGGardevoir(self).GetTicModifier(4));
 			GSHT E 5 
 			{
-				A_SetTics(Gardevoir(self).GetTicModifier(5));
+				A_SetTics(GHAGGardevoir(self).GetTicModifier(5));
 				A_StartSound("weapons/shotpl", CHAN_WEAPON);
 			}
 			GSHT A 999;
@@ -221,7 +221,7 @@ Class GHAGShotgun : GHAGWeapon
 		DryFire:
 			TNT1 A 0 A_StartSound("weapons/dryfire", CHAN_AUTO);
 			HAND ABCDE 3;
-			HAND A 5 A_SetTics(Gardevoir(self).GetTicModifier(max(5, Gardevoir(self).getTicModifier(10))));
+			HAND A 5 A_SetTics(GHAGGardevoir(self).GetTicModifier(max(5, GHAGGardevoir(self).getTicModifier(10))));
 			goto Ready;
 	}
 	
@@ -233,10 +233,10 @@ Class GHAGShotgun : GHAGWeapon
 		switch (firemode)
 		{
 			case 0:
-				bullets = Int(floor(14 * Gardevoir(owner).GetRageModifier()) * (Gardevoir(owner).rageValue > Gardevoir(owner).rageConstant ? 2 : 1));
+				bullets = Int(floor(14 * GHAGGardevoir(owner).GetRageModifier()) * (GHAGGardevoir(owner).rageValue > GHAGGardevoir(owner).rageConstant ? 2 : 1));
 				break;
 			case 1:
-				bullets = Int(15 * getShotgunCount()) + Int(15 * Gardevoir(owner).GetRageModifier());
+				bullets = Int(15 * getShotgunCount()) + Int(15 * GHAGGardevoir(owner).GetRageModifier());
 				break;
 			default:
 				break;
@@ -247,7 +247,7 @@ Class GHAGShotgun : GHAGWeapon
 	
 	Action void A_OverlayShotguns(bool RollForFire = false, bool AltFire = false)
 	{
-		let gardie = Gardevoir(invoker.owner);
+		let gardie = GHAGGardevoir(invoker.owner);
 		if (gardie.FloatGuns.Size())
 		{
 			if (RollForFire)

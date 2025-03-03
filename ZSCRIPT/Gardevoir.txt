@@ -12,7 +12,7 @@ enum GunPos
 	WEAP_TL = 3,
 }
 
-Class Gardevoir : PlayerPawn
+Class GHAGGardevoir : PlayerPawn
 {
 	BaseIwad iwadClass;
 	BaseIwad iwadGame;
@@ -170,6 +170,8 @@ Class Gardevoir : PlayerPawn
 		
 		OverTheEdge = false;
 		charonmode = false;
+		
+		self.iwadClass = IWAD_DOOM;
 	}
 	
 	void subtractAnger(Int value, bool drainage = false)
@@ -244,7 +246,7 @@ Class Gardevoir : PlayerPawn
 			if (RageValue > RageConstant) RageValue = RageConstant;
 		}
 		
-		if (Gardevoir(source)) _locDamage = Int(_locDamage * 0.25);
+		if (GHAGGardevoir(source)) _locDamage = Int(_locDamage * 0.25);
 		
 		if (_locDamage >= 5)
 		{
@@ -559,7 +561,7 @@ Class Gardevoir : PlayerPawn
 			
 				StateLabel wepstate = 'Hidden';
 		
-				if (player.readyWeapon is "PokemonMove")
+				if (player.readyWeapon is "GHAGPokemonMove")
 				{
 					count = -1;
 				}
@@ -738,8 +740,8 @@ Class Gardevoir : PlayerPawn
 			GiveInventory("GHAGNailgun", 1);
 			GiveInventory("GHAGRocketLauncher", 1);
 			GiveInventory("GHAGPlasmarifle", 1);
-			GiveInventory("MoonBlastGun", 1);
-			GiveInventory("Blackhole", 1);
+			GiveInventory("GHAGMoonBlastGun", 1);
+			GiveInventory("GHAGBlackhole", 1);
 			GiveInventory("GHAGBackpack", 1);
 			for (int i = 0; i < 4; ++i)
 			{

@@ -1,4 +1,4 @@
-Model PistolPickup
+Model GHAGPistolPickup
 {
 	Path "MODELS"
     Model 0 "Pistol.md3"
@@ -12,7 +12,7 @@ Model PistolPickup
     FrameIndex PIST C 0 0
 }
 
-Model SecretPistol
+Model GHAGSecretPistol
 {
 	Path "MODELS"
     Model 0 "Pistol.md3"
@@ -27,7 +27,7 @@ Model SecretPistol
     FrameIndex PIST C 0 0
 }
 
-Model ExtraPsychoCutter
+Model GHAGExtraPsychoCutter
 {
 	Path "MODELS"
     Model 0 "Chainsaw.md3"
@@ -42,7 +42,7 @@ Model ExtraPsychoCutter
 	FrameIndex CSAW B 0 0
 }
 
-Model ShotgunPickup
+Model GHAGShotgunPickup
 {
 	Path "MODELS"
     Model 0 "Shotgun.md3"
@@ -56,7 +56,7 @@ Model ShotgunPickup
     FrameIndex SHOT A 0 0
 }
 
-Model SecretShotgun
+Model GHAGSecretShotgun
 {
 	Path "MODELS"
     Model 0 "Shotgun.md3"
@@ -71,7 +71,7 @@ Model SecretShotgun
     FrameIndex SHOT A 0 0
 }
 
-Model SuperRailgunPickup
+Model GHAGSuperRailgunPickup
 {
 	Path "MODELS"
     Model 0 "Railgun.md3"
@@ -85,7 +85,7 @@ Model SuperRailgunPickup
     FrameIndex SGN2 A 0 0
 }
 
-Model SecretRailgun
+Model GHAGSecretRailgun
 {
 	Path "MODELS"
     Model 0 "Railgun.md3"
@@ -100,7 +100,7 @@ Model SecretRailgun
     FrameIndex SGN2 A 0 0
 }
 
-Model NailgunPickup
+Model GHAGNailgunPickup
 {
 	Path "MODELS"
     Model 0 "Nailgun.md3"
@@ -114,7 +114,7 @@ Model NailgunPickup
     FrameIndex MGUN A 0 0
 }
 
-Model SecretNailgun
+Model GHAGSecretNailgun
 {
 	Path "MODELS"
     Model 0 "Nailgun.md3"
@@ -129,7 +129,7 @@ Model SecretNailgun
     FrameIndex MGUN A 0 0
 }
 
-Model PlasmaPickup
+Model GHAGPlasmaPickup
 {
 	Path "MODELS"
     Model 0 "Plasma.md3"
@@ -143,7 +143,7 @@ Model PlasmaPickup
     FrameIndex PLAS A 0 0
 }
 
-Model SecretPlasma
+Model GHAGSecretPlasma
 {
 	Path "MODELS"
     Model 0 "Plasma.md3"

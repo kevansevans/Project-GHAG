@@ -82,9 +82,9 @@ Class GHAGSuperRailgun : GHAGWeapon
 	Action void FireRailBeam(int _selection)
 	{
 		int damage = int(random(25.0, 50.0) / 2.0);
-		int depth = int(10 * Gardevoir(self).getRageModifier()) + 1;
+		int depth = int(10 * GHAGGardevoir(self).getRageModifier()) + 1;
 		
-		let gun = Gardevoir(self).FloatGuns[_selection];
+		let gun = GHAGGardevoir(self).FloatGuns[_selection];
 		gun.SetStateLabel('RailgunFire');
 		
 		double distx = self.distance2D(gun) * (_selection % 2 == 0 ? 1 : -1);
@@ -92,10 +92,10 @@ Class GHAGSuperRailgun : GHAGWeapon
 		
 		FLineTraceData target;
 		
-		Gardevoir(self).LineTrace(Gardevoir(self).angle, 2048, Gardevoir(self).pitch, 0, 41, 0, 0, target);
+		GHAGGardevoir(self).LineTrace(GHAGGardevoir(self).angle, 2048, GHAGGardevoir(self).pitch, 0, 41, 0, 0, target);
 			
 		FLineTraceData offset;
-		Gardevoir(self).LineTrace(Gardevoir(self).angle, target.distance - 16, Gardevoir(self).pitch, 0, 41, 0, 0, offset);
+		GHAGGardevoir(self).LineTrace(GHAGGardevoir(self).angle, target.distance - 16, GHAGGardevoir(self).pitch, 0, 41, 0, 0, offset);
 		
 		for (int i = 0; i < 2; ++i)
 		{
@@ -162,7 +162,7 @@ Class GHAGChainRailMarker : Actor
 						if (distance3D(mo) < 32) continue;
 						if (!isVisible(mo, true)) continue;
 						if (mo.bCorpse) continue;
-						if (mo is 'Gardevoir') continue;
+						if (mo is 'GHAGGardevoir') continue;
 						if (mo is 'GHAGChainRailMarker') continue;
 						
 						int distance = int(distance3D(mo));

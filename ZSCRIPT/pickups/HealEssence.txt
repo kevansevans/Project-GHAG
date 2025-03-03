@@ -1,4 +1,4 @@
-Class HealEssence : CustomInventory
+Class GHAGHealEssence : CustomInventory
 {
 	default
 	{

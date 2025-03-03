@@ -1,6 +1,6 @@
 GameInfo
 {
-	PlayerClasses = "GardevoirDoom"
+	PlayerClasses = "GHAGGardevoirDoom"
 	StatusBarClass = "GHAGStatus"
 	AddEventHandlers = "GHAGEventHandler"
 	AddEventHandlers = "GHAGKeyEvents"
@@ -9,31 +9,31 @@ GameInfo
 
 DoomEdNums
 {
-  11001 = SubDoll
-  11002 = MagicBullets
-  11003 = MagicShells
-  11004 = MagicRockets
-  11005 = MagicPlasma
-  11006 = PistolPickup
-  11016 = SecretPistol
-  11007 = ShotgunPickup
-  11017 = SecretShotgun
-  11008 = PlasmaPickup
-  11018 = SecretPlasma
-  11022 = NailgunPickup
-  11023 = SecretNailgun
-  11020 = SuperRailgunPickup
-  11021 = SecretRailgun
-  11009 = RageCandyBar
-  11010 = QuickieBarrel
-  11011 = MagicBerserk
+  11001 = GHAGSubDoll
+  11002 = GHAGMagicBullets
+  11003 = GHAGMagicShells
+  11004 = GHAGMagicRockets
+  11005 = GHAGMagicPlasma
+  11006 = GHAGPistolPickup
+  11016 = GHAGSecretPistol
+  11007 = GHAGShotgunPickup
+  11017 = GHAGSecretShotgun
+  11008 = GHAGPlasmaPickup
+  11018 = GHAGSecretPlasma
+  11022 = GHAGNailgunPickup
+  11023 = GHAGSecretNailgun
+  11020 = GHAGSuperRailgunPickup
+  11021 = GHAGSecretRailgun
+  11009 = GHAGRageCandyBar
+  11010 = GHAGQuickieBarrel
+  11011 = GHAGMagicBerserk
   
-  12001 = Thunderbolt
-  12002 = Psychic
-  12003 = IcyWind
-  12004 = WillOWisp
-  12005 = MoonblastGun
-  12006 = BlackHole
+  12001 = GHAGThunderbolt
+  12002 = GHAGPsychic
+  12003 = GHAGIcyWind
+  12004 = GHAGWillOWisp
+  12005 = GHAGMoonblastGun
+  12006 = GHAGBlackHole
 }	
 
 episode TUT01

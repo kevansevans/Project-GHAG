@@ -13,7 +13,7 @@ Class GHAGPsychoCutterOverlay : Inventory
 	}
 }
 
-Class ExtraPsychoCutter : CustomInventory replaces Chainsaw
+Class GHAGExtraPsychoCutter : CustomInventory replaces Chainsaw
 {
 	default
 	{
@@ -26,11 +26,11 @@ Class ExtraPsychoCutter : CustomInventory replaces Chainsaw
 		Spawn:
 			CSAW A 1 Bright
 			{
-				let player = Gardevoir(players[consoleplayer].mo);
+				let player = players[consoleplayer].mo;
 				int limit = GameInfo.GameType == 1 ? 4 : 2;
 				if (player.countinv("GHAGPsychoCutterOverlay") == limit)
 				{
-					invoker.spawn("RageCandyBar", invoker.pos);
+					invoker.spawn("GHAGRageCandyBar", invoker.pos);
 					invoker.destroy();
 				}
 			}
@@ -38,7 +38,7 @@ Class ExtraPsychoCutter : CustomInventory replaces Chainsaw
 		Pickup :
 			TNT1 A 0
 			{
-				let player = Gardevoir(players[consoleplayer].mo);
+				let player = GHAGGardevoir(players[consoleplayer].mo);
 				player.updateWeapons = true;
 				player.giveInventory("GHAGPsychoCutterOverlay", 1);
 				if (player.countinv("GHAGPsychoCutter") == 0) {
@@ -50,7 +50,7 @@ Class ExtraPsychoCutter : CustomInventory replaces Chainsaw
 	}
 }
 
-Class ExtraPsychoCutterDrop : CustomInventory
+Class GHAGExtraPsychoCutterDrop : CustomInventory
 {
 	bool touched;
 	default
@@ -72,7 +72,7 @@ Class ExtraPsychoCutterDrop : CustomInventory
 				if (!invoker.touched) //Prevents chainsaw duplicating
 				{
 					invoker.touched = true;
-					let player = Gardevoir(players[consoleplayer].mo);
+					let player = GHAGGardevoir(players[consoleplayer].mo);
 					player.giveInventory("GHAGPsychoCutterOverlay", 1);
 					if (player.countinv("GHAGPsychoCutter") == 0) player.giveInventory("GHAGPsychoCutter", 1);
 					player.updateWeapons = true;
@@ -139,7 +139,7 @@ Class GHAGPsychoCutter : GHAGWeapon
 							2 * invoker.getChainsawCount(), 
 							"BulletPuff", 
 							SF_NOUSEAMMO | SF_NOPULLIN | SF_NOTURN, 
-							56 + (8 * invoker.getChainsawCount() + (44 * Gardevoir(self).getRageModifier())), 
+							56 + (8 * invoker.getChainsawCount() + (44 * GHAGGardevoir(self).getRageModifier())), 
 							4.8125 * invoker.getChainsawCount()
 						);
 				}
@@ -161,7 +161,7 @@ Class GHAGPsychoCutter : GHAGWeapon
 				TakeInventory('GHAGPsychoCutterOverlay', 1);
 				A_FireProjectile('GHAGPsychoProjectile'); 
 				A_OverlayChainsaws(false);
-				Gardevoir(self).updateWeapons = true;
+				GHAGGardevoir(self).updateWeapons = true;
 			}
 			HAND AABBCCDDEE 1 A_OverlayChainsaws(false);
 			goto Ready;
@@ -199,7 +199,7 @@ Class GHAGPsychoProjectile : Actor
 		+DontGib;
 		Projectile;
 		Speed 40;
-		DropItem "ExtraPsychoCutterDrop";
+		DropItem "GHAGExtraPsychoCutterDrop";
 	}
 	
 	int lifespan;
@@ -212,8 +212,8 @@ Class GHAGPsychoProjectile : Actor
 	{
 		Super.BeginPlay();
 		A_SetRoll(random(0, 360));
-		bloodscale = lifespan = 5 + Int(10 * Gardevoir(players[consoleplayer].mo).GetRageModifier());
-		Self.speed = 20 + (20 * Gardevoir(players[consoleplayer].mo).getRageModifier());
+		bloodscale = lifespan = 5 + Int(10 * GHAGGardevoir(players[consoleplayer].mo).GetRageModifier());
+		Self.speed = 20 + (20 * GHAGGardevoir(players[consoleplayer].mo).getRageModifier());
 	}
 	states
 	{
@@ -242,7 +242,7 @@ Class GHAGPsychoProjectile : Actor
 				A_StartSound("weapons/chainhit", CHAN_AUTO);
 				Self.SetOrigin((Invoker.target.pos.x + pos_x + random(-1, 1), Invoker.target.pos.y + pos_y + random(-1, 1), Invoker.target.pos.z + pos_z + random(-1, 1)), true);
 				int damage = int((random() % 10 + 1) * 1.5);
-				Invoker.target.damagemobj(self, Gardevoir(players[consoleplayer].mo), damage, 'Melee');
+				Invoker.target.damagemobj(self, GHAGGardevoir(players[consoleplayer].mo), damage, 'Melee');
 				for (int i = 0; i < bloodscale; ++ i) 
 				{
 					Vector3 bloodpos = invoker.pos;

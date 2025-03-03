@@ -73,21 +73,21 @@ Class GHAGPistol : GHAGWeapon
 			Loop;
 		Fire:
 			HAND AB 3 {
-				A_SetTics(Gardevoir(self).GetTicModifier(3, true));
+				A_SetTics(GHAGGardevoir(self).GetTicModifier(3, true));
 			}
 			HAND C 3 {
-				A_SetTics(Gardevoir(self).GetTicModifier(3));
+				A_SetTics(GHAGGardevoir(self).GetTicModifier(3));
 			}
 			HAND D 3 {
-				A_FireBullets(Gardevoir(self).GetAccuracyModifier(4.3), Gardevoir(self).GetAccuracyModifier(4.3), 1, 8, "BulletPuff");
+				A_FireBullets(GHAGGardevoir(self).GetAccuracyModifier(4.3), GHAGGardevoir(self).GetAccuracyModifier(4.3), 1, 8, "BulletPuff");
 				A_StartSound("weapons/pistol", CHAN_WEAPON);
-				A_SetTics(Gardevoir(self).GetTicModifier(3));
+				A_SetTics(GHAGGardevoir(self).GetTicModifier(3));
 				A_OverlayPistols(true);
 			}
-			HAND EF 1 A_SetTics(Gardevoir(self).GetTicModifier(1, true));
+			HAND EF 1 A_SetTics(GHAGGardevoir(self).GetTicModifier(1, true));
 			HAND G 5
 			{
-				A_SetTics(Gardevoir(self).GetTicModifier(5, true));
+				A_SetTics(GHAGGardevoir(self).GetTicModifier(5, true));
 				A_ReFire();
 			}
 			Goto Ready;
@@ -99,10 +99,10 @@ Class GHAGPistol : GHAGWeapon
 			HAND A 3 A_StartSound("weapons/dryfire", CHAN_AUTO);
 			goto Ready;
 		AltFire.Shoot:
-			HAND BC 3 A_SetTics(Gardevoir(self).GetTicModifier(3) * 2);
+			HAND BC 3 A_SetTics(GHAGGardevoir(self).GetTicModifier(3) * 2);
 			HAND D 3
 			{
-				A_SetTics(Gardevoir(self).GetTicModifier(3) * 2);
+				A_SetTics(GHAGGardevoir(self).GetTicModifier(3) * 2);
 				A_FireTargets();
 			}
 			TNT1 A 0
@@ -113,7 +113,7 @@ Class GHAGPistol : GHAGWeapon
 			TNT1 A 0 A_NullTargets();
 			Goto Ready;
 		Fire.Overlay:
-			PIST B 2 Bright A_SetTics(Gardevoir(self).GetTicModifier(2));
+			PIST B 2 Bright A_SetTics(GHAGGardevoir(self).GetTicModifier(2));
 			PIST A 100;
 			stop;
 		AltFire.Overlay:
@@ -142,7 +142,7 @@ Class GHAGPistol : GHAGWeapon
 		
 		invoker.lastRNG = rng;
 		
-		let gardie = Gardevoir(invoker.owner);
+		let gardie = GHAGGardevoir(invoker.owner);
 		if (gardie.FloatGuns.Size())
 		{
 			if (RollForFire)
@@ -154,7 +154,7 @@ Class GHAGPistol : GHAGWeapon
 	
 	Action bool A_AutoTarget()
 	{
-		let gardie = Gardevoir(self);
+		let gardie = GHAGGardevoir(self);
 		invoker.targets.clear();
 		
 		if (!countInv("Clip"))
@@ -174,7 +174,7 @@ Class GHAGPistol : GHAGWeapon
 			
 			double difference = AbsAngle(self.angle, angleTo(mo));
 			
-			if (difference >= 45 + (135 * Gardevoir(self).getRageModifier())) continue;
+			if (difference >= 45 + (135 * GHAGGardevoir(self).getRageModifier())) continue;
 			
 			if (invoker.targets.size() != 0)
 			{
@@ -215,7 +215,7 @@ Class GHAGPistol : GHAGWeapon
 	
 	Action void A_FireTargets()
 	{
-		let gardie = Gardevoir(self);
+		let gardie = GHAGGardevoir(self);
 	
 		int prevIndex = 0;
 		for (int i = 0; i < invoker.getPistolCount(); ++i)
@@ -227,7 +227,7 @@ Class GHAGPistol : GHAGWeapon
 			gun.targetOverride = invoker.targets[prevIndex];
 			gun.SetStateLabel('PistolFire');
 			double pitch = GHAGFloatingGun.PitchTo(self, invoker.targets[prevIndex], 0.75);
-			double accuracy = Gardevoir(self).GetAccuracyModifier(4.3);
+			double accuracy = GHAGGardevoir(self).GetAccuracyModifier(4.3);
 			LineAttack(angleTo(invoker.targets[prevIndex]) + random(Int(-accuracy), Int(accuracy)), 4096, pitch + random(Int(-accuracy), Int(accuracy)), 8, 'Melee', 'BulletPuff', LAF_ISMELEEATTACK);
 			if (!GetCVar("sv_infiniteammo")) A_TakeInventory('Clip', 1);
 			A_StartSound("weapons/pistol", CHAN_WEAPON);
@@ -236,7 +236,7 @@ Class GHAGPistol : GHAGWeapon
 	
 	Action void A_NullTargets()
 	{
-		let gardie = Gardevoir(self);
+		let gardie = GHAGGardevoir(self);
 		
 		if (!gardie.floatGuns.size()) return;
 	

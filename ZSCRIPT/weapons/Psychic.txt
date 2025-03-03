@@ -1,4 +1,4 @@
-Class Psychic : Pokemonmove
+Class GHAGPsychic : GHAGPokemonmove
 {
 	Default
 	{
@@ -42,14 +42,14 @@ Class Psychic : Pokemonmove
 		Fire.Loop:
 			HAND K 1
 			{
-				A_FireProjectile('PsychicMissile');
+				A_FireProjectile('GHAGPsychicMissile');
 				int rngrange = 2;
 				A_Overlay(-1, "Fire.OverlayMirror");
 				A_OverlayOffset(0, random(-rngrange, rngrange), 43 + random(-rngrange, rngrange), WOF_INTERPOLATE);
 				A_OverlayFlags(-1, PSPF_FLIP | PSPF_MIRROR, true);
 				A_OverlayOffset(-1, -35 - random(-rngrange, rngrange), random(-rngrange, rngrange), WOF_INTERPOLATE);
-				A_SetTics(Gardevoir(self).GetTicModifier(8, true));
-				Gardevoir(self).subtractanger(5);
+				A_SetTics(GHAGGardevoir(self).GetTicModifier(8, true));
+				GHAGGardevoir(self).subtractanger(5);
 				A_DrawPsychic();
 			}
 			HAND K 1
@@ -86,7 +86,7 @@ Class Psychic : Pokemonmove
 	}
 }
 
-Class PsychicMissile : Actor
+Class GHAGPsychicMissile : Actor
 {
 	Default
 	{

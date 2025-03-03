@@ -131,8 +131,8 @@ Class GHAGNailGun : GHAGWeapon
 	
 		let _locNails = GHAGNailProjectile(A_FireAimedProjectile("GHAGNailProjectile", true, pos.x, pos.y));
 		if (_locNails) {
-			_locNails.Vel3DFromAngle(60 + (40 * Min(2, Gardevoir(self).GetRageModifier())), _locNails.angle, _locNails.pitch);
-			_locNails.setDamage(getDefaultByType(_locNails.getClass()).damage + int(10 * Gardevoir(self).GetRageModifier()));
+			_locNails.Vel3DFromAngle(60 + (40 * Min(2, GHAGGardevoir(self).GetRageModifier())), _locNails.angle, _locNails.pitch);
+			_locNails.setDamage(getDefaultByType(_locNails.getClass()).damage + int(10 * GHAGGardevoir(self).GetRageModifier()));
 		}
 	}
 	

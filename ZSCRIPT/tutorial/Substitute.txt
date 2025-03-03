@@ -1,4 +1,4 @@
-Class SubDoll : Actor
+Class GHAGSubDoll : Actor
 {
 	Default
 	{
@@ -38,7 +38,7 @@ Class SubDoll : Actor
 	
 	Action void A_RespawnDoll()
 	{
-		let sub = SubDoll(Spawn("SubDoll"));
+		let sub = GHAGSubDoll(Spawn("GHAGSubDoll"));
 		let fog = TeleportFog(Spawn("TeleportFog"));
 		sub.respawn = invoker.respawn;
 		sub.setOrigin(invoker.respawn, false);

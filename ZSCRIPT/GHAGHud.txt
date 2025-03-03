@@ -147,13 +147,12 @@ Class GHAGStatus : BaseStatusBar
 		
 		double hscale = CVar.GetCVar('hud_scale', CPlayer).GetFloat();
 		userscale = hscale > 0. ? hscale : 1;
+		userscale *= CVAR.GetCVar("ghaghudscale", CPlayer).GetFloat();
 	}
 	
 	override void Tick()
 	{
 		Super.tick();
-		
-		
 		
 		if (gametic % 10 == 0) wtfString = wtf();
 		
@@ -200,17 +199,17 @@ Class GHAGStatus : BaseStatusBar
 		armorbar.current = GetArmorAmount();
 		armoramount.msg = GetArmorAmount() .. ' Armor';
 		
-		angerbar.current = Min(Gardevoir(CPlayer.mo).rageValue, Gardevoir(CPlayer.mo).rageConstant);
-		angerbar.max = Gardevoir(CPlayer.mo).rageConstant;
+		angerbar.current = Min(GHAGGardevoir(CPlayer.mo).rageValue, GHAGGardevoir(CPlayer.mo).rageConstant);
+		angerbar.max = GHAGGardevoir(CPlayer.mo).rageConstant;
 			
-		string angy_percent = String.Format("%.1f", (Float(Gardevoir(CPlayer.mo).RageValue) / 10));
-		string angry_cap = String.format("%.1f", (Float(Gardevoir(CPlayer.mo).RageConstant) / 10));
+		string angy_percent = String.Format("%.1f", (Float(GHAGGardevoir(CPlayer.mo).RageValue) / 10));
+		string angry_cap = String.format("%.1f", (Float(GHAGGardevoir(CPlayer.mo).RageConstant) / 10));
 		
-		if (Gardevoir(CPlayer.mo).ragevalue <= Gardevoir(CPlayer.mo).rageConstant)
+		if (GHAGGardevoir(CPlayer.mo).ragevalue <= GHAGGardevoir(CPlayer.mo).rageConstant)
 		{
 			angeramount.msg = angy_percent .. '/' .. angry_cap;
 			ragedisplayEcho.visible = false;
-			if (Gardevoir(CPlayer.mo).ragevalue > lastAngerValue)
+			if (GHAGGardevoir(CPlayer.mo).ragevalue > lastAngerValue)
 			{
 				angeramountEcho.visible = true;
 				angeramountEcho.msg = angy_percent .. '/' .. angry_cap;
@@ -233,7 +232,7 @@ Class GHAGStatus : BaseStatusBar
 			ragedisplayEcho.position = ragepos + (random(-10, 10), random(-10, 10));
 		}
 		
-		lastAngerValue = Gardevoir(CPlayer.mo).ragevalue;
+		lastAngerValue = GHAGGardevoir(CPlayer.mo).ragevalue;
 		
 		ragedisplay.msg = GetAngerString();
 		
@@ -412,7 +411,7 @@ Class GHAGStatus : BaseStatusBar
 	
 	string GetAngerString()
 	{
-		let gardie = Gardevoir(CPlayer.mo);
+		let gardie = GHAGGardevoir(CPlayer.mo);
 		if (!gardie) return "I'm so angry, I simply do not exist!";
 		
 		if (Gardie.RageValue < 0) return "Drained";

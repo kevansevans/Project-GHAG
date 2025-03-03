@@ -1,4 +1,4 @@
-Mixin Class IcePunch
+Mixin Class GHAGIcePunch
 {
 
 	Array<Actor> Affected;
@@ -38,7 +38,7 @@ Mixin Class IcePunch
 		Actor puff;
 		[puff, actualdamage] = LineAttack (angle, range, pitch, damage, 'Melee', pufftype, puffFlags, t);
 
-		A_BlastLOS(BF_AFFECTBOSSES | BF_DONTWARN | 16, 255, 256 * Gardevoir(self).GetRageModifier(), 20 * Gardevoir(self).GetRageModifier(), pufftype, damage);
+		A_BlastLOS(BF_AFFECTBOSSES | BF_DONTWARN | 16, 255, 256 * GHAGGardevoir(self).GetRageModifier(), 20 * GHAGGardevoir(self).GetRageModifier(), pufftype, damage);
 
 		if (!t.linetarget)
 		{
@@ -187,7 +187,7 @@ Mixin Class IcePunch
 	
 	Double IcePunchGetSpeed()
 	{
-		let gardie = Gardevoir(players[consoleplayer].mo);
+		let gardie = GHAGGardevoir(players[consoleplayer].mo);
 		double x = gardie.vel.x * gardie.vel.x;
 		double y = gardie.vel.y * gardie.vel.y;
 		double z = gardie.vel.z * gardie.vel.z;
@@ -200,7 +200,7 @@ Mixin Class IcePunch
 	{
 		FLineTraceData shot;
 	
-		let gardie = Gardevoir(players[consoleplayer].mo);
+		let gardie = GHAGGardevoir(players[consoleplayer].mo);
 		gardie.LineTrace(gardie.angle, 64 + (128 * gardie.GetRageValue()), gardie.pitch, TRF_THRUHITSCAN, gardie.height - 12, 0, 0, shot);
 		{
 			if (shot.HitActor && shot.HitActor.bIsMonster)
@@ -225,7 +225,7 @@ Mixin Class IcePunch
 	
 	Action void A_IcePunch() 
 	{
-		let gardie = Gardevoir(players[consoleplayer].mo);
+		let gardie = GHAGGardevoir(players[consoleplayer].mo);
 		A_ExplosivePunch(15 + Int(60 * gardie.GetRageModifier()), 0, true, "IcePuff", 32 + Int(16 * gardie.GetRageModifier()), 0, 0, "", "");
 		invoker.hitline = null;
 	}

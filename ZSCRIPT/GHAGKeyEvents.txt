@@ -13,13 +13,13 @@ class GHAGKeyEvents : EventHandler
    {               
 		if (e.Name == "KinesisActivate")  
 		{
-			let gardie = Gardevoir(players[consoleplayer].mo);
+			let gardie = GHAGGardevoir(players[consoleplayer].mo);
 		
 			int key1, key2;
 			[key1, key2] = Bindings.GetKeysForCommand("kinesis");
 			if ((key1 && key1 == e.Args[0]) || (key2 && key2 == e.Args[0]))
 			{
-				let blast = KinesisBlast(Actor.spawn('KinesisBlast', (0, 0, 0)));
+				let blast = GHAGKinesisBlast(Actor.spawn('GHAGKinesisBlast', (0, 0, 0)));
 				Array<Actor> list;
 				FLineTraceData shot;
 				
@@ -37,7 +37,7 @@ class GHAGKeyEvents : EventHandler
 						bool activate = shot.HitLine.Activate(Gardie, shot.LineSide, SPAC_Use);
 						if (activate)
 						{
-							KinesisPing.spawn('KinesisPing', shot.HitLocation);
+							GHAGKinesisPing.spawn('GHAGKinesisPing', shot.HitLocation);
 							return;
 						} else {
 							shot.HitLine.args[1] = orgSpeed;
@@ -84,7 +84,7 @@ class GHAGKeyEvents : EventHandler
 	}
 }
 
-Class KinesisBlast : Actor
+Class GHAGKinesisBlast : Actor
 {
 
 	Array<Actor> list;
@@ -97,14 +97,14 @@ Class KinesisBlast : Actor
 		
 		int radial = 64;
 		
-		let gardie = Gardevoir(players[consoleplayer].mo);
+		let gardie = GHAGGardevoir(players[consoleplayer].mo);
 		ThinkerIterator it = ThinkerIterator.Create("Actor");
 		Actor mo;
 		while ( (mo = Actor(it.Next ())) )
 		{
 			if (mo.bIsMonster && mo.bIceCorpse && distance3D(mo) <= radial)
 			{
-				mo.spawn("KinesisPing", mo.pos);
+				mo.spawn("GHAGKinesisPing", mo.pos);
 				mo.A_DamageSelf(1);
 				continue;
 			}
@@ -129,14 +129,14 @@ Class KinesisBlast : Actor
 				}
 			
 				list.push(mo);
-				KinesisPing(Actor.spawn('KinesisPing', mo.pos));
+				GHAGKinesisPing(Actor.spawn('GHAGKinesisPing', mo.pos));
 			}
 		}
 	}
 	
 	void ReturnToSender()
 	{
-		let gardie = Gardevoir(players[consoleplayer].mo);
+		let gardie = GHAGGardevoir(players[consoleplayer].mo);
 		
 		for (int i = 0; i < list.size(); ++i)
 		{
@@ -163,7 +163,7 @@ Class KinesisBlast : Actor
 							victim.bRollSprite = true;
 							victim.bRollCenter = true;
 							for (int i = 0; i < 10; ++ i) victim.A_SeekerMissile(360, 90, SMF_LOOK | SMF_PRECISE);
-							KinesisPing(Actor.spawn('KinesisPing', victim.pos));
+							GHAGKinesisPing(Actor.spawn('GHAGKinesisPing', victim.pos));
 						}
 						if (victim.tracer)
 						{
@@ -224,7 +224,7 @@ Class KinesisBlast : Actor
 					{
 						if (Inventory(victim))
 						{
-							if (RageEssence(Victim))
+							if (GHAGRageEssence(Victim))
 							{
 								int rage = gardie.GetRageValue();
 								if (rage < gardie.rageconstant) Inventory(victim).touch(gardie);
@@ -271,7 +271,7 @@ Class KinesisBlast : Actor
 	}
 }
 
-Class KinesisPing : Actor
+Class GHAGKinesisPing : Actor
 {
 	default
 	{

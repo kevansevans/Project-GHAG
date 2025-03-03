@@ -1,4 +1,4 @@
-Class WeaponPickup : Inventory
+Class GHAGWeaponPickup : Inventory
 {
 	Default
 	{
@@ -15,7 +15,7 @@ Class WeaponPickup : Inventory
 		if (result)
 		{
 			A_StartSound("misc/w_pkup", CHAN_AUTO);
-			Gardevoir(toucher).updateWeapons = true;
+			GHAGGardevoir(toucher).updateWeapons = true;
 		}
 		return result;
 	}
@@ -23,7 +23,7 @@ Class WeaponPickup : Inventory
 	bool touched;
 }
 
-Class PistolPickup : WeaponPickup
+Class GHAGPistolPickup : GHAGWeaponPickup
 {
 	Default
 	{
@@ -67,7 +67,7 @@ Class PistolPickup : WeaponPickup
 	}
 }
 
-Class ShotgunPickup : WeaponPickup
+Class GHAGShotgunPickup : GHAGWeaponPickup
 {
 	Default
 	{
@@ -112,7 +112,7 @@ Class ShotgunPickup : WeaponPickup
 	}
 }
 
-Class NailgunPickup : WeaponPickup
+Class GHAGNailgunPickup : GHAGWeaponPickup
 {
 	Default
 	{
@@ -157,7 +157,7 @@ Class NailgunPickup : WeaponPickup
 	}
 }
 
-Class PlasmaPickup : WeaponPickup
+Class GHAGPlasmaPickup : GHAGWeaponPickup
 {
 	Default
 	{
@@ -202,7 +202,7 @@ Class PlasmaPickup : WeaponPickup
 	}
 }
 
-Class SuperRailgunPickup : WeaponPickup
+Class GHAGSuperRailgunPickup : GHAGWeaponPickup
 {
 	Default
 	{

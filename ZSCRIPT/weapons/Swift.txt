@@ -1,4 +1,4 @@
-Class Swift : PokemonMove
+Class GHAGSwift : GHAGPokemonMove
 {
 	Default
 	{
@@ -9,7 +9,7 @@ Class Swift : PokemonMove
 	
 	Action bool A_CheckRageAmmo() 
 	{
-		if (Gardevoir(self).RageValue <= 0) return false;
+		if (GHAGGardevoir(self).RageValue <= 0) return false;
 		return true;
 	}
 	
@@ -35,25 +35,25 @@ Class Swift : PokemonMove
 		Fire :
 			TNT1 A 0 
 			{
-				int count = Int(Min(50, 10 * Gardevoir(self).getRageModifier()));
+				int count = Int(Min(50, 10 * GHAGGardevoir(self).getRageModifier()));
 				
 				A_StartSound("attack/SWFTATTK", CHAN_WEAPON);
-				A_FireProjectile("SwiftProjectile");
+				A_FireProjectile("GHAGSwiftProjectile");
 				while (count >= 1) {
-					A_FireProjectile("SwiftProjectileSeeker", random(-10, 10), false, random(-10, 10), random(-10, 10), 0, random(-10, 10));
+					A_FireProjectile("GHAGSwiftProjectileSeeker", random(-10, 10), false, random(-10, 10), random(-10, 10), 0, random(-10, 10));
 					--count;
 				}
 				
-				Gardevoir(self).subtractAnger(10);
+				GHAGGardevoir(self).subtractAnger(10);
 				
 			}
-			SWFT FGHIJKL 4 A_SetTics(Gardevoir(self).GetTicModifier(4));
+			SWFT FGHIJKL 4 A_SetTics(GHAGGardevoir(self).GetTicModifier(4));
 			TNT1 A 0 A_Refire();
 			Goto Ready;
 	}
 }
 
-Class SwiftProjectile : Actor
+Class GHAGSwiftProjectile : Actor
 {
 	
 	default
@@ -72,7 +72,7 @@ Class SwiftProjectile : Actor
 	{
 		super.BeginPlay();
 		
-		Self.setDamage(10 + Int(40 * Gardevoir(players[consoleplayer].mo).getRageModifier()));
+		Self.setDamage(10 + Int(40 * GHAGGardevoir(players[consoleplayer].mo).getRageModifier()));
 	}
 	
 	States 
@@ -85,16 +85,16 @@ Class SwiftProjectile : Actor
 			Loop;
 		Death:
 			SWFP A 1 {
-				A_SpawnItemEx("SwiftDrop", 0, 0, 0, random(-5, 5), random(-5, 5), random(-5, 5), random(0, 360));
-				A_SpawnItemEx("SwiftDrop", 0, 0, 0, random(-5, 5), random(-5, 5), random(-5, 5), random(0, 360));
-				A_SpawnItemEx("SwiftDrop", 0, 0, 0, random(-5, 5), random(-5, 5), random(-5, 5), random(0, 360));
+				A_SpawnItemEx("GHAGSwiftDrop", 0, 0, 0, random(-5, 5), random(-5, 5), random(-5, 5), random(0, 360));
+				A_SpawnItemEx("GHAGSwiftDrop", 0, 0, 0, random(-5, 5), random(-5, 5), random(-5, 5), random(0, 360));
+				A_SpawnItemEx("GHAGSwiftDrop", 0, 0, 0, random(-5, 5), random(-5, 5), random(-5, 5), random(0, 360));
 			}
 			stop;
 	}
 
 }
 
-Class SwiftProjectileSeeker : SwiftProjectile
+Class GHAGSwiftProjectileSeeker : GHAGSwiftProjectile
 {
 	
 	States 
@@ -110,7 +110,7 @@ Class SwiftProjectileSeeker : SwiftProjectile
 
 }
 
-Class SwiftDrop : Actor
+Class GHAGSwiftDrop : Actor
 {
 	Default
 	{

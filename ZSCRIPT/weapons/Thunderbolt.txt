@@ -1,4 +1,4 @@
-Class Thunderbolt : PokemonMove
+Class GHAGThunderbolt : GHAGPokemonMove
 {
 	Default
 	{
@@ -30,7 +30,7 @@ Class Thunderbolt : PokemonMove
 		Fire:
 			TNT1 A 0
 			{
-				double anger = Gardevoir(self).getRageValue();
+				double anger = GHAGGardevoir(self).getRageValue();
 				invoker.charge = 1000 / (anger >= 100 ? int(anger) : 100);
 				invoker.charge = max(1, invoker.charge) * 2;
 				A_StartSound("Attack/ThunderCharge", CHAN_AUTO);
@@ -68,23 +68,23 @@ Class Thunderbolt : PokemonMove
 	Action Void A_Thunderbolt()
 	{
 		FLineTraceData shot;
-		bool hit = Gardevoir(self).LineTrace(Gardevoir(self).angle, 4096, Gardevoir(self).pitch, TRF_THRUBLOCK | TRF_NOSKY, Gardevoir(self).height - 12, 0, 0, shot);
+		bool hit = GHAGGardevoir(self).LineTrace(GHAGGardevoir(self).angle, 4096, GHAGGardevoir(self).pitch, TRF_THRUBLOCK | TRF_NOSKY, GHAGGardevoir(self).height - 12, 0, 0, shot);
 		if (hit)
 		{
 			if (shot.hitActor)
 			{
-				let bolt = ThunderboltSpawn(Actor.spawn("ThunderboltSpawn", shot.hitactor.pos));
+				let bolt = GHAGThunderboltSpawn(Actor.spawn("GHAGThunderboltSpawn", shot.hitactor.pos));
 			} 
 			else 
 			{
-				let bolt = ThunderboltSpawn(Actor.spawn("ThunderboltSpawn", shot.hitLocation));
+				let bolt = GHAGThunderboltSpawn(Actor.spawn("GHAGThunderboltSpawn", shot.hitLocation));
 			}
-			Gardevoir(self).subtractAnger(150);
+			GHAGGardevoir(self).subtractAnger(150);
 		}
 	}
 }
 
-Class ThunderboltSpawn : Actor
+Class GHAGThunderboltSpawn : Actor
 {
 	int frame;
 
@@ -98,7 +98,7 @@ Class ThunderboltSpawn : Actor
 			}
 			THUN ABCDE 2 Bright
 			{
-				let gardie = Gardevoir(players[consoleplayer].mo);
+				let gardie = GHAGGardevoir(players[consoleplayer].mo);
 				double modifier = gardie.getRageModifier();
 				A_ThunderBlast(BF_AFFECTBOSSES | BF_NOIMPACTDAMAGE | BF_ONLYVISIBLETHINGS, Max(255 * modifier, 25), (64 + (512 * modifier)) * (double(invoker.frame) / 5), Max(64 * modifier, 8));
 				++invoker.frame;
@@ -119,7 +119,7 @@ Class ThunderboltSpawn : Actor
 		while ( (mo = Actor(it.Next ())) )
 		{
 			//ignore player
-			if (Gardevoir(mo)) continue;
+			if (GHAGGardevoir(mo)) continue;
 			if (mo == self || (mo.bBoss && !(blastflags & BF_AFFECTBOSSES)) || mo.bDormant || mo.bDontBlast)
 			{ // Not a valid monster: originator, boss, dormant, or otherwise protected
 				continue;
@@ -201,7 +201,7 @@ Class ThunderboltSpawn : Actor
 			victim.bArmed = false; // Disarm
 			victim.DamageMobj(self, self, victim.health, 'Melee', DMG_FORCED|DMG_EXPLOSION);
 		} else {
-			victim.DamageMobj(self, Gardevoir(players[consoleplayer].mo), 128 + Int(strength), "Explosive");
+			victim.DamageMobj(self, GHAGGardevoir(players[consoleplayer].mo), 128 + Int(strength), "Explosive");
 			if (victim.health > 0) victim.SetStateLabel('Pain');
 		}
 	}

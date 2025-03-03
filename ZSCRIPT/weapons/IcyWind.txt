@@ -1,4 +1,4 @@
-Class IcyWind : PokemonMove
+Class GHAGIcyWind : GHAGPokemonMove
 {
 	Default
 	{
@@ -54,20 +54,20 @@ Class IcyWind : PokemonMove
 	
 	Action void A_IcyWind()
 	{
-		double modifier = Gardevoir(self).getRageModifier();
+		double modifier = GHAGGardevoir(self).getRageModifier();
 		int count = 3 + Int(9 * modifier);
 		
 		int range = 4;
 		for (int i = 0; i < count; ++i)
 		{
-			let crystal = A_FireProjectile('IcyWindProjectile', 0, false, 5, 10);
+			let crystal = A_FireProjectile('GHAGIcyWindProjectile', 0, false, 5, 10);
 			crystal.Vel3DFromAngle(5 + (15 * modifier), self.angle + random(-range, range), self.pitch + random(-range, range));
 		}
-		Gardevoir(self).subtractAnger(10);
+		GHAGGardevoir(self).subtractAnger(10);
 	}
 }
 
-Class IcyWindProjectile : Actor
+Class GHAGIcyWindProjectile : Actor
 {
 	Default
 	{

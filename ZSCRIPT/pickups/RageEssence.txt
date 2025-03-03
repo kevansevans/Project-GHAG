@@ -1,4 +1,4 @@
-Class RageEssence : CustomInventory
+Class GHAGRageEssence : CustomInventory
 {
 	default
 	{
@@ -16,10 +16,10 @@ Class RageEssence : CustomInventory
 			loop;
 	}
 	
-	override bool TryPickup(Actor toucher)
+	override bool TryPickup(in out Actor toucher)
 	{
-		let gardie = Gardevoir(Players[consoleplayer].mo);
-		int rage = Gardevoir(players[consoleplayer].mo).GetRageValue();
+		let gardie = GHAGGardevoir(Players[consoleplayer].mo);
+		int rage = gardie.GetRageValue();
 		if (rage <= gardie.rageconstant) {
 			gardie.addAnger(self.amount);
 			GoAwayAndDie();

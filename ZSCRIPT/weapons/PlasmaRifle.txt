@@ -124,25 +124,47 @@ Class GHAGPlasmaRifle : GHAGWeapon
 			{
 				return;
 			}
-			int gun = i + 1;
-			int x = 15;
-			if (gun == 2) x = -15;
-			else if (gun == 3) x = 20;
-			else if (gun == 4) x = -20;
 			
-			if (i == 0) let _locPlasma = PlasmaBall(invoker.A_FireAimedProjectile("PlasmaBall", consume, x, gun > 2 ? 12 : 5));
-			else let _locPlasma = PlasmaBall(invoker.A_FireAimedProjectile("GHAGSilentPlasmaBall", false, x, gun > 2 ? 12 : 5));
+			A_FirePlasmaBall(i, consume);
 		}
 	}
 	
-	Actor A_FireAimedProjectile(class<Actor> missiletype, bool useammo = true, double spawnofs_xy = 0, double spawnheight = 0, int flags = 0)
+	Action Void A_FirePlasmaBall(int layer, bool _consume)
+	{
+		Vector2 pos = (0, 0);
+	
+		switch (layer)
+		{
+			Default:
+			case 0:
+				pos.x = 15;
+				pos.y = 5;
+				break;
+			case 1:
+				pos.x = -15;
+				pos.y = 5;
+				break;
+			case 2:
+				pos.x = -15;
+				pos.y = 12;
+				break;
+			case 3:
+				pos.x = 15;
+				pos.y = 12;
+				break;
+		}
+	
+		A_FireAimedProjectile(layer > 0 ? "GHAGSilentPlasmaBall" : "PlasmaBall", _consume, pos.x, pos.y);
+	}
+	
+	action Actor A_FireAimedProjectile(class<Actor> missiletype, bool useammo = true, double spawnofs_xy = 0, double spawnheight = 0, int flags = 0)
 	{
 		let misl = A_FireProjectile(missiletype, 0, useammo, spawnofs_xy, spawnheight, flags, 0);
 		if (misl)
 		{
 			FLineTraceData data;
 			Vector3 end;
-			bool hit = LineTrace(angle, PLAYERMISSILERANGE, pitch, TRF_SOLIDACTORS|TRF_THRUHITSCAN, player.viewz-pos.z, data: data);
+			bool hit = player.mo.LineTrace(angle, PLAYERMISSILERANGE, pitch, TRF_SOLIDACTORS|TRF_THRUHITSCAN, player.viewz-pos.z, data: data);
 			if (hit && data.hitType != TRACE_CrossingPortal)
 				end = (pos.xy, player.viewz) + (AngleToVector(angle,cos(pitch)), -sin(pitch)) * data.distance;
 			else

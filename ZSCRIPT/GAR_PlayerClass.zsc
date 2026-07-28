@@ -27,40 +27,24 @@ Class GAR_PlayerClass : PlayerPawn
 			Loop;
 		See:
 			GARD BCBA 6;
-			TNT1 A 0;
 			Loop;
 		see.SwayForward:
 			GARD BCBA 6;
-			TNT1 A 0;
 			goto See;
 		See.SwayLeft:
 			GARD A 6;
-			TNT1 A 0;
 			goto See;
 		See.SwayRight:
 			GARD C 6;
-			TNT1 A 0;
 			goto See;
 		Pain:
 			GARD P 8;
 			Goto Spawn;
 		Missile:
 		Melee:
-			GARD F 10
-			{
-				
-			}
-			TNT1 A 0
-			{
-				
-			}
+			GARD F 10;
 			goto spawn;
 		Death:
-			GARD A 1
-			{
-				
-			}
-		Death.Loop:
 			TNT1 A 0 A_SetScale(1);
 			PBAL B 16;
 			TNT1 A 0 A_StartSound("pokeball/Shake", CHAN_BODY, CHANF_OVERLAP);

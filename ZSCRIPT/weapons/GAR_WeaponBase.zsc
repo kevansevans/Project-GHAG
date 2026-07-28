@@ -1,0 +1,5 @@
+//For weapons that are guns
+class GAR_WeaponBase : Weapon
+{
+
+}

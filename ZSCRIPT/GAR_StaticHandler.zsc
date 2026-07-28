@@ -1,0 +1,7 @@
+class GAR_StaticHandler : StaticEventHandler
+{
+	override void OnRegister()
+	{
+		console.printf("Gardevoir Has a Gun - 2.0");
+	}
+}

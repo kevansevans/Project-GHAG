@@ -46,9 +46,6 @@ version "4.10"
 #include "ZSCRIPT/weapons/BlackHole.txt"
 #include "ZSCRIPT/weapons/black hole particles/BaseParticle.txt"
 
-//XDeath magic that adds gibs without replacing demons
-#include "ZSCRIPT/monsters/XDeathHandler.txt"
-
 //Black hole includes
 //These were generated with a custom script I made in Haxe
 #include "ZSCRIPT/weapons/black hole particles/CyberParticle.txt"

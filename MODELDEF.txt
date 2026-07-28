@@ -1,2 +1,0 @@
-#include "GLDEFS/FloatGuns.txt"
-#include "GLDEFS/Pickups.txt"

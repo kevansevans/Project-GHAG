@@ -1,48 +1,4 @@
 GameInfo
 {
-	PlayerClasses = "GHAGGardevoirDoom"
-	StatusBarClass = "GHAGStatus"
-	AddEventHandlers = "GHAGEventHandler"
-	AddEventHandlers = "GHAGKeyEvents"
-	//AddEventHandlers = "ActorTracker"
-}
-
-DoomEdNums
-{
-  11001 = GHAGSubDoll
-  11002 = GHAGMagicBullets
-  11003 = GHAGMagicShells
-  11004 = GHAGMagicRockets
-  11005 = GHAGMagicPlasma
-  11006 = GHAGPistolPickup
-  11016 = GHAGSecretPistol
-  11007 = GHAGShotgunPickup
-  11017 = GHAGSecretShotgun
-  11008 = GHAGPlasmaPickup
-  11018 = GHAGSecretPlasma
-  11022 = GHAGNailgunPickup
-  11023 = GHAGSecretNailgun
-  11020 = GHAGSuperRailgunPickup
-  11021 = GHAGSecretRailgun
-  11009 = GHAGRageCandyBar
-  11010 = GHAGQuickieBarrel
-  11011 = GHAGMagicBerserk
-  
-  12001 = GHAGThunderbolt
-  12002 = GHAGPsychic
-  12003 = GHAGIcyWind
-  12004 = GHAGWillOWisp
-  12005 = GHAGMoonblastGun
-  12006 = GHAGBlackHole
-}	
-
-episode TUT01
-{
-	name = "GHAG Tutorial"
-	NoSkillMenu
-}
-map TUT01 "GHAG Tutorial"
-{
-	next = "EndGame1"
-	LevelNum = 999
+	PlayerClasses = "GAR_PlayerClass"
 }

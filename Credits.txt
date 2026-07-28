@@ -1,36 +1,3 @@
-Big thank you to Marisa Kirisame for putting up with my questions
-Thanks you to the ZDoom Forum Discord, and those who were there to answer my questions in the void:
-
-	Gutawer
-	3saster
-	Boondorl
-	Cherno
-	NashMuhandes
-	DyNaM1K
-	phantombeta
-	weasel
-	Xaser
-	Agent_Ash
-	James "Jimmy" Paddock (for those brief play sessions you did)
-	
-(In order the help came to me)
-
-XDeath sprites
-	Links
-		https://www.realm667.com/index.php/en/sfx-shoppe-mainmenu-139-58855/95-other/1250-alternate-gib-deaths
-		https://www.doomworld.com/idgames/combos/rdnd15
-		https://www.moddb.com/mods/sporadic-deaths-and-decorations/downloads/sporadic-deaths-and-decorations-version-10
-	Eriance
-		Demon, Hell Knight, Revenant, Mancubus
-	Blox
-		Arachnotron, Mancubus
-	Vader
-		Baron of Hell
-	PermaNoob
-		Cacodemon
-	Uncredited because could not find names:
-		Archvile
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //Tools used
 ////////////////////////////////////////////////////////////////////////////////////////////////////

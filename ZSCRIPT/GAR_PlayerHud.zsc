@@ -236,22 +236,6 @@ class GAR_PlayerHud : BaseStatusBar
 				Screen.drawTexture(gun.ammo1.icon, false, width - ((ammoXOffset + iconwidth) * locscale), height - ((ammoYOffset + iconheight) * locscale), DTA_ScaleX, locscale, DTA_ScaleY, locscale, DTA_TopLeft, true);
 				Screen.drawText(pokefont, Font.CR_White, width - ((ammowidth + 5) * textscale) - ((iconwidth + ammoXOffset) * locscale), height - ((20 + ammoYOffset) * textscale), ammocount, DTA_ScaleX, textscale, DTA_ScaleY, textscale);
 			}
-			
-			/*
-			* Keep this code in mind just in case I think of something I can do with seconday ammo
-			if (gun.ammo1 && !gun.ammo2)
-			{
-				double iconwidth, iconheight;
-				[iconwidth, iconheight] = TexMan.getSize(gun.ammo1.icon);
-				Screen.drawTexture(gun.ammo1.icon, false, width - ((ammoXOffset + iconwidth) * locscale), height - ((ammoYOffset + iconheight) * locscale), DTA_ScaleX, locscale, DTA_ScaleY, locscale, DTA_TopLeft, true); 
-			}
-			
-			else if (!gun.ammo1 && gun.ammo2)
-			{
-				double iconwidth, iconheight;
-				[iconwidth, iconheight] = TexMan.getSize(gun.ammo2.icon);
-				Screen.drawTexture(gun.ammo2.icon, false, width - ((ammoXOffset + iconwidth) * locscale), height - ((ammoYOffset + iconheight) * locscale), DTA_ScaleX, locscale, DTA_ScaleY, locscale, DTA_TopLeft, true); 
-			}*/
 		}
 	}
 }

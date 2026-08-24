@@ -1,4 +1,257 @@
 class GAR_PlayerHud : BaseStatusBar
 {
+	GAR_PlayerClass gplayer;
+	Font pokefont;
 	
+	color health_grn;
+	color health_orn;
+	color health_red;
+	color armor_blue;
+	
+	TextureID battlehud;
+	Double battlewidth, battleheight;
+	double btlscale;
+	
+	TextureID weap_ballactive;
+	TextureID weap_ballinactive;
+	TextureID weap_ballempty;
+	double ballwidth, ballheight;
+	
+	vector2 hscale;
+	double height;
+	double width;
+
+	override void init()
+	{
+		super.init();
+	
+		pokefont = Font.GetFont("PKMNWHITE");
+		
+		health_grn = Color("00B800");
+		health_orn = Color("F8A800");
+		health_red = Color("F80000");
+		armor_blue = COlor("2088F8");
+		
+		battlehud = TexMan.CheckForTexture("BATTLHUD");
+		[battlewidth, battleheight] = TexMan.getSize(battlehud);
+		btlscale = 2.0;
+		
+		weap_ballactive = TexMan.CheckFortexture("wepactiv");
+		weap_ballinactive = TexMan.CheckForTexture("wepinac");
+		weap_ballempty = TexMan.CheckForTexture("wepempty");
+		[ballheight, ballwidth] = TexMan.getSize(weap_ballempty);
+	}
+	
+	override void Tick()
+	{
+		Super.tick();
+	}
+	
+	override void Draw(int _state, double _tic)
+	{
+		if (_state == HUD_None) return;
+		Super.Draw(_state, _tic);
+		
+		BeginHUD();
+		
+		GPlayer = GAR_PlayerClass(CPlayer.mo);
+		
+		if (!gplayer) return;
+		
+		width = Screen.getWidth();
+		height = Screen.getHeight();
+		
+		hscale = getHUDScale();
+		
+		drawBattleElements();
+		drawHealthBar();
+		drawArmorBar();
+		drawMunitionsInfo();
+	}
+	
+	void drawBattleElements()
+	{
+		double locscale = (hscale.x * btlscale);
+		screen.drawTexture(battlehud, false, 5 * locscale, height - (5 * locscale) - (battleheight * locscale), DTA_ScaleX, locscale, DTA_ScaleY, locscale);
+		
+		if (CPlayer.readyweapon)
+		{
+			let gun = CPlayer.readyweapon;
+			let weaptag = gun.getTag();
+			if (!weaptag) weaptag = gun.getClassName();
+			let tagwidth = pokefont.stringwidth(weaptag);
+			Screen.drawText(pokefont, Font.CR_White, (5 + 4) * locscale, height - (21 * locscale), weaptag, DTA_ScaleX, locscale / 2, DTA_ScaleY, locscale / 2);
+		}
+		
+		bool locks[6];
+		for (int i = 0; i < 6; ++i)
+		{
+			locks[i] = CPlayer.mo.CheckKeys(i + 1, false, true);
+		}
+		
+		if (locks[1] || locks[4])
+		{
+			TextureID bkey;
+			if (locks[1] && locks[4]) bkey = TexMan.CheckForTexture("STKEYS6");
+			else if (locks[1]) bkey = TexMan.CheckForTexture("STKEYS1");
+			else if (locks[4]) bkey = TexMan.CheckForTexture("STKEYS4");
+			
+			Screen.drawTexture(bkey, false, (5 + 7) * locscale, height - (14 * locscale) - (battleheight * locscale), DTA_ScaleX, locscale, DTA_ScaleY, locscale);
+		}
+		
+		if (locks[2] || locks[5])
+		{
+			TextureID ykey;
+			if (locks[2] && locks[5]) ykey = TexMan.CheckForTexture("STKEYS7");
+			else if (locks[2]) ykey = TexMan.CheckForTexture("STKEYS1");
+			else if (locks[5]) ykey = TexMan.CheckForTexture("STKEYS4");
+			
+			Screen.drawTexture(ykey, false, (5 + 14 + 2) * locscale, height - (14 * locscale) - (battleheight * locscale), DTA_ScaleX, locscale, DTA_ScaleY, locscale);
+		}
+		
+		if (locks[0] || locks[3])
+		{
+			TextureID rkey;
+			if (locks[0] && locks[3]) rkey = TexMan.CheckForTexture("STKEYS8");
+			else if (locks[0]) rkey = TexMan.CheckForTexture("STKEYS2");
+			else if (locks[3]) rkey = TexMan.CheckForTexture("STKEYS5");
+			
+			Screen.drawTexture(rkey, false, (5 + 21 + 4) * locscale, height - (14 * locscale) - (battleheight * locscale), DTA_ScaleX, locscale, DTA_ScaleY, locscale);
+		}
+	}
+	
+	void drawHealthBar()
+	{
+		double barwidth = 82.0;
+		double locscale = (hscale.x * btlscale);
+		double textscale = locscale / 4.0;
+		double hratio = double(gplayer.health) / double(gplayer.maxhealth);
+		
+		if (hratio <= 0.0) return;
+		
+		double hx0 = (5 + 21);
+		double hx1 = (hx0 + (barwidth * hratio));
+		double hy0, hy1;
+		hy0 = hy1 = (5 + battleheight - 3);
+		double thickness = 2;
+		double fx = hx0 + (barwidth / 2.0);
+		double fy = hy0 + thickness * 0.75;
+		
+		hx0 *= locscale;
+		hx1 *= locscale;
+		hy0 *= locscale;
+		hy1 *= locscale;
+		fx *= locscale;
+		fy *= locscale;
+		
+		let drawcolor = health_grn;
+		if (hratio <= 0.2) drawcolor = health_red;
+		else if (hratio <= 0.5) drawcolor = health_orn;
+		
+		Screen.DrawThickLine(hx0, height - hy0, hx1, height - hy1, thickness * locscale, drawcolor);
+		let hstring = gplayer.health .. '/' .. gplayer.maxhealth;
+		double hswidth = pokefont.StringWidth(hstring) * textscale;
+		Screen.DrawText(pokefont, Font.CR_White, fx - hswidth / 2.0, height - fy, hstring, DTA_ScaleX, textscale, DTA_ScaleY, textscale);
+	}
+	
+	void drawArmorBar()
+	{
+		double barwidth = 82.0;
+		double locscale = (hscale.x * btlscale);
+		double textscale = locscale / 4.0;
+		
+		Armor parmor = Armor(gplayer.FindInventory("armor", true));
+		if (!parmor || parmor.amount <= 0) return;
+		
+		double aratio = double(parmor.amount) / double(parmor.maxamount);
+		
+		double hx0 = (5 + 21);
+		double hx1 = (hx0 + (barwidth * aratio));
+		double hy0, hy1;
+		hy0 = hy1 = (5 + battleheight - 9);
+		double thickness = 2;
+		double fx = hx0 + (barwidth / 2.0);
+		double fy = hy0 + thickness * 0.75;
+		
+		hx0 *= locscale;
+		hx1 *= locscale;
+		hy0 *= locscale;
+		hy1 *= locscale;
+		fx *= locscale;
+		fy *= locscale;
+		
+		Screen.DrawThickLine(hx0, height - hy0, hx1, height - hy1, thickness * locscale, armor_blue);
+		let astring = parmor.amount .. '/' .. parmor.maxamount;
+		double aswidth = pokefont.StringWidth(astring) * textscale;
+		Screen.DrawText(pokefont, Font.CR_White, fx - aswidth / 2.0, height - fy, astring, DTA_ScaleX, textscale, DTA_ScaleY, textscale);
+	}
+	
+	void drawMunitionsInfo()
+	{
+		double weapYOffset = 3;
+		double weapXOffset = 5;
+		double weapspacer = 3;
+		double locscale = (hscale.x * 2);
+		int maxslotnums = 0;
+		
+		for (int i = 0; i < 10; ++i)
+		{
+			int slotnums = cplayer.weapons.slotsize(i);
+			if (!slotnums) continue;
+			if (slotnums > maxslotnums) maxslotnums = slotnums;
+			
+			for (int j = 0; j < slotnums; ++j)
+			{
+				let gunclass = CPlayer.weapons.GetWeapon(i, j);
+				let gun = Weapon(CPlayer.mo.FindInventory(gunclass));
+				if (!gun) continue;
+				
+				double ypos = i * (ballheight + weapYOffset);
+				double xpos = j * (ballwidth + weapspacer);
+				
+				let drawball = weap_ballinactive;
+				if (CPlayer.readyweapon is gunclass) drawball = weap_ballactive;
+				else if ((gun.ammo1 && !gun.ammo1.amount) && (gun.ammo2 && !gun.ammo1.amount)) drawball = weap_ballempty;
+				
+				screen.drawTexture(drawball, false, width - ((10 + xpos) * locscale), height - ((weapYOffset + ypos) * locscale), DTA_ScaleX, locscale, DTA_ScaleY, locscale);
+			}
+		}
+		
+		if (CPlayer.readyWeapon)
+		{
+			let gun = weapon(CPlayer.readyweapon);
+			if (!gun) throwAbortException("Now hold up a fucking second, we *JUST* checked if the player has a readyweapon, this should not fail to cast to weapon...");
+			
+			let ammoXOffset = 5 + (10 * maxslotnums);
+			let ammoYOffset = 5;
+			let textscale = locscale / 2;
+			
+			if (gun.ammo1)
+			{
+				double iconwidth, iconheight;
+				let ammocount = gun.ammo1.amount .. '/' .. gun.ammo1.MaxAmount;
+				let ammowidth = pokefont.stringwidth(ammocount);
+			
+				[iconwidth, iconheight] = TexMan.getSize(gun.ammo1.icon);
+				Screen.drawTexture(gun.ammo1.icon, false, width - ((ammoXOffset + iconwidth) * locscale), height - ((ammoYOffset + iconheight) * locscale), DTA_ScaleX, locscale, DTA_ScaleY, locscale, DTA_TopLeft, true);
+				Screen.drawText(pokefont, Font.CR_White, width - ((ammowidth + 5) * textscale) - ((iconwidth + ammoXOffset) * locscale), height - ((20 + ammoYOffset) * textscale), ammocount, DTA_ScaleX, textscale, DTA_ScaleY, textscale);
+			}
+			
+			/*
+			* Keep this code in mind just in case I think of something I can do with seconday ammo
+			if (gun.ammo1 && !gun.ammo2)
+			{
+				double iconwidth, iconheight;
+				[iconwidth, iconheight] = TexMan.getSize(gun.ammo1.icon);
+				Screen.drawTexture(gun.ammo1.icon, false, width - ((ammoXOffset + iconwidth) * locscale), height - ((ammoYOffset + iconheight) * locscale), DTA_ScaleX, locscale, DTA_ScaleY, locscale, DTA_TopLeft, true); 
+			}
+			
+			else if (!gun.ammo1 && gun.ammo2)
+			{
+				double iconwidth, iconheight;
+				[iconwidth, iconheight] = TexMan.getSize(gun.ammo2.icon);
+				Screen.drawTexture(gun.ammo2.icon, false, width - ((ammoXOffset + iconwidth) * locscale), height - ((ammoYOffset + iconheight) * locscale), DTA_ScaleX, locscale, DTA_ScaleY, locscale, DTA_TopLeft, true); 
+			}*/
+		}
+	}
 }

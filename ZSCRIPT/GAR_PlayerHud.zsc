@@ -7,6 +7,7 @@ class GAR_PlayerHud : BaseStatusBar
 	color health_orn;
 	color health_red;
 	color armor_blue;
+	color anger_red;
 	
 	TextureID battlehud;
 	Double battlewidth, battleheight;
@@ -30,7 +31,8 @@ class GAR_PlayerHud : BaseStatusBar
 		health_grn = Color("00B800");
 		health_orn = Color("F8A800");
 		health_red = Color("F80000");
-		armor_blue = COlor("2088F8");
+		armor_blue = Color("2088F8");
+		anger_red = Color("D56671");
 		
 		battlehud = TexMan.CheckForTexture("BATTLHUD");
 		[battlewidth, battleheight] = TexMan.getSize(battlehud);
@@ -66,6 +68,7 @@ class GAR_PlayerHud : BaseStatusBar
 		drawBattleElements();
 		drawHealthBar();
 		drawArmorBar();
+		drawAngerBar();
 		drawMunitionsInfo();
 	}
 	
@@ -80,7 +83,11 @@ class GAR_PlayerHud : BaseStatusBar
 			let weaptag = gun.getTag();
 			if (!weaptag) weaptag = gun.getClassName();
 			let tagwidth = pokefont.stringwidth(weaptag);
-			Screen.drawText(pokefont, Font.CR_White, (5 + 4) * locscale, height - (21 * locscale), weaptag, DTA_ScaleX, locscale / 2, DTA_ScaleY, locscale / 2);
+			
+			let drawcolor = Font.CR_White;
+			if (GAR_WeaponBase(gun)) drawcolor = GAR_WeaponBase(gun).tagcolor;
+			
+			Screen.drawText(pokefont, drawcolor, (5 + 4) * locscale, height - (21 * locscale), weaptag, DTA_ScaleX, locscale / 2, DTA_ScaleY, locscale / 2);
 		}
 		
 		bool locks[6];
@@ -130,7 +137,7 @@ class GAR_PlayerHud : BaseStatusBar
 		if (hratio <= 0.0) return;
 		
 		double hx0 = (5 + 21);
-		double hx1 = (hx0 + (barwidth * hratio));
+		double hx1 = (hx0 + (barwidth * min(1.0, hratio)));
 		double hy0, hy1;
 		hy0 = hy1 = (5 + battleheight - 3);
 		double thickness = 2;
@@ -151,7 +158,7 @@ class GAR_PlayerHud : BaseStatusBar
 		Screen.DrawThickLine(hx0, height - hy0, hx1, height - hy1, thickness * locscale, drawcolor);
 		let hstring = gplayer.health .. '/' .. gplayer.maxhealth;
 		double hswidth = pokefont.StringWidth(hstring) * textscale;
-		Screen.DrawText(pokefont, Font.CR_White, fx - hswidth / 2.0, height - fy, hstring, DTA_ScaleX, textscale, DTA_ScaleY, textscale);
+		Screen.DrawText(pokefont, hratio > 1.0 ? Font.CR_Green : Font.CR_White, fx - hswidth / 2.0, height - fy, hstring, DTA_ScaleX, textscale, DTA_ScaleY, textscale);
 	}
 	
 	void drawArmorBar()
@@ -163,7 +170,7 @@ class GAR_PlayerHud : BaseStatusBar
 		Armor parmor = Armor(gplayer.FindInventory("armor", true));
 		if (!parmor || parmor.amount <= 0) return;
 		
-		double aratio = double(parmor.amount) / double(parmor.maxamount);
+		double aratio = double(parmor.amount) / double(gplayer.defense);
 		
 		double hx0 = (5 + 21);
 		double hx1 = (hx0 + (barwidth * aratio));
@@ -181,9 +188,39 @@ class GAR_PlayerHud : BaseStatusBar
 		fy *= locscale;
 		
 		Screen.DrawThickLine(hx0, height - hy0, hx1, height - hy1, thickness * locscale, armor_blue);
-		let astring = parmor.amount .. '/' .. parmor.maxamount;
+		let astring = parmor.amount .. '/' .. gplayer.defense;
 		double aswidth = pokefont.StringWidth(astring) * textscale;
 		Screen.DrawText(pokefont, Font.CR_White, fx - aswidth / 2.0, height - fy, astring, DTA_ScaleX, textscale, DTA_ScaleY, textscale);
+	}
+	
+	void drawAngerBar()
+	{
+		double barwidth = 81.0;
+		double locscale = (hscale.x * btlscale);
+		double textscale = locscale / 4.0;
+		
+		int anger = gplayer.anger - gplayer.anger_used;
+		double angratio = double(anger) / double(gplayer.anger);
+		
+		double hx0 = (5 + 22);
+		double hx1 = (hx0 + (barwidth * angratio));
+		double hy0, hy1;
+		hy0 = hy1 = (5 + battleheight - 26);
+		double thickness = 2;
+		double fx = hx0 + (barwidth / 2.0);
+		double fy = hy0 + thickness * 0.75;
+		
+		hx0 *= locscale;
+		hx1 *= locscale;
+		hy0 *= locscale;
+		hy1 *= locscale;
+		fx *= locscale;
+		fy *= locscale;
+		
+		Screen.DrawThickLine(hx0, height - hy0, hx1, height - hy1, thickness * locscale, anger_red);
+		let astring = anger .. '/' .. gplayer.anger;
+		double aswidth = pokefont.StringWidth(astring) * textscale;
+		Screen.DrawText(pokefont, Font.CR_Red, fx - aswidth / 2.0, height - fy, astring, DTA_ScaleX, textscale, DTA_ScaleY, textscale);
 	}
 	
 	void drawMunitionsInfo()

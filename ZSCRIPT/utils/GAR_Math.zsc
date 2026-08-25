@@ -1,0 +1,34 @@
+class GAR_Math
+{
+	static double Lerp(double _from, double _to, double _frac)
+	{
+		return (_from * (1.0 - _frac)) + (_to * _frac);
+	}
+	
+	static Vector3 VecLerp(Vector3 _from, Vector3 _to, Double _frac)
+	{
+		let x = lerp(_from.x, _to.x, _frac);
+		let y = lerp(_from.y, _to.y, _frac);
+		let z = lerp(_from.z, _to.z, _frac);
+		
+		return (x, y, z);
+	}
+	
+	static double vec3dist(Vector3 _a, Vector3 _b)
+	{
+		let asquare = (_a.x + _b.x) ** 2;
+		let bsquare = (_a.y + _b.y) ** 2;
+		let csquare = (_a.z + _b.z) ** 2;
+		
+		return sqrt(asquare + bsquare + csquare);
+	}
+	
+	static vector3 getMidPoint(Vector3 _a, Vector3 _b, Double _ratio = 0.5)
+	{
+		let xpos = (_a.x + _b.x) * _ratio;
+		let ypos = (_a.y + _b.y) * _ratio;
+		let zpos = (_a.z + _b.z) * _ratio;
+		
+		return (xpos, ypos, zpos);
+	}
+}

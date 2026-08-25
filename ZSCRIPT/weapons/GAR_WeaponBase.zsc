@@ -1,5 +1,42 @@
-//For weapons that are guns
 class GAR_WeaponBase : Weapon
 {
+	int tagcolor;
+	property tagcolor: tagcolor;
 
+	action int getAnger()
+	{
+		let gplayer = GAR_PlayerClass(invoker.owner);
+		if (!gplayer) return 0;
+		
+		return (gplayer.anger - gplayer.anger_used);
+	}
+	
+	action bool A_ConsumeAnger(Int _value = 0)
+	{
+		let gplayer = GAR_PlayerClass(invoker.owner);
+		if (!gplayer) return false; //hwat?
+		
+		return gplayer.consumeAnger(_value);
+	}
+	
+	action void A_PKMoveAlertEnemies(Bool _force = false)
+	{
+		//_force is for when logically, impossible to argue an attack wouldn't alert enemies
+		if (_force)
+		{
+			A_AlertMonsters();
+			return;
+		}
+		
+		let gplayer = GAR_PlayerClass(invoker.owner);
+		if (gplayer.nature != GAR_Quiet) A_AlertMonsters();
+	}
+	
+	/*
+	action void A_CheckRefireDrain(State _name)
+	{
+		let gplayer = GAR_PlayerClass(self.owner);
+		if (gplayer.anger_used > gplayer.anger) 
+	}
+	*/
 }

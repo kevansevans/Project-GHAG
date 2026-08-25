@@ -1,0 +1,99 @@
+class GAR_Nature : Object
+{
+	static double getNatureStatEffect(GAR_NatureType _nat, GAR_StatType _stat)
+	{
+		switch (_nat)
+		{
+			default:
+				console.printf('Unhandled nature, fix me! ' .. _nat);
+			case GAR_Hardy:
+			case GAR_Docile:
+			case GAR_Serious:
+			case GAR_Bashful:
+			case GAR_Quirky:
+				return 1.0;
+			case GAR_Lonely:
+				if (_stat == GAR_StatAttack) return 1.1;
+				else if (_Stat == GAR_StatDefense) return 0.9;
+				return 1.0;
+			case GAR_Brave:
+				if (_stat == GAR_StatAttack) return 1.1;
+				else if (_Stat == GAR_StatSpeed) return 0.9;
+				return 1.0;
+			case GAR_Adamant:
+				if (_stat == GAR_StatAttack) return 1.1;
+				else if (_Stat == GAR_StatSpecAtk) return 0.9;
+				return 1.0;
+			case GAR_Naughty:
+				if (_stat == GAR_StatAttack) return 1.1;
+				else if (_Stat == GAR_StatSpecDef) return 0.9;
+				return 1.0;
+			case GAR_Bold:
+				if (_stat == GAR_StatDefense) return 1.1;
+				else if (_Stat == GAR_StatAttack) return 0.9;
+				return 1.0;
+			case GAR_Relaxed:
+				if (_stat == GAR_StatDefense) return 1.1;
+				else if (_Stat == GAR_StatSpeed) return 0.9;
+				return 1.0;
+			case GAR_Impish:
+				if (_stat == GAR_StatDefense) return 1.1;
+				else if (_Stat == GAR_StatSpecAtk) return 0.9;
+				return 1.0;
+			case GAR_Lax:
+				if (_stat == GAR_StatDefense) return 1.1;
+				else if (_Stat == GAR_StatSpecDef) return 0.9;
+				return 1.0;
+			case GAR_Timid:
+				if (_stat == GAR_StatSpeed) return 1.1;
+				else if (_Stat == GAR_StatAttack) return 0.9;
+				return 1.0;
+			case GAR_Hasty:
+				if (_stat == GAR_StatSpeed) return 1.1;
+				else if (_Stat == GAR_StatDefense) return 0.9;
+				return 1.0;
+			case GAR_Jolly:
+				if (_stat == GAR_StatSpeed) return 1.1;
+				else if (_Stat == GAR_StatSpecAtk) return 0.9;
+				return 1.0;
+			case GAR_Naive:
+				if (_stat == GAR_StatSpeed) return 1.1;
+				else if (_Stat == GAR_StatSpecDef) return 0.9;
+				return 1.0;
+			case GAR_Modest:
+				if (_stat == GAR_StatSpecAtk) return 1.1;
+				else if (_Stat == GAR_StatAttack) return 0.9;
+				return 1.0;
+			case GAR_Mild:
+				if (_stat == GAR_StatSpecAtk) return 1.1;
+				else if (_Stat == GAR_StatDefense) return 0.9;
+				return 1.0;
+			case GAR_Quiet:
+				if (_stat == GAR_StatSpecAtk) return 1.1;
+				else if (_Stat == GAR_StatSpeed) return 0.9;
+				return 1.0;
+			case GAR_Rash:
+				if (_stat == GAR_StatSpecAtk) return 1.1;
+				else if (_Stat == GAR_StatSpecDef) return 0.9;
+				return 1.0;
+			case GAR_Calm:
+				if (_stat == GAR_StatSpecDef) return 1.1;
+				else if (_Stat == GAR_StatAttack) return 0.9;
+				return 1.0;
+			case GAR_Gentle:
+				if (_stat == GAR_StatSpecDef) return 1.1;
+				else if (_Stat == GAR_StatDefense) return 0.9;
+				return 1.0;
+			case GAR_Sassy:
+				if (_stat == GAR_StatSpecDef) return 1.1;
+				else if (_Stat == GAR_StatSpeed) return 0.9;
+				return 1.0;
+			case GAR_Careful:
+				if (_stat == GAR_StatSpecDef) return 1.1;
+				else if (_Stat == GAR_StatSpecAtk) return 0.9;
+				return 1.0;
+		}
+		
+		return 1.0;
+	}
+}

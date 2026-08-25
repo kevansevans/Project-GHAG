@@ -1,13 +1,32 @@
 Class GAR_PlayerClass : PlayerPawn
 {
+	const BASE_EVYIELD = 255.0;
+	const BASE_HEALTH = 68.0;
+	const BASE_ATTACK = 65.0;
+	const BASE_DEFENSE = 65.0;
+	const BASE_SPECIALATK = 125.0;
+	const BASE_SPECIALDEF = 115.0;
+	const BASE_ANGER = 150;
+	const BASE_SPEED = 80.0;
+	
+	GAR_NatureType nature;
+	
+	int defense;
+	
+	int anger;
+	int anger_used;
+	int anger_rechargedelay;
+	double anger_rechargefrac;
+	int anger_rechargeticks;
+	int anger_regcargefreq;
 	
 	default 
 	{
 		Player.DisplayName "Gardevoir";
 	
-		Health 350;
+		Health 80;
+		Player.MaxHealth 1;
 		PainChance 255;
-		Player.MaxHealth 350;
 		
 		Player.ForwardMove 2, 1;
 		
@@ -18,6 +37,73 @@ Class GAR_PlayerClass : PlayerPawn
 		DamageFactor "Poison", 2.0;
 		DamageFactor "PoisonCloud", 2.0;
 		DamageFactor "Melee", 0.25;
+		
+		Player.StartItem "GAR_Psyshock";
+	}
+	
+	override void BeginPlay()
+	{
+		Super.BeginPlay();
+		
+		nature = GAR_Quirky;
+		
+		adjustPlayerStats(100);
+	}
+	
+	override void Tick()
+	{
+		Super.tick();
+		
+		let parmor = self.FindInventory("BasicArmor");
+		if (parmor)
+		{
+			if (parmor.amount > defense) self.TakeInventory("BasicArmor", parmor.amount - defense);
+		}
+		
+		if (--anger_rechargedelay < 0)
+		{
+			++anger_rechargeticks;
+			if (anger_rechargeticks >= anger_regcargefreq && anger_used > 0)
+			{
+				anger_used -= 1;
+				anger_rechargeticks = 0;
+				if (anger_used <= 0) anger_used = 0;
+			}
+		}
+	}
+	
+	void adjustPlayerStats(Int _level = 30)
+	{
+		self.health = self.maxhealth = floor(((2 * BASE_HEALTH + 6 + floor(BASE_EVYIELD / 4.0)) * _level) / 100.0) + _level + 10;
+		defense = calcstat(nature, GAR_StatDefense, BASE_DEFENSE, _level);
+		anger = calcstat(nature, GAR_StatSpecAtk, BASE_ANGER, _level);
+		
+		anger_regcargefreq = 35 * 1;
+		anger_rechargefrac = 2.0;
+	}
+	
+	int calcStat(GAR_NatureType _nat, GAR_StatType _stat, Int _base, Int _level = 30)
+	{
+		let statmod = GAR_Nature.getNatureStatEffect(_nat, _stat);
+		double bigcalc = 2 * _base + 6 + floor(BASE_EVYIELD / 4.0);
+		double fraccalc = floor((bigcalc * _level) / 100.0) + 5;
+		double naturemod = floor(fraccalc * statmod);
+		
+		return naturemod;
+	}
+	
+	bool consumeAnger(Int _value)
+	{
+		if (anger_used < 0) return true;
+		if (anger_used >= anger) return false;
+		
+		anger_used += _value;
+		anger_rechargedelay = int(35.0 * anger_rechargefrac);
+		if (anger_used > anger) 
+		{
+			anger_used = anger;
+		}
+		return true;
 	}
 	
 	States

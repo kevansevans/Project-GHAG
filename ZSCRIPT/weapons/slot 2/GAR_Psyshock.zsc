@@ -1,0 +1,146 @@
+class GAR_Psyshock : GAR_MoveBase
+{
+	Default
+	{
+		Tag "Psyshock";
+		GAR_Weaponbase.tagcolor Font.CR_Purple;
+		Weapon.SlotNumber 2;
+	}
+	
+	states
+	{
+		Select:
+			HAND A 1 A_Raise();
+			Loop;
+		Deselect:
+			HAND A 1 A_Lower();
+			Loop;
+		Ready:
+			HAND A 1 A_WeaponReady();
+			Loop;
+		Fire:
+			HAND H 5;
+		Hold:
+			HAND K 4 A_Psyshock();
+			HAND K 1 A_Refire();
+			goto Ready;
+	}
+	
+	action void A_Psyshock()
+	{
+		let result = A_ConsumeAnger(1);
+		if (!result) return;
+		
+		A_PKMoveAlertEnemies();
+		
+		FLineTraceData shot;
+		self.linetrace(self.angle, 2048, self.pitch, TRF_ThruBlock | TRF_ThruHitscan | TRF_SolidActors, player.viewz - player.mo.pos.z, data: shot);
+		
+		Actor pre, live;
+		double range = frandom(0, 360);
+		double xyoff = 24 * cos(range);
+		double zoff = abs(24 * sin(range));
+		[pre, live] = A_FireProjectile("GAR_PsyshockProj", spawnofs_xy: xyoff, spawnheight: zoff);
+		
+		if (!pre) 
+		{
+			live.setStateLabel("Death");
+			return;
+		}
+		
+		let shock = GAR_PsyshockProj(live);
+		if (shot.HitActor)
+		{
+			shock.targetactor = shot.hitactor;
+		}
+		else
+		{
+			shock.targetpos = shot.HitLocation;
+		}
+		shock.life = int(shot.distance / 60.0);
+	}
+}
+
+Class GAR_PsyshockProj : Actor
+{
+	Vector3 spawnpos;
+	Vector3 targetpos;
+	Vector3 midlerp;
+	Actor targetactor;
+	
+	int life;
+
+	Default
+	{
+		Height 2;
+		Radius 2;
+		Damage 5;
+		Speed 0;
+		
+		+Missile;
+		+NoGravity;
+	}
+	
+	override void PostBeginPlay()
+	{
+		self.spawnpos = self.pos;
+		calcMidPoint();
+	}
+	
+	void calcMidPoint()
+	{
+		midlerp = GAR_Math.veclerp(spawnpos, getTarget(), frandom(0.25, 0.75));
+		double range = 16;
+		
+		midlerp.x += frandom(-range, range);
+		midlerp.y += frandom(-range, range);
+		midlerp.z += frandom(0, range);
+	}
+	
+	Vector3 getTarget()
+	{
+		if (!targetactor)
+		{
+			if (target is 'PlayerPawn') A_SeekerMissile(360, 360, SMF_Look, 256);
+			else 
+			{
+				console.printf('target acquired!');
+				spawnpos = self.pos;
+				targetactor = target;
+				life += GAR_Math.vec3Dist(self.pos, target.pos) * 2;
+				calcMidPoint();
+			}
+		}
+		
+		if (targetactor) 
+		{
+			vector3 targpos = targetactor.pos;
+			targpos.z += (targetactor.height / 2);
+			return targpos;
+		}
+		return targetpos;
+	}
+	
+	void A_LerpToTarget()
+	{
+		if (life == 0) return;
+		let ratio = double(getAge()) / double(life);
+		
+		let leftlerp = GAR_Math.veclerp(spawnpos, midlerp, ratio);
+		let rightlerp = GAR_Math.veclerp(midlerp, getTarget(), ratio);
+		let lerpos = GAR_Math.veclerp(leftlerp, rightlerp, ratio);
+		self.setOrigin(lerpos, true);
+		
+		if (ratio >= 1.0) setStateLabel("death");
+	}
+	
+	states
+	{
+		Spawn:
+			MSNG A 1 Bright A_LerpToTarget();
+			Loop;
+		Death:
+			MSNG A 1 Bright;
+			stop;
+	}
+}

@@ -1,0 +1,50 @@
+enum GAR_StatType
+{
+	GAR_StatHealth,
+	GAR_StatAttack,
+	GAR_StatDefense,
+	GAR_StatSpecAtk,
+	GAR_StatSpecDef,
+	GAR_StatSpeed,
+	GAR_NumStats
+}
+
+enum GAR_FlavorType
+{
+	GAR_Spicy,
+	GAR_Sour,
+	GAR_Sweet,
+	GAR_Dry,
+	GAR_Bitter,
+	GAR_NumFlavors
+}
+
+enum GAR_NatureType
+{
+	GAR_Hardy,
+	GAR_Lonely,
+	GAR_Brave,
+	GAR_Adamant,
+	GAR_Naughty,
+	GAR_Bold,
+	GAR_Docile,
+	GAR_Relaxed,
+	GAR_Impish,
+	GAR_Lax,
+	GAR_Timid,
+	GAR_Hasty,
+	GAR_Serious,
+	GAR_Jolly,
+	GAR_Naive,
+	GAR_Modest,
+	GAR_Mild,
+	GAR_Quiet,
+	GAR_Bashful,
+	GAR_Rash,
+	GAR_Calm,
+	GAR_Gentle,
+	GAR_Sassy,
+	GAR_Careful,
+	GAR_Quirky,
+	GAR_NumNatures
+}

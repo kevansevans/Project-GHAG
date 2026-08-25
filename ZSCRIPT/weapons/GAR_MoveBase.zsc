@@ -1,5 +1,5 @@
 //For weapons that are pokemon moves
-class GAR_MoveBase : Weapon
+class GAR_MoveBase : GAR_WeaponBase
 {
 
 }

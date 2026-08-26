@@ -47,7 +47,7 @@ Class GAR_PlayerClass : PlayerPawn
 		
 		nature = GAR_Quirky;
 		
-		adjustPlayerStats(100);
+		adjustPlayerStats(30);
 	}
 	
 	override void Tick()

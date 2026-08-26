@@ -24,6 +24,42 @@ class GAR_Psyshock : GAR_MoveBase
 			HAND K 4 A_Psyshock();
 			HAND K 1 A_Refire();
 			goto Ready;
+		AltFire:
+			HAND H 4;
+			HAND H 1 A_ChargeZMove();
+		AltFireRelease:
+			HAND K 35 A_ShatteredPsyche();
+			goto Ready;
+	}
+	
+	int psychecharge;
+	
+	action state A_ChargeZMove()
+	{
+		SetTag("Shattered Psyche");
+		let result = A_ConsumeAnger(2);
+		if (result) 
+		{
+			invoker.psychecharge += 3;
+			return resolveState("AltFire");
+		}
+		
+		return resolveState(null);
+	}
+	
+	action void A_ShatteredPsyche()
+	{
+		ThinkerIterator it = ThinkerIterator.create("Actor");
+		Actor mo;
+		
+		while (mo = Actor(it.next()))
+		{
+			if (!mo.bIsMonster) continue;
+			if (mo.health <= 0) continue;
+			
+			mo.AddBehavior("GAR_ShatteredPsyche");
+		}
+		SetTag("Psyshock");
 	}
 	
 	action void A_Psyshock()

@@ -1,0 +1,29 @@
+class GAR_ShatteredPsyche : Behavior
+{
+	Int bounces;
+	
+	override void initialize()
+	{
+		owner.setStateLabel("Pain");
+		owner.tics = -1;
+		owner.bMissile = true;
+		owner.bBounceOnWalls = true;
+		owner.bBounceOnFloors = true;
+		owner.bBounceOnCeilings = true;
+		owner.bBounceOnActors = true;
+		owner.bAllowBounceOnActors = true;
+		owner.BounceFactor = 1.0;
+		owner.WallBounceFactor = 1.0;
+		owner.BounceCount = 5 + random(5, 10);
+		owner.Vel3DFromAngle(80, random(0, 360), (random(15, 55) * (random(0, 1) ? -1 : 1)));
+	}
+	
+	override void Tick()
+	{
+		if (owner.bouncecount <= 1)
+		{
+			owner.bMissile = false;
+			owner.A_DamageSelf(999, flags: DMSS_Kill);
+		}
+	}
+}

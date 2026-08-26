@@ -1,4 +1,4 @@
-version "4.14.3"
+version "5.0.0"
 
 //Backend stuff and whatnot
 
@@ -8,6 +8,7 @@ version "4.14.3"
 #include "ZSCRIPT/utils/GAR_Math.zsc"
 
 #include "ZSCRIPT/weapons/slot 2/GAR_Psyshock.zsc"
+#include "ZSCRIPT/weapons/ZMoves/GAR_ShatteredPsyche.zsc"
 #include "ZSCRIPT/weapons/GAR_GunBase.zsc"
 #include "ZSCRIPT/weapons/GAR_MoveBase.zsc"
 #include "ZSCRIPT/weapons/GAR_WeaponBase.zsc"
